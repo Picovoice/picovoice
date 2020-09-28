@@ -25,13 +25,24 @@ class PicovoiceDemo(Thread):
             keyword_path=keyword_path,
             keyword_callback=self.keyword_callback,
             context_path=context_path,
-            command_callback=self.command_callback())
+            command_callback=self.command_callback)
 
-    def keyword_callback(self):
-        raise NotImplementedError()
+    @staticmethod
+    def keyword_callback():
+        print('wake word detected')
 
-    def command_callback(self):
-        raise NotImplementedError()
+    @staticmethod
+    def command_callback(is_understood, intent, slot_values):
+        if is_understood:
+            print('{')
+            print("  intent : '%s'" % intent)
+            print('  slots : {')
+            for slot, value in slot_values.items():
+                print("    %s : '%s'" % (slot, value))
+            print('  }')
+            print('}')
+        else:
+            print("didn't understand the command")
 
     def run(self):
         pa = None
@@ -73,8 +84,8 @@ def main():
 
     args = parser.parse_args()
 
-    PicovoiceDemo(keyword_path=args.keyword_path, context_path=args.context_path)
+    PicovoiceDemo(keyword_path=args.keyword_path, context_path=args.context_path).run()
 
 
 if __name__ == '__main__':
-    pass
+    main()
