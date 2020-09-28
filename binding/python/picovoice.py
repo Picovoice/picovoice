@@ -30,7 +30,7 @@ class Picovoice(object):
             library_path=porcupine_library_path,
             model_file_path=porcupine_model_path,
             keyword_file_paths=[keyword_path],
-            sensitivities=porcupine_sensitivity)
+            sensitivities=[porcupine_sensitivity])
         self._keyword_callback = keyword_callback
         self._is_wake_word_detected = False
 

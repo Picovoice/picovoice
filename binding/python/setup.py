@@ -12,10 +12,7 @@ shutil.copy(os.path.join(os.path.dirname(__file__), 'picovoice.py'), os.path.joi
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
 
 INIT_SCRIPT = """
-from .picovoice import ContextConfig
-from .picovoice import Inference
 from .picovoice import Picovoice
-from .picovoice import WakeWordConfig
 """
 
 with open(os.path.join(package_folder, '__init__.py'), 'w') as f:
@@ -37,7 +34,7 @@ TODO
 
 setuptools.setup(
     name="picovoice",
-    version="0.4.0",
+    version="0.7.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",
