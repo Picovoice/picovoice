@@ -10,6 +10,7 @@
 #
 
 import os
+
 import pvporcupine
 import pvrhino
 
@@ -17,9 +18,9 @@ import pvrhino
 class Picovoice(object):
     def __init__(
             self,
-            porcupine_keyword_path,
+            keyword_path,
             wake_word_callback,
-            rhino_context_path,
+            context_path,
             command_callback,
             porcupine_library_path=None,
             porcupine_model_path=None,
@@ -27,39 +28,52 @@ class Picovoice(object):
             rhino_library_path=None,
             rhino_model_path=None,
             rhino_sensitivity=0.5):
-        if not os.path.exists(porcupine_keyword_path):
-            raise ValueError()
+        if not os.path.exists(keyword_path):
+            raise ValueError("couldn't find Porcupine's keyword file at '%s'" % keyword_path)
+
+        if not callable(wake_word_callback):
+            raise ValueError('invalid wake word callback')
+
+        if not os.path.exists(context_path):
+            raise ValueError("couldn't find Rhino's context file at '%s'" % context_path)
+
+        if not callable(command_callback):
+            raise ValueError('invalid command callback')
+
         if porcupine_library_path is not None and not os.path.exists(porcupine_library_path):
-            raise ValueError()
+            raise ValueError("couldn't find Porcupine's dynamic library at '%s'" % porcupine_library_path)
+
         if porcupine_model_path is not None and not os.path.exists(porcupine_model_path):
-            raise ValueError()
+            raise ValueError("couldn't find Porcupine's model file at '%s'" % porcupine_model_path)
+
         if not 0 <= porcupine_sensitivity <= 1:
-            raise ValueError()
+            raise ValueError('Porcupine sensitivity should be within [0, 1]')
+
+        if rhino_library_path is not None and not os.path.exists(rhino_library_path):
+            raise ValueError("couldn't find Rhino's dynamic library at '%s'" % rhino_library_path)
+
+        if rhino_model_path is not None and not os.path.exists(rhino_model_path):
+            raise ValueError("couldn't find Rhino's model file at '%s'" % rhino_model_path)
+
+        if not 0 <= rhino_sensitivity <= 1:
+            raise ValueError('Rhino sensitivity should be within [0, 1]')
+
         self._porcupine = pvporcupine.create(
             library_path=porcupine_library_path,
             model_file_path=porcupine_model_path,
-            keyword_file_paths=[porcupine_keyword_path],
+            keyword_file_paths=[keyword_path],
             sensitivities=[porcupine_sensitivity])
-        if not callable(wake_word_callback):
-            raise ValueError()
+
         self._wake_word_callback = wake_word_callback
+
         self._is_wake_word_detected = False
 
-        if not os.path.exists(rhino_context_path):
-            raise ValueError()
-        if rhino_library_path is not None and not os.path.exists(rhino_library_path):
-            raise ValueError()
-        if rhino_model_path is not None and not os.path.exists(rhino_model_path):
-            raise ValueError()
-        if not 0 <= rhino_sensitivity <= 1:
-            raise ValueError()
         self._rhino = pvrhino.create(
             library_path=rhino_library_path,
             model_path=rhino_model_path,
-            context_path=rhino_context_path,
+            context_path=context_path,
             sensitivity=rhino_sensitivity)
-        if not callable(command_callback):
-            raise ValueError()
+
         self._command_callback = command_callback
 
         assert self._porcupine.sample_rate == self._rhino.sample_rate
@@ -81,7 +95,10 @@ class Picovoice(object):
             is_finalized = self._rhino.process(pcm)
             if is_finalized:
                 is_understood = self._rhino.is_understood()
-                intent, slot_values = self._rhino.get_intent() if is_understood else None, dict()
+                if is_understood:
+                    intent, slot_values = self._rhino.get_intent()
+                else:
+                    intent, slot_values = None, dict()
 
                 self._rhino.reset()
                 self._is_wake_word_detected = False
@@ -101,11 +118,4 @@ class Picovoice(object):
         return '1.0.0'
 
     def __str__(self):
-        return 'Picovoice %s' % self.version
-
-    def __repr__(self):
-        res = '%s {\n' % str(self)
-        res += "    Porcupine: %s\n" % self._porcupine.version
-        res += "    Rhino: %s\n" % self._rhino.version
-        res += '}'
-        return res
+        return 'Picovoice %s { Porcupine %s | Rhino %s }' % (self.version, self._porcupine.version, self._rhino.version)

@@ -17,7 +17,8 @@ import unittest
 
 import pvporcupine
 import soundfile
-from picovoice import Picovoice
+
+from .picovoice import Picovoice
 
 
 class PicovoiceTestCase(unittest.TestCase):
@@ -53,7 +54,7 @@ class PicovoiceTestCase(unittest.TestCase):
         else:
             raise NotImplementedError('unsupported platform')
 
-    def _keyword_callback(self):
+    def _wake_word_callback(self):
         self._is_wake_word_detected = True
 
     def _command_callback(self, is_understood, intent, slot_values):
@@ -64,7 +65,7 @@ class PicovoiceTestCase(unittest.TestCase):
     def setUp(self):
         self._pv = Picovoice(
             keyword_path=pvporcupine.KEYWORD_FILE_PATHS['picovoice'],
-            keyword_callback=self._keyword_callback,
+            wake_word_callback=self._wake_word_callback,
             context_path=self._context_path(),
             command_callback=self._command_callback)
 
@@ -81,11 +82,8 @@ class PicovoiceTestCase(unittest.TestCase):
             soundfile.read(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/picovoice-coffee.wav'),
                 dtype='int16')
-        assert sample_rate == self._pv.sample_rate
 
-        num_frames = len(audio) // self._pv.frame_length
-
-        for i in range(num_frames):
+        for i in range(len(audio) // self._pv.frame_length):
             frame = audio[i * self._pv.frame_length:(i + 1) * self._pv.frame_length]
             self._pv.process(frame)
 
@@ -93,8 +91,20 @@ class PicovoiceTestCase(unittest.TestCase):
         self.assertEqual(self._intent, 'orderDrink')
         self.assertEqual(self._slot_values, dict(size='large', coffeeDrink='coffee'))
 
-    def test_reset(self):
+    def test_process_again(self):
         self.test_process()
+
+    def test_sample_rate(self):
+        self.assertGreater(self._pv.sample_rate, 0)
+
+    def test_frame_length(self):
+        self.assertGreater(self._pv.frame_length, 0)
+
+    def test_version(self):
+        self.assertIsInstance(self._pv.version, str)
+
+    def test_str(self):
+        self.assertIsInstance(str(self._pv), str)
 
 
 if __name__ == '__main__':
