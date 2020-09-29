@@ -19,17 +19,16 @@ with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
     f.write('include picovoice/__init__.py\n')
     f.write('include picovoice/picovoice.py\n')
 
-LONG_DESCRIPTION = """
-TODO
-"""
+with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
+    long_description = f.read()
 
 setuptools.setup(
     name="picovoice",
-    version="0.8.1",
+    version="0.8.3",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",
-    long_description=LONG_DESCRIPTION,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
