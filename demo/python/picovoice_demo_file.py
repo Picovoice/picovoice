@@ -51,7 +51,7 @@ def main():
             print('  }')
             print('}')
         else:
-            print('failed to understand the command')
+            print("didn't understand the command")
         print()
 
     pv = Picovoice(
