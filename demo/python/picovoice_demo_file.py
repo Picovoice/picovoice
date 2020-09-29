@@ -12,36 +12,39 @@
 import argparse
 
 import soundfile
-from picovoice import *
+from picovoice import Picovoice
 
 
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--input_audio_path', help='absolute path to input audio file', required=True)
+    parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
 
-    parser.add_argument('--keyword_path', help="absolute path to keyword file", required=True)
+    parser.add_argument('--keyword_path', help="Absolute path to Porcupine's keyword file.", required=True)
 
-    parser.add_argument('--context_path', help="absolute path to context file", required=True)
+    parser.add_argument('--context_path', help="Absolute path to Rhino's context file.", required=True)
 
-    parser.add_argument('--porcupine_library_path', help="absolute path to Porcupine's dynamic library", default=None)
+    parser.add_argument('--porcupine_library_path', help="Absolute path to Porcupine's dynamic library.", default=None)
 
-    parser.add_argument('--porcupine_model_path', help="absolute path to Porcupine's model file", default=None)
+    parser.add_argument('--porcupine_model_path', help="Absolute path to Porcupine's model file.", default=None)
 
-    parser.add_argument('--porcupine_sensitivity', help='Porcupine sensitivity', default=0.5)
+    parser.add_argument(
+        '--porcupine_sensitivity',
+        help="Porcupine's sensitivity. Should be within [0, 1].",
+        default=0.5)
 
-    parser.add_argument('--rhino_library_path', help="absolute path to Rhino's dynamic library", default=None)
+    parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
 
-    parser.add_argument('--rhino_model_path', help="absolute path to Rhino's model file", default=None)
+    parser.add_argument('--rhino_model_path', help="Absolute path to Rhino's model file.", default=None)
 
-    parser.add_argument('--rhino_sensitivity', help='Rhino sensitivity', default=0.5)
+    parser.add_argument('--rhino_sensitivity', help="Rhino's sensitivity. Should be within [0, 1].", default=0.5)
 
     args = parser.parse_args()
 
     def wake_word_callback():
-        print('[wake word detected]\n')
+        print('[wake word]\n')
 
-    def command_callback(is_understood, intent, slot_values):
+    def inference_callback(is_understood, intent, slot_values):
         if is_understood:
             print('{')
             print("  intent : '%s'" % intent)
@@ -49,16 +52,15 @@ def main():
             for slot, value in slot_values.items():
                 print("    %s : '%s'" % (slot, value))
             print('  }')
-            print('}')
+            print('}\n')
         else:
-            print("didn't understand the command")
-        print()
+            print("Didn't understand the command.\n")
 
     pv = Picovoice(
         keyword_path=args.keyword_path,
         wake_word_callback=wake_word_callback,
         context_path=args.context_path,
-        command_callback=command_callback,
+        inference_callback=inference_callback,
         porcupine_library_path=args.porcupine_library_path,
         porcupine_model_path=args.porcupine_model_path,
         porcupine_sensitivity=args.porcupine_sensitivity,
@@ -67,8 +69,12 @@ def main():
         rhino_sensitivity=args.rhino_sensitivity)
 
     audio, sample_rate = soundfile.read(args.input_audio_path, dtype='int16')
+    if audio.ndim == 2:
+        print("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.")
+        audio = audio[0, :]
+
     if sample_rate != pv.sample_rate:
-        raise ValueError("input audio file should have a sample rate of %d. got %d" % (pv.sample_rate, sample_rate))
+        raise ValueError("Input audio file should have a sample rate of %d. got %d" % (pv.sample_rate, sample_rate))
 
     num_frames = len(audio) // pv.frame_length
     for i in range(num_frames):

@@ -33,7 +33,7 @@ TODO
 
 setuptools.setup(
     name="picovoicedemo",
-    version="0.6.0",
+    version="0.7.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",
@@ -43,9 +43,9 @@ setuptools.setup(
     packages=["picovoicedemo"],
     install_requires=[
         "numpy",
-        "picovoice==0.8.0",
+        "picovoice==0.8.1",
         "pyaudio",
-        "pysoundfile>=0.9.0",
+        "soundfile>=0.9.0",
     ],
     include_package_data=True,
     classifiers=[
