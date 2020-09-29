@@ -21,7 +21,7 @@ class Picovoice(object):
             keyword_path,
             wake_word_callback,
             context_path,
-            command_callback,
+            inference_callback,
             porcupine_library_path=None,
             porcupine_model_path=None,
             porcupine_sensitivity=0.5,
@@ -29,34 +29,34 @@ class Picovoice(object):
             rhino_model_path=None,
             rhino_sensitivity=0.5):
         if not os.path.exists(keyword_path):
-            raise ValueError("couldn't find Porcupine's keyword file at '%s'" % keyword_path)
+            raise ValueError("Couldn't find Porcupine's keyword file at '%s'." % keyword_path)
 
         if not callable(wake_word_callback):
-            raise ValueError('invalid wake word callback')
+            raise ValueError("Invalid wake word callback.")
 
         if not os.path.exists(context_path):
-            raise ValueError("couldn't find Rhino's context file at '%s'" % context_path)
+            raise ValueError("Couldn't find Rhino's context file at '%s'." % context_path)
 
-        if not callable(command_callback):
-            raise ValueError('invalid command callback')
+        if not callable(inference_callback):
+            raise ValueError("Invalid inference callback.")
 
         if porcupine_library_path is not None and not os.path.exists(porcupine_library_path):
-            raise ValueError("couldn't find Porcupine's dynamic library at '%s'" % porcupine_library_path)
+            raise ValueError("Couldn't find Porcupine's dynamic library at '%s'." % porcupine_library_path)
 
         if porcupine_model_path is not None and not os.path.exists(porcupine_model_path):
-            raise ValueError("couldn't find Porcupine's model file at '%s'" % porcupine_model_path)
+            raise ValueError("Couldn't find Porcupine's model file at '%s'." % porcupine_model_path)
 
         if not 0 <= porcupine_sensitivity <= 1:
-            raise ValueError('Porcupine sensitivity should be within [0, 1]')
+            raise ValueError("Porcupine's sensitivity should be within [0, 1].")
 
         if rhino_library_path is not None and not os.path.exists(rhino_library_path):
-            raise ValueError("couldn't find Rhino's dynamic library at '%s'" % rhino_library_path)
+            raise ValueError("Couldn't find Rhino's dynamic library at '%s'." % rhino_library_path)
 
         if rhino_model_path is not None and not os.path.exists(rhino_model_path):
-            raise ValueError("couldn't find Rhino's model file at '%s'" % rhino_model_path)
+            raise ValueError("Couldn't find Rhino's model file at '%s'." % rhino_model_path)
 
         if not 0 <= rhino_sensitivity <= 1:
-            raise ValueError('Rhino sensitivity should be within [0, 1]')
+            raise ValueError("Rhino's sensitivity should be within [0, 1]")
 
         self._porcupine = pvporcupine.create(
             library_path=porcupine_library_path,
@@ -74,7 +74,7 @@ class Picovoice(object):
             context_path=context_path,
             sensitivity=rhino_sensitivity)
 
-        self._command_callback = command_callback
+        self._inference_callback = inference_callback
 
         assert self._porcupine.sample_rate == self._rhino.sample_rate
         self._sample_rate = self._porcupine.sample_rate
@@ -103,7 +103,7 @@ class Picovoice(object):
                 self._rhino.reset()
                 self._is_wake_word_detected = False
 
-                self._command_callback(is_understood=is_understood, intent=intent, slot_values=slot_values)
+                self._inference_callback(is_understood=is_understood, intent=intent, slot_values=slot_values)
 
     @property
     def sample_rate(self):
@@ -118,4 +118,4 @@ class Picovoice(object):
         return '1.0.0'
 
     def __str__(self):
-        return 'Picovoice %s { Porcupine %s | Rhino %s }' % (self.version, self._porcupine.version, self._rhino.version)
+        return 'Picovoice %s {Porcupine %s, Rhino %s}' % (self.version, self._porcupine.version, self._rhino.version)

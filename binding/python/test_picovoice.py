@@ -46,18 +46,18 @@ class PicovoiceTestCase(unittest.TestCase):
                         os.path.dirname(__file__),
                         '../../resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn')
                 else:
-                    raise NotImplementedError('unsupported CPU:\n%s' % cpu_info)
+                    raise NotImplementedError('Unsupported CPU:\n%s' % cpu_info)
         elif platform.system() == 'Windows':
             return os.path.join(
                 os.path.dirname(__file__),
                 '../../resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn')
         else:
-            raise NotImplementedError('unsupported platform')
+            raise NotImplementedError('Unsupported platform')
 
     def _wake_word_callback(self):
         self._is_wake_word_detected = True
 
-    def _command_callback(self, is_understood, intent, slot_values):
+    def _inference_callback(self, is_understood, intent, slot_values):
         self._is_understood = is_understood
         self._intent = intent
         self._slot_values = slot_values
@@ -67,7 +67,7 @@ class PicovoiceTestCase(unittest.TestCase):
             keyword_path=pvporcupine.KEYWORD_FILE_PATHS['picovoice'],
             wake_word_callback=self._wake_word_callback,
             context_path=self._context_path(),
-            command_callback=self._command_callback)
+            inference_callback=self._inference_callback)
 
         self._is_wake_word_detected = False
         self._is_understood = False
@@ -93,18 +93,6 @@ class PicovoiceTestCase(unittest.TestCase):
 
     def test_process_again(self):
         self.test_process()
-
-    def test_sample_rate(self):
-        self.assertGreater(self._pv.sample_rate, 0)
-
-    def test_frame_length(self):
-        self.assertGreater(self._pv.frame_length, 0)
-
-    def test_version(self):
-        self.assertIsInstance(self._pv.version, str)
-
-    def test_str(self):
-        self.assertIsInstance(str(self._pv), str)
 
 
 if __name__ == '__main__':

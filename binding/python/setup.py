@@ -11,22 +11,13 @@ os.mkdir(package_folder)
 shutil.copy(os.path.join(os.path.dirname(__file__), 'picovoice.py'), os.path.join(package_folder, 'picovoice.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
 
-INIT_SCRIPT = """
-from .picovoice import Picovoice
-"""
-
 with open(os.path.join(package_folder, '__init__.py'), 'w') as f:
-    f.write(INIT_SCRIPT.strip('\n '))
-    f.write('\n')
-
-MANIFEST_IN = """
-include picovoice/LICENSE
-include picovoice/__init__.py
-include picovoice/picovoice.py
-"""
+    f.write('from .picovoice import Picovoice\n')
 
 with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
-    f.write(MANIFEST_IN.strip('\n '))
+    f.write('include picovoice/LICENSE\n')
+    f.write('include picovoice/__init__.py\n')
+    f.write('include picovoice/picovoice.py\n')
 
 LONG_DESCRIPTION = """
 TODO
@@ -34,7 +25,7 @@ TODO
 
 setuptools.setup(
     name="picovoice",
-    version="0.8.0",
+    version="0.8.1",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",
@@ -43,8 +34,8 @@ setuptools.setup(
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
     install_requires=[
-        "pvporcupine",
-        "pvrhino",
+        "pvporcupine==1.8.2",
+        "pvrhino==1.3.1",
     ],
     include_package_data=True,
     classifiers=[
