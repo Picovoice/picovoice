@@ -24,13 +24,47 @@ def main():
 
     parser.add_argument('--context_path', help="absolute path to context file", required=True)
 
+    parser.add_argument('--porcupine_library_path', help="absolute path to Porcupine's dynamic library", default=None)
+
+    parser.add_argument('--porcupine_model_path', help="absolute path to Porcupine's model file", default=None)
+
+    parser.add_argument('--porcupine_sensitivity', help='Porcupine sensitivity', default=0.5)
+
+    parser.add_argument('--rhino_library_path', help="absolute path to Rhino's dynamic library", default=None)
+
+    parser.add_argument('--rhino_model_path', help="absolute path to Rhino's model file", default=None)
+
+    parser.add_argument('--rhino_sensitivity', help='Rhino sensitivity', default=0.5)
+
     args = parser.parse_args()
+
+    def wake_word_callback():
+        print('[wake word detected]\n')
+
+    def command_callback(is_understood, intent, slot_values):
+        if is_understood:
+            print('{')
+            print("  intent : '%s'" % intent)
+            print('  slots : {')
+            for slot, value in slot_values.items():
+                print("    %s : '%s'" % (slot, value))
+            print('  }')
+            print('}')
+        else:
+            print('failed to understand the command')
+        print()
 
     pv = Picovoice(
         keyword_path=args.keyword_path,
-        keyword_callback=lambda: print('wake word detected'),
+        wake_word_callback=wake_word_callback,
         context_path=args.context_path,
-        command_callback=lambda is_understood, intent, slot_values: print(intent) if is_understood else 'oops')
+        command_callback=command_callback,
+        porcupine_library_path=args.porcupine_library_path,
+        porcupine_model_path=args.porcupine_model_path,
+        porcupine_sensitivity=args.porcupine_sensitivity,
+        rhino_library_path=args.rhino_library_path,
+        rhino_model_path=args.rhino_model_path,
+        rhino_sensitivity=args.rhino_sensitivity)
 
     audio, sample_rate = soundfile.read(args.input_audio_path, dtype='int16')
     if sample_rate != pv.sample_rate:

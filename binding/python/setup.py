@@ -34,7 +34,7 @@ TODO
 
 setuptools.setup(
     name="picovoice",
-    version="0.7.0",
+    version="0.8.0",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",

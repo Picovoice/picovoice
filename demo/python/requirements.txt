@@ -1,2 +1,2 @@
-picovoice==0.7.0
+picovoice==0.8.0
 pyaudio
