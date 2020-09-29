@@ -1,6 +1,6 @@
 [submodule "resources/porcupine"]
-	path = resources/porcupine
+	path = res/porcupine
 	url = git@github.com:Picovoice/porcupine.git
 [submodule "resources/rhino"]
-	path = resources/rhino
+	path = res/rhino
 	url = git@github.com:Picovoice/rhino.git

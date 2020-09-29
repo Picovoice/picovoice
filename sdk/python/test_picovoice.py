@@ -27,12 +27,12 @@ class PicovoiceTestCase(unittest.TestCase):
         if platform.system() == 'Darwin':
             return os.path.join(
                 os.path.dirname(__file__),
-                '../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn')
+                '../../res/rhino/resources/contexts/mac/coffee_maker_mac.rhn')
         elif platform.system() == 'Linux':
             if platform.machine() == 'x86_64':
                 return os.path.join(
                     os.path.dirname(__file__),
-                    '../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn')
+                    '../../res/rhino/resources/contexts/linux/coffee_maker_linux.rhn')
             else:
                 cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
                 hardware_info = [x for x in cpu_info.split('\n') if 'Hardware' in x][0]
@@ -40,17 +40,17 @@ class PicovoiceTestCase(unittest.TestCase):
                 if 'BCM' in hardware_info:
                     return os.path.join(
                         os.path.dirname(__file__),
-                        '../../resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn')
+                        '../../res/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn')
                 elif 'AM33' in hardware_info:
                     return os.path.join(
                         os.path.dirname(__file__),
-                        '../../resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn')
+                        '../../res/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn')
                 else:
                     raise NotImplementedError('Unsupported CPU:\n%s' % cpu_info)
         elif platform.system() == 'Windows':
             return os.path.join(
                 os.path.dirname(__file__),
-                '../../resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn')
+                '../../res/rhino/resources/contexts/windows/coffee_maker_windows.rhn')
         else:
             raise NotImplementedError('Unsupported platform')
 
@@ -80,7 +80,7 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_process(self):
         audio, sample_rate = \
             soundfile.read(
-                os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/picovoice-coffee.wav'),
+                os.path.join(os.path.dirname(__file__), '../../res/audio_samples/picovoice-coffee.wav'),
                 dtype='int16')
 
         for i in range(len(audio) // self._pv.frame_length):
