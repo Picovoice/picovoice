@@ -170,7 +170,7 @@ def main():
             rhino_library_path=args.rhino_library_path,
             rhino_model_path=args.rhino_model_path,
             rhino_sensitivity=args.rhino_sensitivity,
-            output_path=os.path.expanduser(args.output_path)).run()
+            output_path=os.path.expanduser(args.output_path) if args.output_path is not None else None).run()
 
 
 if __name__ == '__main__':
