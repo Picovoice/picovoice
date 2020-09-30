@@ -27,23 +27,22 @@ include picovoicedemo/picovoice_demo_mic.py
 with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
     f.write(MANIFEST_IN.strip('\n '))
 
-LONG_DESCRIPTION = """
-TODO
-"""
+with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
+    long_description = f.read()
 
 setuptools.setup(
     name="picovoicedemo",
-    version="0.7.0",
+    version="0.7.1",
     author="Picovoice",
     author_email="hello@picovoice.ai",
     description="On-Device end-to-end voice recognition powered by deep learning.",
-    long_description=LONG_DESCRIPTION,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoicedemo"],
     install_requires=[
         "numpy",
-        "picovoice==0.8.1",
+        "picovoice==0.8.3",
         "pyaudio",
         "soundfile>=0.9.0",
     ],
