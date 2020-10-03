@@ -16,6 +16,17 @@ import pvrhino
 
 
 class Picovoice(object):
+    """
+    Python binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but
+    runs entirely on-device (offline). It detects utterances of a customizable wake word (phrase) within an incoming
+    stream of audio in real-time. After detection of wake word, it begins to infer the user's intent from the follow-on
+    spoken command. Upon detection of wake word and completion of voice command, it invokes user-provided callbacks to
+    signal these events. Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
+    `.frame_length`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit
+    linearly-encoded. Picovoice operates on single-channel audio. It uses Porcupine wake word engine for wake word
+    detection and Rhino Speech-to-Intent engine for intent inference.
+    """
+
     def __init__(
             self,
             keyword_path,
@@ -28,6 +39,31 @@ class Picovoice(object):
             rhino_library_path=None,
             rhino_model_path=None,
             rhino_sensitivity=0.5):
+        """
+        Constructor.
+
+        :param keyword_path: Absolute path to Porcupine's keyword model file.
+        :param wake_word_callback: User-defined callback invoked upon detection of the wake phrase. The callback accepts
+        no input arguments.
+        :param context_path: Absolute path to file containing context parameters. A context represents the set of
+        expressions (spoken commands), intents, and intent arguments (slots) within a domain of interest.
+        :param inference_callback: User-defined callback invoked upon completion of intent inference. The callback
+        accepts a single input argument of type `Inference` that exposes the following immutable fields:
+        (1) `is_understood` is a flag indicating if the spoken command is understood.
+        (2) `intent` is the inferred intent from the voice command. If the command is not understood then it's set to
+        `None`.
+        (3) `slots` is a dictionary mapping slot keys to their respective values. If the command is not understood then
+        it's set to an empty dictionary.
+        :param porcupine_library_path: Absolute path to Porcupine's dynamic library.
+        :param porcupine_model_path: Absolute path to the file containing Porcupine's model parameters.
+        :param porcupine_sensitivity: Wake word detection sensitivity. It should be a number within [0, 1]. A higher
+        sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+        :param rhino_library_path: Absolute path to Rhino's dynamic library.
+        :param rhino_model_path: Absolute path to the file containing Rhino's model parameters.
+        :param rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
+        results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
+        """
+
         if not os.path.exists(keyword_path):
             raise ValueError("Couldn't find Porcupine's keyword file at '%s'." % keyword_path)
 
@@ -83,10 +119,24 @@ class Picovoice(object):
         self._frame_length = self._porcupine.frame_length
 
     def delete(self):
+        """Releases resources acquired."""
+
         self._porcupine.delete()
         self._rhino.delete()
 
     def process(self, pcm):
+        """
+        Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command
+        inference invokes user-defined callbacks.
+
+        :param pcm: A frame of audio samples. The number of samples per frame can be attained by calling
+        `.frame_length`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit
+        linearly-encoded. Picovoice operates on single-channel audio.
+        """
+
+        if len(pcm) != self.frame_length:
+            raise ValueError("Invalid frame length. expected %d but received %d" % (self.frame_length, len(pcm)))
+
         if not self._is_wake_word_detected:
             self._is_wake_word_detected = self._porcupine.process(pcm) == 0
             if self._is_wake_word_detected:
@@ -100,14 +150,20 @@ class Picovoice(object):
 
     @property
     def sample_rate(self):
+        """Audio sample rate accepted by Picovoice."""
+
         return self._sample_rate
 
     @property
     def frame_length(self):
+        """Number of audio samples per frame."""
+
         return self._frame_length
 
     @property
     def version(self):
+        """Version"""
+
         return '1.0.0'
 
     def __str__(self):

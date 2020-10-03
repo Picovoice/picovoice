@@ -1,15 +1,16 @@
-# Picovoice Python SDK
+# Picovoice
+
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs on-device. Picovoice is
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-
-- **Private:** Everything is processed on-device. Intrinsically HIPAA and GDPR compliant.
-- **Reliable:** Runs without relying on connectivity or external service availability.
-- **Responsive:** Edge-first architecture eliminates unpredictable network delay.
-- **Highly-Accurate:** Resilient to noise and reverberation. Outperforms cloud-based solutions with high margins.
-- **Cross-Platform:** Build on your platforms of choice, with tools your team is accustomed to.
-- **Cost-Effective:** Avoid unbounded cloud fees by processing locally with minimal resources.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Compatibility
 
@@ -24,11 +25,7 @@ pip3 install picovoice
 
 ## Usage
 
-Create a new instance of Picovoice platform as below. `keyword_path` is the absolute path to
-[Porcupine Wake Word Engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix). `context_path`
-is the absolute path to [Rhino Speech-to-Intent Engine] context file (with `.rhn` suffix). `wake_word_callback` is
-invoked upon the detection of wake phrase and `inference_callback` is called upon completion of follow-on voice command
-inference.
+Create a new instance of Picovoice runtime engine
 
 ```python
 from picovoice import Picovoice
@@ -40,34 +37,44 @@ def wake_word_callback():
 
 context_path = ...
 
-def inference_callback(is_understood, intent, slot_values):
+def inference_callback(inference):
+    # `inference` exposes three immutable fields: (1) `is_understood`, (2) `intent`, and (3) `slots`.
     pass
 
-pv = Picovoice(
+handle = Picovoice(
         keyword_path=keyword_path,
         wake_word_callback=wake_word_callback,
         context_path=context_path,
         inference_callback=inference_callback)
 ```
 
-When instantiated, valid sample rate can be obtained via `pv.sample_rate`. Expected number of audio samples per frame is
-`pv.frame_length`. The incoming audio can be processed as below
+`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`keyword_path`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+(with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
+invoked upon completion of follow-on voice command inference.
+
+
+When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
+frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```python
 def get_next_audio_frame():
     pass
 
 while True:
-    pv.process()
+    handle.process(get_next_audio_frame())
 ```
 
-Finally, when done be sure to explicitly release the resources.
+When done resources have to be released explicitly
 
 ```python
-pv.delete()
+handle.delete()
 ```
 
-## References
+## Demos
 
-* [File Demo](/demo/python/picovoice_demo_file.py) 
-* [Microphone Demo](/demo/python/picovoice_demo_mic.py)
+[picovoicedemo](https://pypi.org/project/picovoicedemo/) provides command-line utilities for processing real-time
+audio (i.e. microphone) and files using Picovoice platform.

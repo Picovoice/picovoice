@@ -16,12 +16,18 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Table of Contents
 - [Picovoice](#picovoice)
   - [Table of Contents](#table-of-contents)
+  - [Components](#components)
   - [Demos](#demos)
     - [Python Demos](#python-demos)
   - [SDKs](#sdks)
       - [Python](#python)
   - [Releases](#releases)
-  
+
+## Components
+
+- Porcupine Wake Word Engine
+- Rhino Speech-to-Intent Engine
+
 ## Demos
 
 ### Python Demos
