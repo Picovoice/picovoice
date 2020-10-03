@@ -38,7 +38,10 @@ def wake_word_callback():
 context_path = ...
 
 def inference_callback(inference):
-    # `inference` exposes three immutable fields: (1) `is_understood`, (2) `intent`, and (3) `slots`.
+    # `inference` exposes three immutable fields:
+    # (1) `is_understood`
+    # (2) `intent`
+    # (3) `slots`
     pass
 
 handle = Picovoice(

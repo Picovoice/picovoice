@@ -42,8 +42,10 @@ phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and th
 using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`.
 
 ```bash
-picovoice_demo_file --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
---keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
+picovoice_demo_file \
+--input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
 
 ### Mic Demo
@@ -55,7 +57,8 @@ located at `${PATH_TO_RHINO_CONTEXT_FILE)}`. Upon completion of the spoken comma
 detection.
 
 ```bash
-picovoice_demo_mic --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+picovoice_demo_mic \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
 
@@ -97,15 +100,20 @@ It can be seen that the last device (index 21) is considered default. But on thi
 the input device which has an index of 10. After finding the correct index the demo application can be invoked as below
 
 ```bash
-picovoice_demo_mic --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)} --audio_device_index 10
+picovoice_demo_mic \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--audio_device_index 10
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
 ```bash
-picovoice_demo_mic --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)} --audio_device_index 10 --output_path ~/test.wav
+picovoice_demo_mic \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--audio_device_index 10 \
+--output_path ~/test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
