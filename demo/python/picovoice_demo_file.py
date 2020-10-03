@@ -30,26 +30,31 @@ def main():
 
     parser.add_argument(
         '--porcupine_sensitivity',
-        help="Porcupine's sensitivity. Should be within [0, 1].",
+        help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity " +
+             "results in fewer misses at the cost of increasing the false alarm rate.",
         default=0.5)
 
     parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
 
     parser.add_argument('--rhino_model_path', help="Absolute path to Rhino's model file.", default=None)
 
-    parser.add_argument('--rhino_sensitivity', help="Rhino's sensitivity. Should be within [0, 1].", default=0.5)
+    parser.add_argument(
+        '--rhino_sensitivity',
+        help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer" +
+             "misses at the cost of (potentially) increasing the erroneous inference rate.",
+        default=0.5)
 
     args = parser.parse_args()
 
     def wake_word_callback():
         print('[wake word]\n')
 
-    def inference_callback(is_understood, intent, slot_values):
-        if is_understood:
+    def inference_callback(inference):
+        if inference.is_understood:
             print('{')
-            print("  intent : '%s'" % intent)
+            print("  intent : '%s'" % inference.intent)
             print('  slots : {')
-            for slot, value in slot_values.items():
+            for slot, value in inference.slots.items():
                 print("    %s : '%s'" % (slot, value))
             print('  }')
             print('}\n')
@@ -76,8 +81,7 @@ def main():
     if sample_rate != pv.sample_rate:
         raise ValueError("Input audio file should have a sample rate of %d. got %d" % (pv.sample_rate, sample_rate))
 
-    num_frames = len(audio) // pv.frame_length
-    for i in range(num_frames):
+    for i in range(len(audio) // pv.frame_length):
         frame = audio[i * pv.frame_length:(i + 1) * pv.frame_length]
         pv.process(frame)
 

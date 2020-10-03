@@ -88,7 +88,7 @@ class Picovoice(object):
 
     def process(self, pcm):
         if not self._is_wake_word_detected:
-            self._is_wake_word_detected = self._porcupine.process(pcm)
+            self._is_wake_word_detected = self._porcupine.process(pcm) == 0
             if self._is_wake_word_detected:
                 self._wake_word_callback()
         else:
