@@ -3,33 +3,35 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs on-device. Picovoice is
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
-- **Private:** Everything is processed on-device. Intrinsically HIPAA and GDPR compliant.
-- **Reliable:** Runs without relying on connectivity or external service availability.
-- **Responsive:** Edge-first architecture eliminates unpredictable network delay.
-- **Highly-Accurate:** Resilient to noise and reverberation. Outperforms cloud-based solutions with high margins.
-- **Cross-Platform:** Build on your platforms of choice, with tools your team is accustomed to.
-- **Cost-Effective:** Avoid unbounded cloud fees by processing locally with minimal resources.
 
 ## Table of Contents
 - [Picovoice](#picovoice)
   - [Table of Contents](#table-of-contents)
-  - [License]
+  - [Demos](#demos)
+    - [Python Demos](#python-demos)
+  - [SDKs](#sdks)
+      - [Python](#python)
+  - [Releases](#releases)
   
-## License
+## Demos
 
-## Try It Out
+### Python Demos
 
-## Performance
+## SDKs
 
-## Structure of Repository
-
-## Running Demo Packages
-
-## Integration
+### Python
 
 ## Releases
 
-## FAQ
+### v1.0.0 - October 6, 2020 
+
+- Initial release.
