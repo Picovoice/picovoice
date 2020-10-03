@@ -60,8 +60,8 @@ class Picovoice(object):
 
         self._porcupine = pvporcupine.create(
             library_path=porcupine_library_path,
-            model_file_path=porcupine_model_path,
-            keyword_file_paths=[keyword_path],
+            model_path=porcupine_model_path,
+            keyword_paths=[keyword_path],
             sensitivities=[porcupine_sensitivity])
 
         self._wake_word_callback = wake_word_callback

@@ -80,7 +80,7 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_process(self):
         audio, sample_rate = \
             soundfile.read(
-                os.path.join(os.path.dirname(__file__), '../../res/audio_samples/picovoice-coffee.wav'),
+                os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/picovoice-coffee.wav'),
                 dtype='int16')
 
         for i in range(len(audio) // self._pv.frame_length):
