@@ -94,16 +94,9 @@ class Picovoice(object):
         else:
             is_finalized = self._rhino.process(pcm)
             if is_finalized:
-                is_understood = self._rhino.is_understood()
-                if is_understood:
-                    intent, slot_values = self._rhino.get_intent()
-                else:
-                    intent, slot_values = None, dict()
-
-                self._rhino.reset()
                 self._is_wake_word_detected = False
-
-                self._inference_callback(is_understood=is_understood, intent=intent, slot_values=slot_values)
+                inference = self._rhino.get_inference()
+                self._inference_callback(inference)
 
     @property
     def sample_rate(self):

@@ -8,11 +8,9 @@ os.system('git clean -dfx')
 package_folder = os.path.join(os.path.dirname(__file__), 'picovoice')
 os.mkdir(package_folder)
 
-shutil.copy(os.path.join(os.path.dirname(__file__), 'picovoice.py'), os.path.join(package_folder, 'picovoice.py'))
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
-
-with open(os.path.join(package_folder, '__init__.py'), 'w') as f:
-    f.write('from .picovoice import Picovoice\n')
+shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join(package_folder, '__init__.py'))
+shutil.copy(os.path.join(os.path.dirname(__file__), 'picovoice.py'), os.path.join(package_folder, 'picovoice.py'))
 
 with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
     f.write('include picovoice/LICENSE\n')
@@ -24,21 +22,18 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="picovoice",
-    version="0.8.3",
+    version="0.8.4",
     author="Picovoice",
     author_email="hello@picovoice.ai",
-    description="On-Device end-to-end voice recognition powered by deep learning.",
+    description="Picovoice is an end-to-end platform for building voice products on your terms.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
-    install_requires=[
-        "pvporcupine==1.8.2",
-        "pvrhino==1.3.1",
-    ],
+    install_requires=["pvporcupine==1.8.7", "pvrhino==1.5.0"],
     include_package_data=True,
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
@@ -46,4 +41,5 @@ setuptools.setup(
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
     python_requires='>=3',
+    keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
