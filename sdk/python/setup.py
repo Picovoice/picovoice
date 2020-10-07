@@ -34,7 +34,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 setuptools.setup(
     name="picovoice",
     version="0.9.1",
-    author="Picovoice",
+    author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice is an end-to-end platform for building voice products on your terms.",
     long_description=long_description,

@@ -18,10 +18,13 @@ import pvrhino
 class Picovoice(object):
     """
     Python binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but
-    runs entirely on-device (offline). It detects utterances of a customizable wake word (phrase) within an incoming
-    stream of audio in real-time. After detection of wake word, it begins to infer the user's intent from the follow-on
-    spoken command. Upon detection of wake word and completion of voice command, it invokes user-provided callbacks to
-    signal these events. Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
+    runs entirely on-device (offline).
+
+    Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of audio in real-time.
+    After detection of wake word, it begins to infer the user's intent from the follow-on spoken command. Upon detection
+    of wake word and completion of voice command, it invokes user-provided callbacks to signal these events.
+
+    Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
     `.frame_length`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit
     linearly-encoded. Picovoice operates on single-channel audio. It uses Porcupine wake word engine for wake word
     detection and Rhino Speech-to-Intent engine for intent inference.

@@ -128,9 +128,9 @@ class PicovoiceDemo(Thread):
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--keyword_path', help="Absolute path to Porcupine's keyword file.")
+    parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.")
 
-    parser.add_argument('--context_path', help="Absolute path to Rhino's context file.")
+    parser.add_argument('--context_path', help="Absolute path to a Rhino context file.")
 
     parser.add_argument('--porcupine_library_path', help="Absolute path to Porcupine's dynamic library.", default=None)
 

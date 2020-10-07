@@ -20,9 +20,9 @@ def main():
 
     parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
 
-    parser.add_argument('--keyword_path', help="Absolute path to Porcupine's keyword file.", required=True)
+    parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.", required=True)
 
-    parser.add_argument('--context_path', help="Absolute path to Rhino's context file.", required=True)
+    parser.add_argument('--context_path', help="Absolute path to a Rhino context file.", required=True)
 
     parser.add_argument('--porcupine_library_path', help="Absolute path to Porcupine's dynamic library.", default=None)
 
