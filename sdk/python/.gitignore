@@ -1,0 +1,6 @@
+__pycache__
+build
+dist
+picovoice
+picovoice.egg-info
+MANIFEST.in
