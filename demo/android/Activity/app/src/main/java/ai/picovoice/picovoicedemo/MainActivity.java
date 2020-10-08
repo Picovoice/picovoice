@@ -1,5 +1,7 @@
 package ai.picovoice.picovoicedemo;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -12,8 +14,36 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import ai.picovoice.picovoicemanager.PicovoiceManager;
 
 public class MainActivity extends AppCompatActivity {
+    private PicovoiceManager picovoiceManager;
+
+    private void copyResourceFile(int resourceId, String filename) throws IOException {
+        Resources resources = getResources();
+        try (
+                InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
+                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
+        ) {
+            int r;
+            while ((r = is.read()) != -1) {
+                os.write(r);
+            }
+            os.flush();
+        }
+    }
+
+    private void displayError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
