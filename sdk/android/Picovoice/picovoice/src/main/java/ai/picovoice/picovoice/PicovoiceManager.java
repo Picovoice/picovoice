@@ -21,6 +21,14 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import ai.picovoice.porcupine.PorcupineException;
+import ai.picovoice.porcupine.PorcupineManager;
+
+/**
+ * High-level Android binding for Picovoice end-to-end platform. It handles recording audio from
+ * microphone, processes it in real-time ${@link Picovoice}, and notifies the client upon detection
+ * of the wake word or completion of in voice command inference.
+ */
 public class PicovoiceManager {
     private class MicrophoneReader {
         private AtomicBoolean started = new AtomicBoolean(false);
@@ -121,6 +129,28 @@ public class PicovoiceManager {
     private final PicovoiceInferenceCallback inferenceCallback;
     private final MicrophoneReader microphoneReader;
 
+    /**
+     * Constructor.
+     *
+     * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
+     * @param keywordPath          Absolute path to Porcupine's keyword model file.
+     * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
+     *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
+     *                             of increasing the false alarm rate.
+     * @param wakeWordCallback     User-defined callback invoked upon detection of the wake phrase.
+     *                             ${@link PicovoiceWakeWordCallback} defines the interface of the
+     *                             callback.
+     * @param rhinoModelPath       Absolute path to the file containing Rhino's model parameters.
+     * @param contextPath          Absolute path to file containing context parameters. A context
+     *                             represents the set of expressions (spoken commands), intents, and
+     *                             intent arguments (slots) within a domain of interest.
+     * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
+     *                             higher sensitivity value results in fewer misses at the cost of
+     *                             (potentially) increasing the erroneous inference rate.
+     * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
+     *                             #{@link PicovoiceInferenceCallback} defines the interface of the
+     *                             callback.
+     */
     public PicovoiceManager(
             String porcupineModelPath,
             String keywordPath,
@@ -142,10 +172,21 @@ public class PicovoiceManager {
         microphoneReader = new MicrophoneReader();
     }
 
+    /**
+     * Starts recording audio from teh microphone and processes it using ${@link Picovoice}.
+     *
+     * @throws PicovoiceException if there is an error with initialization of Picovoice.
+     */
     public void start() throws PicovoiceException {
         microphoneReader.start();
     }
 
+    /**
+     * Stops recording audio from the microphone.
+     *
+     * @throws PicovoiceException if the {@link PicovoiceManager.MicrophoneReader} throws an
+     *                            exception while it's being stopped.
+     */
     public void stop() throws PicovoiceException {
         try {
             microphoneReader.stop();

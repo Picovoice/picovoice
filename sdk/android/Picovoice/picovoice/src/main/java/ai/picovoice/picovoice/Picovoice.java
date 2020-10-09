@@ -17,6 +17,21 @@ import ai.picovoice.porcupine.PorcupineException;
 import ai.picovoice.rhino.Rhino;
 import ai.picovoice.rhino.RhinoException;
 
+/**
+ * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
+ * similar to Alexa but runs entirely on-device (offline).
+ * <p>
+ * Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of
+ * audio in real-time. After detection of wake word, it begins to infer the user's intent from the
+ * follow-on spoken command. Upon detection of wake word and completion of voice command, it invokes
+ * user-provided callbacks to signal these events.
+ * <p>
+ * Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
+ * ${@link #getFrameLength()}. The incoming audio needs to have a sample rate equal to
+ * ${@link #getSampleRate()} and be 16-bit linearly-encoded. Picovoice operates on single-channel
+ * audio. It uses Porcupine wake word engine for wake word detection and Rhino Speech-to-Intent
+ * engine for intent inference.
+ */
 public class Picovoice {
     final private Porcupine porcupine;
     final private PicovoiceWakeWordCallback wakeWordCallback;
@@ -24,6 +39,29 @@ public class Picovoice {
     final private Rhino rhino;
     final private PicovoiceInferenceCallback inferenceCallback;
 
+    /**
+     * Constructor
+     *
+     * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
+     * @param keywordPath          Absolute path to Porcupine's keyword model file.
+     * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
+     *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
+     *                             of increasing the false alarm rate.
+     * @param wakeWordCallback     User-defined callback invoked upon detection of the wake phrase.
+     *                             ${@link PicovoiceWakeWordCallback} defines the interface of the
+     *                             callback.
+     * @param rhinoModelPath       Absolute path to the file containing Rhino's model parameters.
+     * @param contextPath          Absolute path to file containing context parameters. A context
+     *                             represents the set of expressions (spoken commands), intents, and
+     *                             intent arguments (slots) within a domain of interest.
+     * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
+     *                             higher sensitivity value results in fewer misses at the cost of
+     *                             (potentially) increasing the erroneous inference rate.
+     * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
+     *                             #{@link PicovoiceInferenceCallback} defines the interface of the
+     *                             callback.
+     * @throws PicovoiceException if there is an error while initializing.
+     */
     public Picovoice(
             String porcupineModelPath,
             String keywordPath,
@@ -44,6 +82,7 @@ public class Picovoice {
             }
 
             this.wakeWordCallback = wakeWordCallback;
+
             rhino = new Rhino(rhinoModelPath, contextPath, rhinoSensitivity);
             if (!rhino.getVersion().startsWith("1.5.")) {
                 final String message = String.format(
@@ -58,11 +97,24 @@ public class Picovoice {
         }
     }
 
+    /**
+     * Releases resources acquired.
+     */
     public void delete() {
         porcupine.delete();
         rhino.delete();
     }
 
+    /**
+     * Processes a frame of the incoming audio stream. Upon detection of wake word and completion
+     * of follow-on command inference invokes user-defined callbacks.
+     *
+     * @param pcm A frame of audio samples. The number of samples per frame can be attained by calling
+     *            ${@link #getFrameLength()}. The incoming audio needs to have a sample rate equal
+     *            to ${@link #getSampleRate()} and be 16-bit linearly-encoded. Picovoice operates on
+     *            single-channel audio.
+     * @throws PicovoiceException if there is an error while processing the audio frame.
+     */
     public void process(short[] pcm) throws PicovoiceException {
         try {
             if (!isWakeWordDetected) {
@@ -81,14 +133,29 @@ public class Picovoice {
         }
     }
 
+    /**
+     * Getter for version.
+     *
+     * @return Version.
+     */
     public String getVersion() {
         return "1.0.0";
     }
 
+    /**
+     * Getter for number of audio samples per frame..
+     *
+     * @return Number of audio samples per frame.
+     */
     public int getFrameLength() {
         return rhino.getFrameLength();
     }
 
+    /**
+     * Getter for audio sample rate accepted by Picovoice.
+     *
+     * @return Audio sample rate accepted by Picovoice.
+     */
     public int getSampleRate() {
         return porcupine.getSampleRate();
     }
