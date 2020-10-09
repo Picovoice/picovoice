@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
+            copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
+            copyResourceFile(R.raw.porcupine_params, "rhino_params.pv");
             copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
             copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
         } catch (IOException e) {
