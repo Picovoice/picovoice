@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 
 import ai.picovoice.picovoice.PicovoiceException;
 import ai.picovoice.picovoice.PicovoiceInferenceCallback;
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
-            copyResourceFile(R.raw.porcupine_params, "rhino_params.pv");
             copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
+            copyResourceFile(R.raw.rhino_params, "rhino_params.pv");
             copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
         } catch (IOException e) {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
@@ -92,67 +94,76 @@ public class MainActivity extends AppCompatActivity {
             ToggleButton toggleButton = findViewById(R.id.startButton);
             toggleButton.toggle();
         } else {
-            try {
-                picovoiceManager = new PicovoiceManager(
-                        getAbsolutePath("porcupine_params.pv"),
-                        getAbsolutePath("keyword.ppn"),
-                        0.75f,
-                        new PicovoiceWakeWordCallback() {
-                            @Override
-                            public void invoke() {
+            initPicovoice();
+        }
+    }
 
-                            }
-                        },
-                        getAbsolutePath("rhino_params.pv"),
-                        getAbsolutePath("context.rhn"),
-                        0.25f,
-                        new PicovoiceInferenceCallback() {
-                            @Override
-                            public void invoke(RhinoInference rhinoInference) {
+    private void initPicovoice() {
+        try {
+            final TextView intentTextView = findViewById(R.id.intentView);
 
-                            }
+            intentTextView.setText("\n    Listening ...\n");
+            picovoiceManager = new PicovoiceManager(
+                    getAbsolutePath("porcupine_params.pv"),
+                    getAbsolutePath("keyword.ppn"),
+                    0.75f,
+                    new PicovoiceWakeWordCallback() {
+                        @Override
+                        public void invoke() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    intentTextView.setText("\n    Wake Word Detected ...\n");
+                                }
+                            });
                         }
-                );
-                picovoiceManager.start();
-            } catch (PicovoiceException e) {
-                displayError("Failed to initialize Picovoice.");
-            }
+                    },
+                    getAbsolutePath("rhino_params.pv"),
+                    getAbsolutePath("context.rhn"),
+                    0.25f,
+                    new PicovoiceInferenceCallback() {
+                        @Override
+                        public void invoke(final RhinoInference inference) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    intentTextView.setText("\n    {\n");
+                                    intentTextView.append(String.format("        \"isUnderstood\" : \"%b\",\n", inference.getIsUnderstood()));
+                                    if (inference.getIsUnderstood()) {
+                                        intentTextView.append(String.format("        \"intent\" : \"%s\",\n", inference.getIntent()));
+                                        final Map<String, String> slots = inference.getSlots();
+                                        if (slots.size() > 0) {
+                                            intentTextView.append("        \"slots\" : {\n");
+                                            for (String key : slots.keySet()) {
+                                                intentTextView.append(String.format("            \"%s\" : \"%s\",\n", key, slots.get(key)));
+                                            }
+                                            intentTextView.append("        }\n");
+                                        }
+                                    }
+                                    intentTextView.append("    }\n");
+                                }
+                            });
+                        }
+                    }
+            );
+            picovoiceManager.start();
+        } catch (PicovoiceException e) {
+            displayError("Failed to initialize Picovoice.");
         }
     }
 
     public void process(View view) {
         ToggleButton recordButton = findViewById(R.id.startButton);
+
         try {
             if (recordButton.isChecked()) {
                 if (hasRecordPermission()) {
-                    picovoiceManager = new PicovoiceManager(
-                            getAbsolutePath("porcupine_params.pv"),
-                            getAbsolutePath("keyword.ppn"),
-                            0.75f,
-                            new PicovoiceWakeWordCallback() {
-                                @Override
-                                public void invoke() {
-
-                                }
-                            },
-                            getAbsolutePath("rhino_params.pv"),
-                            getAbsolutePath("context.rhn"),
-                            0.25f,
-                            new PicovoiceInferenceCallback() {
-                                @Override
-                                public void invoke(RhinoInference rhinoInference) {
-
-                                }
-                            }
-                    );
-                    picovoiceManager.start();
-
+                    initPicovoice();
                 } else {
                     requestRecordPermission();
                 }
             } else {
                 picovoiceManager.stop();
-                picovoiceManager.delete();
             }
         } catch (PicovoiceException e) {
             displayError("Something went wrong");
