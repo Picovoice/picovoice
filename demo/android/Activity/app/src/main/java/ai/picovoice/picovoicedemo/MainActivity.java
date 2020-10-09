@@ -26,6 +26,7 @@ import android.widget.ToggleButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String getAbsolutePath(String filename) {
+        return new File(this.getFilesDir(), filename).getAbsolutePath();
+    }
+
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -57,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        try {
+            copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
+            copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
+        } catch (IOException e) {
+            Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private boolean hasRecordPermission() {
