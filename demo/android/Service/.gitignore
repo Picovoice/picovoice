@@ -9,6 +9,9 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/picovoice/build
+/porcupine/build
+/rhino/build
 /captures
 .externalNativeBuild
 .cxx

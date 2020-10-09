@@ -1,2 +1,5 @@
+include ':rhino'
+include ':porcupine'
+include ':picovoice'
 include ':app'
 rootProject.name = "Service"
