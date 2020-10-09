@@ -153,4 +153,8 @@ public class PicovoiceManager {
             throw new PicovoiceException(e);
         }
     }
+
+    public void delete() {
+        picovoice.delete();
+    }
 }

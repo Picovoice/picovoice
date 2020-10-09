@@ -30,6 +30,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_background"
+        android:onClick="process"
         android:text="ToggleButton"
         android:textColor="#FFFFFF"
         android:textOff="Start"

@@ -12,17 +12,18 @@
 
 package ai.picovoice.picovoicedemo;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,7 +32,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import ai.picovoice.picovoice.PicovoiceException;
+import ai.picovoice.picovoice.PicovoiceInferenceCallback;
 import ai.picovoice.picovoice.PicovoiceManager;
+import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
+import ai.picovoice.rhino.RhinoInference;
 
 public class MainActivity extends AppCompatActivity {
     private PicovoiceManager picovoiceManager;
@@ -71,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private boolean hasRecordPermission() {
@@ -85,9 +89,73 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            // Handle failure
+            ToggleButton toggleButton = findViewById(R.id.startButton);
+            toggleButton.toggle();
         } else {
-            // Handle success
+            try {
+                picovoiceManager = new PicovoiceManager(
+                        getAbsolutePath("porcupine_params.pv"),
+                        getAbsolutePath("keyword.ppn"),
+                        0.75f,
+                        new PicovoiceWakeWordCallback() {
+                            @Override
+                            public void invoke() {
+
+                            }
+                        },
+                        getAbsolutePath("rhino_params.pv"),
+                        getAbsolutePath("context.rhn"),
+                        0.25f,
+                        new PicovoiceInferenceCallback() {
+                            @Override
+                            public void invoke(RhinoInference rhinoInference) {
+
+                            }
+                        }
+                );
+                picovoiceManager.start();
+            } catch (PicovoiceException e) {
+                displayError("Failed to initialize Picovoice.");
+            }
+        }
+    }
+
+    public void process(View view) {
+        ToggleButton recordButton = findViewById(R.id.startButton);
+        try {
+            if (recordButton.isChecked()) {
+                if (hasRecordPermission()) {
+                    picovoiceManager = new PicovoiceManager(
+                            getAbsolutePath("porcupine_params.pv"),
+                            getAbsolutePath("keyword.ppn"),
+                            0.75f,
+                            new PicovoiceWakeWordCallback() {
+                                @Override
+                                public void invoke() {
+
+                                }
+                            },
+                            getAbsolutePath("rhino_params.pv"),
+                            getAbsolutePath("context.rhn"),
+                            0.25f,
+                            new PicovoiceInferenceCallback() {
+                                @Override
+                                public void invoke(RhinoInference rhinoInference) {
+
+                                }
+                            }
+                    );
+                    picovoiceManager.start();
+
+                } else {
+                    requestRecordPermission();
+                }
+            } else {
+                picovoiceManager.stop();
+                picovoiceManager.delete();
+            }
+        } catch (PicovoiceException e) {
+            displayError("Something went wrong");
         }
     }
 }
