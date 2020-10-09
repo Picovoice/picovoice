@@ -32,7 +32,7 @@ import ai.picovoice.picovoice.PicovoiceException;
 import ai.picovoice.picovoice.PicovoiceManager;
 
 public class PicovoiceService extends Service {
-    private static final String CHANNEL_ID = "PorcupineServiceChannel";
+    private static final String CHANNEL_ID = "PicovoiceServiceChannel";
 
     private PicovoiceManager picovoiceManager;
 
@@ -140,7 +140,6 @@ public class PicovoiceService extends Service {
     public void onDestroy() {
         try {
             picovoiceManager.stop();
-            picovoiceManager.delete();
         } catch (PicovoiceException e) {
             Log.e("Picovoice", e.toString());
         }

@@ -12,11 +12,6 @@
 
 package ai.picovoice.picovoicedemoservice;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +20,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void startService() {
         Intent serviceIntent = new Intent(this, PicovoiceService.class);
-        serviceIntent.putExtra("keywordFileName", "porcupine_android.ppn");
+        serviceIntent.putExtra("keywordFileName", "keyword.ppn");
+        serviceIntent.putExtra("contextFileName", "context.rhn");
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
             copyResourceFile(R.raw.rhino_params, "rhino_params.pv");
             copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
-            copyResourceFile(R.raw.porcupine_android, "context.rhn");
+            copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
         } catch (IOException e) {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
         }
