@@ -35,8 +35,23 @@ public class Picovoice {
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
         try {
             porcupine = new Porcupine(porcupineModelPath, keywordPath, porcupineSensitivity);
+
+            if (!porcupine.getVersion().startsWith("1.8.")) {
+                final String message = String.format(
+                        "Expected Porcupine library with version '1.8.x' but received %s",
+                        porcupine.getVersion());
+                throw new PicovoiceException(message);
+            }
+
             this.wakeWordCallback = wakeWordCallback;
             rhino = new Rhino(rhinoModelPath, contextPath, rhinoSensitivity);
+            if (!rhino.getVersion().startsWith("1.5.")) {
+                final String message = String.format(
+                        "Expected Rhino library with version '1.5.x' but received %s",
+                        rhino.getVersion());
+                throw new PicovoiceException(message);
+            }
+
             this.inferenceCallback = inferenceCallback;
         } catch (PorcupineException | RhinoException e) {
             throw new PicovoiceException(e);
