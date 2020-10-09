@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import java.io.File;
+import java.util.Map;
 
 import ai.picovoice.picovoice.PicovoiceException;
 import ai.picovoice.picovoice.PicovoiceManager;
@@ -92,7 +93,7 @@ public class PicovoiceService extends Service {
 
                         Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
                                 .setContentTitle("Picovoice")
-                                .setContentText("[Wake Word]")
+                                .setContentText("Wake Word Detected ...")
                                 .setSmallIcon(R.drawable.ic_launcher_background)
                                 .setContentIntent(contentIntent)
                                 .build();
@@ -104,16 +105,32 @@ public class PicovoiceService extends Service {
                     rhinoModelPath,
                     contextPath,
                     0.25f,
-                    (rhinoInference) -> {
+                    (inference) -> {
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
                                 0,
                                 new Intent(this, MainActivity.class),
                                 0);
 
+
+                        StringBuilder builder = new StringBuilder();
+
+                        if (inference.getIsUnderstood()) {
+                            builder.append(inference.getIntent()).append(" - ");
+                            final Map<String, String> slots = inference.getSlots();
+                            if (slots.size() > 0) {
+                                for (String key : slots.keySet()) {
+                                    builder.append(key).append(" : ").append(slots.get(key)).append(" ");
+                                }
+                            }
+                        } else {
+                            builder.append("Didn't understand the command.");
+                        }
+
+
                         Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
                                 .setContentTitle("Picovoice")
-                                .setContentText("Rhino")
+                                .setContentText(builder.toString())
                                 .setSmallIcon(R.drawable.ic_launcher_background)
                                 .setContentIntent(contentIntent)
                                 .build();
