@@ -84,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
-            copyResourceFile(R.raw.porcupine_android, "porcupine_android.ppn");
+            copyResourceFile(R.raw.rhino_params, "rhino_params.pv");
+            copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
+            copyResourceFile(R.raw.porcupine_android, "context.rhn");
         } catch (IOException e) {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
         }
