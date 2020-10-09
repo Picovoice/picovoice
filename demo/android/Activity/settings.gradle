@@ -1,2 +1,3 @@
+include ':picovoice'
 include ':app'
 rootProject.name = "Activity"
