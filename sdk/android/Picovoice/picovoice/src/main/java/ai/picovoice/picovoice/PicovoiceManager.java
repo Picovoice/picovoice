@@ -10,7 +10,7 @@
     limitations under the License.
 */
 
-package ai.picovoice.picovoicemanager;
+package ai.picovoice.picovoice;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -21,42 +21,32 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import ai.picovoice.picovoice.Picovoice;
-import ai.picovoice.picovoice.PicovoiceException;
-import ai.picovoice.picovoice.PicovoiceInferenceCallback;
-import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
-
 public class PicovoiceManager {
     private class MicrophoneReader {
         private AtomicBoolean started = new AtomicBoolean(false);
         private AtomicBoolean stop = new AtomicBoolean(false);
         private AtomicBoolean stopped = new AtomicBoolean(false);
 
-        void start() throws PicovoiceManagerException {
+        void start() throws PicovoiceException {
             if (started.get()) {
                 return;
             }
 
             started.set(true);
 
-            try {
-                picovoice = new Picovoice(
-                        porcupineModelPath,
-                        keywordPath,
-                        porcupineSensitivity,
-                        wakeWordCallback,
-                        rhinoModelPath,
-                        contextPath,
-                        rhinoSensitivity,
-                        inferenceCallback);
-
-            } catch (PicovoiceException e) {
-                throw new PicovoiceManagerException(e);
-            }
+            picovoice = new Picovoice(
+                    porcupineModelPath,
+                    keywordPath,
+                    porcupineSensitivity,
+                    wakeWordCallback,
+                    rhinoModelPath,
+                    contextPath,
+                    rhinoSensitivity,
+                    inferenceCallback);
 
             Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
                 @Override
-                public Void call() throws PicovoiceManagerException {
+                public Void call() throws PicovoiceException {
                     android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
                     read();
                     return null;
@@ -80,7 +70,7 @@ public class PicovoiceManager {
             stopped.set(false);
         }
 
-        private void read() throws PicovoiceManagerException {
+        private void read() throws PicovoiceException {
             final int minBufferSize = AudioRecord.getMinBufferSize(
                     picovoice.getSampleRate(),
                     AudioFormat.CHANNEL_IN_MONO,
@@ -102,18 +92,14 @@ public class PicovoiceManager {
 
                 while (!stop.get()) {
                     if (audioRecord.read(buffer, 0, buffer.length) == buffer.length) {
-                        try {
-                            picovoice.process(buffer);
-                        } catch (PicovoiceException e) {
-                            throw new PicovoiceManagerException(e);
-                        }
+                        picovoice.process(buffer);
                     }
                 }
 
                 audioRecord.stop();
                 picovoice.delete();
             } catch (IllegalArgumentException | IllegalStateException e) {
-                throw new PicovoiceManagerException(e);
+                throw new PicovoiceException(e);
             } finally {
                 if (audioRecord != null) {
                     audioRecord.release();
@@ -156,15 +142,15 @@ public class PicovoiceManager {
         microphoneReader = new MicrophoneReader();
     }
 
-    public void start() throws PicovoiceManagerException {
+    public void start() throws PicovoiceException {
         microphoneReader.start();
     }
 
-    public void stop() throws PicovoiceManagerException {
+    public void stop() throws PicovoiceException {
         try {
             microphoneReader.stop();
         } catch (InterruptedException e) {
-            throw new PicovoiceManagerException(e);
+            throw new PicovoiceException(e);
         }
     }
 }
