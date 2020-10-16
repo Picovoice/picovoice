@@ -29,6 +29,8 @@ public struct Inference {
     }
 }
 
+/// High-level iOS binding for Picovoice end-to-end platform. It handles recording audio from microphone, processes it in real-time using Picovoice, and notifies the
+/// client upon detection of the wake word or completion of in voice command inference.
 class PicovoiceManager {
     private var porcupine: OpaquePointer? = nil
     private var rhino: OpaquePointer? = nil
