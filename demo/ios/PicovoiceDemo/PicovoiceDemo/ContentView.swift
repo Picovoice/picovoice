@@ -31,7 +31,7 @@ struct ContentView: View {
                             onWakeWordDetection: {
                                 result = "[Wake word detection]"
                             },
-                            rhinoModelPath: self.contextPath!,
+                            rhinoModelPath: self.rhinoModelPath!,
                             contextPath: self.contextPath!,
                             rhinoSensitivity: 0.0,
                             onInference: { x in
@@ -53,6 +53,7 @@ struct ContentView: View {
                                     self.buttonLabel = "START"
                                 }
                             })
+
                         try self.picovoiceManager.start()
                     } catch {
                         

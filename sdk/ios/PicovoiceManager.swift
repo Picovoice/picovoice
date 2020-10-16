@@ -134,6 +134,8 @@ class PicovoiceManager {
                 
             }
         }
+        
+        try self.audioInputEngine?.start()
     }
     
     public func stop() {
