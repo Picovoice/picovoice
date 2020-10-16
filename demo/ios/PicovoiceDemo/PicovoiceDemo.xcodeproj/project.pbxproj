@@ -11,6 +11,13 @@
 		1760DF2F253A175000395344 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF2E253A175000395344 /* ContentView.swift */; };
 		1760DF31253A175500395344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF30253A175500395344 /* Assets.xcassets */; };
 		1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF33253A175500395344 /* Preview Assets.xcassets */; };
+		1760DF3F253A18BB00395344 /* libpv_rhino.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760DF3E253A185500395344 /* libpv_rhino.a */; };
+		1760DF41253A18F700395344 /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760DF40253A18E500395344 /* libpv_porcupine.a */; };
+		1760DF47253A1A1F00395344 /* PicovoiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF46253A1A1F00395344 /* PicovoiceManager.swift */; };
+		1760DF4F253A43B200395344 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF4E253A43B200395344 /* porcupine_params.pv */; };
+		1760DF52253A440A00395344 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF51253A440A00395344 /* porcupine_ios.ppn */; };
+		1760DF55253A441800395344 /* rhino_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF54253A441800395344 /* rhino_params.pv */; };
+		1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF57253A442A00395344 /* smart_lighting_ios.rhn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +27,14 @@
 		1760DF30253A175500395344 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1760DF33253A175500395344 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1760DF35253A175500395344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1760DF3C253A17C000395344 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		1760DF3E253A185500395344 /* libpv_rhino.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_rhino.a; path = ../../../resources/rhino/lib/ios/libpv_rhino.a; sourceTree = "<group>"; };
+		1760DF40253A18E500395344 /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../../resources/porcupine/lib/ios/libpv_porcupine.a; sourceTree = "<group>"; };
+		1760DF46253A1A1F00395344 /* PicovoiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PicovoiceManager.swift; path = ../../../../sdk/ios/PicovoiceManager.swift; sourceTree = "<group>"; };
+		1760DF4E253A43B200395344 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params.pv; sourceTree = "<group>"; };
+		1760DF51253A440A00395344 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/porcupine_ios.ppn; sourceTree = "<group>"; };
+		1760DF54253A441800395344 /* rhino_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params.pv; path = ../../../../resources/rhino/lib/common/rhino_params.pv; sourceTree = "<group>"; };
+		1760DF57253A442A00395344 /* smart_lighting_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = smart_lighting_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1760DF3F253A18BB00395344 /* libpv_rhino.a in Frameworks */,
+				1760DF41253A18F700395344 /* libpv_porcupine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +55,7 @@
 			children = (
 				1760DF2B253A175000395344 /* PicovoiceDemo */,
 				1760DF2A253A175000395344 /* Products */,
+				1760DF3D253A185500395344 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +70,12 @@
 		1760DF2B253A175000395344 /* PicovoiceDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1760DF57253A442A00395344 /* smart_lighting_ios.rhn */,
+				1760DF54253A441800395344 /* rhino_params.pv */,
+				1760DF51253A440A00395344 /* porcupine_ios.ppn */,
+				1760DF4E253A43B200395344 /* porcupine_params.pv */,
+				1760DF46253A1A1F00395344 /* PicovoiceManager.swift */,
+				1760DF3C253A17C000395344 /* module.modulemap */,
 				1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */,
 				1760DF2E253A175000395344 /* ContentView.swift */,
 				1760DF30253A175500395344 /* Assets.xcassets */,
@@ -67,6 +91,15 @@
 				1760DF33253A175500395344 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1760DF3D253A185500395344 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1760DF40253A18E500395344 /* libpv_porcupine.a */,
+				1760DF3E253A185500395344 /* libpv_rhino.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +159,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1760DF52253A440A00395344 /* porcupine_ios.ppn in Resources */,
 				1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */,
+				1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */,
+				1760DF4F253A43B200395344 /* porcupine_params.pv in Resources */,
+				1760DF55253A441800395344 /* rhino_params.pv in Resources */,
 				1760DF31253A175500395344 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1760DF47253A1A1F00395344 /* PicovoiceManager.swift in Sources */,
 				1760DF2F253A175000395344 /* ContentView.swift in Sources */,
 				1760DF2D253A175000395344 /* PicovoiceDemoApp.swift in Sources */,
 			);
@@ -277,8 +315,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../resources/rhino/lib/ios/",
+					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
+				);
+				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "Picovoice-Inc.PicovoiceDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -299,8 +343,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/../../../resources/rhino/lib/ios/",
+					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
+				);
+				MODULEMAP_FILE = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "Picovoice-Inc.PicovoiceDemo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
