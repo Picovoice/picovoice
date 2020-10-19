@@ -71,3 +71,26 @@ describe("intent detection (coffee maker)", () => {
     handle.release();
   });
 });
+
+describe("getter functions", () => {
+  test("contextInfo from Rhino", () => {
+    let handle = new Picovoice(
+      PICOVOICE_PORCUPINE_KEYWORD,
+      () => {},
+      contextPathCoffeeMaker,
+      () => {}
+    );
+
+    let contextInfo = handle.contextInfo;
+
+    expect(contextInfo).toMatch(
+      /(\[brew, can I get, can I have, I want, get me, give me, I'd like, make me, may I have\])/i
+    );
+    expect(contextInfo).toMatch(/(a little bit of sweetener)/i);
+    expect(contextInfo).not.toMatch(
+      /(the third one burned down, fell over, and sank into the swamp)/i
+    );
+
+    handle.release();
+  });
+});

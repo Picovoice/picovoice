@@ -16,8 +16,8 @@ const Rhino = require("@picovoice/rhino-node");
 /**
  * Wraps the Picovoice Porcupine and Rhino engines.
  *
- * Performs the calls to the Rhino dynamic library via FFI. Does some basic parameter validation to prevent
- * errors occurring in the library layer. Provides clearer error messages in native JavaScript.
+ * Switches input from Porcupine to Rhino upon wake word detection, then back to Rhino upon inference conclusion.
+ * Fires callbacks on wake word and inference events.
  */
 class Picovoice {
   /**
@@ -76,6 +76,8 @@ class Picovoice {
     this._sampleRate = 16000;
     this._version = "1.0.0";
 
+    this._contextInfo = this.rhino.getContextInfo();
+
     this.isWakeWordDetected = false;
   }
 
@@ -95,10 +97,17 @@ class Picovoice {
   }
 
   /**
-   * @returns the version of the Rhino engine
+   * @returns the version of the Porcupine SDK
    */
   get version() {
     return this._version;
+  }
+
+  /**
+   * @returns the Rhino context source YAML
+   */
+  get contextInfo() {
+    return this._contextInfo;
   }
 
   /**
@@ -138,18 +147,4 @@ class Picovoice {
   }
 }
 
-// constructor(keywords, sensitivities, manualModelPath, manualLibraryPath) {
-
 module.exports = Picovoice;
-
-// self,
-// keyword_path,
-// wake_word_callback,
-// context_path,
-// inference_callback,
-// porcupine_library_path=None,
-// porcupine_model_path=None,
-// porcupine_sensitivity=0.5,
-// rhino_library_path=None,
-// rhino_model_path=None,
-// rhino_sensitivity=0.5):
