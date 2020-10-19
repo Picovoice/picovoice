@@ -1,0 +1,51 @@
+{
+  "name": "@picovoice/picovoice-node",
+  "version": "1.0.0",
+  "description": "Picovoice SDK for NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Picovoice/picovoice.git",
+    "directory": "sdk/nodejs"
+  },
+  "keywords": [
+    "porcupine",
+    "wake word",
+    "trigger word",
+    "hotword",
+    "nlu",
+    "intent",
+    "inference",
+    "speech recognition",
+    "voice commands",
+    "offline",
+    "private",
+    "voice ai",
+    "voice assistant"
+  ],
+  "author": "Picovoice Inc.",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Picovoice/picovoice/issues"
+  },
+  "homepage": "https://picovoice.ai/",
+  "dependencies": {
+    "@picovoice/porcupine-node": "^1.8.3",
+    "@picovoice/rhino-node": "^1.5.3"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "wavefile": "^11.0.0"
+  },
+  "cpu": [
+    "!ia32",
+    "!mips",
+    "!ppc",
+    "!ppc64"
+  ]
+}
