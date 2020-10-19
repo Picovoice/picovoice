@@ -152,21 +152,20 @@ Run the file demo and the successful inference with the intent "orderDrink" alon
 
 ```bash
 pv-file-demo \
---context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn \
---input_audio_file_path ../../resources/audio_samples/test_within_context.wav
-
+--input_audio_file_path ../../resources/audio_samples/picovoice-coffee.wav \
+--keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
 ...
+Wake word 'picovoice' detected
+Listening for speech within the context of 'coffee'. Please speak your phrase into the microphone.
 
-Inference result of 'test_within_context.wav' using context 'coffee':
+Inference:
 {
     "isUnderstood": true,
     "intent": "orderDrink",
     "slots": {
-        "size": "medium",
-        "numberOfShots": "double shot",
-        "coffeeDrink": "americano",
-        "milkAmount": "lots of milk",
-        "sugarAmount": "some sugar"
+        "size": "large",
+        "coffeeDrink": "coffee"
     }
 }
 ```
@@ -230,7 +229,7 @@ pv-mic-demo \
 
 ## Running the demos from the GitHub repository
 
-Use one of `yarn` or `npm` to install the package dependencies from the demo/nodejs folder:
+From the `demo/nodejs` folder, use one of `yarn` or `npm` to install the package dependencies:
 
 ```bash
 cd demo/nodejs
@@ -246,7 +245,7 @@ npm install
 
 ### Microphone demo
 
-Use `yarn mic` (or `npm run mic`) to run the mic demo from the demos/nodejs directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script. As before, pick a context that matches the platform you are using (these examples use 'mac'):
+From the `demo/nodejs` folder, use `yarn mic` (or `npm run mic`) to run the mic demo. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script. As before, pick a context that matches the platform you are using (these examples use 'mac'):
 
 ```bash
 yarn mic --keyword AMERICANO --context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
@@ -260,12 +259,13 @@ npm run mic -- --keyword AMERICANO --context_file_path ../../resources/contexts/
 
 ### File demo
 
-Use `yarn file` or `npm run file` from the demos/nodejs directory. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm itself, or for the demo script.
+From the `demo/nodejs` folder, use `yarn file` or `npm run file`. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm itself, or for the demo script.
 
 ```bash
 yarn file \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
---context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
+--keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
 ```
 
 (or)
@@ -273,5 +273,6 @@ yarn file \
 ```bash
 npm run file -- \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
---context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
+--keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
 ```

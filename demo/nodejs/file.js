@@ -11,26 +11,27 @@
 //
 "use strict";
 
-const fs = require("fs");
 const { program } = require("commander");
+const fs = require("fs");
 const Picovoice = require("@picovoice/picovoice-node");
-const { PvArgumentError } = require("@picovoice/picovoice-node/errors");
-const { getPlatform } = require("@picovoice/picovoice-node/platforms");
 
 const {
   BUILTIN_KEYWORDS_STRINGS,
   BUILTIN_KEYWORDS_STRING_TO_ENUM,
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
-const PLATFORM_RECORDER_MAP = new Map();
-PLATFORM_RECORDER_MAP.set("linux", "arecord");
-PLATFORM_RECORDER_MAP.set("mac", "sox");
-PLATFORM_RECORDER_MAP.set("raspberry-pi", "arecord");
-PLATFORM_RECORDER_MAP.set("windows", "sox");
+const WaveFile = require("wavefile").WaveFile;
 
-const recorder = require("node-record-lpcm16");
+const {
+  getInt16Frames,
+  checkWaveFile,
+} = require("@picovoice/rhino-node/wave_util");
 
 program
+  .requiredOption(
+    "-i, --input_audio_file_path <string>",
+    "input audio wave file in 16-bit 16KHz linear PCM format (mono)"
+  )
   .option(
     "-k, --keyword_file_path <string>",
     "absolute path(s) to porcupine keyword files (.ppn extension)"
@@ -66,16 +67,10 @@ program
 if (process.argv.length < 3) {
   program.help();
 }
-
 program.parse(process.argv);
 
-function chunkArray(array, size) {
-  return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
-    array.slice(index * size, index * size + size)
-  );
-}
-
-function micDemo() {
+function fileDemo() {
+  let audioPath = program["input_audio_file_path"];
   let keywordFilePath = program["keyword_file_path"];
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
@@ -132,11 +127,6 @@ function micDemo() {
     );
   }
 
-  let contextName = contextPath
-    .split(/[\\|\/]/)
-    .pop()
-    .split("_")[0];
-
   let keywordCallback = function (keyword) {
     console.log(`Wake word '${friendlyKeywordName}' detected`);
     console.log(
@@ -170,61 +160,41 @@ function micDemo() {
   console.log("-------------");
   console.log(handle.contextInfo);
 
-  let platform;
-  try {
-    platform = getPlatform();
-  } catch (error) {
-    console.error();
-    ("The Picovoice SDK for NodeJS does not support this platform. Supported platforms include macOS (x86_64), Windows (x86_64), Linux (x86_64), and Raspberry Pi (1-4)");
-    console.error(error);
+  let contextName = contextPath
+    .split(/[\\|\/]/)
+    .pop()
+    .split("_")[0];
+
+  let audioFileName = audioPath.split(/[\\|\/]/).pop();
+
+  if (!fs.existsSync(audioPath)) {
+    console.error(`--input_audio_file_path file not found: ${audioPath}`);
+    return;
   }
 
-  let recorderType = PLATFORM_RECORDER_MAP.get(platform);
-  console.log(
-    `Platform: '${platform}'; attempting to use '${recorderType}' to access microphone ...`
-  );
+  let waveBuffer = fs.readFileSync(audioPath);
+  let inputWaveFile;
+  try {
+    inputWaveFile = new WaveFile(waveBuffer);
+  } catch (error) {
+    console.error(`Exception trying to read file as wave format: ${audioPath}`);
+    console.error(error);
+    return;
+  }
 
-  const frameLength = handle.frameLength;
-  const sampleRate = handle.sampleRate;
+  if (!checkWaveFile(inputWaveFile, handle.sampleRate)) {
+    console.error(
+      "Audio file did not meet requirements. Wave file must be 16KHz, 16-bit, linear PCM (mono)."
+    );
+  }
 
-  const recording = recorder.record({
-    sampleRate: sampleRate,
-    channels: 1,
-    audioType: "raw",
-    recorder: recorderType,
-  });
+  let frames = getInt16Frames(inputWaveFile, handle.frameLength);
 
-  var frameAccumulator = [];
+  for (let frame of frames) {
+    handle.process(frame);
+  }
 
-  recording.stream().on("error", (data) => {
-    // Error event is triggered when stream is closed on Ubuntu
-    // Swallow the error since it is harmless for this demo.
-  });
-
-  recording.stream().on("data", (data) => {
-    // Two bytes per Int16 from the data buffer
-    let newFrames16 = new Array(data.length / 2);
-    for (let i = 0; i < data.length; i += 2) {
-      newFrames16[i / 2] = data.readInt16LE(i);
-    }
-
-    // Split the incoming PCM integer data into arrays of size Picovoice.frameLength. If there's insufficient frames, or a remainder,
-    // store it in 'frameAccumulator' for the next iteration, so that we don't miss any audio data
-    frameAccumulator = frameAccumulator.concat(newFrames16);
-    let frames = chunkArray(frameAccumulator, frameLength);
-
-    if (frames[frames.length - 1].length !== frameLength) {
-      // store remainder from divisions of frameLength
-      frameAccumulator = frames.pop();
-    } else {
-      frameAccumulator = [];
-    }
-
-    for (let frame of frames) {
-      handle.process(frame);
-    }
-  });
-  console.log(`Listening for wake word '${friendlyKeywordName}'`);
+  handle.release();
 }
 
-micDemo();
+fileDemo();
