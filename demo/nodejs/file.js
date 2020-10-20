@@ -130,7 +130,7 @@ function fileDemo() {
   let keywordCallback = function (keyword) {
     console.log(`Wake word '${friendlyKeywordName}' detected`);
     console.log(
-      `Listening for speech within the context of '${contextName}'. Please speak your phrase into the microphone. `
+      `Listening for speech within the context of '${contextName}'`
     );
   };
 

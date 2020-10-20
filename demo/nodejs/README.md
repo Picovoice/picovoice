@@ -144,9 +144,9 @@ Inference result:
 
 The file-based demo allows you to scan a compatible wave file with Rhino. Note: **The demo requires 16KHz, 16-bit linear PCM, single-channel (mono) WAV files**.
 
-To run the file-based demo, we need to provide a Speech-to-Intent context along with a path to a compatible WAV file.
+To run the file-based demo, we need to provide a Porcupine keyword and Rhino Speech-to-Intent context, along with a path to a compatible WAV file.
 
-We can use a couple of test WAV files that are bundled in the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/audio_samples/). These are intended to be used with the sample "Coffee Maker" context, also available in the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
+We can use the WAV file that are bundled in the [Picovoice GitHub repostiory](https://github.com/Picovoice/picovoice/blob/master/resources/audio_samples/). This is intended to be used with the sample "Coffee Maker" context and the "Picovoice" keyword, also available in the [Picovoice GitHub repostiory](https://github.com/Picovoice/picovoice/blob/master/resources/) (note that keyword and context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version of each file)
 
 Run the file demo and the successful inference with the intent "orderDrink" along with the specific details are returned:
 
@@ -154,10 +154,12 @@ Run the file demo and the successful inference with the intent "orderDrink" alon
 pv-file-demo \
 --input_audio_file_path ../../resources/audio_samples/picovoice-coffee.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
---context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
+
 ...
+
 Wake word 'picovoice' detected
-Listening for speech within the context of 'coffee'. Please speak your phrase into the microphone.
+Listening for speech within the context of 'coffee'
 
 Inference:
 {
@@ -202,7 +204,10 @@ Options:
 The sensitivity is a floating point value in the range [0,1] which specifies the tradeoff between miss rate and false alarm. The demo defaults to 0.5. You can override this with `--sensitivity`:
 
 ```bash
-pv-mic-demo --keyword GRASSHOPPER --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn --sensitivity 0.65
+pv-mic-demo \
+--keyword GRASSHOPPER \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
+--sensitivity 0.65
 ```
 
 ### Creating custom Wake Word (.ppn) and Speech-to-Intent context (.rhn) files
@@ -248,7 +253,9 @@ npm install
 From the `demo/nodejs` folder, use `yarn mic` (or `npm run mic`) to run the mic demo. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script. As before, pick a context that matches the platform you are using (these examples use 'mac'):
 
 ```bash
-yarn mic --keyword AMERICANO --context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
+yarn mic \
+--keyword AMERICANO \
+--context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
 ```
 
 (or)
