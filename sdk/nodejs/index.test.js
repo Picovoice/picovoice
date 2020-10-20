@@ -24,7 +24,6 @@ const WAV_PATH_PICOVOICE_COFFEE =
   "../../resources/audio_samples/picovoice-coffee.wav";
 
 const platform = getPlatform();
-const libraryPath = getSystemLibraryPath();
 
 const contextPathCoffeeMaker = `../../resources/rhino/resources/contexts/${platform}/coffee_maker_${platform}.rhn`;
 
@@ -43,7 +42,7 @@ function processWaveFile(handle, waveFilePath) {
 
   for (let i = 0; i < frames.length; i++) {
     const frame = frames[i];
-    const result = handle.process(frame);
+    handle.process(frame);
   }
 }
 
@@ -72,6 +71,79 @@ describe("intent detection (coffee maker)", () => {
   });
 });
 
+describe("argument checking", () => {
+  test("callbacks must be functions", () => {
+    expect(() => {
+      let handle = new Picovoice(
+        PICOVOICE_PORCUPINE_KEYWORD,
+        123,
+        contextPathCoffeeMaker,
+        () => {}
+      );
+    }).toThrow(PvArgumentError);
+  });
+
+  test("callbacks must be functions II", () => {
+    expect(() => {
+      let handle = new Picovoice(
+        PICOVOICE_PORCUPINE_KEYWORD,
+        undefined,
+        contextPathCoffeeMaker,
+        undefined
+      );
+    }).toThrow(PvArgumentError);
+  });
+
+  test("missing keyword argument", () => {
+    expect(() => {
+      let handle = new Picovoice(
+        undefined,
+        PICOVOICE_PORCUPINE_KEYWORD,
+        () => {},
+        contextPathCoffeeMaker,
+        () => {}
+      );
+    }).toThrow(PvArgumentError);
+  });
+
+  test("no arguments", () => {
+    expect(() => {
+      let handle = new Picovoice();
+    }).toThrow(PvArgumentError);
+  });
+
+  test("one arguments", () => {
+    expect(() => {
+      let handle = new Picovoice(PICOVOICE_PORCUPINE_KEYWORD);
+    }).toThrow(PvArgumentError);
+  });
+
+  test("three arguments", () => {
+    expect(() => {
+      let handle = new Picovoice(
+        PICOVOICE_PORCUPINE_KEYWORD,
+        () => {},
+        contextPathCoffeeMaker
+      );
+    }).toThrow(PvArgumentError);
+  });
+});
+
+describe("state", () => {
+  test("contextInfo from Rhino", () => {
+    let handle = new Picovoice(
+      PICOVOICE_PORCUPINE_KEYWORD,
+      () => {},
+      contextPathCoffeeMaker,
+      () => {}
+    );
+    handle.release();
+    expect(() => {
+      handle.process(new Int16Array(512));
+    }).toThrow(PvStateError);
+  });
+});
+
 describe("getter functions", () => {
   test("contextInfo from Rhino", () => {
     let handle = new Picovoice(
@@ -90,6 +162,21 @@ describe("getter functions", () => {
     expect(contextInfo).not.toMatch(
       /(the third one burned down, fell over, and sank into the swamp)/i
     );
+
+    handle.release();
+  });
+
+  test("version strings", () => {
+    let handle = new Picovoice(
+      PICOVOICE_PORCUPINE_KEYWORD,
+      () => {},
+      contextPathCoffeeMaker,
+      () => {}
+    );
+
+    expect(handle.porcupineVersion).toEqual("1.8.0");
+    expect(handle.rhinoVersion).toEqual("1.5.0");
+    expect(handle.version).toEqual("1.0.0");
 
     handle.release();
   });

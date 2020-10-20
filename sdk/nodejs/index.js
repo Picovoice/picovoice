@@ -13,6 +13,8 @@
 const Porcupine = require("@picovoice/porcupine-node");
 const Rhino = require("@picovoice/rhino-node");
 
+const { PvArgumentError, PvStateError } = require("./errors");
+
 /**
  * Wraps the Picovoice Porcupine and Rhino engines.
  *
@@ -21,7 +23,7 @@ const Rhino = require("@picovoice/rhino-node");
  */
 class Picovoice {
   /**
-   * Creates an instance of Rhino with a specific context.
+   * Creates an instance of Picovoice with a specific keyword and context.
    *
    * @param {string} keywordPath,
    * @param {function} wakeWordCallBack,
@@ -47,13 +49,17 @@ class Picovoice {
     rhinoLibraryPath
   ) {
     if (!(wakeWordCallback instanceof Function)) {
-      console.error("Parameter 'wakeWordCallback' is not a function");
+      throw new PvArgumentError(
+        "Parameter 'wakeWordCallback' is not a function"
+      );
     }
 
     this.wakeWordCallBack = wakeWordCallback;
 
     if (!(inferenceCallback instanceof Function)) {
-      console.error("Parameter 'inferenceCallback' is not a function");
+      throw new PvArgumentError(
+        "Parameter 'inferenceCallback' is not a function"
+      );
     }
 
     this.inferenceCallback = inferenceCallback;
@@ -134,6 +140,11 @@ class Picovoice {
    * @returns {boolean} true when Rhino has concluded processing audio and determined the intent (or that the intent was not understood), false otherwise.
    */
   process(frame) {
+    if (this.porcupine === null || this.rhino === null) {
+      throw new PvStateError(
+        "Attempting to process but resources have been released."
+      );
+    }
     if (!this.isWakeWordDetected) {
       const keywordIndex = this.porcupine.process(frame);
 
@@ -151,6 +162,9 @@ class Picovoice {
     }
   }
 
+  /**
+   * Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
+   */
   release() {
     if (this.porcupine !== null) {
       this.porcupine.release();
