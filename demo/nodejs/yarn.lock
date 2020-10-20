@@ -2,8 +2,10 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@file:../../sdk/nodejs":
+"@picovoice/picovoice-node@^1.0.0":
   version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-1.0.0.tgz#7ef9a8d5b8dc962132888dcd6672836340e3d9b3"
+  integrity sha512-QvpGhjDw9WOVchWxWo4UH0Oqb2UypWiOP/OqRErPL7aGDAQuaSIY/trPov7aqeCVVgQ16f7R+kKQ5+GqjucANw==
   dependencies:
     "@picovoice/porcupine-node" "^1.8.3"
     "@picovoice/rhino-node" "^1.5.3"
