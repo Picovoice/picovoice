@@ -166,6 +166,9 @@ function micDemo() {
     rhinoLibraryFilePath
   );
 
+  console.log(`Porcupine version: ${handle.porcupineVersion}`);
+  console.log(`Rhino version: ${handle.rhinoVersion}`);
+  console.log();
   console.log("Context info:");
   console.log("-------------");
   console.log(handle.contextInfo);

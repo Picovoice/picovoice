@@ -76,6 +76,8 @@ class Picovoice {
     this._sampleRate = 16000;
     this._version = "1.0.0";
 
+    this._porcupineVersion = this.porcupine.version;
+    this._rhinoVersion = this.rhino.version;
     this._contextInfo = this.rhino.getContextInfo();
 
     this.isWakeWordDetected = false;
@@ -90,17 +92,31 @@ class Picovoice {
   }
 
   /**
-   * @returns the audio sampling rate accepted by Rhino
+   * @returns the audio sampling rate accepted by Picovoice
    */
   get sampleRate() {
     return this._sampleRate;
   }
 
   /**
-   * @returns the version of the Porcupine SDK
+   * @returns the version of the Picovoice SDK
    */
   get version() {
     return this._version;
+  }
+
+  /**
+   * @returns the version of the Porcupine SDK
+   */
+  get porcupineVersion() {
+    return this._porcupineVersion;
+  }
+
+  /**
+   * @returns the version of the Rhino SDK
+   */
+  get rhinoVersion() {
+    return this._rhinoVersion;
   }
 
   /**
