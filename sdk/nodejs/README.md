@@ -12,38 +12,19 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
   [\*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
-## Table of Contents
+## Compatibility
 
-- [Picovoice](#picovoice)
-  - [Table of Contents](#table-of-contents)
-  - [Demos](#demos)
-    - [Python Demos](#python-demos)
-  - [SDKs](#sdks)
-    - [Python](#python)
-  - [Releases](#releases)
+This binding is for running Porcupine on **NodeJS 12+** on the following platforms:
 
-## Demos
+- Linux (x86_64)
+- macOS (x86_64)
+- Raspberry Pi (2,3,4)
 
-### NodeJS
+### Web Browsers
 
-We have provided an NPM package with file-based and microphone Picovoice demos. You can do a global NPM install to make the `pv-file-demo` and `pv-mic-demo` commands available.
+This binding is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? Use the [JavaScript WebAssembly](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) binding instead.
 
-```bash
-npm install -g @picovoice/picovoice-node-demo
-```
-
-```
-pv-file-demo --help
-pv-mic-demo --help
-```
-
-The file demo will allow you to test Picovoice against a WAV file that meets the audio processing requirements. The microphone demo requires you to setup dependencies that are **not included with NPM**. Please see the [demo instructions](./demo/nodejs/) for details.
-
-### Python Demos
-
-## SDKs
-
-### NodeJS
+## Usage
 
 The Picovoice SDK for NodeJS is available from NPM:
 
@@ -85,8 +66,8 @@ Upon constructing the Picovoice class, send it frames of audio via its `process`
 
 ```javascript
 // process audio frames that match the Picovoice requirements (16-bit linear pcm audio, single-channel)
-while (true) {
-  handle.process(frame);
+while(true) {
+  handle.process(frame_of_audio);
 }
 ```
 
@@ -106,12 +87,9 @@ Inference:
         "coffeeDrink": "coffee"
     }
 }
+
 ```
 
-### Python
+### Porcupine and Rhino
 
-## Releases
-
-### v1.0.0 - October 6, 2020
-
-- Initial release.
+The Picovoice SDK for NodeJS is built on top of the Porcupine and Rhino NodeJS bindings. If you wish to use these engines individually for wake word or inference, see the [Porcupine](https://www.npmjs.com/package/@picovoice/porcupine-node) and [Rhino](https://www.npmjs.com/package/@picovoice/rhino-node) NPM packages, respectively.
