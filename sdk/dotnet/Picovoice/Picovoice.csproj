@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
+	  <Version></Version>
+	  <Authors>Picovoice</Authors>
+	  <Company />
+	  <Product></Product>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <PackageProjectUrl></PackageProjectUrl>	  
+	  <RepositoryUrl></RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageTags></PackageTags>
+	  <PackageReleaseNotes></PackageReleaseNotes>
+	  <Copyright>Picovoice 2020</Copyright>
+	  <Description>
+	  </Description>
+	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	  <PackageIcon>pv_circle_512.png</PackageIcon>
+	  <Platforms>x64</Platforms>	 
+  </PropertyGroup>
+	<ItemGroup>
+	  <Folder Include="Content\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Content\pv_circle_512.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Porcupine" Version="1.8.9" />
+	  <PackageReference Include="Rhino" Version="1.5.1" />
+	</ItemGroup>
+</Project>
