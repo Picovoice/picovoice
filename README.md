@@ -270,6 +270,45 @@ handle.delete()
 
 ### Android
 
+The binding class can be initialized as follow
+
+```java
+import ai.picovoice.picovoice.PicovoiceManager;
+
+final String porcupineModelPath = ...
+final String keywordPath = ...
+final float porcupineSensitivity = 0.5f;
+final String rhinoModelPath = ...
+final String contextPath = ...
+final float rhinoSensitivity = 0.5f;
+
+PicovoiceManager manager = new PicovoiceManager(
+    porcupineModelPath,
+    keywordPath,
+    porcupineSensitivity,
+    new PicovoiceWakeWordCallback() {
+        @Override
+        public void invoke() {
+            // logic to execute upon deletection of wake word
+        }
+    },
+    rhinoModelPath,
+    contextPath,
+    rhinoSensitivity,
+    new PicovoiceInferenceCallback() {
+        @Override
+        public void invoke(final RhinoInference inference) {
+            // logic to execute upon completion of intent inference
+        }
+    }
+);
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate. When initialized, input audio can
+be processed using `manager.start()` and then stopped by `manager.stop()`. When done be sure to release resources using
+`manager.delete()`.
+
 ### iOS
 
 ## Releases
