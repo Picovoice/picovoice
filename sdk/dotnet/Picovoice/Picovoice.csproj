@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0</TargetFrameworks>
+	  <Version>1.0.0</Version>
+	  <Authors>Picovoice</Authors>
+	  <Company />
+	  <Product>Picovoice End-to-End Platform</Product>
+	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	  <PackageProjectUrl>https://github.com/Picovoice/picovoice</PackageProjectUrl>	  
+	  <RepositoryUrl>https://github.com/Picovoice/picovoice.git</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageTags>porcupine, wake word, trigger word, hotword, nlu, intent, inference, speech recognition, voice commands, offline, private, voice ai, voice assistant</PackageTags>
+	  <PackageReleaseNotes>See https://github.com/Picovoice/picovoice</PackageReleaseNotes>
+	  <Copyright>Picovoice 2020</Copyright>
+	  <Description>Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google. But it entirely runs 100% on-device.
+
+Picovoice is:
+- Private: Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- Reliable: Runs without needing constant connectivity.
+- Zero Latency: Edge-first architecture eliminates unpredictable network delay.
+- Accurate: Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins *.
+- Cross-Platform: Design once, deploy anywhere. Build using familiar languages and frameworks.
+	  </Description>	  
+	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	  <PackageIcon>pv_circle_512.png</PackageIcon>
+	  <Platforms>x64</Platforms>	 
+  </PropertyGroup>	
+	<ItemGroup>
+	  <Folder Include="Content\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Content\pv_circle_512.png">
+	    <Pack>True</Pack>
+	    <PackagePath></PackagePath>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Porcupine" Version="1.8.9">
+			<PrivateAssets>analyzers</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Rhino" Version="1.5.1">
+			<PrivateAssets>analyzers</PrivateAssets>
+		</PackageReference>		
+	</ItemGroup>
+</Project>
