@@ -14,11 +14,11 @@
 	  <PackageReleaseNotes></PackageReleaseNotes>
 	  <Copyright>Picovoice 2020</Copyright>
 	  <Description>
-	  </Description>
+	  </Description>	  
 	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	  <PackageIcon>pv_circle_512.png</PackageIcon>
 	  <Platforms>x64</Platforms>	 
-  </PropertyGroup>
+  </PropertyGroup>	
 	<ItemGroup>
 	  <Folder Include="Content\" />
 	</ItemGroup>
@@ -29,7 +29,11 @@
 	  </None>
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Porcupine" Version="1.8.9" />
-	  <PackageReference Include="Rhino" Version="1.5.1" />
+		<PackageReference Include="Porcupine" Version="1.8.9">
+			<PrivateAssets>analyzers</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Rhino" Version="1.5.1">
+			<PrivateAssets>analyzers</PrivateAssets>
+		</PackageReference>		
 	</ItemGroup>
 </Project>

@@ -1,0 +1,5 @@
+.vs
+PicovoiceDemo/bin/**
+PicovoiceDemo/obj/**
+PicovoiceDemo/Properties/**
+*.user
