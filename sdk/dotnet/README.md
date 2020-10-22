@@ -14,7 +14,6 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Compatibility
 
-
 - .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
 - Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
@@ -79,7 +78,7 @@ while(true)
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed 
+Picovoice will have its resources freed by the garbage collector, but to have resources freed 
 immediately after use, wrap it in a using statement: 
 
 ```csharp
