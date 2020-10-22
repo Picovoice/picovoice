@@ -12,17 +12,19 @@
 
 package ai.picovoice.picovoicedemo;
 
-import ai.picovoice.picovoice.*;
+import ai.picovoice.picovoice.Picovoice;
+import ai.picovoice.picovoice.PicovoiceInferenceCallback;
+import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
 import org.apache.commons.cli.*;
 
-import java.io.File;
-import java.io.IOException;
+import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Map;
-import javax.sound.sampled.*;
 
 public class MicDemo {
     public static void runDemo(String keywordPath, String contextPath,
@@ -258,7 +260,7 @@ public class MicDemo {
             }
         }
 
-        if(keywordPath == null){
+        if (keywordPath == null) {
             throw new IllegalArgumentException("No keyword file provided. This is a required argument.");
         }
         File keywordFile = new File(keywordPath);
@@ -266,7 +268,7 @@ public class MicDemo {
             throw new IllegalArgumentException(String.format("Keyword file at path %s does not exits.", keywordPath));
         }
 
-        if(contextPath == null){
+        if (contextPath == null) {
             throw new IllegalArgumentException("No context file provided. This is a required argument.");
         }
         File contextFile = new File(contextPath);

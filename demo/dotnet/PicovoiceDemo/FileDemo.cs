@@ -273,10 +273,10 @@ namespace PicovoiceDemo
             $"\t--keyword_path (required): Absolute path to a Porcupine keyword file.\n" +
             $"\t--context_path (required): Absolute path to a Rhino context file.\n" +
             $"\t--porcupine_model_path: Absolute path to Porcupine's model file.\n" +
-            $"\t--porcupine_sensitivity: Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher \n" +
-            $"\t\tsensitivity results in fewer misses at the cost of increasing the false alarm rate.\n" +
+            $"\t--porcupine_sensitivity: Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher " +
+            $"sensitivity results in fewer misses at the cost of increasing the false alarm rate.\n" +
             $"\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
-            $"\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity \n" +
-            $"\t\tvalue results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n";
+            $"\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity " +
+            $"value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n";
     }
 }

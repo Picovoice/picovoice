@@ -37,9 +37,9 @@ sudo pip3 install picovoicedemo
 
 It allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance
 benchmarking. It accepts 16kHz audio files. Picovoice processes a single-channel audio stream if a stereo file is
-provided it only processes the first (left) channel. The following processes a file looking for instances of the wake
+provided it only processes the first (left) channel. The following processes a file looking for instances of the wake 
 phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the follow-on spoken command
-using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`.
+using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 ```bash
 picovoice_demo_file \

@@ -24,7 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,9 +36,9 @@ public class PicovoiceTest {
     private Picovoice picovoice;
     private final String environmentName = getEnvironmentName();
     private final String keywordPath = String.format("../../resources/porcupine/resources/keyword_files" +
-                    "/%s/picovoice_%s.ppn", environmentName, environmentName);
+            "/%s/picovoice_%s.ppn", environmentName, environmentName);
     private final String contextPath = String.format("../../resources/rhino/resources/contexts" +
-                    "/%s/coffee_maker_%s.rhn", environmentName, environmentName);
+            "/%s/coffee_maker_%s.rhn", environmentName, environmentName);
 
     private boolean isWakeWordDetected = false;
     private final PicovoiceWakeWordCallback wakeWordCallback = new PicovoiceWakeWordCallback() {
@@ -55,7 +57,7 @@ public class PicovoiceTest {
     };
 
     @BeforeEach
-    void setUp() throws PicovoiceException{
+    void setUp() throws PicovoiceException {
         picovoice = new Picovoice.Builder()
                 .setKeywordPath(keywordPath)
                 .setWakeWordCallback(wakeWordCallback)
@@ -104,7 +106,7 @@ public class PicovoiceTest {
 
         assertTrue(isWakeWordDetected);
         assertEquals(inferenceResult.getIntent(), "orderDrink");
-        Map<String, String> expectedSlotValues  = new HashMap<>() {{
+        Map<String, String> expectedSlotValues = new HashMap<>() {{
             put("size", "large");
             put("coffeeDrink", "coffee");
         }};

@@ -12,7 +12,9 @@
 
 package ai.picovoice.picovoicedemo;
 
-import ai.picovoice.picovoice.*;
+import ai.picovoice.picovoice.Picovoice;
+import ai.picovoice.picovoice.PicovoiceInferenceCallback;
+import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
 import org.apache.commons.cli.*;
 
 import javax.sound.sampled.AudioFormat;
@@ -76,7 +78,7 @@ public class FileDemo {
 
             AudioFormat audioFormat = audioInputStream.getFormat();
 
-            if (audioFormat.getSampleRate() != (float)picovoice.getSampleRate() || audioFormat.getSampleSizeInBits() != 16) {
+            if (audioFormat.getSampleRate() != (float) picovoice.getSampleRate() || audioFormat.getSampleSizeInBits() != 16) {
                 throw new IllegalArgumentException(String.format("Invalid input audio file format. " +
                         "Input file must be a %dkHz, 16-bit audio file.", picovoice.getSampleRate()));
             }
@@ -107,10 +109,11 @@ public class FileDemo {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.err.println(e.toString());
         } finally {
             if (picovoice != null) {
                 picovoice.delete();
+                picovoice = null;
             }
         }
     }
@@ -175,7 +178,7 @@ public class FileDemo {
             }
         }
 
-        if(inputAudioPath == null){
+        if (inputAudioPath == null) {
             throw new IllegalArgumentException("No input audio file provided. This is a required argument.");
         }
         File inputAudioFile = new File(inputAudioPath);
@@ -183,7 +186,7 @@ public class FileDemo {
             throw new IllegalArgumentException(String.format("Audio file at path %s does not exits.", inputAudioPath));
         }
 
-        if(keywordPath == null){
+        if (keywordPath == null) {
             throw new IllegalArgumentException("No keyword file provided. This is a required argument.");
         }
         File keywordFile = new File(keywordPath);
@@ -191,7 +194,7 @@ public class FileDemo {
             throw new IllegalArgumentException(String.format("Keyword file at path %s does not exits.", keywordPath));
         }
 
-        if(contextPath == null){
+        if (contextPath == null) {
             throw new IllegalArgumentException("No context file provided. This is a required argument.");
         }
         File contextFile = new File(contextPath);

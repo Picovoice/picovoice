@@ -17,8 +17,6 @@ import ai.picovoice.porcupine.PorcupineException;
 import ai.picovoice.rhino.Rhino;
 import ai.picovoice.rhino.RhinoException;
 
-import java.util.Arrays;
-
 /**
  * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
  * similar to Alexa but runs entirely on-device (offline).
@@ -155,6 +153,24 @@ public class Picovoice {
      */
     public String getVersion() {
         return "1.0.0";
+    }
+
+    /**
+     * Getter for Porcupine version.
+     *
+     * @return Porcupine version.
+     */
+    public String getPorcupineVersion() {
+        return porcupine.getVersion();
+    }
+
+    /**
+     * Getter for Rhino version.
+     *
+     * @return Rhino version.
+     */
+    public String getRhinoVersion() {
+        return rhino.getVersion();
     }
 
     /**

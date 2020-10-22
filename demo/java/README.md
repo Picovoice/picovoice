@@ -2,12 +2,12 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-This package contains demos and commandline utilities for processing real-time audio (i.e. microphone) and audio files
+This demo project is a Java command-line app that processes real-time audio (i.e. microphone) and audio files
 using Picovoice platform.
 
 ## Picovoice
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+Picovoice is the end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 - **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
