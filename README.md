@@ -69,7 +69,7 @@ alternatives with wide margins.
 
 ## Demos
 
-Of using SSH, clone the repository with:
+If using SSH, clone the repository with:
 
 
 ```bash
