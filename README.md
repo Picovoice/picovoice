@@ -126,6 +126,13 @@ For the full set of commands supported in the context refer to [demo's readme](/
 
 ### iOS Demos
 
+Using Xcode, open [demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj](/demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj) and
+run the application. Press the start button and say
+
+> Porcupine, make the living room lights brighter.
+
+For the full set of commands supported in the context refer to [demo's readme](/demo/android/README.md).
+
 ## SDKs
 
 ### NodeJS
