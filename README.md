@@ -39,12 +39,14 @@ spoken command:
     - [NodeJS Demos](#nodejs-demos)
     - [Python Demos](#python-demos)
     - [.NET Demos](#net-demos)
+    - [Java Demos](#java-demos)
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
   - [SDKs](#sdks)
-      - [NodJS](#nodejs)
+      - [NodeJS](#nodejs)
       - [Python](#python)
       - [.NET](#net)
+      - [Java](#java)
       - [Android](#android)
       - [iOS](#ios)
   - [Releases](#releases)
@@ -123,7 +125,7 @@ pressing the start button say:
 
 Install [OpenAL](https://openal.org/) before using the demo.
 
-With a working microphone connected to your device run the following in the terminal:
+In the demo project directory and with a working microphone connected to your device, run the following in the terminal:
 
 ```bash
 dotnet run -c MicDemo.Release -- \
@@ -133,7 +135,7 @@ dotnet run -c MicDemo.Release -- \
 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
 incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the 
-spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
+follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 In order to process audio files (e.g. WAV) for keywords and commands run:
 
@@ -145,6 +147,31 @@ dotnet run -c FileDemo.Release -- \
 ```
 
 For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
+
+### Java Demos
+
+In the demo bin directory and with a working microphone connected to your device, run the following in the terminal:
+
+```bash
+java -jar picovoice-mic-demo.jar \
+-k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+-c ${PATH_TO_RHINO_CONTEXT_FILE}
+```
+
+This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
+incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the 
+follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
+
+In order to process audio files (e.g. WAV) for keywords and commands run:
+
+```bash
+java -jar picovoice-file-demo.jar \
+-i ${PATH_TO_INPUT_AUDIO_FILE} \
+-k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+-c ${PATH_TO_RHINO_CONTEXT_FILE}
+```
+
+For more information about the Java demos go to [demo/java](/demo/java).
 
 ### Android Demos
 
@@ -305,7 +332,7 @@ You can install the latest version of Picovoice by adding the latest [Picovoice 
 dotnet add package Picovoice
 ```
 
-Create an instance of the engine
+To create an instance of Picovoice, do the following:
 
 ```csharp
 using Pv;
@@ -364,6 +391,69 @@ using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPat
 {
     // .. Picovoice usage here
 }
+```
+
+### Java
+
+You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/binding/java/bin/).
+
+The easiest way to create an instance of the engine is with the Picovoice Builder:
+
+```java
+import ai.picovoice.picovoice.*;
+
+String keywordPath = "/absolute/path/to/keyword.ppn"
+
+PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
+
+String contextPath = "/absolute/path/to/context.rhn"
+
+PicovoiceInferenceCallback inferenceCallback = inference -> {
+    // `inference` exposes three getters:
+    // (1) `getIsUnderstood()`
+    // (2) `getIntent()`
+    // (3) `getSlots()`
+    // ..
+};
+
+try{        
+    Picovoice handle = new Picovoice.Builder()
+                    .setKeywordPath(keywordPath)
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setContextPath(contextPath)
+                    .setInferenceCallback(inferenceCallback)
+                    .build();
+} catch (PicovoiceException e) { }
+```
+
+`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+(with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
+invoked upon completion of follow-on voice command inference.
+
+When instantiated, valid sample rate can be obtained via `handle.getSampleRate()`. Expected number of audio samples per
+frame is `handle.getFrameLength()`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+
+```java
+short[] getNextAudioFrame()
+{
+    // .. get audioFrame
+    return audioFrame;
+}
+
+while(true)
+{
+    handle.process(getNextAudioFrame());    
+}
+```
+
+Once you're done with Picovoice, ensure you release its resources explicitly:
+
+```java
+handle.delete();
 ```
 
 ### Android

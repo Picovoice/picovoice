@@ -19,7 +19,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Installation
 
-You can install the Picovoice Java binding by downloading and referencing the latest [Picovoice JAR file](/binding/java/bin/).
+You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/binding/java/bin/).
 
 ## Build
 
