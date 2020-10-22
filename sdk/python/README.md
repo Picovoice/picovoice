@@ -59,7 +59,6 @@ the context defined by the file located at `context_path`. `keyword_path` is the
 (with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
 invoked upon completion of follow-on voice command inference.
 
-
 When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
 frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
