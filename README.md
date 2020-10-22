@@ -49,19 +49,18 @@ spoken command:
 ## Performance
 
 Picovoice makes use of the [Porcupine wake word engine](https://github.com/Picovoice/porcupine) to detect utterances of
-given wake phrases. An open source benchmark of Porcupine is available [here](https://github.com/Picovoice/wakeword-benchmark). The figure
-below provides a summary of the benchmark. In summary, compared to the best-performing, Porcupine's standard model is
-**5.4 times more accurate**.
+given wake phrases. An open-source benchmark of Porcupine is available
+[here](https://github.com/Picovoice/wakeword-benchmark). In summary, compared to the best-performing alternative,
+Porcupine's standard model is **5.4 times more accurate**.
 
-![](resources/doc/wake-word-benchmark.png)
+![](resources/doc/porcupine-benchmark.png)
 
 Picovoice relies on the [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) to directly infer user's
-intent from spoken commands within a given domain of interest (a "context"). An open source benchmark of Rhino is
+intent from spoken commands within a given domain of interest (a "context"). An open-source benchmark of Rhino is
 available [here](https://github.com/Picovoice/speech-to-intent-benchmark). Rhino outperforms all major cloud-based
 alternatives with wide margins.
 
-![](resources/doc/rhino-benchmark.svg)
-
+![](resources/doc/rhino-benchmark.png)
 
 ## Structure of Repository
 
