@@ -2,29 +2,57 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
+Picovoice is the end-to-end platform for building voice products on your terms. Unlike Alexa and Google services,
+Picovoice runs entirely on-device while being more accurate. Using Picovoice, one can infer a user’s intent from a
+naturally spoken utterance such as:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
-- **Reliable:** Runs without needing constant connectivity.
-- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
-- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
-  [\*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+> "Hey Edison, set the lights in the living room to blue."
+
+Picovoice detects the occurrence of the custom wake word ("Hey Edison"), and then extracts the intent from the follow-on
+spoken command:
+
+```json
+{
+  "intent": "changeLightColor",
+  "slots": {
+    "location": "living room",
+    "color": "blue"
+  }
+}
+```
+
+## Why Picovoice?
+
+- **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
+- **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
+- **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using Picovoice Console.
+- **Reliable:** Runs locally without needing continuous connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 
 ## Table of Contents
-
 - [Picovoice](#picovoice)
+  - [Why Picovoice?](#why-picovoice)
   - [Table of Contents](#table-of-contents)
+  - [Performance](#performance)
+  - [Structure of Repository](#structure-of-repository)
   - [Demos](#demos)
+    - [NodeJS Demos](#nodejs-demos)
     - [Python Demos](#python-demos)
+    - [Android Demos](#android-demos)
+    - [iOS Demos](#ios-demos)
   - [SDKs](#sdks)
-    - [Python](#python)
+      - [NodJS](#nodejs)
+      - [Python](#python)
   - [Releases](#releases)
+
+## Performance
+
+## Structure of Repository
 
 ## Demos
 
-### NodeJS
+### NodeJS Demos
 
 We have provided an NPM package with file-based and microphone Picovoice demos. You can do a global NPM install to make the `pv-file-demo` and `pv-mic-demo` commands available.
 
@@ -40,6 +68,10 @@ pv-mic-demo --help
 The file demo will allow you to test Picovoice against a WAV file that meets the audio processing requirements. The microphone demo requires you to setup dependencies that are **not included with NPM**. Please see the [demo instructions](./demo/nodejs/) for details.
 
 ### Python Demos
+
+### Android Demos
+
+### iOS Demos
 
 ## SDKs
 
