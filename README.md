@@ -63,6 +63,19 @@ alternatives with wide margins.
 
 ## Demos
 
+Of using SSH, clone the repository with:
+
+
+```bash
+git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
+```
+
+If using HTTPS, then type
+
+```bash
+git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
+```
+
 ### NodeJS Demos
 
 We have provided an NPM package with file-based and microphone Picovoice demos. You can do a global NPM install to make
@@ -72,7 +85,7 @@ the `pv-file-demo` and `pv-mic-demo` commands available.
 npm install -g @picovoice/picovoice-node-demo
 ```
 
-```
+```bash
 pv-file-demo --help
 pv-mic-demo --help
 ```
@@ -83,7 +96,33 @@ microphone demo requires you to setup dependencies that are **not included with 
 
 ### Python Demos
 
+Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package
+
+```bash
+sudo pip3 install picovoicedemo
+```
+
+Check usage information
+
+```bash
+picovoice_demo_mic --help
+picovoice_demo_file --help
+```
+
+The microphone demo opens an audio stream from a microphone, detected utterances of a given wake phrase, and infers
+intent from the follow-on spoken command. The file demo is useful for processing prerecorded audio file(s). After
+pressing the start button say:
+
+> Porcupine, set the lights in the living room to purple.
+
 ### Android Demos
+
+Using Android Studio, open [demo/android/Activity](/demo/android/Activity) as an Android project and then run the
+application. Press the start button and say
+
+> Porcupine, turn of the lights in the kitchen.
+
+For the full set of commands supported in the context refer to [demo's readme](/demo/android/README.md).
 
 ### iOS Demos
 
