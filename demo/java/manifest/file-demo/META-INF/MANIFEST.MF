@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: ai.picovoice.picovoicedemo.FileDemo
+Class-Path: picovoice-1.0.0.jar;commons-cli-1.4.jar
+
