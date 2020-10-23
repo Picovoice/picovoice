@@ -1,28 +1,29 @@
-# Porcupine Wake Word Engine
+# Picovoice
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. 
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-Porcupine is:
-
-- using deep neural networks trained in real-world environments.
-- compact and computationally-efficient making it perfect for IoT.
-- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Compatibility
+
 
 - .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
 - Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
 ## Installation
 
-You can install the latest version of Porcupine by getting the latest [Porcupine Nuget package](https://www.nuget.org/packages/Porcupine/) in Visual Studio or using the .NET CLI.
+You can install the latest version of Porcupine by getting the latest [Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
 ```bash
-dotnet add package Porcupine
+dotnet add package Picovoice
 ```
 
 ## Usage
@@ -30,56 +31,41 @@ dotnet add package Porcupine
 Create an instance of the engine
 
 ```csharp
-using Picovoice
+using Pv;
 
-Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" });
-```
+string keywordPath = "/absolute/path/to/keyword.ppn";
 
-`handle` is an instance of Porcupine that detects utterances of "Picovoice". The `keywords` input argument is a shorthand
-for accessing default keyword model files shipped with the package. The list of default keywords can be retrieved by
+void wakeWordCallback() => {..}
 
-```csharp
-using Picovoice
+string contextPath = "/absolute/path/to/context.rhn";
 
-foreach (string keyword in Porcupine.KEYWORDS)
+void inferenceCallback(Inference inference)
 {
-    Console.WriteLine(keyword);
+    // `inference` exposes three immutable properties:
+    // (1) `IsUnderstood`
+    // (2) `Intent`
+    // (3) `Slots`
+    // ..
 }
+
+Picovoice handle = new Picovoice(keywordPath, 
+                                 wakeWordCallback, 
+                                 contextPath,
+                                 inferenceCallback); 
+
 ```
 
-Porcupine can detect multiple keywords concurrently
+`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+(with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
+invoked upon completion of follow-on voice command inference.
 
-```csharp
-using Picovoice
 
-Porcupine handle = Porcupine.Create(keywords: new List<string>{ "bumblebee", "picovoice" });
-```
-
-To detect non-default keywords use the `keywordPaths` input argument instead
-
-```csharp
-using Picovoice
-
-var keywordPaths = new List<string>{ "/absolute/path/to/keyword/one", "/absolute/path/to/keyword/two", ...}
-
-Porcupine handle = Porcupine.Create(keywordPaths: keywordPaths);
-```
-
-The sensitivity of the engine can be tuned per-keyword using the `sensitivities` input argument
-
-```csharp
-using Picovoice
-
-Porcupine handle = Porcupine.Create(keywords: new List<string>{ "grapefruit", "porcupine" },  
-                                    sensitivities: new List<float>{ 0.6f, 0.35f });
-```
-
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
-`[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
-
-When initialized, the valid sample rate is given by `handle.SampleRate`. Expected frame length (number of audio samples
-in an input array) is `handle.FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on
-single-channel audio.
+When instantiated, valid sample rate can be obtained via `handle.SampleRate`. Expected number of audio samples per
+frame is `handle.FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```csharp
 short[] GetNextAudioFrame()
@@ -90,11 +76,7 @@ short[] GetNextAudioFrame()
 
 while(true)
 {
-    var keywordIndex = handle.Process(GetNextAudioFrame());
-    if(keywordIndex >= 0)
-    {
-	    // .. detection event logic/callback
-    }
+    handle.Process(GetNextAudioFrame());    
 }
 ```
 
@@ -102,13 +84,13 @@ Porcupine will have its resources freed by the garbage collector, but to have re
 immediately after use, wrap it in a using statement: 
 
 ```csharp
-using(Porcupine handle = Porcupine.Create(keywords: new List<string> { "picovoice" }))
+using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback))
 {
-    // .. Porcupine usage here
+    // .. Picovoice usage here
 }
 ```
 
 ## Demos
 
-The [Porcupine dotnet demo project](/demo/dotnet) is a .NET Core command line application that allows for 
-processing real-time audio (i.e. microphone) and files using Porcupine.
+The [Picovoice dotnet demo](/demo/dotnet) is a .NET Core command line application that allows for 
+processing real-time audio (i.e. microphone) and files using Picovoice.
