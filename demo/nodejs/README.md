@@ -121,7 +121,7 @@ Inference result:
 Now try again, but this time say something that the context is not designed to understand, like "tell me a joke":
 
 ```bash
-pv-mic-demo --context_file_path_path ../../resources/contexts/mac/smart_lighting_mac.rhn
+pv-mic-demo --context_file_path ../../resources/contexts/mac/smart_lighting_mac.rhn
 
 ...
 
