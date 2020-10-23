@@ -20,7 +20,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Installation
 
-You can install the latest version of Porcupine by getting the latest [Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
+You can install the latest version of Picovoice by adding the latest [Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
 ```bash
 dotnet add package Picovoice
