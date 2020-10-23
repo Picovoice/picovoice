@@ -1,21 +1,21 @@
-# Porcupine Wake Word Engine Demos
+# Picovoice Demos
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-This package contains .NET Core command line demos for processing real-time audio (i.e. microphone) and audio files
-using Porcupine wake word engine.
+This package contains demos and commandline utilities for processing real-time audio (i.e. microphone) and audio files
+using Picovoice platform.
 
-## Porcupine
+## Picovoice
 
-Porcupine is a highly-accurate and lightweight wake word engine. It enables building always-listening voice-enabled
-applications. 
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-Porcupine is:
-
-- using deep neural networks trained in real-world environments.
-- compact and computationally-efficient making it perfect for IoT.
-- scalable. It can detect multiple always-listening voice commands with no added CPU/memory footprint.
-- self-service. Developers can train custom wake phrases using [Picovoice Console](https://picovoice.ai/console/).
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Compatibility
 
@@ -26,21 +26,23 @@ Porcupine is:
 
 Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
 
-MicDemo uses [OpenAL](https://openal.org/). On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
+The Microphone Demo uses [OpenAL](https://openal.org/). You must install this before running the demo.  
 
-On Linux use apt-get
+On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
+
+On Linux use apt-get:
 
 ```bash
 sudo apt-get install libopenal-dev
 ```
 
-On Mac use Brew
+On Mac use Brew:
 
 ```bash
 brew install openal-soft
 ```
 
-Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI
+Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI:
 
 ```bash
 dotnet build -c MicDemo.Release
@@ -52,80 +54,37 @@ dotnet build -c FileDemo.Release
 NOTE: the working directory for all dotnet commands is:
 
 ```bash
-porcupine/demo/dotnet/PorcupineDemo
+picovoice/demo/dotnet/PicovoiceDemo
 ```
 
 ### File Demo
 
-The file demo uses Porcupine to scan for keywords in a wave file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
-Porcupine processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
-The following processes a file looking for instances of the phrase "Picovoice":
+The file demo uses Picovoice to scan for keywords and commands in an audio file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
+Picovoice processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
+The following processes a file looking for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and infers spoken commands
+using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 ```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords picovoice
+dotnet run -c FileDemo.Release -- \
+--input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
-
-`keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string:
-
-```bash
-dotnet run -c FileDemo.Release -- --help
-```
-
-To detect multiple phrases concurrently provide them as separate arguments:
-
-```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} --keywords grasshopper porcupine
-```
-
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_paths` argument:
-
-```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
---keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
-```
-
-The sensitivity of the engine can be tuned per keyword using the `sensitivities` input argument:
-
-```bash
-dotnet run -c FileDemo.Release -- --input_audio_path ${AUDIO_PATH} \
---keywords grasshopper porcupine --sensitivities 0.3 0.6
-```
-
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating point number within
-`[0, 1]`. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 ### Microphone Demo
 
-This demo opens an audio stream from a microphone and detects utterances of a given wake word. The following opens the default
-microphone and detects occurrences of "Picovoice":
+This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
+incoming audio from the microphone for instances of the wake phrase defined in the file located at
+`${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the follow-on spoken command using the context defined by the file
+located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 ```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice
+dotnet run -c MicDemo.Release -- \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
 
-`keywords` is a shorthand for using default keyword files shipped with the package. The list of default keyword files
-can be seen in the usage string:
-
-```bash
-dotnet run -c MicDemo.Release -- --help
-```
-
-To detect multiple phrases concurrently provide them as separate arguments:
-
-```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice porcupine
-```
-
-To detect non-default keywords (e.g. models created using [Picovoice Console](https://picovoice.ai/console/))
-use `keyword_paths` argument:
-
-```bash
-dotnet run -c MicDemo.Release -- --keyword_paths ${KEYWORD_PATH_ONE} ${KEYWORD_PATH_TWO}
-```
-
-It is possible that the default audio input device is not the one you wish to use. There are a couple
+It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
 ```bash
@@ -145,13 +104,20 @@ You can use the device index to specify which microphone to use for the demo. Fo
 microphone in the above example, you can invoke the demo application as below:
 
 ```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1
+dotnet run -c MicDemo.Release -- \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--audio_device_index 1
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
 ```bash
-dotnet run -c MicDemo.Release -- --keywords picovoice --audio_device_index 1 --output_path ./test.wav
+dotnet run -c MicDemo.Release -- \
+--keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--audio_device_index 1
+--output_path ./test.wav
 ```
 
 If after listening to stored file there is no apparent problem detected please open an issue.
