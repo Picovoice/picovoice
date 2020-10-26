@@ -1349,7 +1349,7 @@
       };
 
       start = function () {
-        PorcupineRhinoManager.start(
+        PicovoiceManager.start(
           KEYWORDS_ID,
           SENSITIVITIES,
           keywordDetectionCallback,
@@ -1371,7 +1371,7 @@
       };
 
       stop = function () {
-        PorcupineRhinoManager.stop();
+        PicovoiceManager.stop();
 
         document
           .querySelector("#demo_button")
