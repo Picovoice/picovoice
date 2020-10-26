@@ -37,6 +37,7 @@ spoken command:
   - [Table of Contents](#table-of-contents)
   - [Performance](#performance)
   - [Demos](#demos)
+    - [JavaScript Demos](#javascript-demos)
     - [NodeJS Demos](#nodejs-demos)
     - [Python Demos](#python-demos)
     - [.NET Demos](#net-demos)
