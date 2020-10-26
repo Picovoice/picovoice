@@ -51,8 +51,8 @@
       "to": "./public/scripts/rhino_worker.js"
     },
     {
-      "from": "../shared/ppn_rhn_manager.js",
-      "to": "./public/scripts/ppn_rhn_manager.js"
+      "from": "../shared/picovoice_manager.js",
+      "to": "./public/scripts/picovoice_manager.js"
     },
     {
       "from": "../../../resources/porcupine/lib/wasm/pv_porcupine.js",

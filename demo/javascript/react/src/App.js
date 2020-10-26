@@ -388,7 +388,8 @@ export default function LightingDemo(props) {
               various aspects of the lights in this house.
             </p>
             <p>
-              To start any command, say <strong>"Picovoice"</strong> to wake the device.
+              To start any command, say <strong>"Picovoice"</strong> to wake the
+              device.
             </p>
 
             <h3>Turning The Lights On/Off</h3>
@@ -956,48 +957,49 @@ export default function LightingDemo(props) {
               </text>
             </svg>
           </div>
-          <div className = "alerts-container">
-
-          <button
-            disabled={demoLoading}
-            className={listening && !demoLoading ? "btn-danger" : "btn-primary"}
-            variant="primary"
-            onClick={() => toggleListening()}
-            id="demo-button"
-          >
-            {!demoLoading && listening && "Stop Demo"}
-            {!demoLoading && !listening && "Start Listening"}
-            {demoLoading && "Loading…"}
-          </button>
-          <div className="progress-indicator">
-            {demoLoading && (
-              <>
-                <div className="spinner initializing"></div>
-                <div>initializing Demo...</div>
-              </>
-            )}
-            {listening && !demoLoading && !wakePhrase && (
-              <>
-                <div className="spinner wakephrase"></div>
-                <div>Listening for "Picovoice"...</div>
-              </>
-            )}
-            {listening && !demoLoading && wakePhrase && (
-              <>
-                <div className="spinner command"></div>
-                <div>Listening for command...</div>
-              </>
-            )}
-          </div>
-            {message !== "" && (
-              <div className = "message">{message}</div>
-            )}
+          <div className="alerts-container">
+            <button
+              disabled={demoLoading}
+              className={
+                listening && !demoLoading ? "btn-danger" : "btn-primary"
+              }
+              variant="primary"
+              onClick={() => toggleListening()}
+              id="demo-button"
+            >
+              {!demoLoading && listening && "Stop Demo"}
+              {!demoLoading && !listening && "Start Listening"}
+              {demoLoading && "Loading…"}
+            </button>
+            <div className="progress-indicator">
+              {demoLoading && (
+                <>
+                  <div className="spinner initializing"></div>
+                  <div>Initializing Demo...</div>
+                </>
+              )}
+              {listening && !demoLoading && !wakePhrase && (
+                <>
+                  <div className="spinner wakephrase"></div>
+                  <div>Listening for "Picovoice"...</div>
+                </>
+              )}
+              {listening && !demoLoading && wakePhrase && (
+                <>
+                  <div className="spinner command"></div>
+                  <div>Listening for follow-on command...</div>
+                </>
+              )}
+            </div>
+            {message !== "" && <div className="message">{message}</div>}
             {intentFailed && (
-              <div className = "message">Speech-to-intent engine couldn't understand your command</div>
+              <div className="message">
+                The Rhino Speech-to-Intent engine couldn't understand your
+                command
+              </div>
             )}
-        </div>
           </div>
-          
+        </div>
       </div>
     </>
   );

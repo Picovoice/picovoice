@@ -7,7 +7,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-PorcupineRhinoManager = (function () {
+PicovoiceManager = (function () {
   let porcupineWorker;
   let rhinoWorker;
   let ppnReady = false;
@@ -17,6 +17,7 @@ PorcupineRhinoManager = (function () {
   let keywordDetectionCallback;
   let inferenceCallback;
 
+  // When false, Porcupine will listen for the Wake Word. When true, Rhino will listen to the follow-on command.
   let isWakeWordDetected = false;
 
   let start = function (

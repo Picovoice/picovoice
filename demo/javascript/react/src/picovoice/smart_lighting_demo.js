@@ -7,7 +7,7 @@ const downsamplingWorkerUrl = `${process.env.PUBLIC_URL}/scripts/downsampling_wo
 
 class SmartLightingDemo {
   constructor() {
-    this.ppnRhnMgr = window.PorcupineRhinoManager;
+    this.picovoiceMgr = window.PicovoiceManager;
     this.keywordIDs = {
       picovoice: Buffer.from(PICOVOICE_64, "base64"),
     };
@@ -22,7 +22,7 @@ class SmartLightingDemo {
   };
 
   start = (initCallback, ppnCallback, rhnCallback) => {
-    this.ppnRhnMgr.start(
+    this.picovoiceMgr.start(
       this.keywordIDs,
       this.sensitivities,
       ppnCallback,
@@ -37,14 +37,14 @@ class SmartLightingDemo {
   };
 
   refresh = (initCallback, ppnCallback, rhnCallback) => {
-    if (this.ppnRhnMgr !== null) {
-      this.ppnRhnMgr.refresh(initCallback, ppnCallback, rhnCallback);
+    if (this.picovoiceMgr !== null) {
+      this.picovoiceMgr.refresh(initCallback, ppnCallback, rhnCallback);
     }
   };
 
   stop = () => {
-    if (this.ppnRhnMgr !== null) {
-      this.ppnRhnMgr.stop();
+    if (this.picovoiceMgr !== null) {
+      this.picovoiceMgr.stop();
     }
   };
 }

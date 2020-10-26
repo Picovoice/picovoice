@@ -8,4 +8,4 @@ pv_rhino.js
 pv_rhino.wasm
 rhino.js
 rhino_worker.js
-porcupine_rhino_manager.js
+picovoice_manager.js
