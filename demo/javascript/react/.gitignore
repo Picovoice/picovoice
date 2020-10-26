@@ -1,0 +1,7 @@
+node_modules
+models
+build
+public/scripts/
+
+src/picovoice/picovoice_64.js
+src/picovoice/lighting_context.js
