@@ -31,6 +31,7 @@ spoken command:
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 
 ## Table of Contents
+
 - [Picovoice](#picovoice)
   - [Why Picovoice?](#why-picovoice)
   - [Table of Contents](#table-of-contents)
@@ -43,12 +44,12 @@ spoken command:
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
   - [SDKs](#sdks)
-      - [NodeJS](#nodejs)
-      - [Python](#python)
-      - [.NET](#net)
-      - [Java](#java)
-      - [Android](#android)
-      - [iOS](#ios)
+    - [NodeJS](#nodejs)
+    - [Python](#python)
+    - [.NET](#net)
+    - [Java](#java)
+    - [Android](#android)
+    - [iOS](#ios)
   - [Releases](#releases)
 
 ## Performance
@@ -71,7 +72,6 @@ alternatives with wide margins.
 
 If using SSH, clone the repository with:
 
-
 ```bash
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
 ```
@@ -81,6 +81,10 @@ If using HTTPS, then type
 ```bash
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 ```
+
+### JavaScript Demos
+
+There is a ["Vanilla" JavaScript demo](./demo/javascript/vanilla) and [React demo](./demo/javascript/react) available, both of which [run offline in the browser](https://picovoice.ai/blog/offline-voice-ai-in-a-web-browser/).
 
 ### NodeJS Demos
 
@@ -134,7 +138,7 @@ dotnet run -c MicDemo.Release -- \
 ```
 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
-incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the 
+incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the
 follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 In order to process audio files (e.g. WAV) for keywords and commands run:
@@ -159,7 +163,7 @@ java -jar picovoice-mic-demo.jar \
 ```
 
 This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
-incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the 
+incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the
 follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 In order to process audio files (e.g. WAV) for keywords and commands run:
@@ -352,10 +356,10 @@ void inferenceCallback(Inference inference)
     // ..
 }
 
-Picovoice handle = new Picovoice(keywordPath, 
-                                 wakeWordCallback, 
+Picovoice handle = new Picovoice(keywordPath,
+                                 wakeWordCallback,
                                  contextPath,
-                                 inferenceCallback); 
+                                 inferenceCallback);
 
 ```
 
@@ -379,12 +383,12 @@ short[] GetNextAudioFrame()
 
 while(true)
 {
-    handle.Process(GetNextAudioFrame());    
+    handle.Process(GetNextAudioFrame());
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed 
-immediately after use, wrap it in a using statement: 
+Porcupine will have its resources freed by the garbage collector, but to have resources freed
+immediately after use, wrap it in a using statement:
 
 ```csharp
 using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback))
@@ -416,7 +420,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
     // ..
 };
 
-try{        
+try{
     Picovoice handle = new Picovoice.Builder()
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
@@ -446,7 +450,7 @@ short[] getNextAudioFrame()
 
 while(true)
 {
-    handle.process(getNextAudioFrame());    
+    handle.process(getNextAudioFrame());
 }
 ```
 
