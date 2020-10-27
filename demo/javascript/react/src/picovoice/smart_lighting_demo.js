@@ -1,8 +1,7 @@
 import { LIGHTING_CONTEXT } from "./lighting_context.js";
 import { PICOVOICE_64 } from "./picovoice_64.js";
 
-const porcupineWorkerUrl = `${process.env.PUBLIC_URL}/scripts/porcupine_worker.js`;
-const rhinoWorkerUrl = `${process.env.PUBLIC_URL}/scripts/rhino_worker.js`;
+const picovoiceWorkerUrl = `${process.env.PUBLIC_URL}/scripts/picovoice_worker.js`;
 const downsamplingWorkerUrl = `${process.env.PUBLIC_URL}/scripts/downsampling_worker.js`;
 
 class SmartLightingDemo {
@@ -30,8 +29,7 @@ class SmartLightingDemo {
       rhnCallback,
       this.errorCallback,
       initCallback,
-      porcupineWorkerUrl,
-      rhinoWorkerUrl,
+      picovoiceWorkerUrl,
       downsamplingWorkerUrl
     );
   };
