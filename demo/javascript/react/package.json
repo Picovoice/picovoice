@@ -47,12 +47,12 @@
       "to": "./public/scripts/pv_rhino.wasm"
     },
     {
-      "from": "../shared/rhino_worker.js",
-      "to": "./public/scripts/rhino_worker.js"
-    },
-    {
       "from": "../shared/picovoice_manager.js",
       "to": "./public/scripts/picovoice_manager.js"
+    },
+    {
+      "from": "../shared/picovoice_worker.js",
+      "to": "./public/scripts/picovoice_worker.js"
     },
     {
       "from": "../../../resources/porcupine/lib/wasm/pv_porcupine.js",
@@ -61,10 +61,6 @@
     {
       "from": "../../../resources/porcupine/lib/wasm/pv_porcupine.wasm",
       "to": "./public/scripts/pv_porcupine.wasm"
-    },
-    {
-      "from": "../../../resources/porcupine/demo/javascript/scripts/porcupine_worker.js",
-      "to": "./public/scripts/porcupine_worker.js"
     },
     {
       "from": "../../../resources/porcupine/binding/javascript/porcupine.js",

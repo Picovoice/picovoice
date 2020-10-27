@@ -8,104 +8,81 @@
 */
 
 PicovoiceManager = (function () {
-  let porcupineWorker;
-  let rhinoWorker;
+  let picovoiceWorker;
   let ppnReady = false;
   let rhnReady = false;
   let downsamplingScript;
   let initCallback;
   let keywordDetectionCallback;
   let inferenceCallback;
-
-  // When false, Porcupine will listen for the Wake Word. When true, Rhino will listen to the follow-on command.
-  let isWakeWordDetected = false;
+  let errorCallback;
+  let keywordsID;
+  let keywordSensitivities;
+  let context;
 
   let start = function (
-    keywordsID,
-    keywordSensitivities,
-    keywordDetectionCallback_,
-    context,
-    inferenceCallback_,
-    errorCallback_,
-    initCallback_,
-    porcupineWorkerScript,
-    rhinoWorkerScript,
-    downsamplingScript_
+    _keywordsID,
+    _keywordSensitivities,
+    _keywordDetectionCallback,
+    _context,
+    _inferenceCallback,
+    _errorCallback,
+    _initCallback,
+    _picovoiceWorkerScript,
+    _downsamplingScript
   ) {
     ppnReady = false;
     rhnReady = false;
-    porcupineWorker = new Worker(porcupineWorkerScript);
-    rhinoWorker = new Worker(rhinoWorkerScript);
+    picovoiceWorker = new Worker(_picovoiceWorkerScript);
 
-    downsamplingScript = downsamplingScript_;
-    errorCallback = errorCallback_;
-    initCallback = initCallback_;
-    keywordDetectionCallback = keywordDetectionCallback_;
-    inferenceCallback = inferenceCallback_;
+    keywordsID = _keywordsID;
+    keywordSensitivities = _keywordSensitivities;
+    context = _context;
+    downsamplingScript = _downsamplingScript;
+    errorCallback = _errorCallback;
+    initCallback = _initCallback;
+    keywordDetectionCallback = _keywordDetectionCallback;
+    inferenceCallback = _inferenceCallback;
 
-    porcupineWorker.onmessage = function (messageEvent) {
-      if (messageEvent.data.status === "ppn-init") {
-        ppnReady = true;
-        porcupineWorker.postMessage({
+    picovoiceWorker.onmessage = function (messageEvent) {
+      if (messageEvent.data.status === "pv-init") {
+        picovoiceWorker.postMessage({
           command: "init",
           keywordIDs: keywordsID,
           sensitivities: keywordSensitivities,
+          context: context,
         });
-        ready(this);
+        WebVoiceProcessor.start([this], downsamplingScript, errorCallback);
+        initCallback();
       } else {
-        if (!isWakeWordDetected) {
-          isWakeWordDetected = messageEvent.data.keyword !== null;
-
-          if (isWakeWordDetected) {
-            keywordDetectionCallback(messageEvent.data.keyword);
-          }
+        if (messageEvent.data.keyword !== undefined) {
+          keywordDetectionCallback(messageEvent.data.keyword);
+        }
+        if (messageEvent.data.isUnderstood !== undefined) {
+          inferenceCallback(messageEvent.data);
         }
       }
     }.bind(this);
-
-    rhinoWorker.onmessage = function (messageEvent) {
-      if (messageEvent.data.status === "rhn-init") {
-        rhnReady = true;
-        rhinoWorker.postMessage({ command: "init", context: context });
-        ready(this);
-      } else {
-        inferenceCallback(messageEvent.data);
-        isWakeWordDetected = false;
-      }
-    }.bind(this);
-  };
-
-  let ready = function (engine) {
-    if (ppnReady && rhnReady) {
-      WebVoiceProcessor.start([engine], downsamplingScript, errorCallback);
-      initCallback();
-    }
   };
 
   let refresh = function (
-    initCallback_,
-    keywordDetectionCallback_,
-    inferenceCallback_
+    _initCallback,
+    _keywordDetectionCallback,
+    _inferenceCallback
   ) {
-    initCallback = initCallback_;
-    keywordDetectionCallback = keywordDetectionCallback_;
-    inferenceCallback = inferenceCallback_;
+    initCallback = _initCallback;
+    keywordDetectionCallback = _keywordDetectionCallback;
+    inferenceCallback = _inferenceCallback;
   };
 
   let stop = function () {
     WebVoiceProcessor.stop();
-    porcupineWorker.postMessage({ command: "release" });
-    porcupineWorker = null;
-    rhinoWorker.postMessage({ command: "release" });
-    rhinoWorker = null;
+    picovoiceWorker.postMessage({ command: "release" });
+    picovoiceWorker = null;
   };
 
   let processFrame = function (frame) {
-    if (!isWakeWordDetected) {
-      porcupineWorker.postMessage({ command: "process", inputFrame: frame });
-    } else {
-      rhinoWorker.postMessage({ command: "process", inputFrame: frame });
-    }
+    picovoiceWorker.postMessage({ command: "process", inputFrame: frame });
   };
 
   return {
