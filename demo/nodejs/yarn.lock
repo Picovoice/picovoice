@@ -2,23 +2,23 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-1.0.0.tgz#7ef9a8d5b8dc962132888dcd6672836340e3d9b3"
-  integrity sha512-QvpGhjDw9WOVchWxWo4UH0Oqb2UypWiOP/OqRErPL7aGDAQuaSIY/trPov7aqeCVVgQ16f7R+kKQ5+GqjucANw==
+"@picovoice/picovoice-node@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-1.0.1.tgz#2231596d20342ce0da1d917cc888fc22537837a2"
+  integrity sha512-ZjRmPjqy1306muqVuMhD8aZUF8+4I6EPnCj7ccKL0v7Jv/KuJAucBUQPwZeyjqZxE+PoLprSP1GNyQOuVkeWzQ==
   dependencies:
-    "@picovoice/porcupine-node" "^1.8.3"
-    "@picovoice/rhino-node" "^1.5.3"
+    "@picovoice/porcupine-node" "^1.8.4"
+    "@picovoice/rhino-node" "^1.5.4"
 
-"@picovoice/porcupine-node@^1.8.3":
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.8.3.tgz#5f4e8d07be6644d60d8ed1f70ecfbcdbe32306e1"
-  integrity sha512-/I/8M5T8fVGHyzSvFd4TScsHKrbEWcTbZ5JBzY65qY61VksHwoCxnVD0uMG99FH4VYuLiBIWF0ujCmnAnhsDzw==
+"@picovoice/porcupine-node@^1.8.4":
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.8.4.tgz#bb2b523cb18b349a6db1b6da359e561a44adcd60"
+  integrity sha512-+EyCjvYA9mkN0mrV8gn9ApNodUktcM/72RJMGYyI4mrFK9CQdf68REsL9TIhl3TzYA6B+oh3BoIL0cQfNJFP/w==
 
-"@picovoice/rhino-node@^1.5.3":
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-1.5.3.tgz#3a0dfd533e54cfcd5e47b61473ce95715007732e"
-  integrity sha512-5REwLinRMFfOAEYKC/sF4oCVyZbWXb4omlwFZrm4zpoVm4LIINjvZWq80B1whse+A+QRUD/wxgIX/SmE6fWJuw==
+"@picovoice/rhino-node@^1.5.4":
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-1.5.4.tgz#e79318ba56c9c4ffab06be87a47bb819fd3b2f96"
+  integrity sha512-p3qB0rQm0KtAOMo7pOzCTHapAZCrNt1CWTZkOTvd/LW3/K2PCl85JQD9QaQwohiFBegoduKZcossihBC0gEQwg==
 
 commander@^6.1.0:
   version "6.1.0"

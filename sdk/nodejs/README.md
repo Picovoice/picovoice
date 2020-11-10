@@ -14,7 +14,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Compatibility
 
-This binding is for running Porcupine on **NodeJS 12+** on the following platforms:
+This binding is for running Porcupine on **NodeJS 10+** on the following platforms:
 
 - Linux (x86_64)
 - macOS (x86_64)
