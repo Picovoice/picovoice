@@ -1,13 +1,14 @@
-import time
-import apa102
-from threading import Thread
-import pyaudio
 import struct
 import sys
-from picovoice import Picovoice
-from gpiozero import LED
+from threading import Thread
 
-COLOR_CODES = dict(
+import pyaudio
+from gpiozero import LED
+from picovoice import Picovoice
+
+from . import apa102
+
+COLORS_RGB = dict(
     blue=(0, 0, 255),
     green=(0, 255, 0),
     orange=(255, 128, 0),
@@ -16,20 +17,20 @@ COLOR_CODES = dict(
     red=(255, 0, 0),
     white=(255, 255, 255),
     yellow=(255, 255, 51),
-    off=(0, 0, 0)
 )
 
 driver = apa102.APA102(num_led=12)
 power = LED(5)
 power.on()
 
+
 class PicovoiceDemo(Thread):
     def __init__(
             self,
             keyword_path,
             context_path,
-            porcupine_sensitivity=0.7,
-            rhino_sensitivity=0.0):
+            porcupine_sensitivity=0.6,
+            rhino_sensitivity=0.3):
         super(PicovoiceDemo, self).__init__()
 
         def inference_callback(inference):
@@ -42,18 +43,17 @@ class PicovoiceDemo(Thread):
             inference_callback=inference_callback,
             porcupine_sensitivity=porcupine_sensitivity,
             rhino_sensitivity=rhino_sensitivity)
-        
-        print(self._picovoice._rhino.context_info)
+
+        self._context = self._picovoice._rhino.context_info
 
         self._color = 'blue'
-        self._brightness = 100
 
-    def _set(self, color, brightness=10):
+    @staticmethod
+    def _set_color(color):
         for i in range(12):
-            _driver.set_pixel(i, color[0], color[1], color[2], bright_percent=brightness)
-        
-        _driver.show()
-    
+            driver.set_pixel(i, color[0], color[1], color[2])
+        driver.show()
+
     @staticmethod
     def _wake_word_callback():
         print('[wake word]\n')
@@ -73,16 +73,12 @@ class PicovoiceDemo(Thread):
         if inference.is_understood:
             if inference.intent == 'turnLights':
                 if inference.slots['state'] == 'off':
-                    self._set(COLOR_CODES['off'])
+                    self._set_color((0, 0, 0))
                 else:
-                    self._set(COLOR_CODES[self._color])
+                    self._set_color(COLORS_RGB[self._color])
             elif inference.intent == 'changeColor':
                 self._color = inference.slots['color']
-                self._set(COLOR_CODES[self._color])
-            elif inference.intent == 'changeBrightless':
-                self._brightness = int(inference.slots['brightness'][:-1])
-                print(self._brightness)
-                self._set(self._color, self._brightness)
+                self._set_color(COLORS_RGB[self._color])
             else:
                 raise NotImplementedError()
 
@@ -99,6 +95,8 @@ class PicovoiceDemo(Thread):
                 format=pyaudio.paInt16,
                 input=True,
                 frames_per_buffer=self._picovoice.frame_length)
+
+            print(self._context)
 
             print('[Listening ...]')
 
