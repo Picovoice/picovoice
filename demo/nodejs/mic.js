@@ -12,6 +12,7 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 const { program } = require("commander");
 const Picovoice = require("@picovoice/picovoice-node");
 const { PvArgumentError } = require("@picovoice/picovoice-node/errors");
@@ -132,15 +133,12 @@ function micDemo() {
     );
   }
 
-  let contextName = contextPath
-    .split(/[\\|\/]/)
-    .pop()
-    .split("_")[0];
+  let contextFilename = path.basename(contextPath)
 
   let keywordCallback = function (keyword) {
-    console.log(`Wake word '${friendlyKeywordName}' detected`);
+    console.log(`Wake word '${friendlyKeywordName}' detected.`);
     console.log(
-      `Listening for speech within the context of '${contextName}'. Please speak your phrase into the microphone. `
+      `Listening for speech within the context of '${contextFilename}'. Please speak your phrase into the microphone. `
     );
   };
 
@@ -200,8 +198,8 @@ function micDemo() {
   var frameAccumulator = [];
 
   recording.stream().on("error", (data) => {
-    // Error event is triggered when stream is closed on Ubuntu
-    // Swallow the error since it is harmless for this demo.
+    console.log()
+    console.warn(error);
   });
 
   recording.stream().on("data", (data) => {

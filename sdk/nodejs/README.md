@@ -12,6 +12,8 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
   [\*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
+See the [Picovoice Docs](https://picovoice.ai/docs/quick-start/picovoice-nodejs/) for additional details.
+
 ## Compatibility
 
 This binding is for running Porcupine on **NodeJS 10+** on the following platforms:
@@ -66,7 +68,7 @@ Upon constructing the Picovoice class, send it frames of audio via its `process`
 
 ```javascript
 // process audio frames that match the Picovoice requirements (16-bit linear pcm audio, single-channel)
-while(true) {
+while (true) {
   handle.process(frame_of_audio);
 }
 ```
