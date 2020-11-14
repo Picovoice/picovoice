@@ -16,8 +16,7 @@ import setuptools
 
 os.system('git clean -dfx')
 
-package_folder = os.path.join(os.path.dirname(__file__), 'picovoice')
-os.mkdir(package_folder)
+package_folder = os.path.join(os.path.dirname(__file__), 'pvrespeakerdemo')
 
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
 shutil.copy(
