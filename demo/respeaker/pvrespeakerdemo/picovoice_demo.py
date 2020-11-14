@@ -41,8 +41,8 @@ class PicovoiceDemo(Thread):
             self,
             keyword_path,
             context_path,
-            porcupine_sensitivity=0.6,
-            rhino_sensitivity=0.3):
+            porcupine_sensitivity=0.75,
+            rhino_sensitivity=0.25):
         super(PicovoiceDemo, self).__init__()
 
         def inference_callback(inference):
