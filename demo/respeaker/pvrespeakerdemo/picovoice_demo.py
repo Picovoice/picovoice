@@ -9,6 +9,7 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import os
 import struct
 import sys
 from threading import Thread
@@ -129,5 +130,12 @@ class PicovoiceDemo(Thread):
             self._picovoice.delete()
 
 
+def main():
+    o = PicovoiceDemo(
+        os.path.join(os.path.dirname(__file__), 'picovoice_raspberry-pi.ppn'),
+        os.path.join(os.path.dirname(__file__), 'respeaker_raspberry-pi.rhn'))
+    o.run()
+
+
 if __name__ == '__main__':
-    PicovoiceDemo(sys.argv[1], sys.argv[2]).run()
+    main()

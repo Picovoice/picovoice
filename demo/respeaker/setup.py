@@ -30,14 +30,14 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvrespeakerdemo",
-    version="1.0.0",
+    version="0.9.1",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice end-to-end voice platform demo for ReSpeaker 4-mic hat.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
-    packages=["picovoice"],
+    packages=["pvrespeakerdemo"],
     install_requires=["pvporcupine==1.8.7", "pvrhino==1.5.0", "spidev", "gpiozero"],
     include_package_data=True,
     classifiers=[
@@ -48,6 +48,11 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
+    entry_points=dict(
+        console_scripts=[
+            'picovoice_respeaker_demo=pvrespeakerdemo.picovoice_demo:main',
+        ],
+    ),
     python_requires='>=3',
     keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
