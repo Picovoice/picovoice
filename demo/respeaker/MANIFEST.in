@@ -1,0 +1,6 @@
+include pvrespeakerdemo/LICENSE
+include pvrespeakerdemo/__init__.py
+include pvrespeakerdemo/apa102.py
+include pvrespeakerdemo/picovoice_demo.py
+include pvrespeakerdemo/picovoice_raspberry-pi.ppn
+include pvrespeakerdemo/respeaker_raspberry-pi.rhn
