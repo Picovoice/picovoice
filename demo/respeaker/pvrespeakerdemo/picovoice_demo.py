@@ -17,7 +17,7 @@ import pyaudio
 from gpiozero import LED
 from picovoice import Picovoice
 
-import apa102
+from .apa102 import APA102
 
 COLORS_RGB = dict(
     blue=(0, 0, 255),
@@ -30,7 +30,7 @@ COLORS_RGB = dict(
     yellow=(255, 255, 51),
 )
 
-driver = apa102.APA102(num_led=12)
+driver = APA102(num_led=12)
 power = LED(5)
 power.on()
 
