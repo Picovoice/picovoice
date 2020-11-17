@@ -169,5 +169,11 @@ class Picovoice(object):
 
         return '1.0.0'
 
+    @property
+    def context_info(self):
+        """Context information."""
+
+        return self._rhino.context_info
+
     def __str__(self):
         return 'Picovoice %s {Porcupine %s, Rhino %s}' % (self.version, self._porcupine.version, self._rhino.version)

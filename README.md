@@ -6,14 +6,14 @@ Picovoice is the end-to-end platform for building voice products on your terms. 
 Picovoice runs entirely on-device while being more accurate. Using Picovoice, one can infer a user’s intent from a
 naturally spoken utterance such as:
 
-> "Hey Edison, set the lights in the living room to blue."
+> Hey Edison, set the lights in the living room to blue.
 
-Picovoice detects the occurrence of the custom wake word ("Hey Edison"), and then extracts the intent from the follow-on
+Picovoice detects the occurrence of the custom wake word (Hey Edison), and then extracts the intent from the follow-on
 spoken command:
 
 ```json
 {
-  "intent": "changeLightColor",
+  "intent": "changeColor",
   "slots": {
     "location": "living room",
     "color": "blue"
@@ -21,7 +21,7 @@ spoken command:
 }
 ```
 
-## Why Picovoice?
+## Why Picovoice
 
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
@@ -30,25 +30,68 @@ spoken command:
 - **Reliable:** Runs locally without needing continuous connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 
+## Build with Picovoice
+
+1. **Evaluate:** The Picovoice SDK is a cross-platform library for adding voice to anything. It includes some
+pre-trained speech models. The SDK is licensed under Apache 2.0 and available on GitHub to encourage independent
+benchmarking and integration testing. You are empowered to make a data-driven decision.
+
+2. **Design:** [Picovoice Console](https://picovoice.ai/console/) is a cloud-based platform for designing voice
+interfaces and training speech models, all within your web browser. No machine learning skills are required. Simply
+describe what you need with text and export trained models.
+
+3. **Develop:** Exported models can run on Picovoice SDK without requiring constant connectivity. The SDK runs on a wide
+range of platforms and supports a large number of frameworks. The Picovoice Console and Picovoice SDK enable you to
+design, build and iterate fast.
+
+4. **Deploy:** Deploy at scale without having to maintain complex cloud infrastructure. Avoid unbounded cloud fees,
+limitations, and control imposed by big tech.
+
+## Platform Features
+
+### Custom Wake Words
+
+Picovoice makes use of the [Porcupine wake word engine](https://github.com/Picovoice/porcupine) to detect utterances of
+given wake phrases. You can train custom wake words using Picovoice Console and then run the exported wake word model on
+the Picovoice SDK.
+
+### Intent Inference
+
+Picovoice relies on the [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) to directly infer user's
+intent from spoken commands within a given domain of interest (a "context"). You can design and train custom contexts
+for your product using Picovoice Console. The exported Rhino models then can run with the Picovoice SDK on any supported
+platform.
+
+## License & Terms
+
+The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. Picovoice Console offers
+two types of subscriptions: Personal and Enterprise. Personal accounts can train custom speech models that run on the
+Picovoice SDK, subject to limitations and strictly for non-commercial purposes. Personal accounts empower researchers,
+hobbyists, and tinkerers to experiment. Enterprise accounts can unlock all capabilities of Picovoice Console, are
+permitted for use in commercial settings, and have a path to graduate to commercial distribution.
+
 ## Table of Contents
 
 - [Picovoice](#picovoice)
-  - [Why Picovoice?](#why-picovoice)
+  - [Why Picovoice](#why-picovoice)
+  - [Build with Picovoice](#build-with-picovoice)
+  - [Platform Features](#platform-features)
   - [Table of Contents](#table-of-contents)
   - [Performance](#performance)
+  - [Picovoice Console](#picovoice-console)
   - [Demos](#demos)
-    - [JavaScript Demos](#javascript-demos)
-    - [NodeJS Demos](#nodejs-demos)
     - [Python Demos](#python-demos)
+    - [NodeJS Demos](#nodejs-demos)
     - [.NET Demos](#net-demos)
     - [Java Demos](#java-demos)
     - [Android Demos](#android-demos)
     - [iOS Demos](#ios-demos)
+    - [JavaScript Demos](#javascript-demos)
   - [SDKs](#sdks)
-    - [NodeJS](#nodejs)
     - [Python](#python)
-    - [.NET](#net)
-    - [Java](#java)
+    - [NodeJS](#nodejs)
+    - [.NET Demos](#net-demos)
+    - [Java Demos](#java-demos)
     - [Android](#android)
     - [iOS](#ios)
   - [Releases](#releases)
@@ -69,6 +112,12 @@ alternatives with wide margins.
 
 ![](resources/doc/rhino-benchmark.png)
 
+## Picovoice Console
+
+[Picovoice Console](https://picovoice.ai/console/) is a web-based platform for designing, testing, and training voice
+user interfaces. Using Picovoice Console you can train custom wake word, and domain-specific NLU (Speech-to-Intent)
+models.
+
 ## Demos
 
 If using SSH, clone the repository with:
@@ -77,106 +126,151 @@ If using SSH, clone the repository with:
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
 ```
 
-If using HTTPS, then type
+If using HTTPS, clone the repository with:
 
 ```bash
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 ```
 
-### JavaScript Demos
-
-There is a ["Vanilla" JavaScript demo](./demo/javascript/vanilla) and [React demo](./demo/javascript/react) available, both of which [run offline in the browser](https://picovoice.ai/blog/offline-voice-ai-in-a-web-browser/).
-
-### NodeJS Demos
-
-We have provided an NPM package with file-based and microphone Picovoice demos. You can do a global NPM install to make
-the `pv-file-demo` and `pv-mic-demo` commands available.
-
-```bash
-npm install -g @picovoice/picovoice-node-demo
-```
-
-```bash
-pv-file-demo --help
-pv-mic-demo --help
-```
-
-The file demo will allow you to test Picovoice against a WAV file that meets the audio processing requirements. The
-microphone demo requires you to setup dependencies that are **not included with NPM**. Please see the
-[demo instructions](./demo/nodejs) for details.
-
 ### Python Demos
 
-Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package
+Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
 
 ```bash
 sudo pip3 install picovoicedemo
 ```
 
-Check usage information
+From the root of the repository run the following in the terminal:
 
 ```bash
-picovoice_demo_mic --help
-picovoice_demo_file --help
+picovoice_demo_mic \
+--keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
+--context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
 
-The microphone demo opens an audio stream from a microphone, detected utterances of a given wake phrase, and infers
-intent from the follow-on spoken command. The file demo is useful for processing prerecorded audio file(s). After
-pressing the start button say:
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `raspberry-pi`, `beaglebone`, `linux`, `mac`,
+or `windows`). The microphone demo opens an audio stream from the microphone, detects utterances of a given wake
+phrase, and infers intent from the follow-on spoken command. Once the demo initializes, it prints `[Listening ...]`
+to the console. Then say:
 
-> Porcupine, set the lights in the living room to purple.
+> Porcupine, set the lights in the kitchen to purple.
+
+Upon success, the demo prints the following into the terminal:
+
+```text
+[wake word]
+
+{
+  intent : 'changeColor'
+  slots : {
+    location : 'kitchen'
+    color : 'purple'
+  }
+}
+```
+
+For more information regarding Python demos refer to their [documentation](/demo/python/README.md).
+
+### NodeJS Demos
+
+Make sure there is a working microphone connected to your device. Refer to documentation within
+[node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) to set up your microphone for access from NodeJS.
+Then install the demo package:
+
+```bash
+npm install -g @picovoice/picovoice-node-demo
+```
+
+From the root of the repository run:
+
+```bash
+pv-mic-demo \
+-k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
+-c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
+```
+
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `raspberry-pi`, `linux`, or `mac`). The
+microphone demo opens an audio stream from the microphone, detects utterances of a given wake
+phrase, and infers intent from the follow-on spoken command. Once the demo initializes, it prints
+`Listening for wake word 'porcupine' ...` to the console. Then say:
+
+> Porcupine, turn on the lights.
+
+Upon success, the demo prints the following into the terminal:
+
+```text
+Inference:
+{
+    "isUnderstood": true,
+    "intent": "changeLightState",
+    "slots": {
+        "state": "on"
+    }
+}
+```
+
+Please see the [demo instructions](./demo/nodejs/README.md) for details.
 
 ### .NET Demos
 
-Install [OpenAL](https://openal.org/) before using the demo.
-
-In the demo project directory and with a working microphone connected to your device, run the following in the terminal:
+Install [OpenAL](https://openal.org/). From the root of the repository run the following in the terminal:
 
 ```bash
-dotnet run -c MicDemo.Release -- \
---keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
+dotnet run -p demo/dotnet/PicovoiceDemo/PicovoiceDemo.csproj -c MicDemo.Release -- \
+--keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
+--context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
 
-This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
-incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the
-follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux`, `mac`, or `windows`). The microphone
+demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the
+follow-on spoken command. Once the demo initializes, it prints `Listening...` to the console. Then say:
 
-In order to process audio files (e.g. WAV) for keywords and commands run:
+> Porcupine, dim the lights.
 
-```bash
-dotnet run -c FileDemo.Release -- \
---input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
---keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
+Upon success the following it printed into the terminal:
+
+```text
+[wake word]
+{
+  intent : 'changeIntensity'
+  slots : {
+    intensity : 'dim'
+  }
+}
 ```
 
-For more information about .NET demos go to [demo/dotnet](/demo/dotnet).
+For more information about .NET demos go to [demo/dotnet](/demo/dotnet/README.md).
 
 ### Java Demos
 
-In the demo bin directory and with a working microphone connected to your device, run the following in the terminal:
+Make sure there is a working microphone connected to your device. Then, from the root of the repository run the
+following in a terminal:
 
 ```bash
-java -jar picovoice-mic-demo.jar \
--k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
--c ${PATH_TO_RHINO_CONTEXT_FILE}
+java -jar demo/java/bin/picovoice-mic-demo.jar \
+-k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
+-c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
 
-This demo opens an audio stream from a microphone and detects utterances of a given wake word and commands within a given context. The following processes
-incoming audio from the microphone for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the
-follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux`, `mac`, or `windows`). The microphone
+demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the
+follow-on spoken command. Once the demo initializes, it prints `Listening ...` to the console. Then say:
 
-In order to process audio files (e.g. WAV) for keywords and commands run:
+> Porcupine, dim the lights.
 
-```bash
-java -jar picovoice-file-demo.jar \
--i ${PATH_TO_INPUT_AUDIO_FILE} \
--k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
--c ${PATH_TO_RHINO_CONTEXT_FILE}
+Upon success the following it printed into the terminal:
+
+```text
+[wake word]
+{
+  intent : 'changeIntensity'
+  slots : {
+    intensity : 'dim'
+  }
+}
 ```
 
-For more information about the Java demos go to [demo/java](/demo/java).
+For more information about the Java demos go to [demo/java](/demo/java/README.md).
 
 ### Android Demos
 
@@ -185,7 +279,7 @@ application. Press the start button and say
 
 > Porcupine, turn of the lights in the kitchen.
 
-For the full set of commands supported in the context refer to [demo's readme](/demo/android/README.md).
+For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
 
 ### iOS Demos
 
@@ -194,9 +288,74 @@ run the application. Press the start button and say
 
 > Porcupine, make the living room lights brighter.
 
-For the full set of commands supported in the context refer to [demo's readme](/demo/android/README.md).
+For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
+
+### JavaScript Demos
+
+There is a ["Vanilla" JavaScript demo](./demo/javascript/vanilla) and [React demo](./demo/javascript/react) available,
+both of which [run offline in the browser](https://picovoice.ai/blog/offline-voice-ai-in-a-web-browser/).
 
 ## SDKs
+
+### Python
+
+Install the package
+
+```bash
+pip3 install picovoice
+```
+
+Create a new instance of Picovoice:
+
+```python
+from picovoice import Picovoice
+
+keyword_path = ...
+
+def wake_word_callback():
+    pass
+
+context_path = ...
+
+def inference_callback(inference):
+    # `inference` exposes three immutable fields:
+    # (1) `is_understood`
+    # (2) `intent`
+    # (3) `slots`
+    pass
+
+handle = Picovoice(
+        keyword_path=keyword_path,
+        wake_word_callback=wake_word_callback,
+        context_path=context_path,
+        inference_callback=inference_callback)
+```
+
+`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`keyword_path`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+(with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
+invoked upon completion of follow-on voice command inference.
+
+When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
+frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio. The
+set of supported commands can be retrieved (in YAML format) via `handle.context_info`.
+
+```python
+def get_next_audio_frame():
+    pass
+
+while True:
+    handle.process(get_next_audio_frame())
+```
+
+When done resources have to be released explicitly
+
+```python
+handle.delete()
+```
 
 ### NodeJS
 
@@ -212,8 +371,9 @@ yarn add @picovoice/picovoice-node
 npm install @picovoice/picovoice-node
 ```
 
-The SDK provides the `Picovoice` class. Create an instance of this class using a Porcupine keyword and Rhino context
-file, as well as callback functions that will be invoked on wake word and inference events, respectively:
+The SDK provides the `Picovoice` class. Create an instance of this class using a Porcupine keyword (with `.ppn` suffix)
+and Rhino context file (with `.rhn` suffix), as well as callback functions that will be invoked on wake word detection
+and command inference completion events, respectively:
 
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
@@ -249,89 +409,12 @@ while (true) {
 }
 ```
 
-As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the
-built-in "picovoice" keyword and [sample "coffee maker" context](./resources/rhino/resources/contexts) to the Picovoice
-class, and then provide it a [test WAV file](./resources/audio_samples/picovoice-coffee.wav) that contains the following
-utterance:
-
-> Picovoice, make me a large coffee
-
-```bash
-Wake word detected
-
-Inference:
-{
-    "isUnderstood": true,
-    "intent": "orderDrink",
-    "slots": {
-        "size": "large",
-        "coffeeDrink": "coffee"
-    }
-}
-```
-
-### Python
-
-Install the package
-
-```bash
-pip3 install picovoice
-```
-
-Create a new instance of Picovoice runtime engine
-
-```python
-from picovoice import Picovoice
-
-keyword_path = ...
-
-def wake_word_callback():
-    pass
-
-context_path = ...
-
-def inference_callback(inference):
-    # `inference` exposes three immutable fields:
-    # (1) `is_understood`
-    # (2) `intent`
-    # (3) `slots`
-    pass
-
-handle = Picovoice(
-        keyword_path=keyword_path,
-        wake_word_callback=wake_word_callback,
-        context_path=context_path,
-        inference_callback=inference_callback)
-```
-
-`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
-`keyword_path`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
-`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
-invoked upon completion of follow-on voice command inference.
-
-When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
-frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
-
-```python
-def get_next_audio_frame():
-    pass
-
-while True:
-    handle.process(get_next_audio_frame())
-```
-
-When done resources have to be released explicitly
-
-```python
-handle.delete()
-```
+As the audio is processed through the Picovoice engines, the callbacks will fire.
 
 ### .NET
 
-You can install the latest version of Picovoice by adding the latest [Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
+You can install the latest version of Picovoice by adding the latest
+[Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
 ```bash
 dotnet add package Picovoice
@@ -389,7 +472,7 @@ while(true)
 ```
 
 Porcupine will have its resources freed by the garbage collector, but to have resources freed
-immediately after use, wrap it in a using statement:
+immediately after use, wrap it in a `using` statement:
 
 ```csharp
 using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback))
@@ -400,7 +483,7 @@ using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPat
 
 ### Java
 
-You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/binding/java/bin/).
+You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/sdk/java/bin/picovoice-1.0.0.jar).
 
 The easiest way to create an instance of the engine is with the Picovoice Builder:
 
