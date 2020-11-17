@@ -14,7 +14,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Compatibility
 
-- Java 8+
+- Java 11+
 - Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
 
 ## Installation
