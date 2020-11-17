@@ -1,10 +1,11 @@
-# Picovoice Platform
+## Picovoice Android Demos
 
-The default wake word in this demo is "Porcupine". The default Rhino Speech-to-Intent context is "smart lighting".
-Simply press start and the engine can recognize commands such as:
+The default wake word is "Porcupine". The default Rhino Speech-to-Intent context is "Smart Lighting". Simply press start
+and the engine can recognize commands such as:
 
-- "Porcupine, turn off the lights."
-- "Porcupine, set the lights in the bedroom to blue."
+> Porcupine, turn off the lights.
+>
+> Porcupine, set the lights in the bedroom to blue.
 
 See below for the full context:
 
