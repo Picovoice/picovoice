@@ -95,6 +95,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [Android](#android)
     - [iOS](#ios)
   - [Releases](#releases)
+  - [FAQ](#faq)
 
 ## Performance
 
@@ -706,3 +707,7 @@ when initialized input audio can be processed using `manager.start()`. The proce
 ### v1.0.0 - October 22, 2020
 
 - Initial release.
+
+## FAQ
+
+You can find the FAQ [here](https://picovoice.ai/docs/faq/picovoice/).
