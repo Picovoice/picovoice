@@ -15,13 +15,21 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "RhinoDemo.app"
-               BlueprintName = "RhinoDemo"
-               ReferencedContainer = "container:RhinoDemo.xcodeproj">
+               BuildableName = "PicovoiceDemo.app"
+               BlueprintName = "PicovoiceDemo"
+               ReferencedContainer = "container:PicovoiceDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES">
+      <Testables>
+      </Testables>
+   </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -37,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RhinoDemo.app"
-            BlueprintName = "RhinoDemo"
-            ReferencedContainer = "container:RhinoDemo.xcodeproj">
+            BuildableName = "PicovoiceDemo.app"
+            BlueprintName = "PicovoiceDemo"
+            ReferencedContainer = "container:PicovoiceDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -54,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "RhinoDemo.app"
-            BlueprintName = "RhinoDemo"
-            ReferencedContainer = "container:RhinoDemo.xcodeproj">
+            BuildableName = "PicovoiceDemo.app"
+            BlueprintName = "PicovoiceDemo"
+            ReferencedContainer = "container:PicovoiceDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

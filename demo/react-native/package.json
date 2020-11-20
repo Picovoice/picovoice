@@ -10,7 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "C:\\Users\\ian\\work\\github\\picovoice\\sdk\\react-native\\pkg\\picovoice-picovoice-react-native-1.0.0.tgz",
+    "@picovoice/picovoice-react-native": "/Users/ianlavery/work/github/picovoice/sdk/react-native/pkg/picovoice-picovoice-react-native-1.0.0.tgz",
     "@picovoice/porcupine-react-native": "^1.8.1",
     "@picovoice/react-native-voice-processor": "^1.0.0",
     "@picovoice/rhino-react-native": "^1.5.1",

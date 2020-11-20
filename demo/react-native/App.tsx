@@ -49,10 +49,10 @@ export default class App extends Component<Props, State> {
       await RNFS.copyFileRes(contextFilename, contextPath);
     } else if (Platform.OS == 'ios') {
       wakeWordFilename += '_ios.ppn';
-      wakeWordPath = `${RNFS.MainBundlePath}/resources/${wakeWordFilename}`;
+      wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
 
       contextFilename += '_ios.rhn';
-      contextPath = `${RNFS.MainBundlePath}/resources/${contextFilename}`;
+      contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
     }
 
     try {
@@ -128,7 +128,7 @@ export default class App extends Component<Props, State> {
   }
 
   _stopProcessing() {
-    this._rhinoManager?.stop();
+    this._picovoiceManager?.stop();
     this.setState({
       buttonText: 'Start',
       picovoiceText: '',

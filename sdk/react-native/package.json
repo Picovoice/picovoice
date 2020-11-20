@@ -32,13 +32,13 @@
     "voice ai",
     "voice assistant"
   ],
-  "repository": "https://github.com/Picovoice/react-native-voice-processor",
+  "repository": "https://github.com/Picovoice/picovoice.git",
   "author": "Picovoice <hello@picovoice.ai> (https://picovoice.ai)",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Picovoice/react-native-voice-processor/issues"
+    "url": "https://github.com/Picovoice/picovoice/issues"
   },
-  "homepage": "https://github.com/Picovoice/react-native-voice-processor#readme",
+  "homepage": "https://github.com/Picovoice/picovoice#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
     "@react-native-community/bob": "^0.16.2",

@@ -8,29 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		025843D825645A6A00D323FD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025843D725645A6A00D323FD /* File.swift */; };
-		025844B32565F4F200D323FD /* coffee_maker_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 025844B22565F4F200D323FD /* coffee_maker_ios.rhn */; };
+		028A5FA125677A7D00520564 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 028A5FA025677A7D00520564 /* smart_lighting_ios.rhn */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		545D08A9865AA1DC2FE16674 /* libPods-RhinoDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 262FE5E535CF9CF9DD6AEBC8 /* libPods-RhinoDemo.a */; };
+		545D08A9865AA1DC2FE16674 /* libPods-PicovoiceDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 262FE5E535CF9CF9DD6AEBC8 /* libPods-PicovoiceDemo.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		025843D625645A6900D323FD /* RhinoDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RhinoDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		025843D625645A6900D323FD /* PicovoiceDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PicovoiceDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		025843D725645A6A00D323FD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		025844B22565F4F200D323FD /* coffee_maker_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = coffee_maker_ios.rhn; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* RhinoDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RhinoDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RhinoDemo/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RhinoDemo/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RhinoDemo/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RhinoDemo/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RhinoDemo/main.m; sourceTree = "<group>"; };
-		262FE5E535CF9CF9DD6AEBC8 /* libPods-RhinoDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RhinoDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		43ED59E665B01E99A2746971 /* Pods-RhinoDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RhinoDemo.release.xcconfig"; path = "Target Support Files/Pods-RhinoDemo/Pods-RhinoDemo.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RhinoDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		BA49C397C5FD7969D255A666 /* Pods-RhinoDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RhinoDemo.debug.xcconfig"; path = "Target Support Files/Pods-RhinoDemo/Pods-RhinoDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		028A5FA025677A7D00520564 /* smart_lighting_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = smart_lighting_ios.rhn; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* PicovoiceDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicovoiceDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PicovoiceDemo/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PicovoiceDemo/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PicovoiceDemo/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PicovoiceDemo/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PicovoiceDemo/main.m; sourceTree = "<group>"; };
+		262FE5E535CF9CF9DD6AEBC8 /* libPods-PicovoiceDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43ED59E665B01E99A2746971 /* Pods-PicovoiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo.release.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PicovoiceDemo/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BA49C397C5FD7969D255A666 /* Pods-PicovoiceDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceDemo.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -39,17 +39,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				545D08A9865AA1DC2FE16674 /* libPods-RhinoDemo.a in Frameworks */,
+				545D08A9865AA1DC2FE16674 /* libPods-PicovoiceDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* RhinoDemo */ = {
+		028A5F9F25677A3A00520564 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				025844B22565F4F200D323FD /* coffee_maker_ios.rhn */,
+				028A5FA025677A7D00520564 /* smart_lighting_ios.rhn */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		13B07FAE1A68108700A75B9A /* PicovoiceDemo */ = {
+			isa = PBXGroup;
+			children = (
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -58,16 +65,16 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				025843D725645A6A00D323FD /* File.swift */,
-				025843D625645A6900D323FD /* RhinoDemo-Bridging-Header.h */,
+				025843D625645A6900D323FD /* PicovoiceDemo-Bridging-Header.h */,
 			);
-			name = RhinoDemo;
+			name = PicovoiceDemo;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				262FE5E535CF9CF9DD6AEBC8 /* libPods-RhinoDemo.a */,
+				262FE5E535CF9CF9DD6AEBC8 /* libPods-PicovoiceDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -75,8 +82,8 @@
 		380B1843ECF61216AB180B8D /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BA49C397C5FD7969D255A666 /* Pods-RhinoDemo.debug.xcconfig */,
-				43ED59E665B01E99A2746971 /* Pods-RhinoDemo.release.xcconfig */,
+				BA49C397C5FD7969D255A666 /* Pods-PicovoiceDemo.debug.xcconfig */,
+				43ED59E665B01E99A2746971 /* Pods-PicovoiceDemo.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -91,7 +98,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* RhinoDemo */,
+				028A5F9F25677A3A00520564 /* resources */,
+				13B07FAE1A68108700A75B9A /* PicovoiceDemo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -105,7 +113,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RhinoDemo.app */,
+				13B07F961A680F5B00A75B9A /* PicovoiceDemo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,9 +121,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* RhinoDemo */ = {
+		13B07F861A680F5B00A75B9A /* PicovoiceDemo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RhinoDemo" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PicovoiceDemo" */;
 			buildPhases = (
 				417F20E003C7748F32D37C88 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -129,9 +137,9 @@
 			);
 			dependencies = (
 			);
-			name = RhinoDemo;
-			productName = RhinoDemo;
-			productReference = 13B07F961A680F5B00A75B9A /* RhinoDemo.app */;
+			name = PicovoiceDemo;
+			productName = PicovoiceDemo;
+			productReference = 13B07F961A680F5B00A75B9A /* PicovoiceDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -148,7 +156,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RhinoDemo" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PicovoiceDemo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -161,7 +169,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* RhinoDemo */,
+				13B07F861A680F5B00A75B9A /* PicovoiceDemo */,
 			);
 		};
 /* End PBXProject section */
@@ -171,9 +179,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				025844B32565F4F200D323FD /* coffee_maker_ios.rhn in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				028A5FA125677A7D00520564 /* smart_lighting_ios.rhn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +217,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RhinoDemo-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-PicovoiceDemo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -222,18 +230,36 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RhinoDemo/Pods-RhinoDemo-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/americano_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/blueberry_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/bumblebee_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grapefruit_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/picovoice_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/porcupine_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/terminator_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/porcupine_params.pv",
 				"${PODS_ROOT}/../../node_modules/@picovoice/rhino-react-native/ios/resources/rhino_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/bumblebee_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/rhino_params.pv",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RhinoDemo/Pods-RhinoDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -273,23 +299,23 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA49C397C5FD7969D255A666 /* Pods-RhinoDemo.debug.xcconfig */;
+			baseConfigurationReference = BA49C397C5FD7969D255A666 /* Pods-PicovoiceDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QCN89N76LX;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = RhinoDemo/Info.plist;
+				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.RhinoDemo;
-				PRODUCT_NAME = RhinoDemo;
-				SWIFT_OBJC_BRIDGING_HEADER = "RhinoDemo-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PicovoiceDemo;
+				PRODUCT_NAME = PicovoiceDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "PicovoiceDemo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -298,22 +324,22 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43ED59E665B01E99A2746971 /* Pods-RhinoDemo.release.xcconfig */;
+			baseConfigurationReference = 43ED59E665B01E99A2746971 /* Pods-PicovoiceDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QCN89N76LX;
-				INFOPLIST_FILE = RhinoDemo/Info.plist;
+				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.RhinoDemo;
-				PRODUCT_NAME = RhinoDemo;
-				SWIFT_OBJC_BRIDGING_HEADER = "RhinoDemo-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.reactnative.PicovoiceDemo;
+				PRODUCT_NAME = PicovoiceDemo;
+				SWIFT_OBJC_BRIDGING_HEADER = "PicovoiceDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -435,7 +461,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RhinoDemo" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PicovoiceDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -444,7 +470,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RhinoDemo" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "PicovoiceDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

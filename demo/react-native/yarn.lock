@@ -1017,9 +1017,9 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@picovoice/picovoice-react-native@C:\\Users\\ian\\work\\github\\picovoice\\sdk\\react-native\\pkg\\picovoice-picovoice-react-native-1.0.0.tgz":
+"@picovoice/picovoice-react-native@file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-1.0.0.tgz":
   version "1.0.0"
-  resolved "C:\\Users\\ian\\work\\github\\picovoice\\sdk\\react-native\\pkg\\picovoice-picovoice-react-native-1.0.0.tgz#e30901f4df2c8fd8e24ac002296b585339b37a8f"
+  resolved "file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-1.0.0.tgz#603174aff7184858112f817a42fd858fd806598f"
 
 "@picovoice/porcupine-react-native@^1.8.1":
   version "1.8.1"

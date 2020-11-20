@@ -20,5 +20,5 @@ fs.copyFileSync('../../resources/rhino/resources/contexts/android/smart_lighting
 
 // copy iOS resources
 mkdirp.sync("./ios/resources")
-fs.copyFileSync('../../resources/porcupine/resources/keyword_files/ios/porcupine_ios.ppn','./ios/resources/porcupine_ios.ppn')
+//fs.copyFileSync('../../resources/porcupine/resources/keyword_files/ios/porcupine_ios.ppn','./ios/porcupine_ios.ppn')
 fs.copyFileSync('../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn','./ios/resources/smart_lighting_ios.rhn')
