@@ -25,7 +25,7 @@ class Picovoice {
   private _version: string;
   private _isWakeWordDetected = false;
 
-  static async create(
+  public static async create(
     keywordPath: string,
     wakeWordCallback: WakeWordCallback,
     contextPath: string,
@@ -57,7 +57,7 @@ class Picovoice {
     return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
   }
 
-  constructor(
+  private constructor(
     porcupine: Porcupine,
     wakeWordCallback: WakeWordCallback,
     rhino: Rhino,
@@ -93,11 +93,25 @@ class Picovoice {
         this._wakeWordCallback(keywordIndex);
       }
     } else {
-      const isFinalized = await this._rhino.process(frame);
-
-      if (isFinalized) {
+      const result = await this._rhino.process(frame);
+      if(result['isFinalized'] === true){
         this._isWakeWordDetected = false;
-        this._inferenceCallback(await this._rhino.getInference());
+
+        // format result in native module did not maintain order
+        let formattedInference;
+        if (result['isUnderstood'] === true) {
+          formattedInference = {
+            isUnderstood: result['isUnderstood'],
+            intent: result['intent'],
+            slots: result['slots'],
+          };
+        } else {
+          formattedInference = {
+            isUnderstood: result['isUnderstood'],
+          };
+        }
+
+        this._inferenceCallback(formattedInference);
       }
     }
   }

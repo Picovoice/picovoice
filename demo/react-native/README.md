@@ -6,19 +6,15 @@ you can run the following commands from this repo location.
 
 ## Usage
 
-To install packages, run:
-```sh
-yarn install
-```
-
 ### Running On Android
-
 ```sh
-yarn android
+yarn android-install    # sets up environment
+yarn android-run        # builds and deploys to Android
 ```
 
 ### Running On iOS
 
 ```sh
-yarn ios
+yarn ios-install        # sets up environment
+yarn ios-run            # builds and deploys to iOS
 ```

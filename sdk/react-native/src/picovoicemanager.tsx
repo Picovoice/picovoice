@@ -48,21 +48,26 @@ class PicovoiceManager {
 
   constructor(picovoice: Picovoice) {
     this._picovoice = picovoice;
-    this._voiceProcessor = new VoiceProcessor(
+    this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
       picovoice.frameLength,
       picovoice.sampleRate
     );
     this._bufferEmitter = new NativeEventEmitter(BufferEmitter);
-    this._bufferListener = this._bufferEmitter.addListener(
-      BufferEmitter.BUFFER_EMITTER_KEY,
-      async (buffer: number[]) => {
-        if (this._picovoice === null) return;
+
+    const bufferProcess = async(buffer:number[]) => {
+      if (this._picovoice === null) return;
 
         try {
           await this._picovoice.process(buffer);
         } catch (e) {
           console.error(e);
         }
+    }
+
+    this._bufferListener = this._bufferEmitter.addListener(
+      BufferEmitter.BUFFER_EMITTER_KEY,
+      async (buffer: number[]) => {
+        await bufferProcess(buffer);
       }
     );
   }
@@ -70,15 +75,15 @@ class PicovoiceManager {
   /**
    * Opens audio input stream and sends audio frames to Picovoice
    */
-  start() {
-    this._voiceProcessor.start();
+  async start() {
+    return this._voiceProcessor.start();
   }
 
   /**
    * Closes audio stream
    */
-  stop() {
-    this._voiceProcessor.stop();
+  async stop() {
+    return this._voiceProcessor.stop();
   }
 
   /**

@@ -8,11 +8,9 @@ const RNFS = require('react-native-fs');
 type Props = {};
 type State = {
   buttonText: string;
+  buttonDisabled: boolean;
   rhinoText: string;
   isListening: boolean;
-  backgroundColour: string;
-
-  error: string | null;
 };
 
 export default class App extends Component<Props, State> {
@@ -22,10 +20,9 @@ export default class App extends Component<Props, State> {
     super(props);
     this.state = {
       buttonText: 'Start',
+      buttonDisabled: false,
       picovoiceText: '',
       isListening: false,
-
-      error: null,
     };
   }
 
@@ -103,6 +100,10 @@ export default class App extends Component<Props, State> {
   }
 
   async _startProcessing() {
+    this.setState({
+      buttonDisabled: true,
+    });
+
     let recordAudioRequest;
     if (Platform.OS == 'android') {
       recordAudioRequest = this._requestRecordAudioPermission();
@@ -115,25 +116,40 @@ export default class App extends Component<Props, State> {
     recordAudioRequest.then((hasPermission) => {
       if (!hasPermission) {
         console.error('Required microphone permission was not granted.');
+        this.setState({
+          buttonDisabled: false,
+        });
         return;
       }
 
-      this._picovoiceManager?.start();
-      this.setState({
-        buttonText: 'Stop',
-        picovoiceText: 'Listening for wake word...',
-        isListening: true,
-      });
+      this._picovoiceManager?.start().then((didStart)=>{
+        if(didStart){
+          this.setState({
+            buttonText: 'Stop',
+            buttonDisabled: false,
+            picovoiceText: 'Listening for wake word...',
+            isListening: true,
+          });
+        }
+      });      
     });
   }
 
   _stopProcessing() {
-    this._picovoiceManager?.stop();
     this.setState({
-      buttonText: 'Start',
-      picovoiceText: '',
-      isListening: false,
+      buttonDisabled: true,
     });
+
+    this._picovoiceManager?.stop().then((didStop)=>{
+      if(didStop){
+        this.setState({
+          buttonText: 'Start',
+          picovoiceText: '',
+          buttonDisabled: false,
+          isListening: false,
+        });
+      }
+    });    
   }
 
   _toggleListening() {
@@ -187,7 +203,8 @@ export default class App extends Component<Props, State> {
               backgroundColor: '#377DFF',
               borderRadius: 100,
             }}
-            onPress={() => this._toggleListening()}>
+            onPress={() => this._toggleListening()}
+            disabled={this.state.buttonDisabled}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
