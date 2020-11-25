@@ -100,7 +100,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](/binding/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](/sdk/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -154,13 +154,13 @@ this._picovoiceManager = await PicovoiceManager.create(
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
 
 ```javascript
-this._picovoiceManager.start();
+let didStart = await this._picovoiceManager.start();
 ```
 
 And then stop it by calling:
 
 ```javascript
-this._picovoiceManager.stop();
+let didStop = await this._picovoiceManager.stop();
 ```
 
 Once the app is done with using PicovoiceManager, be sure you explicitly release the resources allocated for it:
