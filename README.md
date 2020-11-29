@@ -8,7 +8,7 @@ naturally spoken utterance such as:
 
 > Hey Edison, set the lights in the living room to blue.
 
-Picovoice detects the occurrence of the custom wake word (Hey Edison), and then extracts the intent from the follow-on
+Picovoice detects the occurrence of the custom wake word (`Hey Edison`), and then extracts the intent from the follow-on
 spoken command:
 
 ```json
@@ -25,8 +25,10 @@ spoken command:
 
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
-- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
-- **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using Picovoice Console.
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks. Raspberry Pi, BeagleBone,
+Android, iOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
+can access ARM Cortex-M SDK.
+- **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://picovoice.ai/console/).
 - **Reliable:** Runs locally without needing continuous connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 
@@ -64,34 +66,34 @@ platform.
 
 ## License & Terms
 
-The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. Picovoice Console offers
+The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. [Picovoice Console]((https://picovoice.ai/console/)) offers
 two types of subscriptions: Personal and Enterprise. Personal accounts can train custom speech models that run on the
 Picovoice SDK, subject to limitations and strictly for non-commercial purposes. Personal accounts empower researchers,
 hobbyists, and tinkerers to experiment. Enterprise accounts can unlock all capabilities of Picovoice Console, are
-permitted for use in commercial settings, and have a path to graduate to commercial distribution.
+permitted for use in commercial settings, and have a path to graduate to commercial distribution[<sup>*</sup>](https://picovoice.ai/pricing/).
 
 ## Table of Contents
 
 - [Picovoice](#picovoice)
-  - [Why Picovoice](#why-picovoice)
+  - [Why Picovoice?](#why-picovoice)
   - [Build with Picovoice](#build-with-picovoice)
   - [Platform Features](#platform-features)
   - [Table of Contents](#table-of-contents)
   - [Performance](#performance)
   - [Picovoice Console](#picovoice-console)
   - [Demos](#demos)
-    - [Python Demos](#python-demos)
-    - [NodeJS Demos](#nodejs-demos)
-    - [.NET Demos](#net-demos)
-    - [Java Demos](#java-demos)
-    - [Android Demos](#android-demos)
-    - [iOS Demos](#ios-demos)
-    - [JavaScript Demos](#javascript-demos)
+    - [Python](#python-demos)
+    - [NodeJS](#nodejs-demos)
+    - [.NET](#net-demos)
+    - [Java](#java-demos)
+    - [Android](#android-demos)
+    - [iOS](#ios-demos)
+    - [JavaScript](#javascript-demos)
   - [SDKs](#sdks)
     - [Python](#python)
     - [NodeJS](#nodejs)
-    - [.NET Demos](#net-demos)
-    - [Java Demos](#java-demos)
+    - [.NET](#net-demos)
+    - [Java](#java-demos)
     - [Android](#android)
     - [iOS](#ios)
   - [Releases](#releases)
@@ -226,16 +228,17 @@ Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux
 demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the
 follow-on spoken command. Once the demo initializes, it prints `Listening...` to the console. Then say:
 
-> Porcupine, dim the lights.
+> Porcupine, set the lights in the kitchen to orange.
 
 Upon success the following it printed into the terminal:
 
 ```text
 [wake word]
 {
-  intent : 'changeIntensity'
+  intent : 'changeColor'
   slots : {
-    intensity : 'dim'
+    location : 'kitchen'
+    color : 'orange'
   }
 }
 ```
@@ -257,16 +260,17 @@ Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux
 demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the
 follow-on spoken command. Once the demo initializes, it prints `Listening ...` to the console. Then say:
 
-> Porcupine, dim the lights.
+> Porcupine, set the lights in the kitchen to orange.
 
 Upon success the following it printed into the terminal:
 
 ```text
 [wake word]
 {
-  intent : 'changeIntensity'
+  intent : 'changeColor'
   slots : {
-    intensity : 'dim'
+    location : 'kitchen'
+    color : 'orange'
   }
 }
 ```
@@ -287,7 +291,7 @@ For the full set of supported commands refer to [demo's readme](/demo/android/RE
 Using Xcode, open [demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj](/demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj) and
 run the application. Press the start button and say
 
-> Porcupine, make the living room lights brighter.
+> Porcupine, shut of the lights in the living room.
 
 For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
 
@@ -484,7 +488,7 @@ using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPat
 
 ### Java
 
-You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/sdk/java/bin/picovoice-1.0.0.jar).
+You can add the Picovoice Java SDK by downloading and referencing the latest Picovoice JAR available [here](/sdk/java/bin).
 
 The easiest way to create an instance of the engine is with the Picovoice Builder:
 
@@ -549,6 +553,66 @@ handle.delete();
 
 There are two possibilities for integrating Picovoice into an Android application.
 
+## High-Level API
+
+[PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
+a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
+input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
+inference completion. The class can be initialized as follow
+
+```java
+import ai.picovoice.picovoice.PicovoiceManager;
+
+final String porcupineModelPath = ...
+final String keywordPath = ...
+final float porcupineSensitivity = 0.5f;
+final String rhinoModelPath = ...
+final String contextPath = ...
+final float rhinoSensitivity = 0.5f;
+
+PicovoiceManager manager = new PicovoiceManager(
+    porcupineModelPath,
+    keywordPath,
+    porcupineSensitivity,
+    new PicovoiceWakeWordCallback() {
+        @Override
+        public void invoke() {
+            // logic to execute upon deletection of wake word
+        }
+    },
+    rhinoModelPath,
+    contextPath,
+    rhinoSensitivity,
+    new PicovoiceInferenceCallback() {
+        @Override
+        public void invoke(final RhinoInference inference) {
+            // logic to execute upon completion of intent inference
+        }
+    }
+);
+```
+
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+
+When initialized, input audio can be processed using 
+
+```java
+manager.start();
+```
+
+Stop the manager by
+
+```java
+manager.stop();
+```
+
+When done be sure to release resources using
+
+```java
+manager.delete();
+```
+
 ## Low-Level API
 
 [Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
@@ -608,66 +672,6 @@ for releasing native resources.
 
 ```java
 picovoice.delete();
-```
-
-## High-Level API
-
-[PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
-a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
-input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
-inference completion. The class can be initialized as follow
-
-```java
-import ai.picovoice.picovoice.PicovoiceManager;
-
-final String porcupineModelPath = ...
-final String keywordPath = ...
-final float porcupineSensitivity = 0.5f;
-final String rhinoModelPath = ...
-final String contextPath = ...
-final float rhinoSensitivity = 0.5f;
-
-PicovoiceManager manager = new PicovoiceManager(
-    porcupineModelPath,
-    keywordPath,
-    porcupineSensitivity,
-    new PicovoiceWakeWordCallback() {
-        @Override
-        public void invoke() {
-            // logic to execute upon deletection of wake word
-        }
-    },
-    rhinoModelPath,
-    contextPath,
-    rhinoSensitivity,
-    new PicovoiceInferenceCallback() {
-        @Override
-        public void invoke(final RhinoInference inference) {
-            // logic to execute upon completion of intent inference
-        }
-    }
-);
-```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
-
-When initialized, input audio can be processed using 
-
-```java
-manager.start();
-```
-
-Stop the manager by
-
-```java
-manager.stop();
-```
-
-When done be sure to release resources using
-
-```java
-manager.delete();
 ```
 
 ### iOS
