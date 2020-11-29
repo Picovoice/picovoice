@@ -26,7 +26,7 @@ spoken command:
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks. Raspberry Pi, BeagleBone,
-Android, iOS, Linux (x86_64), Mac (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
+Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
 can access ARM Cortex-M SDK.
 - **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://picovoice.ai/console/).
 - **Reliable:** Runs locally without needing continuous connectivity.
