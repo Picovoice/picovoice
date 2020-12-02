@@ -18,7 +18,7 @@ const WaveFile = require("wavefile").WaveFile;
 const { PvArgumentError, PvStateError } = require("./errors");
 const { getPlatform, getSystemLibraryPath } = require("./platforms");
 
-const PICOVOICE_PORCUPINE_KEYWORD = 5;
+const PICOVOICE_PORCUPINE_KEYWORD = 11;
 
 const WAV_PATH_PICOVOICE_COFFEE =
   "../../resources/audio_samples/picovoice-coffee.wav";
@@ -53,8 +53,8 @@ describe("intent detection (coffee maker)", () => {
     }
     function inferenceCallback(inference) {
       expect(inference["isUnderstood"]).toBe(true);
-      expect(inference["intent"]).toEqual("orderDrink");
-      expect(inference["slots"]["coffeeDrink"]).toEqual("coffee");
+      expect(inference["intent"]).toEqual("orderBeverage");
+      expect(inference["slots"]["beverage"]).toEqual("coffee");
       done();
     }
 
@@ -156,9 +156,8 @@ describe("getter functions", () => {
     let contextInfo = handle.contextInfo;
 
     expect(contextInfo).toMatch(
-      /(\[brew, can I get, can I have, I want, get me, give me, I'd like, make me, may I have\])/i
+      /(\[brew, can I get, can I have, I want, get me, give me, I'd like, make me, may I have, I'll have, I'll take, I'll get\])/i
     );
-    expect(contextInfo).toMatch(/(a little bit of sweetener)/i);
     expect(contextInfo).not.toMatch(
       /(the third one burned down, fell over, and sank into the swamp)/i
     );
@@ -174,9 +173,9 @@ describe("getter functions", () => {
       () => {}
     );
 
-    expect(handle.porcupineVersion).toEqual("1.8.0");
-    expect(handle.rhinoVersion).toEqual("1.5.0");
-    expect(handle.version).toEqual("1.0.0");
+    expect(handle.porcupineVersion).toEqual("1.9.0");
+    expect(handle.rhinoVersion).toEqual("1.6.0");
+    expect(handle.version).toEqual("1.1.0");
 
     handle.release();
   });
