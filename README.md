@@ -323,11 +323,9 @@ def wake_word_callback():
 context_path = ...
 
 def inference_callback(inference):
-    # `inference` exposes three immutable fields:
-    # (1) `is_understood`
-    # (2) `intent`
-    # (3) `slots`
-    pass
+    print(inference.is_understood)
+    print(inference.intent)
+    print(inference.slots)
 
 handle = Picovoice(
         keyword_path=keyword_path,
@@ -356,11 +354,7 @@ while True:
     handle.process(get_next_audio_frame())
 ```
 
-When done resources have to be released explicitly
-
-```python
-handle.delete()
-```
+When done resources have to be released explicitly `handle.delete()`.
 
 ### NodeJS
 
@@ -707,6 +701,15 @@ when initialized input audio can be processed using `manager.start()`. The proce
 `manager.stop()`.
 
 ## Releases
+
+### v1.1.0 - December 2nd, 2020
+
+- Improved accuracy.
+- Runtime optimizations.
+- .NET SDK.
+- Java SDK.
+- React Native SDK.
+- C SDK.
 
 ### v1.0.0 - October 22, 2020
 
