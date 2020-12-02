@@ -139,7 +139,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "1.0.0";
+        return "1.1.0";
     }
 
     /**
