@@ -74,9 +74,9 @@ public class Picovoice {
         try {
             porcupine = new Porcupine(porcupineModelPath, keywordPath, porcupineSensitivity);
 
-            if (!porcupine.getVersion().startsWith("1.8.")) {
+            if (!porcupine.getVersion().startsWith("1.9.")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '1.8.x' but received %s",
+                        "Expected Porcupine library with version '1.9.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -84,9 +84,9 @@ public class Picovoice {
             this.wakeWordCallback = wakeWordCallback;
 
             rhino = new Rhino(rhinoModelPath, contextPath, rhinoSensitivity);
-            if (!rhino.getVersion().startsWith("1.5.")) {
+            if (!rhino.getVersion().startsWith("1.6.")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '1.5.x' but received %s",
+                        "Expected Rhino library with version '1.6.x' but received %s",
                         rhino.getVersion());
                 throw new PicovoiceException(message);
             }
