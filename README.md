@@ -26,8 +26,8 @@ spoken command:
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks. Raspberry Pi, BeagleBone,
-Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
-can access ARM Cortex-M SDK.
+  Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
+  can access the ARM Cortex-M SDK.
 - **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://picovoice.ai/console/).
 - **Reliable:** Runs locally without needing continuous connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
@@ -35,19 +35,19 @@ can access ARM Cortex-M SDK.
 ## Build with Picovoice
 
 1. **Evaluate:** The Picovoice SDK is a cross-platform library for adding voice to anything. It includes some
-pre-trained speech models. The SDK is licensed under Apache 2.0 and available on GitHub to encourage independent
-benchmarking and integration testing. You are empowered to make a data-driven decision.
+   pre-trained speech models. The SDK is licensed under Apache 2.0 and available on GitHub to encourage independent
+   benchmarking and integration testing. You are empowered to make a data-driven decision.
 
 2. **Design:** [Picovoice Console](https://picovoice.ai/console/) is a cloud-based platform for designing voice
-interfaces and training speech models, all within your web browser. No machine learning skills are required. Simply
-describe what you need with text and export trained models.
+   interfaces and training speech models, all within your web browser. No machine learning skills are required. Simply
+   describe what you need with text and export trained models.
 
 3. **Develop:** Exported models can run on Picovoice SDK without requiring constant connectivity. The SDK runs on a wide
-range of platforms and supports a large number of frameworks. The Picovoice Console and Picovoice SDK enable you to
-design, build and iterate fast.
+   range of platforms and supports a large number of frameworks. The Picovoice Console and Picovoice SDK enable you to
+   design, build and iterate fast.
 
 4. **Deploy:** Deploy at scale without having to maintain complex cloud infrastructure. Avoid unbounded cloud fees,
-limitations, and control imposed by big tech.
+   limitations, and control imposed by big tech.
 
 ## Platform Features
 
@@ -66,11 +66,11 @@ platform.
 
 ## License & Terms
 
-The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. [Picovoice Console]((https://picovoice.ai/console/)) offers
+The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. [Picovoice Console](https://picovoice.ai/console/) offers
 two types of subscriptions: Personal and Enterprise. Personal accounts can train custom speech models that run on the
 Picovoice SDK, subject to limitations and strictly for non-commercial purposes. Personal accounts empower researchers,
 hobbyists, and tinkerers to experiment. Enterprise accounts can unlock all capabilities of Picovoice Console, are
-permitted for use in commercial settings, and have a path to graduate to commercial distribution[<sup>*</sup>](https://picovoice.ai/pricing/).
+permitted for use in commercial settings, and have a path to graduate to commercial distribution[<sup>\*</sup>](https://picovoice.ai/pricing/).
 
 ## Table of Contents
 
@@ -304,7 +304,7 @@ both of which [run offline in the browser](https://picovoice.ai/blog/offline-voi
 
 ### Python
 
-Install the package
+Install the package:
 
 ```bash
 pip3 install picovoice
@@ -334,15 +334,15 @@ handle = Picovoice(
         inference_callback=inference_callback)
 ```
 
-`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`handle` is an instance of the Picovoice runtime engine. It detects utterances of wake phrase defined in the file located at
 `keyword_path`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
-`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
+the context defined by the file located at `context_path`. `keyword_path` is the absolute path to the
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` extension).
+`context_path` is the absolute path to the [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+(with `.rhn` extension). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
 invoked upon completion of follow-on voice command inference.
 
-When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
+When instantiated, the required rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
 frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio. The
 set of supported commands can be retrieved (in YAML format) via `handle.context_info`.
 
@@ -354,7 +354,7 @@ while True:
     handle.process(get_next_audio_frame())
 ```
 
-When done resources have to be released explicitly `handle.delete()`.
+When done, resources have to be released explicitly `handle.delete()`.
 
 ### NodeJS
 
@@ -370,8 +370,8 @@ yarn add @picovoice/picovoice-node
 npm install @picovoice/picovoice-node
 ```
 
-The SDK provides the `Picovoice` class. Create an instance of this class using a Porcupine keyword (with `.ppn` suffix)
-and Rhino context file (with `.rhn` suffix), as well as callback functions that will be invoked on wake word detection
+The SDK provides the `Picovoice` class. Create an instance of this class using a Porcupine keyword (with `.ppn` extension)
+and Rhino context file (with `.rhn` extension), as well as callback functions that will be invoked on wake word detection
 and command inference completion events, respectively:
 
 ```javascript
@@ -413,7 +413,7 @@ As the audio is processed through the Picovoice engines, the callbacks will fire
 ### .NET
 
 You can install the latest version of Picovoice by adding the latest
-[Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
+[Picovoice NuGet package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
 ```bash
 dotnet add package Picovoice
@@ -449,13 +449,13 @@ Picovoice handle = new Picovoice(keywordPath,
 `handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
 `keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
 the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` extension).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
+(with `.rhn` extension). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
 invoked upon completion of follow-on voice command inference.
 
-When instantiated, valid sample rate can be obtained via `handle.SampleRate`. Expected number of audio samples per
-frame is `handle.FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When instantiated, the required sample rate can be obtained via `handle.SampleRate`. The expected number of audio samples per
+frame is `handle.FrameLength`. The Picovoice engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```csharp
 short[] GetNextAudioFrame()
@@ -513,16 +513,16 @@ try{
 } catch (PicovoiceException e) { }
 ```
 
-`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
-`keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+`handle` is an instance of the Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`keywordPath`. Upon detection of wake word it starts inferring the user's intent from the follow-on voice command within
 the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` extension).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
+(with `.rhn` extension). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
 invoked upon completion of follow-on voice command inference.
 
-When instantiated, valid sample rate can be obtained via `handle.getSampleRate()`. Expected number of audio samples per
-frame is `handle.getFrameLength()`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When instantiated, the required sample rate can be obtained via `handle.getSampleRate()`. The expected number of audio samples per
+frame is `handle.getFrameLength()`. The Picovoice engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```java
 short[] getNextAudioFrame()
@@ -552,7 +552,7 @@ There are two possibilities for integrating Picovoice into an Android applicatio
 [PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
 a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
 input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
-inference completion. The class can be initialized as follow
+inference completion. The class can be initialized as follows:
 
 ```java
 import ai.picovoice.picovoice.PicovoiceManager;
@@ -586,22 +586,22 @@ PicovoiceManager manager = new PicovoiceManager(
 );
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
-When initialized, input audio can be processed using 
+When initialized, input audio can be processed using:
 
 ```java
 manager.start();
 ```
 
-Stop the manager by
+Stop the manager with:
 
 ```java
 manager.stop();
 ```
 
-When done be sure to release resources using
+When done be sure to release resources:
 
 ```java
 manager.delete();
@@ -644,7 +644,7 @@ Picovoice picovoice = new Picovoice(
 );
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating number within
+Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
 [0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
 
 Once initialized, `picovoice` can be used to process incoming audio.
@@ -662,7 +662,7 @@ while (true) {
 ```
 
 Finally, be sure to explicitly release resources acquired as the binding class does not rely on the garbage collector
-for releasing native resources.
+for releasing native resources:
 
 ```java
 picovoice.delete();
