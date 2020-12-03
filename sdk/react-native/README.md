@@ -37,7 +37,7 @@ npm i @picovoice/rhino-react-native
 npm i @picovoice/picovoice-react-native
 ```
 
-Link the iOS package:
+Link the iOS packages:
 
 ```sh
 cd ios && pod install && cd ..
