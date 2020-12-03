@@ -1,5 +1,7 @@
 # Picovoice ReSpeaker Demo
 
+[![GitHub release](https://img.shields.io/github/release/Picovoice/Picovoice.svg)](https://github.com/Picovoice/picovoice/releases)
+
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 This package contains a commandline demo for controlling ReSpeaker 4-mic microphone array LEDs using Picovoice.
