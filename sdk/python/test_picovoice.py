@@ -83,8 +83,8 @@ class PicovoiceTestCase(unittest.TestCase):
             self._pv.process(frame)
 
         self.assertTrue(self._is_wake_word_detected)
-        self.assertEqual(self._inference.intent, 'orderDrink')
-        self.assertEqual(self._inference.slots, dict(size='large', coffeeDrink='coffee'))
+        self.assertEqual(self._inference.intent, 'orderBeverage')
+        self.assertEqual(self._inference.slots, dict(size='large', beverage='coffee'))
 
     def test_process_again(self):
         self.test_process()

@@ -105,10 +105,10 @@ public class PicovoiceTest {
         }
 
         assertTrue(isWakeWordDetected);
-        assertEquals(inferenceResult.getIntent(), "orderDrink");
+        assertEquals(inferenceResult.getIntent(), "orderBeverage");
         Map<String, String> expectedSlotValues = new HashMap<>() {{
             put("size", "large");
-            put("coffeeDrink", "coffee");
+            put("beverage", "coffee");
         }};
         assertEquals(expectedSlotValues, inferenceResult.getSlots());
     }

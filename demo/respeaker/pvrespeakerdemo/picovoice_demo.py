@@ -56,7 +56,7 @@ class PicovoiceDemo(Thread):
             porcupine_sensitivity=porcupine_sensitivity,
             rhino_sensitivity=rhino_sensitivity)
 
-        self._context = self._picovoice._rhino.context_info
+        self._context = self._picovoice.context_info
 
         self._color = 'blue'
 

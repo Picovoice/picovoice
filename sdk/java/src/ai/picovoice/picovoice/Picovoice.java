@@ -81,9 +81,9 @@ public class Picovoice {
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("1.8.")) {
+            if (!porcupine.getVersion().startsWith("1.9.")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '1.8.x' but received %s",
+                        "Expected Porcupine library with version '1.9.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -97,9 +97,9 @@ public class Picovoice {
                     .setSensitivity(rhinoSensitivity)
                     .build();
 
-            if (!rhino.getVersion().startsWith("1.5.")) {
+            if (!rhino.getVersion().startsWith("1.6.")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '1.5.x' but received %s",
+                        "Expected Rhino library with version '1.6.x' but received %s",
                         rhino.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -152,7 +152,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "1.0.0";
+        return "1.1.0";
     }
 
     /**
@@ -196,16 +196,16 @@ public class Picovoice {
      */
     public static class Builder {
 
-        private String porcupineLibraryPath;
-        private String porcupineModelPath;
-        private String keywordPath;
-        private float porcupineSensitivity;
-        private PicovoiceWakeWordCallback wakeWordCallback;
-        private String rhinoLibraryPath;
-        private String rhinoModelPath;
-        private String contextPath;
-        private float rhinoSensitivity;
-        private PicovoiceInferenceCallback inferenceCallback;
+        private String porcupineLibraryPath = null;
+        private String porcupineModelPath = null;
+        private String keywordPath = null;
+        private float porcupineSensitivity = 0.5f;
+        private PicovoiceWakeWordCallback wakeWordCallback = null;
+        private String rhinoLibraryPath = null;
+        private String rhinoModelPath = null;
+        private String contextPath = null;
+        private float rhinoSensitivity = 0.5f;
+        private PicovoiceInferenceCallback inferenceCallback = null;
 
         public Picovoice.Builder setPorcupineLibraryPath(String porcupineLibraryPath) {
             this.porcupineLibraryPath = porcupineLibraryPath;
