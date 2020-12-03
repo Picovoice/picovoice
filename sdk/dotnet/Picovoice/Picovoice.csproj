@@ -36,10 +36,10 @@ Picovoice is:
 	  </None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Porcupine" Version="1.8.9">
+		<PackageReference Include="Porcupine" Version="1.9.0">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Rhino" Version="1.5.1">
+		<PackageReference Include="Rhino" Version="1.6.0">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>		
 	</ItemGroup>
