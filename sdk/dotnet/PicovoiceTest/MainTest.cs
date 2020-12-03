@@ -75,11 +75,11 @@ namespace PicovoiceTest
             }
 
             Assert.IsTrue(_isWakeWordDetected);
-            Assert.AreEqual(_inference.Intent, "orderDrink");
+            Assert.AreEqual(_inference.Intent, "orderBeverage");
             Dictionary<string, string> expectedSlotValues = new Dictionary<string, string>()
             {
                 {"size", "large"},
-                {"coffeeDrink", "coffee"}
+                {"beverage", "coffee"}
             };
             Assert.IsTrue(_inference.Slots.All((keyValuePair) =>
                                           expectedSlotValues.ContainsKey(keyValuePair.Key) &&
