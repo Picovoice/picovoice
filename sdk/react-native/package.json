@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react-native",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "React Native binding for Picovoice end-to-end platform",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -12,7 +12,8 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "bob build",
-    "release": "release-it"    
+    "release": "release-it",
+    "pkg": "cd pkg && npm pack .. && cd .."
   },
   "keywords": [
     "react-native",
@@ -40,7 +41,7 @@
   },
   "homepage": "https://github.com/Picovoice/picovoice#readme",
   "devDependencies": {
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-conventional": "^8.3.4",    
     "@react-native-community/bob": "^0.16.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^1.1.4",
@@ -59,16 +60,16 @@
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
     "typescript": "^3.8.3",
+    "@picovoice/porcupine-react-native": "^1.9.0",
     "@picovoice/react-native-voice-processor": "^1.0.1",
-    "@picovoice/porcupine-react-native": "^1.8.2",
-    "@picovoice/rhino-react-native": "^1.5.4"
+    "@picovoice/rhino-react-native": "^1.6.0"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-native": "*",
-    "@picovoice/react-native-voice-processor": "*",
     "@picovoice/porcupine-react-native": "*",
-    "@picovoice/rhino-react-native": "*"
+    "@picovoice/react-native-voice-processor": "*",
+    "@picovoice/rhino-react-native": "*",
+    "react": "*",
+    "react-native": "*"
   },
   "jest": {
     "preset": "react-native",

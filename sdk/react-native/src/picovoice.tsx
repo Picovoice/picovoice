@@ -69,7 +69,7 @@ class Picovoice {
     this._inferenceCallback = inferenceCallback;
     this._frameLength = porcupine.frameLength;
     this._sampleRate = porcupine.sampleRate;
-    this._version = '1.0.0';
+    this._version = '1.1.0';
   }
 
   /**
