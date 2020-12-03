@@ -192,7 +192,7 @@ namespace Pv
         /// <summary>
         /// Version
         /// </summary>
-        public string Version => "1.0.0";
+        public string Version => "1.1.0";
 
         public override string ToString()
         {
