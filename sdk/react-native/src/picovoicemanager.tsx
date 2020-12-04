@@ -54,15 +54,15 @@ class PicovoiceManager {
     );
     this._bufferEmitter = new NativeEventEmitter(BufferEmitter);
 
-    const bufferProcess = async(buffer:number[]) => {
+    const bufferProcess = async (buffer: number[]) => {
       if (this._picovoice === null) return;
 
-        try {
-          await this._picovoice.process(buffer);
-        } catch (e) {
-          console.error(e);
-        }
-    }
+      try {
+        await this._picovoice.process(buffer);
+      } catch (e) {
+        console.error(e);
+      }
+    };
 
     this._bufferListener = this._bufferEmitter.addListener(
       BufferEmitter.BUFFER_EMITTER_KEY,

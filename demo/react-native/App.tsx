@@ -64,15 +64,9 @@ export default class App extends Component<Props, State> {
         },
         contextPath,
         (inference: object) => {
-          if (inference['isUnderstood']) {
-            this.setState({
-              picovoiceText: JSON.stringify(inference, null, 4),
-            });
-          } else {
-            this.setState({
-              picovoiceText: JSON.stringify({isUnderstood: false}, null, 4),
-            });
-          }
+          this.setState({
+            picovoiceText: this._prettyPrintInference(inference),
+          });
 
           setTimeout(() => {
             if (this.state.isListening) {
@@ -99,6 +93,23 @@ export default class App extends Component<Props, State> {
     this._picovoiceManager?.delete();
   }
 
+  _prettyPrintInference(inference: object) {
+    let printText = `{\n    \"isUnderstood\" : \"${inference['isUnderstood']}\",\n`;
+    if (inference['isUnderstood']) {
+      printText += `    \"intent\" : \"${inference['intent']}\",\n`;
+      if (Object.keys(inference['slots']).length > 0) {
+        printText += '    "slots" : {\n';
+        let slots = inference['slots'];
+        for (const key in slots) {
+          printText += `        \"${key}\" : \"${slots[key]}\",\n`;
+        }
+        printText += '    }\n';
+      }
+    }
+    printText += '}';
+    return printText;
+  }
+
   async _startProcessing() {
     this.setState({
       buttonDisabled: true,
@@ -122,8 +133,8 @@ export default class App extends Component<Props, State> {
         return;
       }
 
-      this._picovoiceManager?.start().then((didStart)=>{
-        if(didStart){
+      this._picovoiceManager?.start().then((didStart) => {
+        if (didStart) {
           this.setState({
             buttonText: 'Stop',
             buttonDisabled: false,
@@ -131,7 +142,7 @@ export default class App extends Component<Props, State> {
             isListening: true,
           });
         }
-      });      
+      });
     });
   }
 
@@ -140,8 +151,8 @@ export default class App extends Component<Props, State> {
       buttonDisabled: true,
     });
 
-    this._picovoiceManager?.stop().then((didStop)=>{
-      if(didStop){
+    this._picovoiceManager?.stop().then((didStop) => {
+      if (didStop) {
         this.setState({
           buttonText: 'Start',
           picovoiceText: '',
@@ -149,7 +160,7 @@ export default class App extends Component<Props, State> {
           isListening: false,
         });
       }
-    });    
+    });
   }
 
   _toggleListening() {

@@ -21,7 +21,7 @@ This binding is for running Picovoice on **React Native 0.62.2+** on the followi
 
 ## Installation
 
-To start install be sure you have installed yarn and cocoapods. Then add these native modules to your React Native project.
+To start installation be sure you have installed yarn and cocoapods. Then add these native modules to your React Native project.
 
 ```sh
 yarn add @picovoice/react-native-voice-processor
@@ -168,7 +168,7 @@ Once the app is done with using PicovoiceManager, be sure you explicitly release
 this._picovoiceManager.delete();
 ```
 
-As you may have noticed, there is no need to deal with audio capture to enable intent inference with PicovoiceManager.
+There is no need to deal with audio capture to enable intent inference with PicovoiceManager.
 This is because it uses our
 [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
 module to capture frames of audio and automatically pass it to Picovoice.
@@ -226,7 +226,7 @@ try {
 }
 ```
 
-For process to work correctly, the audio data must be in the audio format required by Picovoice.
+For `process` to work correctly, the audio data must be in the audio format required by Picovoice.
 The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
 
 Finally, once you no longer need the Picovoice, be sure to explicitly release the resources allocated to it:

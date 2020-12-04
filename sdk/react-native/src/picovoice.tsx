@@ -94,24 +94,11 @@ class Picovoice {
       }
     } else {
       const result = await this._rhino.process(frame);
-      if(result['isFinalized'] === true){
+      if (result['isFinalized'] === true) {
         this._isWakeWordDetected = false;
+        delete result['isFinalized'];
 
-        // format result in native module did not maintain order
-        let formattedInference;
-        if (result['isUnderstood'] === true) {
-          formattedInference = {
-            isUnderstood: result['isUnderstood'],
-            intent: result['intent'],
-            slots: result['slots'],
-          };
-        } else {
-          formattedInference = {
-            isUnderstood: result['isUnderstood'],
-          };
-        }
-
-        this._inferenceCallback(formattedInference);
+        this._inferenceCallback(result);
       }
     }
   }
