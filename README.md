@@ -86,6 +86,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [NodeJS](#nodejs-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [React Native](#react-native-demos)
     - [Android](#android-demos)
     - [iOS](#ios-demos)
     - [JavaScript](#javascript-demos)
@@ -94,6 +95,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [NodeJS](#nodejs)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
   - [Releases](#releases)
@@ -276,6 +278,32 @@ Upon success the following it printed into the terminal:
 ```
 
 For more information about the Java demos go to [demo/java](/demo/java/README.md).
+
+### React Native Demos
+To run the React Native Picovoice demo app you'll first need to install yarn and setup your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
+
+## Usage
+
+### Running On Android
+```sh
+cd demo/react-native
+yarn android-install    # sets up environment
+yarn android-run        # builds and deploys to Android
+```
+
+### Running On iOS
+
+```sh
+cd demo/react-native
+yarn ios-install        # sets up environment
+yarn ios-run            # builds and deploys to iOS
+```
+
+Once the application has been deployed, press the start button and say
+
+> Porcupine, turn of the lights in the kitchen.
+
+For the full set of supported commands refer to [demo's readme](/demo/react-native/README.md).
 
 ### Android Demos
 
@@ -543,11 +571,104 @@ Once you're done with Picovoice, ensure you release its resources explicitly:
 handle.delete();
 ```
 
+### React Native
+
+First add our React Native modules to your project via yarn or npm:
+```sh
+yarn add @picovoice/react-native-voice-processor
+yarn add @picovoice/porcupine-react-native
+yarn add @picovoice/rhino-react-native
+yarn add @picovoice/picovoice-react-native
+```
+
+The [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native) package exposes a high-level and a low-level API for integrating Picovoice into your application.
+
+#### High-Level API
+
+[PicovoiceManager](/sdk/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
+audio recording. This class is the quickest way to get started.
+
+The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
+```javascript
+async createPicovoiceManager(){
+    try{
+        this._picovoiceManager = await PicovoiceManager.create(
+            '/path/to/keyword/file.ppn',
+            wakeWordCallback,
+            '/path/to/context/file.rhn',
+            inferenceCallback);
+    } catch (err) {
+        // handle error
+    }
+}
+```
+
+The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
+
+Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
+
+```javascript
+let didStart = await this._picovoiceManager.start();
+// .. use for detecting wake words and commands
+let didStop = await this._picovoiceManager.stop();
+```
+
+Once the app is done with using PicovoiceManager, be sure you explicitly release the resources allocated for it:
+```javascript
+this._picovoiceManager.delete();
+```
+
+[@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
+module handles audio capture and passes frames to Picovoice for you.
+
+#### Low-Level API
+
+[Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
+who want to incorporate it into a already existing audio processing pipeline.
+
+`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+
+```javascript
+async createPicovoice(){
+    let porcupineSensitivity = 0.7
+    let rhinoSensitivity = 0.6
+
+    try{
+        this._picovoice = await Picovoice.create(
+            '/path/to/keyword/file.ppn',
+            wakeWordCallback,
+            '/path/to/context/file.rhn',
+            inferenceCallback,
+            porcupineSensitivity,
+            rhinoSensitivity,
+            "/path/to/porcupine/model.pv",
+            "/path/to/rhino/model.pv")
+    } catch (err) {
+        // handle error
+    }
+}
+```
+
+To use Picovoice, just pass frames of audio to the `process` function. The callbacks will automatically trigger when the wake word is detected and then when the follow-on command is detected.
+
+```javascript
+let buffer = getAudioFrame();
+
+try {
+    await this._picovoice.process(buffer);
+} catch (e) {
+    // handle error
+}
+
+// once you are done
+this._picovoice.delete();
+```
+
 ### Android
 
 There are two possibilities for integrating Picovoice into an Android application.
 
-## High-Level API
+#### High-Level API
 
 [PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
 a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
@@ -607,7 +728,7 @@ When done be sure to release resources:
 manager.delete();
 ```
 
-## Low-Level API
+#### Low-Level API
 
 [Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
 low-level binding for Android. It can be initialized as follows:

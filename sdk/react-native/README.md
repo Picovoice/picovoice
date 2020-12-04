@@ -175,7 +175,7 @@ module to capture frames of audio and automatically pass it to Picovoice.
 
 #### Low-Level API
 
-[Picovoice](/binding/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
+[Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
 who want to incorporate it into a already existing audio processing pipeline.
 
 `Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
