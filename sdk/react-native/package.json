@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react-native",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React Native binding for Picovoice end-to-end platform",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -60,9 +60,9 @@
     "react-native": "0.62.2",
     "release-it": "^13.5.8",
     "typescript": "^3.8.3",
-    "@picovoice/porcupine-react-native": "^1.9.0",
+    "@picovoice/porcupine-react-native": "^1.9.0",        
     "@picovoice/react-native-voice-processor": "^1.0.1",
-    "@picovoice/rhino-react-native": "^1.6.0"
+    "@picovoice/rhino-react-native": "^1.6.1"
   },
   "peerDependencies": {
     "@picovoice/porcupine-react-native": "*",
@@ -119,6 +119,5 @@
       "module",
       "typescript"
     ]
-  },
-  "dependencies": {}
+  }
 }
