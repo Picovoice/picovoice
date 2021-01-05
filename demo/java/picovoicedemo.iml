@@ -7,7 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
     <orderEntry type="library" name="picovoice-1.1.0" level="project" />
+    <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
   </component>
 </module>
