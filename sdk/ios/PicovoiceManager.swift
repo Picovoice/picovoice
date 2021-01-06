@@ -70,6 +70,15 @@ class PicovoiceManager {
             return
         }
         
+        let audioSession = AVAudioSession.sharedInstance()
+        if audioSession.recordPermission == .denied {
+            throw PicovoiceManagerError.recordingDenied
+        }
+        
+        try audioSession.setCategory(AVAudioSession.Category.playAndRecord)
+        try audioSession.setMode(AVAudioSession.Mode.measurement)
+        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        
         var status = pv_porcupine_init(
             self.porcupineModelPath,
             1,
@@ -142,6 +151,13 @@ class PicovoiceManager {
     
     public func stop() {
         self.audioInputEngine?.stop()
+        
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        }
+        catch {
+            NSLog("Unable to explicitly deactivate AVAudioSession: \(error)");
+        }
         
         pv_porcupine_delete(self.porcupine)
         self.porcupine = nil
