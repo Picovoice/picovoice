@@ -1,0 +1,23 @@
+name: picovoice_demo
+description: Demonstrates how to use the picovoice plugin.
+
+publish_to: 'none'
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  path_provider: ^1.6.24
+  picovoice:
+    path: ../../sdk/flutter
+
+flutter:
+  assets:
+    - assets/contexts/android/smart_lighting_android.rhn
+    - assets/contexts/ios/smart_lighting_ios.rhn
+    - assets/keyword_files/android/picovoice_android.ppn
+    - assets/keyword_files/ios/picovoice_ios.ppn
+  uses-material-design: true
