@@ -1,17 +1,17 @@
-# Rhino Flutter Demo
+# Picovoice Flutter Demo
 
-To run the Rhino demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
 
 ## Usage
 
-Before launching the app, use the copy_assets.sh script to copy the rhino demo context file into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
+Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
 Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
 ```sh
 flutter run
 ```
 
-The default context for this demo is `Smart Lighting`. Simply press start and the engine can recognize commands such as
+For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. Simply press start and the engine can recognize commands such as
 
 > Turn off the lights.
 
