@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
   void wakeWordCallback(int keywordIndex) {
     if (keywordIndex == 0) {
       this.setState(() {
-        rhinoText = "Wake word detected! Listening for intent...";
+        rhinoText = "Wake word detected!\nListening for intent...";
       });
     }
   }
@@ -82,10 +82,10 @@ class _MyAppState extends State<MyApp> {
       rhinoText = prettyPrintInference(inference);
     });
 
-    Future.delayed(const Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 2500), () {
       if (isProcessing) {
         this.setState(() {
-          rhinoText = "Listening for wake word";
+          rhinoText = "Listening for wake word...";
         });
       } else {
         this.setState(() {
@@ -149,6 +149,7 @@ class _MyAppState extends State<MyApp> {
       });
     } on PvAudioException catch (ex) {
       print("Failed to start audio capture: ${ex.message}");
+    } finally {
       this.setState(() {
         isButtonDisabled = false;
       });
@@ -229,6 +230,7 @@ class _MyAppState extends State<MyApp> {
             alignment: Alignment.center,
             color: Color(0xff25187e),
             margin: EdgeInsets.all(20),
+            padding: EdgeInsets.all(10),
             child: Text(
               rhinoText,
               style: TextStyle(color: Colors.white, fontSize: 20),
