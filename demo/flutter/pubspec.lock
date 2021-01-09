@@ -124,7 +124,7 @@ packages:
       name: porcupine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.3"
+    version: "1.9.4"
   process:
     dependency: transitive
     description:
@@ -138,7 +138,7 @@ packages:
       name: rhino
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.0"
+    version: "1.6.1"
   sky_engine:
     dependency: transitive
     description: flutter

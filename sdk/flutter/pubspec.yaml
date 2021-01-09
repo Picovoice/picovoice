@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_voice_processor: ^1.0.1
-  porcupine: ^1.9.3
-  rhino: ^1.6.0
+  porcupine: ^1.9.4
+  rhino: ^1.6.1
 
 dev_dependencies:
   flutter_test:
