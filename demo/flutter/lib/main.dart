@@ -216,8 +216,8 @@ class _MyAppState extends State<MyApp> {
       flex: 4,
       child: Container(
           child: SizedBox(
-              width: 150,
-              height: 150,
+              width: 130,
+              height: 130,
               child: RaisedButton(
                 shape: CircleBorder(),
                 textColor: Colors.white,
