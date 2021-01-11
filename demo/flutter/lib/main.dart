@@ -33,7 +33,9 @@ class _MyAppState extends State<MyApp> {
 
   bool isButtonDisabled = false;
   bool isProcessing = false;
+  bool wakeWordDetected = false;
   String rhinoText = "";
+  String errorText = "";
   PicovoiceManager _picovoiceManager;
 
   @override
@@ -60,11 +62,12 @@ class _MyAppState extends State<MyApp> {
       _picovoiceManager = await PicovoiceManager.create(
           keywordPath, wakeWordCallback, contextPath, inferenceCallback,
           errorCallback: errorCallback);
-    } on PvError catch (ex) {
-      print("Failed to initialize Picovoice: ${ex.message}");
-    } finally {
       this.setState(() {
         isButtonDisabled = false;
+      });
+    } on PvError catch (ex) {
+      this.setState(() {
+        errorText = "Failed to initialize Picovoice: ${ex.message}";
       });
     }
   }
@@ -72,6 +75,7 @@ class _MyAppState extends State<MyApp> {
   void wakeWordCallback(int keywordIndex) {
     if (keywordIndex == 0) {
       this.setState(() {
+        wakeWordDetected = true;
         rhinoText = "Wake word detected!\nListening for intent...";
       });
     }
@@ -80,13 +84,18 @@ class _MyAppState extends State<MyApp> {
   void inferenceCallback(Map<String, dynamic> inference) {
     this.setState(() {
       rhinoText = prettyPrintInference(inference);
+      wakeWordDetected = false;
     });
 
     Future.delayed(const Duration(milliseconds: 2500), () {
       if (isProcessing) {
-        this.setState(() {
-          rhinoText = "Listening for wake word...";
-        });
+        if (wakeWordDetected) {
+          rhinoText = "Wake word detected!\nListening for intent...";
+        } else {
+          this.setState(() {
+            rhinoText = "Listening for wake word...";
+          });
+        }
       } else {
         this.setState(() {
           rhinoText = "";
@@ -96,7 +105,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void errorCallback(PvError error) {
-    print(error.message);
+    this.setState(() {
+      errorText = error.message;
+    });
   }
 
   String prettyPrintInference(Map<String, dynamic> inference) {
@@ -146,12 +157,11 @@ class _MyAppState extends State<MyApp> {
       this.setState(() {
         isProcessing = true;
         rhinoText = "Listening for wake word...";
+        isButtonDisabled = false;
       });
     } on PvAudioException catch (ex) {
-      print("Failed to start audio capture: ${ex.message}");
-    } finally {
       this.setState(() {
-        isButtonDisabled = false;
+        errorText = "Failed to start audio capture: ${ex.message}";
       });
     }
   }
@@ -170,12 +180,11 @@ class _MyAppState extends State<MyApp> {
       this.setState(() {
         isProcessing = false;
         rhinoText = "";
+        isButtonDisabled = false;
       });
     } on PvAudioException catch (ex) {
-      print("Failed to start audio capture: ${ex.message}");
-    } finally {
       this.setState(() {
-        isButtonDisabled = false;
+        errorText = "Failed to stop audio capture: ${ex.message}";
       });
     }
   }
@@ -194,6 +203,7 @@ class _MyAppState extends State<MyApp> {
           children: [
             buildStartButton(context),
             buildRhinoTextArea(context),
+            buildErrorTextSpot(context),
             footer
           ],
         ),
@@ -203,7 +213,7 @@ class _MyAppState extends State<MyApp> {
 
   buildStartButton(BuildContext context) {
     return new Expanded(
-      flex: 2,
+      flex: 4,
       child: Container(
           child: SizedBox(
               width: 150,
@@ -225,7 +235,7 @@ class _MyAppState extends State<MyApp> {
 
   buildRhinoTextArea(BuildContext context) {
     return new Expanded(
-        flex: 4,
+        flex: 8,
         child: Container(
             alignment: Alignment.center,
             color: Color(0xff25187e),
@@ -234,6 +244,18 @@ class _MyAppState extends State<MyApp> {
             child: Text(
               rhinoText,
               style: TextStyle(color: Colors.white, fontSize: 20),
+            )));
+  }
+
+  buildErrorTextSpot(BuildContext context) {
+    return new Expanded(
+        flex: 1,
+        child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Text(
+              errorText,
+              style: TextStyle(color: Colors.red),
             )));
   }
 

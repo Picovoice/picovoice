@@ -11,7 +11,9 @@
 
 import 'picovoice_error.dart';
 import 'package:porcupine/porcupine.dart';
+import 'package:porcupine/porcupine_error.dart' as porcupineErr;
 import 'package:rhino/rhino.dart';
+import 'package:rhino/rhino_error.dart' as rhinoErr;
 
 typedef WakeWordCallback(int keywordIndex);
 typedef InferenceCallback(Map<String, dynamic> inference);
@@ -76,19 +78,29 @@ class Picovoice {
       double rhinoSensitivity = 0.5,
       String porcupineModelPath,
       String rhinoModelPath}) async {
-    Porcupine porcupine = await Porcupine.fromKeywordPaths([keywordPath],
-        modelPath: porcupineModelPath, sensitivities: [porcupineSensitivity]);
+    Porcupine porcupine;
+    try {
+      porcupine = await Porcupine.fromKeywordPaths([keywordPath],
+          modelPath: porcupineModelPath, sensitivities: [porcupineSensitivity]);
+    } on porcupineErr.PvError catch (ex) {
+      throw new PvError("${ex.runtimeType}: ${ex.message}");
+    }
 
-    Rhino rhino = await Rhino.create(contextPath,
-        modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
+    Rhino rhino;
+    try {
+      rhino = await Rhino.create(contextPath,
+          modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
+    } on rhinoErr.PvError catch (ex) {
+      throw new PvError("${ex.runtimeType}: ${ex.message}");
+    }
 
     if (porcupine.frameLength != rhino.frameLength) {
-      throw new ArgumentError(
+      throw new PvArgumentError(
           "Porcupine and Rhino frame lengths are different.");
     }
 
     if (porcupine.sampleRate != rhino.sampleRate) {
-      throw new ArgumentError(
+      throw new PvArgumentError(
           "Porcupine and Rhino sample rates are different.");
     }
 
@@ -109,7 +121,7 @@ class Picovoice {
   /// Picovoice operates on single-channel audio.
   void process(List<int> frame) {
     if (_porcupine == null || _rhino == null) {
-      throw new StateError(
+      throw new PvStateError(
           "Cannot process frame - resources have been released.");
     }
 
