@@ -100,9 +100,9 @@ packages:
   picovoice:
     dependency: "direct main"
     description:
-      path: "../../sdk/flutter"
-      relative: true
-    source: path
+      name: picovoice
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.1.0"
   platform:
     dependency: transitive
