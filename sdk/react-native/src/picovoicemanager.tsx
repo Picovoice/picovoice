@@ -17,6 +17,27 @@ import { Picovoice, WakeWordCallback, InferenceCallback } from './picovoice';
 
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 
+/**
+ * Picovoice constructor
+ *
+ * @param keywordPath Absolute path to Porcupine's keyword model file.
+ * @param wakeWordCallback User-defined callback invoked upon detection of the wake phrase.
+ * The callback accepts no input arguments.
+ * @param contextPath Absolute path to file containing context parameters. A context represents the set of
+ * expressions(spoken commands), intents, and intent arguments(slots) within a domain of interest.
+ * @param inferenceCallback User-defined callback invoked upon completion of intent inference. The callback
+ * accepts a single JSON that is populated with the following items:
+ * (1) `isUnderstood`: if isFinalized, whether Rhino understood what it heard based on the context
+ * (2) `intent`: if isUnderstood, name of intent that were inferred
+ * (3) `slots`: if isUnderstood, dictionary of slot keys and values that were inferred
+ * @param porcupineModelPath Absolute path to the file containing Porcupine's model parameters.
+ * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within [0, 1]. A higher
+ * sensitivity results in fewer misses at the cost of increasing the false alarm rate.
+ * @param rhinoModelPath Absolute path to the file containing Rhino's model parameters.
+ * @param Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
+ * results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
+ * @returns an instance of the Picovoice end-to-end platform.
+ */
 class PicovoiceManager {
   private _voiceProcessor: VoiceProcessor;
   private _picovoice: Picovoice | null;
