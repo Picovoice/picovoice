@@ -86,6 +86,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [NodeJS](#nodejs-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
     - [iOS](#ios-demos)
@@ -95,6 +96,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [NodeJS](#nodejs)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [Flutter](#flutter)
     - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
@@ -279,19 +281,34 @@ Upon success the following it printed into the terminal:
 
 For more information about the Java demos go to [demo/java](/demo/java/README.md).
 
+### Flutter Demos
+
+To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+
+Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
+
+Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
+```sh
+flutter run
+```
+
+Once the application has been deployed, press the start button and say:
+
+> Picovoice, turn of the lights in the kitchen.
+
+For the full set of supported commands refer to [demo's readme](/demo/flutter/README.md).
+
 ### React Native Demos
 To run the React Native Picovoice demo app you'll first need to install yarn and setup your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
 
-## Usage
-
-### Running On Android
+#### Running On Android
 ```sh
 cd demo/react-native
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
-### Running On iOS
+#### Running On iOS
 
 ```sh
 cd demo/react-native
@@ -569,6 +586,101 @@ Once you're done with Picovoice, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
+```
+
+### Flutter
+
+Add the [Picovoice Flutter package](https://pub.dev/packages/picovoice) to your pub.yaml.
+```yaml
+dependencies:  
+  picovoice: ^<version>
+```
+The SDK provides two APIs:
+
+#### High-Level API
+
+[PicovoiceManager](/sdk/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
+audio recording. This class is the quickest way to get started.
+
+The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
+```dart
+import 'package:picovoice/picovoice_manager.dart';
+import 'package:picovoice/picovoice_error.dart';
+
+void createPicovoiceManager() async {
+    try{
+        _picovoiceManager = await PicovoiceManager.create(
+            "/path/to/keyword/file.ppn",
+            _wakeWordCallback,
+            "/path/to/context/file.rhn",
+            _inferenceCallback);
+    } on PvError catch (err) {
+        // handle picovoice init error
+    }
+}
+```
+
+The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
+
+Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
+
+```dart
+await _picovoiceManager.start();
+// .. use for detecting wake words and commands
+await _picovoiceManager.stop();
+```
+
+Once the app is done with using an instance of PicovoiceManager, be sure you explicitly release the resources allocated to Picovoice:
+```dart
+await _picovoiceManager.delete();
+```
+
+Our [flutter_voice_processor](https://github.com/Picovoice/flutter-voice-processor/)
+Flutter plugin handles audio capture and passes frames to Picovoice for you.
+
+#### Low-Level API
+
+[Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
+who want to incorporate it into a already existing audio processing pipeline.
+
+`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+
+```dart
+import 'package:picovoice/picovoice_manager.dart';
+import 'package:picovoice/picovoice_error.dart';
+
+void createPicovoice() async {
+    double porcupineSensitivity = 0.7;
+    double rhinoSensitivity = 0.6;
+    try{
+        _picovoice = await Picovoice.create(
+            "/path/to/keyword/file.ppn",
+            wakeWordCallback,
+            "/path/to/context/file.rhn",
+            inferenceCallback,
+            porcupineSensitivity,
+            rhinoSensitivity,
+            "/path/to/porcupine/model.pv",
+            "/path/to/rhino/model.pv");
+    } on PvError catch (err) {
+        // handle picovoice init error
+    }
+}
+```
+
+To use Picovoice, just pass frames of audio to the `process` function. The callbacks will automatically trigger when the wake word is detected and then when the follow-on command is detected.
+
+```dart
+List<int> buffer = getAudioFrame();
+
+try {
+    _picovoice.process(buffer);
+} on PvError catch (error) {
+    // handle error
+}
+
+// once you are done using Picovoice
+_picovoice.delete();
 ```
 
 ### React Native
