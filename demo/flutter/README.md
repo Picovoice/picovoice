@@ -13,11 +13,11 @@ flutter run
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. Simply press start and the engine can recognize commands such as
 
-> Turn off the lights.
+> Picovoice, turn off the lights.
 
 or
 
-> Set the lights in the bedroom to blue.
+> Picovoice, set the lights in the bedroom to blue.
 
 See below for the full context:
 
