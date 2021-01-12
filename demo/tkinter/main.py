@@ -32,7 +32,12 @@ class PicovoiceThread(Thread):
     @staticmethod
     def _keyword_path():
         if platform.system() == 'Linux':
-            return os.path.join(os.path.dirname(__file__), 'res/keyword_files/linux/picovoice_linux.ppn')
+            if platform.machine() == 'x86_64':
+                return os.path.join(os.path.dirname(__file__), 'res/keyword_files/linux/picovoice_linux.ppn')
+            else:
+                return os.path.join(
+                    os.path.dirname(__file__),
+                    'res/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn')
         elif platform.system() == 'Darwin':
             return os.path.join(os.path.dirname(__file__), 'res/keyword_files/mac/picovoice_mac.ppn')
         elif platform.system() == 'Windows':
@@ -43,7 +48,10 @@ class PicovoiceThread(Thread):
     @staticmethod
     def _context_path():
         if platform.system() == 'Linux':
-            return os.path.join(os.path.dirname(__file__), 'res/contexts/linux/alarm_linux.rhn')
+            if platform.machine() == 'x86_64':
+                return os.path.join(os.path.dirname(__file__), 'res/contexts/linux/alarm_linux.rhn')
+            else:
+                return os.path.join(os.path.dirname(__file__), 'res/contexts/raspberry-pi/alarm_raspberry-pi.rhn')
         elif platform.system() == 'Darwin':
             return os.path.join(os.path.dirname(__file__), 'res/contexts/mac/alarm_mac.rhn')
         elif platform.system() == 'Windows':
