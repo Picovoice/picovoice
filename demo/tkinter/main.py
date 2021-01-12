@@ -26,18 +26,18 @@ class PicovoiceThread(Thread):
 
         self._time_label = time_label
 
+        self._is_paused = False
         self._hours = 0
         self._minutes = 0
         self._seconds = 0
-
-        self._is_paused = False
-        self._decrement()
 
         self._is_ready = False
         self._stop = False
         self._is_stopped = False
 
-    def _decrement(self):
+        self._countdown()
+
+    def _countdown(self):
         if not self._is_paused:
             update = False
             if self._seconds > 0:
@@ -56,7 +56,7 @@ class PicovoiceThread(Thread):
             if update:
                 self._time_label.configure(text='%.2d : %.2d : %.2d' % (self._hours, self._minutes, self._seconds))
 
-        Timer(1, self._decrement).start()
+        Timer(1, self._countdown).start()
 
     @staticmethod
     def _keyword_path():
@@ -95,7 +95,13 @@ class PicovoiceThread(Thread):
         self._time_label.configure(fg='black')
 
         if inference.is_understood:
-            if inference.intent == 'reset':
+            if inference.intent == 'setAlarm':
+                self._is_paused = False
+                self._hours = int(inference.slots['hours']) if 'hours' in inference.slots else 0
+                self._minutes = int(inference.slots['minutes']) if 'minutes' in inference.slots else 0
+                self._seconds = int(inference.slots['seconds']) if 'seconds' in inference.slots else 0
+                self._time_label.configure(text='%.2d : %.2d : %.2d' % (self._hours, self._minutes, self._seconds))
+            elif inference.intent == 'reset':
                 self._is_paused = False
                 self._hours = 0
                 self._minutes = 0
@@ -105,12 +111,6 @@ class PicovoiceThread(Thread):
                 self._is_paused = True
             elif inference.intent == 'resume':
                 self._is_paused = False
-            elif inference.intent == 'setAlarm':
-                self._is_paused = False
-                self._hours = int(inference.slots['hours']) if 'hours' in inference.slots else 0
-                self._minutes = int(inference.slots['minutes']) if 'minutes' in inference.slots else 0
-                self._seconds = int(inference.slots['seconds']) if 'seconds' in inference.slots else 0
-                self._time_label.configure(text='%.2d : %.2d : %.2d' % (self._hours, self._minutes, self._seconds))
             else:
                 raise ValueError("unsupported intent '%s'" % inference.intent)
 
@@ -165,9 +165,9 @@ class PicovoiceThread(Thread):
 def main():
     window = tk.Tk()
     window.title('Picovoice Demo')
-    window.minsize(width=150, height=200)
+    window.minsize(width=400, height=200)
 
-    time_label = tk.Label(window, text='00 : 00 : 00')
+    time_label = tk.Label(window, text='00 : 00 : 00', font=('Ubuntu', 48))
     time_label.pack(fill=tk.BOTH, pady=90)
 
     picovoice_thread = PicovoiceThread(time_label)
