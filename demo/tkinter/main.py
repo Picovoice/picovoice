@@ -25,6 +25,7 @@ class PicovoiceThread(Thread):
 
         self._time_label = time_label
 
+        self._is_ready = False
         self._stop = False
         self._is_stopped = False
 
@@ -37,7 +38,7 @@ class PicovoiceThread(Thread):
         elif platform.system() == 'Windows':
             return os.path.join(os.path.dirname(__file__), 'res/keyword_files/windows/picovoice_windows.ppn')
         else:
-            raise ValueError()
+            raise ValueError("unsupported platform '%s'" % platform.system())
 
     @staticmethod
     def _context_path():
@@ -48,7 +49,7 @@ class PicovoiceThread(Thread):
         elif platform.system() == 'Windows':
             return os.path.join(os.path.dirname(__file__), 'res/contexts/windows/alarm_windows.rhn')
         else:
-            raise ValueError()
+            raise ValueError("unsupported platform '%s'" % platform.system())
 
     def _wake_word_callback(self):
         self._time_label.configure(fg='red')
@@ -65,45 +66,48 @@ class PicovoiceThread(Thread):
                 seconds = '%.2d' % int(inference.slots['seconds']) if 'seconds' in inference.slots else '00'
                 self._time_label.configure(text='%s : %s : %s' % (hours, minutes, seconds))
             else:
-                raise ValueError()
+                raise ValueError("unsupported intent '%s'" % inference.intent)
 
     def run(self):
-        o = None
+        pv = None
         py_audio = None
         audio_stream = None
 
         try:
-            o = Picovoice(
+            pv = Picovoice(
                 keyword_path=self._keyword_path(),
+                porcupine_sensitivity=0.75,
                 wake_word_callback=self._wake_word_callback,
                 context_path=self._context_path(),
                 inference_callback=self._inference_callback)
 
             py_audio = pyaudio.PyAudio()
             audio_stream = py_audio.open(
-                rate=o.sample_rate,
+                rate=pv.sample_rate,
                 channels=1,
                 format=pyaudio.paInt16,
                 input=True,
-                frames_per_buffer=o.frame_length)
+                frames_per_buffer=pv.frame_length)
+
+            self._is_ready = True
 
             while not self._stop:
-                pcm = audio_stream.read(o.frame_length)
-                pcm = struct.unpack_from("h" * o.frame_length, pcm)
-                o.process(pcm)
-        except KeyboardInterrupt:
-            print('Stopping ...')
+                pcm = audio_stream.read(pv.frame_length)
+                pcm = struct.unpack_from("h" * pv.frame_length, pcm)
+                pv.process(pcm)
         finally:
             if audio_stream is not None:
                 audio_stream.close()
-
             if py_audio is not None:
                 py_audio.terminate()
 
-            if o is not None:
-                o.delete()
+            if pv is not None:
+                pv.delete()
 
         self._is_stopped = True
+
+    def is_ready(self):
+        return self._is_ready
 
     def stop(self):
         self._stop = True
@@ -118,7 +122,7 @@ def main():
     window.minsize(width=150, height=200)
 
     time_label = tk.Label(window, text='00 : 00 : 00')
-    time_label.pack(fill=tk.X, pady=90)
+    time_label.pack(fill=tk.BOTH, pady=90)
 
     picovoice_thread = PicovoiceThread(time_label)
 
@@ -131,6 +135,9 @@ def main():
     window.protocol('WM_DELETE_WINDOW', on_close)
 
     picovoice_thread.start()
+    while not picovoice_thread.is_ready():
+        pass
+
     window.mainloop()
 
 
