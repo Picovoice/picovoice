@@ -22,7 +22,9 @@ from picovoice import Picovoice
 class PicovoiceThread(Thread):
     def __init__(self, time_label):
         super().__init__()
+
         self._time_label = time_label
+
         self._stop = False
         self._is_stopped = False
 
@@ -53,7 +55,7 @@ class PicovoiceThread(Thread):
 
     def _inference_callback(self, inference):
         self._time_label.configure(fg='black')
-        print(inference)
+
         if inference.is_understood:
             if inference.intent == 'reset':
                 self._time_label.configure(text='00 : 00 : 00')
@@ -116,7 +118,7 @@ def main():
     window.minsize(width=150, height=200)
 
     time_label = tk.Label(window, text='00 : 00 : 00')
-    time_label.pack(fill=tk.X, pady=50)
+    time_label.pack(fill=tk.X, pady=90)
 
     picovoice_thread = PicovoiceThread(time_label)
 
