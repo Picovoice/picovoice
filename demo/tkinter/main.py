@@ -14,6 +14,7 @@ import platform
 import struct
 import tkinter as tk
 from threading import Thread
+from threading import Timer
 
 import pyaudio
 from picovoice import Picovoice
@@ -25,9 +26,37 @@ class PicovoiceThread(Thread):
 
         self._time_label = time_label
 
+        self._hours = 0
+        self._minutes = 0
+        self._seconds = 0
+
+        self._is_paused = False
+        self._decrement()
+
         self._is_ready = False
         self._stop = False
         self._is_stopped = False
+
+    def _decrement(self):
+        if not self._is_paused:
+            update = False
+            if self._seconds > 0:
+                self._seconds -= 1
+                update = True
+            elif self._minutes > 0:
+                self._minutes -= 1
+                self._seconds = 59
+                update = True
+            elif self._hours > 0:
+                self._hours -= 1
+                self._minutes = 59
+                self._seconds = 59
+                update = True
+
+            if update:
+                self._time_label.configure(text='%.2d : %.2d : %.2d' % (self._hours, self._minutes, self._seconds))
+
+        Timer(1, self._decrement).start()
 
     @staticmethod
     def _keyword_path():
@@ -67,12 +96,21 @@ class PicovoiceThread(Thread):
 
         if inference.is_understood:
             if inference.intent == 'reset':
+                self._is_paused = False
+                self._hours = 0
+                self._minutes = 0
+                self._seconds = 0
                 self._time_label.configure(text='00 : 00 : 00')
+            elif inference.intent == 'pause':
+                self._is_paused = True
+            elif inference.intent == 'resume':
+                self._is_paused = False
             elif inference.intent == 'setAlarm':
-                hours = '%.2d' % int(inference.slots['hours']) if 'hours' in inference.slots else '00'
-                minutes = '%.2d' % int(inference.slots['minutes']) if 'minutes' in inference.slots else '00'
-                seconds = '%.2d' % int(inference.slots['seconds']) if 'seconds' in inference.slots else '00'
-                self._time_label.configure(text='%s : %s : %s' % (hours, minutes, seconds))
+                self._is_paused = False
+                self._hours = int(inference.slots['hours']) if 'hours' in inference.slots else 0
+                self._minutes = int(inference.slots['minutes']) if 'minutes' in inference.slots else 0
+                self._seconds = int(inference.slots['seconds']) if 'seconds' in inference.slots else 0
+                self._time_label.configure(text='%.2d : %.2d : %.2d' % (self._hours, self._minutes, self._seconds))
             else:
                 raise ValueError("unsupported intent '%s'" % inference.intent)
 

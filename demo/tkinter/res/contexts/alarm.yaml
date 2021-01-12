@@ -1,20 +1,24 @@
 context:
   expressions:
     setAlarm:
-      - "set (an, the) alarm for $pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:minutes minutes (and) $pv.TwoDigitInteger:seconds seconds"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:minutes minutes"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:seconds seconds"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:hours hours"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:minutes minutes (and) $pv.TwoDigitInteger:seconds seconds"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:minutes minutes"
-      - "set (an, the) alarm for $pv.TwoDigitInteger:seconds seconds"
-      - "$pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:minutes minutes (and) $pv.TwoDigitInteger:seconds seconds"
-      - "$pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:minutes minutes"
-      - "$pv.TwoDigitInteger:hours hours (and) $pv.TwoDigitInteger:seconds seconds"
-      - "$pv.TwoDigitInteger:hours hours"
-      - "$pv.TwoDigitInteger:minutes minutes (and) $pv.TwoDigitInteger:seconds seconds"
-      - "$pv.TwoDigitInteger:minutes minutes"
-      - "$pv.TwoDigitInteger:seconds seconds"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes]"
+      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
+      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "$pv.TwoDigitInteger:hours [hour, hours]"
+      - "$pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
+      - "$pv.TwoDigitInteger:minutes [minute, minutes]"
+      - "$pv.TwoDigitInteger:seconds [second, seconds]"
     reset:
-      - "reset"
+      - "reset (the) (timer)"
+    pause:
+      - "[pause, stop] (the) (timer)"
+    resume:
+      - "resume (the) (timer)"
   slots:
