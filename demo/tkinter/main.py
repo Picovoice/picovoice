@@ -141,6 +141,8 @@ class PicovoiceThread(Thread):
                 context_path=self._context_path(),
                 inference_callback=self._inference_callback)
 
+            print(pv.context_info)
+
             py_audio = pyaudio.PyAudio()
             audio_stream = py_audio.open(
                 rate=pv.sample_rate,
