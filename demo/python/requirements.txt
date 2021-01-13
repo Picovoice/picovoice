@@ -1,4 +1,4 @@
 numpy
-picovoice==0.9.1
+picovoice==1.1.0
 pyaudio
 soundfile
