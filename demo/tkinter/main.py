@@ -84,13 +84,21 @@ class PicovoiceThread(Thread):
     def _context_path():
         if platform.system() == 'Linux':
             if platform.machine() == 'x86_64':
-                return os.path.join(os.path.dirname(__file__), 'res/contexts/linux/alarm_linux.rhn')
+                return os.path.join(
+                    os.path.dirname(__file__),
+                    '../../resources/rhino/resources/contexts/linux/alarm_linux.rhn')
             else:
-                return os.path.join(os.path.dirname(__file__), 'res/contexts/raspberry-pi/alarm_raspberry-pi.rhn')
+                return os.path.join(
+                    os.path.dirname(__file__),
+                    '../../resources/rhino/resources/contexts/raspberry-pi/alarm_raspberry-pi.rhn')
         elif platform.system() == 'Darwin':
-            return os.path.join(os.path.dirname(__file__), 'res/contexts/mac/alarm_mac.rhn')
+            return os.path.join(
+                os.path.dirname(__file__),
+                '../../resources/rhino/resources/contexts/mac/alarm_mac.rhn')
         elif platform.system() == 'Windows':
-            return os.path.join(os.path.dirname(__file__), 'res/contexts/windows/alarm_windows.rhn')
+            return os.path.join(
+                os.path.dirname(__file__),
+                '../../resources/rhino/resources/contexts/windows/alarm_windows.rhn')
         else:
             raise ValueError("unsupported platform '%s'" % platform.system())
 
