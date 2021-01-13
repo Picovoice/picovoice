@@ -62,15 +62,21 @@ class PicovoiceThread(Thread):
     def _keyword_path():
         if platform.system() == 'Linux':
             if platform.machine() == 'x86_64':
-                return os.path.join(os.path.dirname(__file__), 'res/keyword_files/linux/picovoice_linux.ppn')
+                return os.path.join(
+                    os.path.dirname(__file__),
+                    '../../resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn')
             else:
                 return os.path.join(
                     os.path.dirname(__file__),
-                    'res/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn')
+                    '../../resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn')
         elif platform.system() == 'Darwin':
-            return os.path.join(os.path.dirname(__file__), 'res/keyword_files/mac/picovoice_mac.ppn')
+            return os.path.join(
+                os.path.dirname(__file__),
+                '../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn')
         elif platform.system() == 'Windows':
-            return os.path.join(os.path.dirname(__file__), 'res/keyword_files/windows/picovoice_windows.ppn')
+            return os.path.join(
+                os.path.dirname(__file__),
+                '../../resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn')
         else:
             raise ValueError("unsupported platform '%s'" % platform.system())
 
