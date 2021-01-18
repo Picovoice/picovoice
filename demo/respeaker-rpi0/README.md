@@ -1,7 +1,15 @@
+## Build
+
+From the root of the repository run:
+
 ```bash
 gcc -std=c99 -O3 -o demo/respeaker-rpi0/picovoice_demo_mic \
 -I sdk/c/include/ demo/respeaker-rpi0/picovoice_demo_mic.c -ldl -lasound
 ```
+
+## Run
+
+From the root of the repository run:
 
 ```bash
 ./demo/respeaker-rpi0/picovoice_demo_mic \

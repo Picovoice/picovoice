@@ -52,7 +52,7 @@ static void inference_callback(pv_inference_t *inference) {
                 strcpy(command, "python3 demo/respeaker-rpi0/change_color.py off");
             }
         } else {
-            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", values[0])
+            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", inference->values[0]);
         }
 
         const int res = system(command);
