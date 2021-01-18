@@ -43,13 +43,24 @@ static void inference_callback(pv_inference_t *inference) {
             }
             fprintf(stdout, "    }\n");
         }
+
+        char command[1024];
+        if (strcmp(inference->intent, "turnLights") == 0) {
+            if (strcmp(inference->values[0], "on") == 0) {
+                strcpy(command, "python3 demo/respeaker-rpi0/change_color.py blue");
+            } else {
+                strcpy(command, "python3 demo/respeaker-rpi0/change_color.py off");
+            }
+        } else {
+            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", values[0])
+        }
+
+        const int res = system(command);
+        if (res < 0) {
+            fprintf(stderr, "failed to change LED colors with %d\n", res);
+        }
     }
     fprintf(stdout, "}\n\n");
-
-    const int res = system("python3 demo/respeaker-rpi0/change_color.py green");
-    if (res < 0) {
-        fprintf(stderr, "failed to change LED colors with %d\n", res);
-    }
 
 
     pv_inference_delete_func(inference);
