@@ -13,7 +13,7 @@ import sys
 
 from gpiozero import LED
 
-from .apa102 import APA102
+from apa102 import APA102
 
 COLORS_RGB = dict(
     off=(0, 0, 0),

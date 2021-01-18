@@ -4,7 +4,7 @@ gcc -std=c99 -O3 -o demo/respeaker-rpi0/picovoice_demo_mic \
 ```
 
 ```bash
-./demo/c/picovoice_demo_mic \
+./demo/respeaker-rpi0/picovoice_demo_mic \
 sdk/c/lib/raspberry-pi/arm11/libpicovoice.so \
 resources/porcupine/lib/common/porcupine_params.pv \
 resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \

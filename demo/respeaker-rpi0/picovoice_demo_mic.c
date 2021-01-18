@@ -46,7 +46,11 @@ static void inference_callback(pv_inference_t *inference) {
     }
     fprintf(stdout, "}\n\n");
 
-    system("pwd");
+    const int res = system("python3 demo/respeaker-rpi0/change_color.py green");
+    if (res < 0) {
+        fprintf(stderr, "failed to change LED colors with %d\n", res);
+    }
+
 
     pv_inference_delete_func(inference);
 }
