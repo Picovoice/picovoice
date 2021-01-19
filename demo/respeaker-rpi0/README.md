@@ -22,3 +22,62 @@ demo/respeaker/pvrespeakerdemo/respeaker_raspberry-pi.rhn \
 0.5 \
 plughw:CARD=seeed2micvoicec,DEV=0
 ```
+
+Say
+
+> Picovoice
+
+The demo outputs:
+
+```text
+[wake word]
+```
+
+Say
+
+>turn on the lights
+
+You should see the lights turned on and the following message in the terminal:
+
+```text
+{
+    is_understood : 'true',
+    intent : 'turnLights',
+    slots : {
+        'state' : 'on',
+    }
+}
+```
+
+The list of commands is shown below:
+
+```text
+context:
+  expressions:
+    turnLights:
+      - "[switch, turn] $state:state (all) (the) [light, lights]"
+      - "[switch, turn] (all) (the) [light, lights] $state:state"
+    changeColor:
+      - "[change, set, switch] (all) (the) (light, lights) (color) (to) $color:color"
+  slots:
+    state:
+      - "off"
+      - "on"
+    color:
+      - "blue"
+      - "green"
+      - "orange"
+      - "pink"
+      - "purple"
+      - "red"
+      - "white"
+      - "yellow"
+```
+
+Try changing the color by:
+
+> Picovoice, set the lights to orange
+
+Turn off the lights by:
+
+> Picovoice, turn off all lights
