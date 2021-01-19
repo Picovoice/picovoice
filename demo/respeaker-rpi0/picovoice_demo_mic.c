@@ -9,15 +9,51 @@
     specific language governing permissions and limitations under the License.
 */
 
-#include <alsa/asoundlib.h>
-#include <dlfcn.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <dlfcn.h>
+#include <alsa/asoundlib.h>
+
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
+
 #include "pv_picovoice.h"
 
+static const uint8_t OFF_RGB[3] = {0, 0, 0};
+static const uint8_t BLUE_RGB[3] = {0, 0, 255};
+static const uint8_t GREEN_RGB[3] = {0, 255, 0};
+static const uint8_t ORANGE_RGB[3] = {255, 128, 0};
+static const uint8_t PINK_RGB[3] = {255, 51, 153};
+static const uint8_t PURPLE_RGB[3] = {128, 0, 128};
+static const uint8_t RED_RGB[3] = {255, 0, 0};
+static const uint8_t WHITE_RGB[3] = {255, 255, 255};
+static const uint8_t YELLOW_RGB[3] = {255, 255, 51};
+
 static volatile bool is_interrupted = false;
+
+static void set_color(const uint8_t rgb[3]) {
+    for(int32_t i = 0; i < 4; i++) {
+        uint8_t zero = 0x00;
+        wiringPiSPIDataRW(0, &zero, 1);
+    }
+
+    static const uint32_t BRIGHTNESS = 1;
+    for(int32_t i = 0; i < 12; i++) {
+        uint8_t led_frame[4];
+        led_frame[0] = 0b11100000 | (0b00011111 & BRIGHTNESS);
+        led_frame[1] = rgb[2];
+        led_frame[2] = rgb[1];
+        led_frame[3] = rgb[0];
+        wiringPiSPIDataRW(0, led_frame, 4);
+    }
+
+    for(int32_t i = 0; i < 4; i++) {
+        uint8_t zero = 0x00;
+        wiringPiSPIDataRW(0, &zero, 1);
+    }
+}
 
 void interrupt_handler(int _) {
     (void) _;
@@ -47,21 +83,32 @@ static void inference_callback(pv_inference_t *inference) {
         char command[1024];
         if (strcmp(inference->intent, "turnLights") == 0) {
             if (strcmp(inference->values[0], "on") == 0) {
-                strcpy(command, "python3 demo/respeaker-rpi0/change_color.py blue");
+                set_color(WHITE_RGB);
             } else {
-                strcpy(command, "python3 demo/respeaker-rpi0/change_color.py off");
+                set_color(OFF_RGB);
             }
         } else {
-            sprintf(command, "python3 demo/respeaker-rpi0/change_color.py %s", inference->values[0]);
-        }
-
-        const int res = system(command);
-        if (res < 0) {
-            fprintf(stderr, "failed to change LED colors with %d\n", res);
+            const char *color = inference->values[0];
+            if (strcmp(color, "blue") == 0) {
+                set_color(BLUE_RGB);
+            } else if (strcmp(color, "green") == 0) {
+                set_color(GREEN_RGB);
+            } else if (strcmp(color, "orange") == 0) {
+                set_color(ORANGE_RGB);
+            } else if (strcmp(color, "pink") == 0) {
+                set_color(PINK_RGB);
+            } else if (strcmp(color, "purple") == 0) {
+                set_color(PURPLE_RGB);
+            } else if (strcmp(color, "red") == 0) {
+                set_color(RED_RGB);
+            } else if (strcmp(color, "white") == 0) {
+                set_color(WHITE_RGB);
+            } else if (strcmp(color, "yellow") == 0) {
+                set_color(YELLOW_RGB);
+            }
         }
     }
     fprintf(stdout, "}\n\n");
-
 
     pv_inference_delete_func(inference);
 }
@@ -234,6 +281,15 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "failed to allocate memory for audio buffer\n");
         exit(1);
     }
+
+    wiringPiSetup();
+    if(wiringPiSPISetup(0, 6000000) < 0) {
+        fprintf(stderr, "failed to setup SPI interface\n");
+        exit(1);
+    }
+
+    pinMode(21, OUTPUT);
+    digitalWrite(21, HIGH);
 
     fprintf(stdout, "Picovoice %s\nListening ...\n\n", pv_picovoice_version_func());
 
