@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0249658725B65424008815FB /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		025843D825645A6A00D323FD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025843D725645A6A00D323FD /* File.swift */; };
 		028A5FA125677A7D00520564 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 028A5FA025677A7D00520564 /* smart_lighting_ios.rhn */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -182,6 +183,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				028A5FA125677A7D00520564 /* smart_lighting_ios.rhn in Resources */,
+				0249658725B65424008815FB /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

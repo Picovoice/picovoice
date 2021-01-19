@@ -307,7 +307,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PicovoiceDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = DXS28SLTD3;
+				DEVELOPMENT_TEAM = QCN89N76LX;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -317,7 +317,7 @@
 					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
 				);
 				MODULEMAP_FILE = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "Picovoice-Inc.PicovoiceDemo2";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
@@ -332,7 +332,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PicovoiceDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = DXS28SLTD3;
+				DEVELOPMENT_TEAM = QCN89N76LX;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -342,7 +342,7 @@
 					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
 				);
 				MODULEMAP_FILE = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "Picovoice-Inc.PicovoiceDemo2";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.picovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
