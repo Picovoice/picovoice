@@ -39,13 +39,13 @@ static void set_color(const uint8_t rgb[3]) {
         wiringPiSPIDataRW(0, &zero, 1);
     }
 
-    static const uint32_t BRIGHTNESS = 8;
-    uint8_t led_frame[4];
-    led_frame[0] = 0b11100000 | (0b00011111 & BRIGHTNESS);
-    led_frame[1] = rgb[2];
-    led_frame[2] = rgb[1];
-    led_frame[3] = rgb[0];
+    static const uint32_t BRIGHTNESS = 100;
     for(int32_t i = 0; i < 12; i++) {
+        uint8_t led_frame[4];
+        led_frame[0] = 0b11100000 | (0b00011111 & BRIGHTNESS);
+        led_frame[1] = rgb[2];
+        led_frame[2] = rgb[1];
+        led_frame[3] = rgb[0];
         wiringPiSPIDataRW(0, led_frame, 4);
     }
 
