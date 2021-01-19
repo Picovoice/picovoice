@@ -1,3 +1,9 @@
+## Requirements
+
+```bash
+sudo apt-get install wiringpi
+```
+
 ## Build
 
 From the root of the repository run:
