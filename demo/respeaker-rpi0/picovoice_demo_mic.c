@@ -33,7 +33,7 @@ static const uint8_t YELLOW_RGB[3] = {255, 255, 51};
 
 static volatile bool is_interrupted = false;
 
-static void set_color(const uint8_t[3] rgb) {
+static void set_color(const uint8_t rgb[3]) {
     for(int32_t i = 0; i < 4; i++) {
         const uint8_t zero = 0x00;
         wiringPiSPIDataRW(0, &zero, 1);
