@@ -3,3 +3,5 @@ node_modules
 .DS_Store
 demo/c/picovoice_demo_file
 demo/c/picovoice_demo_mic
+demo/respeaker-rpi0/picovoice_demo_mic
+__pycache__
