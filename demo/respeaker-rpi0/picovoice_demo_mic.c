@@ -21,15 +21,15 @@
 
 #include "pv_picovoice.h"
 
-static const uint8_t OFF_RGB = {0, 0, 0};
-static const uint8_t BLUE_RGB = {0, 0, 255};
-static const uint8_t GREEN_RGB = {0, 255, 0};
-static const uint8_t ORANGE_RGB = {255, 128, 0};
-static const uint8_t PINK_RGB = {255, 51, 153};
-static const uint8_t PURPLE_RGB = {128, 0, 128};
-static const uint8_t RED_RGB = {255, 0, 0};
-static const uint8_t WHITE_RGB = {255, 255, 255};
-static const uint8_t YELLOW_RGB = {255, 255, 51};
+static const uint8_t OFF_RGB[3] = {0, 0, 0};
+static const uint8_t BLUE_RGB[3] = {0, 0, 255};
+static const uint8_t GREEN_RGB[3] = {0, 255, 0};
+static const uint8_t ORANGE_RGB[3] = {255, 128, 0};
+static const uint8_t PINK_RGB[3] = {255, 51, 153};
+static const uint8_t PURPLE_RGB[3] = {128, 0, 128};
+static const uint8_t RED_RGB[3] = {255, 0, 0};
+static const uint8_t WHITE_RGB[3] = {255, 255, 255};
+static const uint8_t YELLOW_RGB[3] = {255, 255, 51};
 
 static volatile bool is_interrupted = false;
 
