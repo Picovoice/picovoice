@@ -1,5 +1,5 @@
 name: pico_clock
-description: A new Flutter project.
+description: A voice-controlled clock app.
 
 publish_to: 'none'
 version: 1.0.0+1
