@@ -1,0 +1,65 @@
+PODS:
+  - Flutter (1.0.0)
+  - flutter_ringtone_player (0.0.1):
+    - Flutter
+  - flutter_voice_processor (1.0.0):
+    - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
+  - path_provider (0.0.1):
+    - Flutter
+  - porcupine (1.9.5):
+    - Flutter
+    - porcupine/pv_porcupine (= 1.9.5)
+  - porcupine/pv_porcupine (1.9.5):
+    - Flutter
+  - rhino (1.6.2):
+    - Flutter
+    - rhino/pv_rhino (= 1.6.2)
+  - rhino/pv_rhino (1.6.2):
+    - Flutter
+  - Toast (4.0.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
+  - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - porcupine (from `.symlinks/plugins/porcupine/ios`)
+  - rhino (from `.symlinks/plugins/rhino/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Toast
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  flutter_ringtone_player:
+    :path: ".symlinks/plugins/flutter_ringtone_player/ios"
+  flutter_voice_processor:
+    :path: ".symlinks/plugins/flutter_voice_processor/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  porcupine:
+    :path: ".symlinks/plugins/porcupine/ios"
+  rhino:
+    :path: ".symlinks/plugins/rhino/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
+  flutter_voice_processor: b4295092e5365b517b75f2af026c05d897ce4450
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  porcupine: 62bb2ea5f3806a602062ad0e6c92e71fbe7b6317
+  rhino: ada5afb7f35aaae468132af5a10f01e5242f958e
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0

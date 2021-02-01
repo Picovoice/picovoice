@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
           highlightColor: picoRed,
           textTheme: TextTheme(
               headline1: TextStyle(
-                  fontSize: 70, fontWeight: FontWeight.bold, color: picoBlue),
+                  fontSize: 60, fontWeight: FontWeight.bold, color: picoBlue),
               headline2: TextStyle(
-                  fontSize: 70, fontWeight: FontWeight.bold, color: picoGrey),
+                  fontSize: 60, fontWeight: FontWeight.bold, color: picoGrey),
               subtitle1: TextStyle(fontSize: 23, color: picoGrey),
               subtitle2: TextStyle(fontSize: 15, color: picoRed),
               bodyText1: TextStyle(fontSize: 18, color: lightGrey))),
@@ -181,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     if (slots['hour'] != null) {
       hour = int.parse(slots['hour']);
+      if (hour == 12) hour = 0;
     }
     if (slots['minute'] != null) {
       minute = int.parse(slots['minute']);
@@ -189,7 +190,14 @@ class _MyHomePageState extends State<MyHomePage> {
     if (slots['amPm'] == "p m") hour += 12;
 
     if (hour >= 24 || minute >= 60) {
-      print("$hour:$minute is an invalid time");
+      Fluttertoast.showToast(
+          msg: "$hour:$minute is an invalid time.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Color.fromRGBO(55, 125, 255, 1),
+          textColor: Colors.white,
+          fontSize: 16.0);
       return;
     }
 
@@ -198,8 +206,15 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime alarmTime =
         new DateTime(now.year, now.month, dayOfMonth, hour, minute);
     if (alarmTime.isBefore(now)) {
-      print(DateFormat.MMMMEEEEd().add_jm().format(alarmTime) +
-          " has already happened!");
+      Fluttertoast.showToast(
+          msg: DateFormat.MMMEd().add_jm().format(alarmTime) +
+              " is not a valid future time.",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 2,
+          backgroundColor: Color.fromRGBO(55, 125, 255, 1),
+          textColor: Colors.white,
+          fontSize: 16.0);
       return;
     }
 

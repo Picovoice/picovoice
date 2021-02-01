@@ -26,3 +26,5 @@ flutter:
   assets:
       - assets/android/pico_clock_android.ppn
       - assets/android/flutter_clock_android.rhn
+      - assets/ios/pico_clock_ios.ppn
+      - assets/ios/flutter_clock_ios.rhn
