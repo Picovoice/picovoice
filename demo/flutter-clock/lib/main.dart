@@ -123,11 +123,25 @@ class _MyHomePageState extends State<MyHomePage> {
         _setAlarm(slots);
       } else if (inference['intent'] == 'stopwatch') {
         _performStopwatchCommand(slots);
+      } else if (inference['intent'] == 'availableCommands') {
+        Fluttertoast.showToast(
+            msg: "Try saying: \n" +
+                " - 'set timer for 5 minutes'\n" +
+                " - 'set alarm for tomorrow at 10:30am'\n" +
+                " - 'start stopwatch'\n" +
+                " - 'show me the time'",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 5,
+            backgroundColor: Color.fromRGBO(55, 125, 255, 1),
+            textColor: Colors.white,
+            fontSize: 16.0);
       }
     } else {
       Fluttertoast.showToast(
-          msg: "Didn't understand command!",
-          toastLength: Toast.LENGTH_SHORT,
+          msg: "Didn't understand command!\n" +
+              "Say 'PicoClock, what can I say?' to see a list of example commands",
+          toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 2,
           backgroundColor: Color.fromRGBO(55, 125, 255, 1),
@@ -149,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _alarmTime = null;
     }
     setState(() {
-      _selectedIndex = 1;
+      _selectedIndex = 0;
     });
   }
 
@@ -219,6 +233,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     _alarmTime = alarmTime;
+    setState(() {
+      _selectedIndex = 0;
+    });
   }
 
   int _dayToWeekday(String day) {
@@ -491,7 +508,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             size: 100, color: Theme.of(context).primaryColor)),
                 Container(
                     margin: EdgeInsets.only(bottom: 10),
-                    child: Text("Say 'Pico Clock'!",
+                    child: Text("Say 'PicoClock'!",
                         style: Theme.of(context).textTheme.bodyText1))
               ],
             )
