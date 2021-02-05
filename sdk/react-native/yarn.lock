@@ -1561,20 +1561,20 @@
     "@octokit/openapi-types" "^2.2.0"
     "@types/node" ">= 8"
 
-"@picovoice/porcupine-react-native@^1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-1.9.2.tgz#08bf8ccc3c686fa93041c8e9bfe135a926ea228d"
-  integrity sha512-wtiWJU0Vd8laoRPdGoIKJ9yfX4f7SemPeT7DYZZPPdn9CLcAE+LzKNVKpjx/l5ml4ikpr5DpoowOwOlckRhDhg==
+"@picovoice/porcupine-react-native@^1.9.5":
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-1.9.5.tgz#fc1d86badc5e24ae934a8d7fbaf5dd05de6b556c"
+  integrity sha512-FQRXi0yhujP+DKeHaPxx1aKOGSSpBoMX5l3DS93GNHHvRl2DUSD41PF5RsLxauw+Ug3HMoSlVfczJZcjufTBMQ==
 
-"@picovoice/react-native-voice-processor@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.2.tgz#8d2d013714e4ab21e626468e6922b37b631b111f"
-  integrity sha512-adkiX4UHxLzKTH38MzjDlyVYVHGBFpt72J6qNNsCMb8CosCBJh/ujnbu3NIRWrSmOTesVvb/qXc6yrVBhfehRw==
+"@picovoice/react-native-voice-processor@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.3.tgz#5228e2992c415cca45aee87c70ef7ae16cebf2c3"
+  integrity sha512-srIYcK78GzJigqRSlBQrEeMMBKPSC1vmwHPGrDhXInqu2InNqzH4sUb/86ip0YwSgngSBFbIc/NUFKOnGOC0Cg==
 
-"@picovoice/rhino-react-native@^1.6.3":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-1.6.3.tgz#63b8c01db3a5ce739ce899fe32fa73bc61d4d22c"
-  integrity sha512-aFBPhEpxeD94NpGnKJKj85LucfKd4jzvXwkhY+DDDE/lmtbZ0qVyIN/Elf/VziT4aMS79/SfqEmooCmiwQmoCw==
+"@picovoice/rhino-react-native@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-1.6.5.tgz#365b01ef43d460aae70e791a5e8abbf0745620d8"
+  integrity sha512-NPcr6lIXLKzCPeSlQj1Cf3gWwQ3lld9nzL4yarFXt16xFOYPxTkrFP60bZOfwLD66oCKk4cFiKkuB5lBqBXyvw==
 
 "@react-native-community/bob@^0.16.2":
   version "0.16.2"

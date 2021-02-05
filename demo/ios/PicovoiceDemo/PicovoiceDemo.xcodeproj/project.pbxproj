@@ -3,16 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02A416A425CE026600082745 /* PvPorcupine.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A416A125CE025100082745 /* PvPorcupine.xcframework */; };
+		02A416A525CE026600082745 /* PvPorcupine.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02A416A125CE025100082745 /* PvPorcupine.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		02A416A725CE026700082745 /* PvRhino.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A4169E25CE023D00082745 /* PvRhino.xcframework */; };
+		02A416A825CE026700082745 /* PvRhino.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 02A4169E25CE023D00082745 /* PvRhino.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1760DF2D253A175000395344 /* PicovoiceDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */; };
 		1760DF2F253A175000395344 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF2E253A175000395344 /* ContentView.swift */; };
 		1760DF31253A175500395344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF30253A175500395344 /* Assets.xcassets */; };
 		1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF33253A175500395344 /* Preview Assets.xcassets */; };
-		1760DF3F253A18BB00395344 /* libpv_rhino.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760DF3E253A185500395344 /* libpv_rhino.a */; };
-		1760DF41253A18F700395344 /* libpv_porcupine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1760DF40253A18E500395344 /* libpv_porcupine.a */; };
 		1760DF47253A1A1F00395344 /* PicovoiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF46253A1A1F00395344 /* PicovoiceManager.swift */; };
 		1760DF4F253A43B200395344 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF4E253A43B200395344 /* porcupine_params.pv */; };
 		1760DF52253A440A00395344 /* porcupine_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF51253A440A00395344 /* porcupine_ios.ppn */; };
@@ -20,16 +22,30 @@
 		1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF57253A442A00395344 /* smart_lighting_ios.rhn */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		02A416A625CE026600082745 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				02A416A825CE026700082745 /* PvRhino.xcframework in Embed Frameworks */,
+				02A416A525CE026600082745 /* PvPorcupine.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		02A4169E25CE023D00082745 /* PvRhino.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PvRhino.xcframework; path = ../../../resources/rhino/lib/ios/PvRhino.xcframework; sourceTree = "<group>"; };
+		02A416A125CE025100082745 /* PvPorcupine.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PvPorcupine.xcframework; path = ../../../resources/porcupine/lib/ios/PvPorcupine.xcframework; sourceTree = "<group>"; };
 		1760DF29253A175000395344 /* PicovoiceDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicovoiceDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicovoiceDemoApp.swift; sourceTree = "<group>"; };
 		1760DF2E253A175000395344 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1760DF30253A175500395344 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1760DF33253A175500395344 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1760DF35253A175500395344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1760DF3C253A17C000395344 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		1760DF3E253A185500395344 /* libpv_rhino.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_rhino.a; path = ../../../resources/rhino/lib/ios/libpv_rhino.a; sourceTree = "<group>"; };
-		1760DF40253A18E500395344 /* libpv_porcupine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpv_porcupine.a; path = ../../../resources/porcupine/lib/ios/libpv_porcupine.a; sourceTree = "<group>"; };
 		1760DF46253A1A1F00395344 /* PicovoiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PicovoiceManager.swift; path = ../../../../sdk/ios/PicovoiceManager.swift; sourceTree = "<group>"; };
 		1760DF4E253A43B200395344 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params.pv; sourceTree = "<group>"; };
 		1760DF51253A440A00395344 /* porcupine_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/porcupine_ios.ppn; sourceTree = "<group>"; };
@@ -42,8 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1760DF3F253A18BB00395344 /* libpv_rhino.a in Frameworks */,
-				1760DF41253A18F700395344 /* libpv_porcupine.a in Frameworks */,
+				02A416A725CE026700082745 /* PvRhino.xcframework in Frameworks */,
+				02A416A425CE026600082745 /* PvPorcupine.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,7 +91,6 @@
 				1760DF51253A440A00395344 /* porcupine_ios.ppn */,
 				1760DF4E253A43B200395344 /* porcupine_params.pv */,
 				1760DF46253A1A1F00395344 /* PicovoiceManager.swift */,
-				1760DF3C253A17C000395344 /* module.modulemap */,
 				1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */,
 				1760DF2E253A175000395344 /* ContentView.swift */,
 				1760DF30253A175500395344 /* Assets.xcassets */,
@@ -96,8 +111,8 @@
 		1760DF3D253A185500395344 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1760DF40253A18E500395344 /* libpv_porcupine.a */,
-				1760DF3E253A185500395344 /* libpv_rhino.a */,
+				02A4169E25CE023D00082745 /* PvRhino.xcframework */,
+				02A416A125CE025100082745 /* PvPorcupine.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,6 +127,7 @@
 				1760DF25253A175000395344 /* Sources */,
 				1760DF26253A175000395344 /* Frameworks */,
 				1760DF27253A175000395344 /* Resources */,
+				02A416A625CE026600082745 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -295,7 +311,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -307,17 +324,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PicovoiceDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = QCN89N76LX;
+				DEVELOPMENT_TEAM = 65723695GD;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../resources/rhino/lib/ios/",
 					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
 				);
 				MODULEMAP_FILE = "";
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.picovoicedemo;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.iosnativepicovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
@@ -332,17 +352,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"PicovoiceDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = QCN89N76LX;
+				DEVELOPMENT_TEAM = 65723695GD;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = PicovoiceDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/../../../resources/rhino/lib/ios/",
 					"$(PROJECT_DIR)/../../../resources/porcupine/lib/ios",
 				);
 				MODULEMAP_FILE = "";
-				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.picovoicedemo;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.picovoice.iosnativepicovoicedemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/PicovoiceDemo";
 				SWIFT_VERSION = 5.0;
