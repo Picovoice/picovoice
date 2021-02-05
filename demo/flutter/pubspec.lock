@@ -40,7 +40,7 @@ packages:
       name: flutter_voice_processor
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   intl:
     dependency: transitive
     description:
@@ -103,7 +103,7 @@ packages:
       name: picovoice
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.1"
+    version: "1.1.2"
   platform:
     dependency: transitive
     description:
@@ -124,7 +124,7 @@ packages:
       name: porcupine
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.5"
+    version: "1.9.6"
   process:
     dependency: transitive
     description:
@@ -138,7 +138,7 @@ packages:
       name: rhino
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.2"
+    version: "1.6.3"
   sky_engine:
     dependency: transitive
     description: flutter

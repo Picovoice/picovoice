@@ -8,7 +8,8 @@
 //
 
 import AVFoundation
-import pv_picovoice
+import PvPorcupine
+import PvRhino
 
 public enum PicovoiceManagerError: Error {
     case invalidArgument
@@ -75,8 +76,8 @@ class PicovoiceManager {
             throw PicovoiceManagerError.recordingDenied
         }
         
-        try audioSession.setCategory(AVAudioSession.Category.playAndRecord)
-        try audioSession.setMode(AVAudioSession.Mode.measurement)
+        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
+        try audioSession.setMode(AVAudioSession.Mode.voiceChat)
         try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
         var status = pv_porcupine_init(
