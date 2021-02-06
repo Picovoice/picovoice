@@ -47,10 +47,7 @@
 									<listOptionValue builtIn="false" value="STM32F469I_DISCO"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.161255269" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Utilities/Fonts}&quot;"/>
-									<listOptionValue builtIn="false" value="../Picovoice/system"/>
 									<listOptionValue builtIn="false" value="../../../../../sdk/mcu/include"/>
-									<listOptionValue builtIn="false" value="../Picovoice"/>
 									<listOptionValue builtIn="false" value="../Inc"/>
 									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_Audio/Addons/PDM/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
