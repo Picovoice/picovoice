@@ -1,7 +1,7 @@
 # Picovoice MCU Demos
 
 This package provides demo projects for the following development boards:
-- [STM32F469I-DISCO](/deme/mcu/stm32f469)
+- [STM32F469I-DISCO](/demo/mcu/stm32f469)
 
 ## Usage
 
