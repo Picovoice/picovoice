@@ -1,0 +1,6 @@
+.settings/
+*.launch
+Debug/
+DebugCompressed/
+Release/
+ReleaseCompressed/
