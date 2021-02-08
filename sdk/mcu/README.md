@@ -1,22 +1,8 @@
-# Picovoice
-
-Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
-
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
-
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
-- **Reliable:** Runs without needing constant connectivity.
-- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
-- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
-[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
-- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
-
 This document outlines how to use Picovoice platform on a microcontroller using the Picovoice C API.
 
 ## Compatibility
 
-* Arm Cortex M
+* ARM Cortex-M
 
 ## Usage 
 
