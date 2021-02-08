@@ -21,9 +21,6 @@
 #include "pv_params.h"
 #include "pv_stm32f469.h"
 
-#define UUID_ADDRESS (0x1FFF7A10)
-#define UUID_SIZE (12)
-
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
