@@ -21,7 +21,7 @@ In order to compile and run the demo project on a STM32H747 discovery board, per
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Run`
 
-> :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core as well as the Cortex-M7, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
+> :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
 
