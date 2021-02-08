@@ -1,24 +1,27 @@
 
-# Picovoice STM32F469I-DISCO Demo
+# Picovoice STM32747I-DISCO Demo
 
-This package contains a demo project for the STM32F469 Discovery kit using Picovoice platform.
+This package contains a demo project for the STM32H747 Discovery kit using Picovoice platform. 
 
 ## Installation
 
 For this demo, you need to: 
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found on [STM32CubeF4's GitHub repository](https://github.com/STMicroelectronics/STM32CubeF4/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
+1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found on [STM32CubeH7's GitHub repository](https://github.com/STMicroelectronics/STM32CubeH7/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
 1. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
 ## Usage
 
-In order to compile and run the demo project on a STM32F469 discovery board, perform the following steps:
+In order to compile and run the demo project on a STM32H747 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
-1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f469i-disco](./stm32f469i-disco) folder from this repository, and then press the `Finish` button.
-1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f469i-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
+1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32h747i-disco](./stm32h747i-disco) folder from this repository, and then press the `Finish` button.
+1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/CM7/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32h747i-disco/CM7/Middlewares/ST/STM32_Audio/Addons/PDM)
+1. Select the `stm32h747i-disco-demo_CM7` inner project inside the `Project Explorer` window
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Run`
+
+> :warning: **This project exclusively utilizes the Cortex-M7 core of the STM32H747XIH6 microcontroller. If you would like to use the Cortex-M4 core along with the Cortex-M7 core, set the BOOT_CM4_ADD0 option byte in STM32CubeProgrammer to 0x818**
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
 
@@ -96,5 +99,5 @@ The model is now being trained. You will be able to download it within a few hou
 1. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent.
 1. Use [binary_to_c_array.py](https://github.com/Picovoice/picovoice/tree/master/resources/scripts/binary_to_c_array.py) to convert your binary models to C array format  utilizing the following command:
 `python3 binary_to_c_array.py input_binary_model output_c_array.txt`
-1. Copy the content of `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32f469i-disco/Inc/pv_params.h](./stm32f469i-disco/Inc/pv_params.h).
+1. Copy the content of `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32h747i-disco/CM7/Inc/pv_params.h](./stm32h747i-disco/CM7/Inc/pv_params.h)
  
