@@ -86,7 +86,7 @@ context:
 1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
 1. Go to [Picovoice Console](https://console.picovoice.ai/) to create models for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/) and [Rhino Speech-to-Intent engine](https://picovoice.ai/docs/quick-start/console-rhino/).
 1. Select `Arm Cortex-M` as the platform when training the model.
-1. Select the board type and provide the UUID of the chipset on the board.
+1. Select `STM32` as the board type and provide the UUID of the chipset on the board.
 
 The model is now being trained. You will be able to download it within a few hours.
 
@@ -96,5 +96,5 @@ The model is now being trained. You will be able to download it within a few hou
 1. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent.
 1. Use [binary_to_c_array.py](https://github.com/Picovoice/picovoice/tree/master/resources/scripts/binary_to_c_array.py) to convert your binary models to C array format  utilizing the following command:
 `python3 binary_to_c_array.py input_binary_model output_c_array.txt`
-1. Copy the content of the output file and update the`keyword_array` and `context_array` values in `stm32f469i-disco/Inc/pv_params.h` header file.
+1. Copy the content of the `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32f469i-disco/Inc/pv_params.h](./stm32f469i-disco/Inc/pv_params.h).
  
