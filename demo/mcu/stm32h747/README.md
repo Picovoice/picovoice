@@ -17,6 +17,7 @@ In order to compile and run the demo project on a STM32H747 discovery board, per
 1. Open STM32CubeIDE
 1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32h747i-disco](./stm32h747i-disco) folder from this repository, and then press the `Finish` button.
 1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/CM7/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32h747i-disco/CM7/Middlewares/ST/STM32_Audio/Addons/PDM)
+1. Select the `stm32h747i-disco-demo_CM7` inner project inside the `Project Explorer` window
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Run`
 
