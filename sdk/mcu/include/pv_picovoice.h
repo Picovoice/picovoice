@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -57,9 +57,6 @@ typedef struct {
  */
 PV_API void pv_inference_delete(pv_inference_t *inference);
 
-#if defined(__PV_NO_DYNAMIC_MEMORY__) && defined(__PV_NO_FILE_SYSTEM__)
-
-
 /**
  * Constructor.
  *
@@ -100,51 +97,6 @@ PV_API pv_status_t pv_picovoice_init(
         float rhino_sensitivity,
         void (*inference_callback)(pv_inference_t *),
         pv_picovoice_t **object);
-
-#elif !defined(__PV_NO_DYNAMIC_MEMORY__) && !defined(__PV_NO_FILE_SYSTEM__)
-
-/**
- * Constructor.
- *
- * @param porcupine_model_path Absolute path to the file containing Porcupine model parameters.
- * @param keyword_path Absolute path to Porcupine's keyword model file.
- * @param porcupine_sensitivity Wake word detection sensitivity. It should be a number within [0, 1]. A higher
- * sensitivity results in fewer misses at the cost of increasing the false alarm rate.
- * @param wake_word_callback User-defined callback invoked upon detection of the wake phrase. The callback accepts no
- * input arguments.
- * @param rhino_model_path Absolute path to the file containing Rhino model parameters.
- * @param context_path Absolute path to file containing context parameters. A context represents the set of expressions
- * (spoken commands), intents, and intent arguments (slots) within a domain of interest.
- * @param rhino_sensitivity Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
- * results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
- * @param inference_callback User-defined callback invoked upon completion of intent inference. The callback accepts a
- * single input argument of type `pv_inference_t` that exposes the following immutable fields:
- *         (1) `is_understood` is a flag indicating if the spoken command is understood.
- *         (2) `intent` is the inferred intent from the voice command. If the command is not understood then it's set to
- *         `NULL`.
- *         (3) `num_slots` is the number of slots.
- *         (4) `slots` is a list of slot keys.
- *         (5) `values` is the corresponding slot values.
- * @param object Constructed instance of Porcupine.
- * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_IO_ERROR', or 'PV_STATUS_OUT_OF_MEMORY' on
- * failure.
- */
-PV_API pv_status_t pv_picovoice_init(
-        const char *porcupine_model_path,
-        const char *keyword_path,
-        float porcupine_sensitivity,
-        void (*wake_word_callback)(void),
-        const char *rhino_model_path,
-        const char *context_path,
-        float rhino_sensitivity,
-        void (*inference_callback)(pv_inference_t *),
-        pv_picovoice_t **object);
-
-#else
-
-#error
-
-#endif
 
 /**
  * Destructor.
