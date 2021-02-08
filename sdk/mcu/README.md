@@ -2,7 +2,7 @@ This document outlines how to use Picovoice platform on a microcontroller using 
 
 ## Compatibility
 
-* ARM Cortex-M
+* Arm Cortex-M4 & M7
 
 ## Usage 
 

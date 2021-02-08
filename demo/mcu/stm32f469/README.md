@@ -1,8 +1,6 @@
 
 # Picovoice STM32F469I-DISCO Demo
 
-Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
-
 This package contains a demo project for the STM32F469 Discovery kit using Picovoice platform.
 
 ## Installation
@@ -17,8 +15,8 @@ For this demo, you need to:
 In order to compile and run the demo project on a STM32F469 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
-1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the `stm32f469i-disco` folder from this repository, and then press the `Finish` button.
-1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to `/Middlewares/ST/STM32_Audio/Addons/PDM`
+1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f469i-disco](/stm32f469i-disco) folder from this repository, and then press the `Finish` button.
+1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](/stm32f469i-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Run`
 
