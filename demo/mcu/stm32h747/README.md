@@ -98,5 +98,5 @@ The model is now being trained. You will be able to download it within a few hou
 1. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent.
 1. Use [binary_to_c_array.py](https://github.com/Picovoice/picovoice/tree/master/resources/scripts/binary_to_c_array.py) to convert your binary models to C array format  utilizing the following command:
 `python3 binary_to_c_array.py input_binary_model output_c_array.txt`
-1. Copy the content of the `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32h747i-disco/CM7/Inc/pv_params.h](./stm32h747i-disco/CM7/Inc/pv_params.h)
+1. Copy the content of `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32h747i-disco/CM7/Inc/pv_params.h](./stm32h747i-disco/CM7/Inc/pv_params.h)
  
