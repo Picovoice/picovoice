@@ -43,8 +43,7 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 /* Specify the memory areas */
 MEMORY
 {
-FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K+512K-128K
-PVDATA (rx) : ORIGIN = 0x8160000, LENGTH = 128K
+FLASH (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K+512K
 RAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
 ITCMRAM (xrw)      : ORIGIN = 0x00000000, LENGTH = 64K
 }
@@ -170,11 +169,6 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-  
-    .pv_data :
-  {
-    *(.pv_data)
-  } >PVDATA
 }
 
 
