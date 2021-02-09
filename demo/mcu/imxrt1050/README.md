@@ -7,7 +7,6 @@ This package contains a demo project for the i.MX RT1050 Evaluation Kit using Pi
 
 For this demo, you need to: 
 1. Download and install [MCUXpresso IDE](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE), which is an all-in-one multi-OS development tool for NXP MCUs based on Arm Cortex-M cores.
-1. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
 ## Usage
 
@@ -29,7 +28,7 @@ or
 
 > Picovoice, set the lights in the bedroom to blue.
 
-Picovoice's output can be seen on the serial port monitor.
+Picovoice's output can be seen on the IDE console.
 
 See below for the full context:
 
@@ -84,7 +83,7 @@ context:
 ```
 ## Create Custom Models
 
-1. Copy the UUID of the board printed at the beginning of the session to the serial port monitor.
+1. Copy the UUID of the board printed at the beginning of the session to the IDE console.
 1. Go to [Picovoice Console](https://console.picovoice.ai/) to create models for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/) and [Rhino Speech-to-Intent engine](https://picovoice.ai/docs/quick-start/console-rhino/).
 1. Select `Arm Cortex-M` as the platform when training the model.
 1. Select `IMXRT` as the board type and provide the UUID of the chipset on the board.
