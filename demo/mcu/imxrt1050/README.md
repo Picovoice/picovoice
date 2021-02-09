@@ -6,7 +6,7 @@ This package contains a demo project for the i.MX RT1050 Evaluation Kit using Pi
 ## Installation
 
 For this demo, you need to: 
-1. Download and install [MCUXpresso IDE](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE), which is an all-in-one multi-OS development tool for NXP® MCUs based on Arm® Cortex®-M cores.
+1. Download and install [MCUXpresso IDE](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE), which is an all-in-one multi-OS development tool for NXP MCUs based on Arm Cortex-M cores.
 1. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
 ## Usage
@@ -17,8 +17,8 @@ In order to compile and run the demo project on a i.MX RT1050 Evaluation board, 
 1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [imxrt1050-evkb](./imxrt1050-evkb) folder from this repository, and then press the `Finish` button.
 1. Click `Project` > `Build All`
 1. Connect the board to the computer, select the imported project inside `Project Explorer` window
-1. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and and then select the connected board.
-1. In Debug view, press `Run` > `Resume`
+2. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
+3. In the debug view, press `Run` > `Resume`
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
 
