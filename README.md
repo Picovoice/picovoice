@@ -49,6 +49,8 @@ spoken command:
 4. **Deploy:** Deploy at scale without having to maintain complex cloud infrastructure. Avoid unbounded cloud fees,
    limitations, and control imposed by big tech.
 
+[![Picovoice in Action](https://img.youtube.com/vi/X12N2Rn-q5o/0.jpg)](https://www.youtube.com/watch?v=X12N2Rn-q5o)
+
 ## Platform Features
 
 ### Custom Wake Words
@@ -79,6 +81,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
   - [Build with Picovoice](#build-with-picovoice)
   - [Platform Features](#platform-features)
   - [Table of Contents](#table-of-contents)
+  - [Language Support](#language-support)
   - [Performance](#performance)
   - [Picovoice Console](#picovoice-console)
   - [Demos](#demos)
@@ -102,6 +105,12 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [iOS](#ios)
   - [Releases](#releases)
   - [FAQ](#faq)
+
+## Language Support
+
+- English and German
+- French and Spanish coming soon.
+- Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Performance
 
