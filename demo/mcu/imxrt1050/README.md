@@ -14,11 +14,12 @@ For this demo, you need to:
 In order to compile and run the demo project on a i.MX RT1050 Evaluation board, perform the following steps:
 
 1. Open `MCUXpresso IDE`
-1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [imxrt1050-evkb](./imxrt1050-evkb) folder from this repository, and then press the `Finish` button.
-1. Click `Project` > `Build All`
-1. Connect the board to the computer, select the imported project inside `Project Explorer` window
-2. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
-3. In the debug view, press `Run` > `Resume`
+2. From the main toolbar, select `Install MCUXpresso SDKs` and install `evkbimxrt1050` SDK
+3. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [imxrt1050-evkb](./imxrt1050-evkb) folder from this repository, and then press the `Finish` button.
+4. Click `Project` > `Build All`
+5. Connect the board to the computer, select the imported project inside `Project Explorer` window
+6. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
+7. In the debug view, press `Run` > `Resume`
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
 
