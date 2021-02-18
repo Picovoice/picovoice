@@ -464,10 +464,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-1.9.0.tgz#81b6195df3e5cd71a280ac00f002ded548cfe413"
   integrity sha512-paONSGLf8NZh4wjZqO0PEUWMH0BUwP8B6zIfCyYxtDJLRGiLG2oLHy5IkgGLpvF3qxAvm2QmWAhf1CgEEtSXnw==
 
-"@picovoice/rhino-node@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-1.6.0.tgz#fc9d293bafe2a7db0c81d7caf85fbd3d07b2780d"
-  integrity sha512-Q9hZtvawatCCIA2RX9vL6IWz0tVQoPOkNcYAKpMhhq1kLoY3qJNNl0Z5lWMPKsu9wjm2+0bDVVPv/ktZ7w8wdA==
+"@picovoice/rhino-node@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-1.6.2.tgz#a5c8dc4339d923315cddbad181a16dbde63c3992"
+  integrity sha512-sjIuIatCf4tFyFnb2FwgBCXU1ffgrjudMCK55f/+B+FmLxRJGq/kVW0sX5lzMIzkXh59EZE+uzLeIiKq2j3YAQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"

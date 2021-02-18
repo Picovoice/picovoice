@@ -1,7 +1,0 @@
-module pv_picovoice [system][extern_c] {
-    header "../../../../resources/rhino/include/pv_rhino.h"
-    header "../../../../resources/rhino/include/picovoice.h"
-    header "../../../../resources/porcupine/include/pv_porcupine.h"
-    header "../../../../resources/porcupine/include/picovoice.h"
-    export *
-}
