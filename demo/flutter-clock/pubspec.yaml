@@ -1,0 +1,30 @@
+name: pico_clock
+description: A voice-controlled clock app.
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.16.1
+  path_provider: ^1.6.24
+  picovoice: ^1.1.2
+  flutter_ringtone_player: ^2.0.0  
+  fluttertoast: ^7.1.6
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+      - assets/android/pico clock_android.ppn
+      - assets/android/clock_android.rhn
+      - assets/ios/pico clock_ios.ppn
+      - assets/ios/clock_ios.rhn
