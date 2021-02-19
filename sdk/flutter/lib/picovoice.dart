@@ -57,9 +57,9 @@ class Picovoice {
   ///
   /// [inferenceCallback] User-defined callback invoked upon completion of intent inference. The callback
   /// accepts a single input argument of type `Map<String, dynamic>` that is populated with the following items:
-  /// (2) `isUnderstood`: if isFinalized, whether Rhino understood what it heard based on the context
-  /// (3) `intent`: if isUnderstood, name of intent that were inferred
-  /// (4) `slots`: if isUnderstood, dictionary of slot keys and values that were inferred
+  /// (1) `isUnderstood`: whether Rhino understood what it heard based on the context
+  /// (2) `intent`: if isUnderstood, name of intent that were inferred
+  /// (3) `slots`: if isUnderstood, dictionary of slot keys and values that were inferred
   ///
   /// [porcupineModelPath] Absolute path to the file containing Porcupine's model parameters.
   ///

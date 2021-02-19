@@ -92,7 +92,7 @@ void _wakeWordCallback(int keywordIndex){
 void _infererenceCallback(Map<String, dynamic> inference){
     if(inference['isUnderstood']){
         String intent = inference['intent']
-        Map<String, String> = inference['slots']
+        Map<String, String> slots = inference['slots']
         // add code to take action based on inferred intent and slot values
     }
     else{
@@ -190,7 +190,7 @@ void wakeWordCallback(int keywordIndex){
 void infererenceCallback(Map<String, dynamic> inference){
     if(inference['isUnderstood']){
         String intent = inference['intent']
-        Map<String, String> = inference['slots']
+        Map<String, String> slots = inference['slots']
         // add code to take action based on inferred intent and slot values
     }
     else{
