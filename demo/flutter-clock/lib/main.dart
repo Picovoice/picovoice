@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
     final Color lightGrey = Color.fromRGBO(200, 200, 200, 1);
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -82,9 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _initPicovoice() async {
     String platform = Platform.isAndroid ? "android" : "ios";
-    String keywordAsset = "assets/$platform/pico_clock_$platform.ppn";
+    String keywordAsset = "assets/$platform/pico clock_$platform.ppn";
     String keywordPath = await _extractAsset(keywordAsset);
-    String contextAsset = "assets/$platform/flutter_clock_$platform.rhn";
+    String contextAsset = "assets/$platform/clock_$platform.rhn";
     String contextPath = await _extractAsset(contextAsset);
 
     try {
