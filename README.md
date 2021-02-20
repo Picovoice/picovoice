@@ -89,6 +89,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [NodeJS](#nodejs-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
+    - [Unity](#unity-demos)
     - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
@@ -97,8 +98,9 @@ permitted for use in commercial settings, and have a path to graduate to commerc
   - [SDKs](#sdks)
     - [Python](#python)
     - [NodeJS](#nodejs)
-    - [.NET](#net-demos)
-    - [Java](#java-demos)
+    - [.NET](#net)
+    - [Java](#java)
+    - [Unity](#unity)
     - [Flutter](#flutter)
     - [React Native](#react-native)
     - [Android](#android)
@@ -289,6 +291,12 @@ Upon success the following it printed into the terminal:
 ```
 
 For more information about the Java demos go to [demo/java](/demo/java/README.md).
+
+### Unity Demos
+
+To run the Picovoice Unity demo, import the [Picovoice Unity package](/sdk/unity/picovoice.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+
+To browse the demo source go to [demo/unity](/demo/unity).
 
 ### Flutter Demos
 
@@ -595,6 +603,102 @@ Once you're done with Picovoice, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
+```
+
+### Unity
+
+Import the [Picovoice Unity Package](/sdk/unity/picovoice.unitypackage) into your Unity project.
+
+The SDK provides two APIs:
+
+#### High-Level API
+
+[PicovoiceManager](/sdk/unity/Assets/Picovoice/PicovoiceManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
+
+The constructor `PicovoiceManager.Create` will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
+```csharp
+using Pv.Unity;
+
+try 
+{    
+    PicovoiceManager _picovoiceManager = PicovoiceManager.Create(
+                                    "/path/to/keyword/file.ppn",
+                                    (keywordIndex) => {},
+                                    "/path/to/context/file.rhn",
+                                    (inference) => {};
+}
+catch (Exception ex)
+{
+    // handle picovoice init error
+}
+```
+
+Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
+```csharp
+_picovoiceManager.Start();
+// .. use picovoice
+_picovoiceManager.Stop();
+```
+
+Once the app is done with using an instance of PicovoiceManager, you can explicitly release the audio resources and the resources allocated to Picovoice:
+```csharp
+_picovoiceManager.Delete();
+```
+
+PicovoiceManager uses our
+[unity-voice-processor](https://github.com/Picovoice/unity-voice-processor/)
+Unity package to capture frames of audio and automatically pass it to the Picovoice platform.
+
+#### Low-Level API
+
+[Picovoice](/sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
+who want to incorporate it into a already existing audio processing pipeline.
+
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `Create` static constructor.
+
+```csharp
+using Pv.Unity;
+
+try
+{    
+    Picovoice _picovoice = Picovoice.Create(
+                                "path/to/keyword/file.ppn",
+                                OnWakeWordDetected,
+                                "path/to/context/file.rhn",
+                                OnInferenceResult);
+} 
+catch (Exception ex) 
+{
+    // handle Picovoice init error
+}
+```
+
+To use Picovoice, you must pass frames of audio to the `Process` function. The callbacks will automatically trigger when the wake word is detected and then when the follow-on command is detected.
+
+```csharp
+short[] GetNextAudioFrame()
+{
+    // .. get audioFrame
+    return audioFrame;
+}
+
+short[] buffer = GetNextAudioFrame();
+try 
+{
+    _picovoice.Process(buffer);
+}
+catch (Exception ex)
+{
+    Debug.LogError(ex.ToString());
+}  
+```
+
+For `Process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
+
+Picovoice implements the `IDisposable` interface, so you can use Picovoice in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically or you can explicitly release the resources like so:
+
+```csharp
+_picovoice.Dispose();
 ```
 
 ### Flutter
