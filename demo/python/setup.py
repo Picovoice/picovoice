@@ -39,7 +39,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="picovoicedemo",
-    version="1.1.0",
+    version="1.1.1",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice demos.",
@@ -47,7 +47,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoicedemo"],
-    install_requires=["numpy", "picovoice==1.1.0", "pyaudio", "soundfile"],
+    install_requires=["numpy", "picovoice==1.1.1", "pyaudio", "soundfile"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
