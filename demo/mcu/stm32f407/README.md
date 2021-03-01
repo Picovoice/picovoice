@@ -15,7 +15,7 @@ In order to compile and run the demo project on a STM32F407 discovery board, per
 
 1. Open STM32CubeIDE
 1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f407g-disc1](./stm32f407g-disc1) folder from this repository, and then press the `Finish` button.
-1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f469i-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
+1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM)
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Debug`.
   
