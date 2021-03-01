@@ -7,7 +7,7 @@ This package contains a demo project for the STM32F407 Discovery kit using Picov
 
 For this demo, you need to: 
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found on [STM32CubeF4's GitHub repository](https://github.com/STMicroelectronics/STM32CubeF4/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
+2. Follow steps mentioned in [readme](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) for STM32Cube middleware for audio PDM to PCM conversion.
 
 ## Usage
 
@@ -19,7 +19,7 @@ In order to compile and run the demo project on a STM32F407 discovery board, per
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Debug`.
   
-> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf).
+> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf), Chapter 7.
 
 For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
 
