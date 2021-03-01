@@ -1,5 +1,5 @@
 
-# Picovoice STM32F07G-DISC1 Demo
+# Picovoice STM32F407G-DISC1 Demo
 
 This package contains a demo project for the STM32F407 Discovery kit using Picovoice platform.
 
