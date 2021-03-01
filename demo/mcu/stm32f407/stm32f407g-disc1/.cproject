@@ -37,18 +37,24 @@
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.1204925996" name="Optimization level" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.optimization.level.value.o2" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols.391982666" name="Define symbols (-D)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.definedsymbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="STM32"/>
+									<listOptionValue builtIn="false" value="STM32F407xx"/>
 									<listOptionValue builtIn="false" value="STM32F407G_DISC1"/>
 									<listOptionValue builtIn="false" value="USE_STM32F4_DISCO"/>
 									<listOptionValue builtIn="false" value="USE_HAL_DRIVER"/>
-									<listOptionValue builtIn="false" value="__PV_NO_FILE_SYSTEM__"/>
-									<listOptionValue builtIn="false" value="__PV_NO_DYNAMIC_MEMORY__"/>
 									<listOptionValue builtIn="false" value="STM32F4"/>
 									<listOptionValue builtIn="false" value="STM32F407VGTx"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.2109868733" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../Inc"/>
+									<listOptionValue builtIn="false" value="../../../../../sdk/mcu/include"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_Audio/Addons/PDM/Inc"/>
+									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Include"/>
+									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
+									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
+									<listOptionValue builtIn="false" value="../Drivers/BSP/STM32F4-Discovery"/>
 								</option>
+								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.217212767" name="Language standard" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard" useByScannerDiscovery="true" value="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.languagestandard.value.gnu99" valueType="enumerated"/>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1909257774" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler.1050634913" name="MCU G++ Compiler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.cpp.compiler">
@@ -57,11 +63,13 @@
 							</tool>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.400129112" name="MCU GCC Linker" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker">
 								<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script.226421312" name="Linker Script (-T)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.script" useByScannerDiscovery="false" value="${workspace_loc:/${ProjName}/STM32F407VGTX_FLASH.ld}" valueType="string"/>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries.1472616617" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries" useByScannerDiscovery="false" valueType="libs">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries.1472616617" name="Libraries (-l)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.libraries" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="picovoice"/>
+									<listOptionValue builtIn="false" value="PDMFilter_CM4_GCC_wc32"/>
 								</option>
-								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories.641947863" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories" useByScannerDiscovery="false" valueType="libPaths">
+								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories.641947863" name="Library search path (-L)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.option.directories" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="../../../../../sdk/mcu/lib/stm32f407/"/>
+									<listOptionValue builtIn="false" value="../Middlewares/ST/STM32_Audio/Addons/PDM/Lib/"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input.1226726554" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -80,9 +88,10 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
+						<entry excluding="STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_utils.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usart.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_tim.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_spi.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rtc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_rng.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_lptim.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_i2c.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_gpio.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmpi2c.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_exti.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma2d.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dma.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_dac.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_crc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sram.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spdifrx.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smbus.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smartcard.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sdram.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pccard.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nor.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_mmc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_irda.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpsmbus.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dsi.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dfsdm.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_tim_template.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_rtc_wakeup_template.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_timebase_rtc_alarm_template.c|STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_msp_template.c" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Drivers"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Startup"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -104,4 +113,5 @@
 			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
