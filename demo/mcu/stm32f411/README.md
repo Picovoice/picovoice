@@ -1,21 +1,21 @@
 
-# Picovoice STM32F407G-DISC1 Demo
+# Picovoice STM32F411E-DISCO Demo
 
-This package contains a demo project for the STM32F407 Discovery kit using Picovoice platform.
+This package contains a demo project for the STM32F411 Discovery kit using Picovoice platform.
 
 ## Installation
 
 For this demo, you need to: 
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-2. Follow steps mentioned in [readme](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) for STM32Cube middleware for audio PDM to PCM conversion.
+2. Follow steps mentioned in [readme](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) for STM32Cube middleware for audio PDM to PCM conversion.
 
 ## Usage
 
-In order to compile and run the demo project on a STM32F407 discovery board, perform the following steps:
+In order to compile and run the demo project on a STM32F411 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
-1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f407g-disc1](./stm32f407g-disc1) folder from this repository, and then press the `Finish` button.
-1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM)
+1. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f411e-disco](./stm32f411e-disco) folder from this repository, and then press the `Finish` button.
+1. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
 1. Click `Project` > `Build All`
 1. Connect the board to the computer and press `Run` > `Debug`.
   
@@ -97,5 +97,5 @@ The model is now being trained. You will be able to download it within a few hou
 1. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent.
 1. Use [binary_to_c_array.py](https://github.com/Picovoice/picovoice/tree/master/resources/scripts/binary_to_c_array.py) to convert your binary models to C array format  utilizing the following command:
 `python3 binary_to_c_array.py input_binary_model output_c_array.txt`
-1. Copy the content of `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32f407g-disc1/Inc/pv_params.h](./stm32f407g-disc1/Inc/pv_params.h).
+1. Copy the content of `output_c_array.txt` and update the `keyword_array` and `context_array` values in [/stm32f411e-disco/Inc/pv_params.h](./stm32f411e-disco/Inc/pv_params.h).
  
