@@ -58,12 +58,12 @@ int main(void) {
 
     pv_status_t status = pv_board_init();
     if (status != PV_STATUS_SUCCESS) {
-    	error_handler();
+        error_handler();
     }
 
     status = pv_message_init();
     if (status != PV_STATUS_SUCCESS) {
-    	error_handler();
+        error_handler();
     }
 
     const uint8_t *board_uuid = pv_get_uuid();
@@ -75,8 +75,8 @@ int main(void) {
 
     status = pv_audio_rec_init();
     if (status != PV_STATUS_SUCCESS) {
-    	printf("Audio init failed with '%s'", pv_status_to_string(status));
-    	error_handler();
+        printf("Audio init failed with '%s'", pv_status_to_string(status));
+        error_handler();
     }
 
     status = pv_audio_rec_start();
@@ -90,12 +90,12 @@ int main(void) {
     status = pv_picovoice_init(
             MEMORY_BUFFER_SIZE,
             memory_buffer,
-			sizeof(keyword_array),
-			keyword_array,
+            sizeof(keyword_array),
+            keyword_array,
             porcupine_sensitivity,
             wake_word_callback,
-			sizeof(context_array),
-			context_array,
+            sizeof(context_array),
+            context_array,
             rhino_sensitivity,
             inference_callback,
             &handle);
