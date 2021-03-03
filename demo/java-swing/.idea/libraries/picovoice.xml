@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="picovoice-1.1.0">
+  <library name="picovoice">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/picovoice.jar!/" />
     </CLASSES>
