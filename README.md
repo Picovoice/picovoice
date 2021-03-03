@@ -110,8 +110,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
 
 ## Language Support
 
-- English and German
-- French and Spanish coming soon.
+- English, German, French, and Spanish.
 - Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Performance
