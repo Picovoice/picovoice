@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/java-vui.iml" filepath="$PROJECT_DIR$/java-vui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java-swing.iml" filepath="$PROJECT_DIR$/java-swing.iml" />
     </modules>
   </component>
 </project>
