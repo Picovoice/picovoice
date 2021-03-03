@@ -1,13 +1,25 @@
+/*
+    Copyright 2021 Picovoice Inc.
+
+    You may not use this file except in compliance with the license. A copy of the license is
+    located in the "LICENSE" file accompanying this source.
+
+    Unless required by applicable law or agreed to in writing, software distributed under the
+    License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+    express or implied. See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+import ai.picovoice.picovoice.Picovoice;
+import ai.picovoice.picovoice.PicovoiceInferenceCallback;
+import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.*;
-
-import ai.picovoice.picovoice.Picovoice;
-import ai.picovoice.picovoice.PicovoiceInferenceCallback;
-import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
 
 public class Main {
 
@@ -26,24 +38,25 @@ public class Main {
     static Map<String, JPanel> locationLights = new HashMap<>();
 
     static final String ENVIRONMENT_NAME;
+
     static {
         ENVIRONMENT_NAME = getEnvironmentName();
     }
 
     public static void main(String[] args) {
-        JFrame f=new JFrame();
-        f.setSize(575,300);
+        JFrame f = new JFrame();
+        f.setSize(575, 300);
         f.setLayout(null);
         f.setVisible(true);
 
         int locX = 30;
         int locY = 75;
 
-        for (String location:
+        for (String location :
                 LOCATIONS) {
             JLabel label = new JLabel();
             label.setText(location);
-            label.setBounds(locX-20, locY-43, 80, 50);
+            label.setBounds(locX - 20, locY - 43, 80, 50);
             label.setHorizontalTextPosition(SwingConstants.CENTER);
             label.setVerticalTextPosition(SwingConstants.CENTER);
             label.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,7 +64,7 @@ public class Main {
 
             JPanel colorBox = new JPanel();
             colorBox.setBounds(locX, locY, 40, 40);
-            colorBox.setBackground(new Color(255,255,255));
+            colorBox.setBackground(new Color(255, 255, 255));
             f.add(colorBox);
             locationLights.put(location, colorBox);
 
@@ -102,7 +115,7 @@ public class Main {
                 infoText2.setText(inferenceStr.toString());
 
                 Set<String> locationLightsToChange = locationLights.keySet();
-                if(slots.containsKey("location")){
+                if (slots.containsKey("location")) {
                     String location = slots.get("location");
                     locationLightsToChange = new HashSet<>();
                     locationLightsToChange.add(location);
@@ -181,13 +194,13 @@ public class Main {
         }
     }
 
-    static void ChangeLightColor(Set<String> locations, Color color){
+    static void ChangeLightColor(Set<String> locations, Color color) {
         for (String location : locations) {
             locationLights.get(location).setBackground(color);
         }
     }
 
-    static void ChangeLightState(Set<String> locations, boolean state){
+    static void ChangeLightState(Set<String> locations, boolean state) {
 
         int alpha = state ? 255 : 0;
         for (String location : locations) {
