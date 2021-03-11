@@ -25,7 +25,7 @@
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static cosnt float PORCUPINE_SENSITIVITY = 0.75f;
+static const float PORCUPINE_SENSITIVITY = 0.75f;
 static const float RHINO_SENSITIVITY = 0.5f;
 
 static void wake_word_callback(void) {
