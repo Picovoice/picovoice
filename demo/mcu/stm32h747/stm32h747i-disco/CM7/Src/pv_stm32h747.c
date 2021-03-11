@@ -170,6 +170,12 @@ pv_status_t pv_board_init() {
     if (pv_clock_config() != PV_STATUS_SUCCESS) {
         return PV_STATUS_INVALID_STATE;
     }
+
+    BSP_LED_Init(LED1);
+    BSP_LED_Init(LED2);
+    BSP_LED_Init(LED3);
+    BSP_LED_Init(LED4);
+
     memcpy(uuid, (uint8_t *) UUID_ADDRESS, UUID_SIZE);
     return PV_STATUS_SUCCESS;
 }
