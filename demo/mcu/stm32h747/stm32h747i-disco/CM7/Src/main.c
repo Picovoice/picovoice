@@ -30,9 +30,11 @@ static const float RHINO_SENSITIVITY = 0.5f;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
+    BSP_LED_On(LED1);
 }
 
 static void inference_callback(pv_inference_t *inference) {
+    BSP_LED_Off(LED1);
     printf("{\n");
     printf("    is_understood : '%s',\n", (inference->is_understood ? "true" : "false"));
     if (inference->is_understood) {
@@ -46,7 +48,13 @@ static void inference_callback(pv_inference_t *inference) {
         }
     }
     printf("}\n\n");
-
+    for (int32_t i = 0; i < 10; i++) {
+    	BSP_LED_Toggle(LED1);
+    	BSP_LED_Toggle(LED2);
+    	BSP_LED_Toggle(LED3);
+    	BSP_LED_Toggle(LED4);
+    	HAL_Delay(30);
+    }
     pv_inference_delete(inference);
 }
 
