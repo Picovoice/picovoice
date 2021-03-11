@@ -85,7 +85,7 @@ def ppn_to_c_array(binary_file_path):
 
 
 if __name__ == '__main__':
-    wake_word = 'porcupine'
+    wake_word = 'picovoice'
     context = 'smart_lighting'
     include_folders = ('stm32h747/stm32h747i-disco/CM7/Inc/',
     			'stm32f469/stm32f469i-disco/Inc/',
