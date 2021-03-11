@@ -25,8 +25,8 @@
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
-static float porcupine_sensitivity = 0.75f;
-static float rhino_sensitivity = 0.5f;
+static cosnt float PORCUPINE_SENSITIVITY = 0.75f;
+static const float RHINO_SENSITIVITY = 0.5f;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
@@ -85,13 +85,13 @@ int main(void) {
     status = pv_picovoice_init(
             MEMORY_BUFFER_SIZE,
             memory_buffer,
-            sizeof(keyword_array),
-            keyword_array,
-            porcupine_sensitivity,
+            sizeof(KEYWORD_ARRAY),
+            KEYWORD_ARRAY,
+            PORCUPINE_SENSITIVITY,
             wake_word_callback,
-            sizeof(context_array),
-            context_array,
-            rhino_sensitivity,
+            sizeof(CONTEXT_ARRAY),
+            CONTEXT_ARRAY,
+            RHINO_SENSITIVITY,
             inference_callback,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
