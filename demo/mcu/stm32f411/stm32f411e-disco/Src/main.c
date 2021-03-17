@@ -34,7 +34,7 @@ static void wake_word_callback(void) {
 }
 
 static void inference_callback(pv_inference_t *inference) {
- BSP_LED_Off(LED4);
+    BSP_LED_Off(LED4);
     printf("{\n");
     printf("    is_understood : '%s',\n", (inference->is_understood ? "true" : "false"));
     if (inference->is_understood) {
