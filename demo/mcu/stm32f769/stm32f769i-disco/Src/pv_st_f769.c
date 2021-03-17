@@ -32,35 +32,35 @@ static uint8_t uuid[UUID_SIZE];
 UART_HandleTypeDef huart;
 
 static pv_status_t pv_clock_config(void) {
-	  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-	  RCC_OscInitTypeDef RCC_OscInitStruct;
-	  HAL_StatusTypeDef ret = HAL_OK;
-	  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	  RCC_OscInitStruct.PLL.PLLM = 25;
-	  RCC_OscInitStruct.PLL.PLLN = 400;
-	  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	  RCC_OscInitStruct.PLL.PLLQ = 8;
-	  RCC_OscInitStruct.PLL.PLLR = 7;
-	  ret = HAL_RCC_OscConfig(&RCC_OscInitStruct);
-	  if(ret != HAL_OK) {
-		  return PV_STATUS_INVALID_STATE;
-	  }
-	  ret = HAL_PWREx_EnableOverDrive();
-	  if(ret != HAL_OK) {
-		  return PV_STATUS_INVALID_STATE;
-	  }
-	  RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
-	  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-	  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-	  ret = HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_6);
-	  if(ret != HAL_OK) {
-		  return PV_STATUS_INVALID_STATE;
-	  }
+      RCC_ClkInitTypeDef RCC_ClkInitStruct;
+      RCC_OscInitTypeDef RCC_OscInitStruct;
+      HAL_StatusTypeDef ret = HAL_OK;
+      RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+      RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+      RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+      RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+      RCC_OscInitStruct.PLL.PLLM = 25;
+      RCC_OscInitStruct.PLL.PLLN = 400;
+      RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+      RCC_OscInitStruct.PLL.PLLQ = 8;
+      RCC_OscInitStruct.PLL.PLLR = 7;
+      ret = HAL_RCC_OscConfig(&RCC_OscInitStruct);
+      if(ret != HAL_OK) {
+          return PV_STATUS_INVALID_STATE;
+      }
+      ret = HAL_PWREx_EnableOverDrive();
+      if(ret != HAL_OK) {
+          return PV_STATUS_INVALID_STATE;
+      }
+      RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
+      RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+      RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+      RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+      RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+      ret = HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_6);
+      if(ret != HAL_OK) {
+          return PV_STATUS_INVALID_STATE;
+      }
     return PV_STATUS_SUCCESS;
 }
 
@@ -108,8 +108,8 @@ const uint32_t pv_get_uuid_size(void) {
 }
 
 pv_status_t pv_board_init() {
-	  SCB_EnableICache();
-	  SCB_EnableDCache();
+      SCB_EnableICache();
+      SCB_EnableDCache();
     if (HAL_Init() != HAL_OK) {
         return PV_STATUS_INVALID_STATE;
     }
