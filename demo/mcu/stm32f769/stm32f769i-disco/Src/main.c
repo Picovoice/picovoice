@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -13,13 +13,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "stm32h747i_discovery.h"
+#include "stm32f769i_discovery.h"
 
 #include "pv_picovoice.h"
 
 #include "pv_audio_rec.h"
 #include "pv_params.h"
-#include "pv_stm32h747.h"
+#include "pv_st_f769.h"
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
@@ -51,8 +51,6 @@ static void inference_callback(pv_inference_t *inference) {
     for (int32_t i = 0; i < 10; i++) {
         BSP_LED_Toggle(LED1);
         BSP_LED_Toggle(LED2);
-        BSP_LED_Toggle(LED3);
-        BSP_LED_Toggle(LED4);
         HAL_Delay(30);
     }
     pv_inference_delete(inference);
