@@ -34,7 +34,7 @@ static void wake_word_callback(void) {
 }
 
 static void inference_callback(pv_inference_t *inference) {
-	BSP_LED_Off(LED4);
+ BSP_LED_Off(LED4);
     printf("{\n");
     printf("    is_understood : '%s',\n", (inference->is_understood ? "true" : "false"));
     if (inference->is_understood) {
@@ -49,11 +49,11 @@ static void inference_callback(pv_inference_t *inference) {
     }
     printf("}\n\n");
     for (int32_t i = 0; i < 10; i++) {
-    	BSP_LED_Toggle(LED3);
-    	BSP_LED_Toggle(LED4);
-    	BSP_LED_Toggle(LED5);
-    	BSP_LED_Toggle(LED6);
-    	HAL_Delay(30);
+        BSP_LED_Toggle(LED3);
+        BSP_LED_Toggle(LED4);
+        BSP_LED_Toggle(LED5);
+        BSP_LED_Toggle(LED6);
+        HAL_Delay(30);
     }
     pv_inference_delete(inference);
 }
