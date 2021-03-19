@@ -13,17 +13,17 @@
   version "1.0.0-alpha.0"
   dependencies:
     "@picovoice/porcupine-web-en-factory" "1.9.0-alpha.4"
-    "@picovoice/rhino-web-en-factory" "1.6.0-alpha.0"
+    "@picovoice/rhino-web-en-factory" "1.6.0-alpha.2"
 
 "@picovoice/porcupine-web-en-factory@1.9.0-alpha.4":
   version "1.9.0-alpha.4"
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-1.9.0-alpha.4.tgz#ad49a4d0660d0e36a4247ad9a14f20e4dee45ccd"
   integrity sha512-JuPPMnA5dajeea4Tq0XVxVDcQ8ATilycGrPQM29U3OtZeRiiyUdNND/pw0Oh2fuuuGXHfCeDDHiQsUlBweyVTw==
 
-"@picovoice/rhino-web-en-factory@1.6.0-alpha.0":
-  version "1.6.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-1.6.0-alpha.0.tgz#4db2fee612c65a7e158a70d52a3b8e619148de78"
-  integrity sha512-TonP7tJMNAv9x28+dswLP5l00w4oswreHt7LQTnw6tBq5CaQBV2MjFI1fQfv09H/t51Z5Cu+0hExbn+EKn0c2Q==
+"@picovoice/rhino-web-en-factory@1.6.0-alpha.2":
+  version "1.6.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-1.6.0-alpha.2.tgz#ee72dc7a8b11139138d11d1593862b7ae994e569"
+  integrity sha512-xq8IEwBMBmaM6prcsweOI6JOGbkHhP1sjSVh14kHR6NtGBO1Q2EO1b5aHV7vwmx3ZiDEnpRNAMz8VHqHkLAIlQ==
 
 "@picovoice/web-voice-processor@^2.0.0-alpha.1":
   version "2.0.0-alpha.2"
