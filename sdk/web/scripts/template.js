@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const editJsonFile = require("edit-json-file");
 const PORCUPINE_VERSION = "1.9.0-alpha.4";
-const RHINO_VERSION = "1.6.0-alpha.0";
+const RHINO_VERSION = "1.6.0-alpha.2";
 
 for (const language of ["en", "de"]) {
   for (const flavour of ["factory", "worker"]) {
