@@ -1,6 +1,6 @@
 {
   "name": "$",
-  "version": "1.0.0-alpha.0",
+  "version": "1.1.0",
   "description": "Picovoice SDK for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
