@@ -52,12 +52,12 @@
         );
 
         try {
-          let webVp = await WebVoiceProcessor.init({
+          let webVp = await WebVoiceProcessor.WebVoiceProcessor.init({
             engines: [picovoiceWorker],
             start: true,
           });
           writeMessage(
-            "WebVoiceProcessor ready! Say the wake word to start the interaction."
+            "WebVoiceProcessor ready! Say 'Picovoice' to start the interaction."
           );
         } catch (e) {
           writeMessage("WebVoiceProcessor failed to initialize: " + e);
