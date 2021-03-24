@@ -14,9 +14,9 @@ Using Picovoice with Angular, React, or Vue? There are framework-specific librar
 
 This library provides a unified wake word and follow-on naturally spoken command engine in-browser, offline. This allows a complete Voice AI interaction loop, such as the following:
 
-> "Pico Clock, set a timer for two minutes"
+> "Picovoice, set a timer for two minutes"
 
-Where "Pico Clock" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
+Where "Picovoice" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
 
 ```json
 {
@@ -28,9 +28,9 @@ Where "Pico Clock" is the wake word to start the interaction, and the follow-on 
 }
 ```
 
-The natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
+The follow-on natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
 
-> "Pico Clock, Tell me a joke"
+> "Picovoice, tell me a joke"
 
 ```json
 {
@@ -41,7 +41,6 @@ The natural commands are domain-specific. In this case, a clock. It will only un
 All processing is done via WebAssembly and Workers in a separate thread. Speech results are converted into inference directly, without intermediate Speech-to-Text.
 
 Underneath, Picovoice SDK wake word and inference detection is powered by the [Porcupine](https://picovoice.ai/platform/porcupine/) and [Rhino](https://picovoice.ai/platform/porcupine/) engines, respectively. If you wish to use those engines individually, you can use the npm packages specific to them.
-
 
 ## Compatibility
 
@@ -59,17 +58,23 @@ The Picovoice SDK for Web is split into multiple packages due to each language i
 
 ### Workers
 
-- @picovoice/picovoice-web-en-worker
 - @picovoice/picovoice-web-de-worker
+- @picovoice/picovoice-web-en-worker
+- @picovoice/picovoice-web-es-worker
+- @picovoice/picovoice-web-fr-worker
 
 ### Factories
 
-- @picovoice/picovoice-web-en-factory
 - @picovoice/picovoice-web-de-factory
+- @picovoice/picovoice-web-en-factory
+- @picovoice/picovoice-web-es-factory
+- @picovoice/picovoice-web-fr-factory
 
 ### Worker
 
-For typical cases, use the worker packages. These are compatible with the framework packages for Angular, React, and Vue. The workers are complete with everything you need to run Picovoice off the main thread. If you are using the workers with the Angular/React/Vue packages, you will load them and pass them into those services/hooks/components as an argument (see the [@picovoice/picovoice-web-angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [@picovoice/picovoice-web-react](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [@picovoice/picovoice-web-vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue) packages for instructions).
+For typical cases, use the worker packages. These are compatible with the framework packages for Angular, React, and Vue. The workers are complete with everything you need to run Picovoice off the main thread.
+
+If you are using the workers with the Angular/React/Vue packages, you will load them and pass them into those services/hooks/components as an argument (see the [@picovoice/picovoice-web-angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular) and [@picovoice/picovoice-web-react](https://www.npmjs.com/package/@picovoice/picovoice-web-react) packages for instructions).
 
 To obtain a Picovoice Worker, we can use the async `create` factory method from the PicovoiceWorkerFactory. Here is a complete example that:
 
@@ -84,7 +89,7 @@ yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
 ```
 
 ```javascript
-import WebVoiceProcessor from "@picovoice/web-voice-processor"
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
 
 const PICO_CLOCK_CONTEXT_64 = /* Base64 string of the pico_clock.rhn file for wasm platform */
@@ -182,7 +187,7 @@ const PICO_CLOCK_64 =
 startPicovoice();
 ```
 
-**Important Note**: Because the factories are all-in-one packages that run an entire machine learning inference model in WebAssembly, they are approximately 1-2MB in size. While this is tiny for a speech recognition, it's nontrivial for web delivery. Because of this, you likely will want to use dynamic `import()` instead of static `import {}` to reduce your app's starting bundle size. See e.g. https://webpack.js.org/guides/code-splitting/ for more information.
+**Important Note**: Because the factories are all-in-one packages that run an entire machine learning inference model in WebAssembly, they are approximately 4-6MB in size. While this is tiny for a speech recognition, it's nontrivial for web delivery. Because of this, you likely will want to use dynamic `import()` instead of static `import {}` to reduce your app's starting bundle size. See e.g. https://webpack.js.org/guides/code-splitting/ for more information.
 
 ## Build from source (IIFE + ESM outputs)
 
