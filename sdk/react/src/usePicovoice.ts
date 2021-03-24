@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import WebVoiceProcessor from '@picovoice/web-voice-processor';
+import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
   PicovoiceWorker,
@@ -13,7 +13,7 @@ import {
 type EngineControlType = 'ppn' | 'rhn';
 
 export function usePicovoice(
-  picovoiceWorkerFactory: PicovoiceWorkerFactory,
+  picovoiceWorkerFactory: PicovoiceWorkerFactory | null,
   picovoiceWorkerArgs: PicovoiceWorkerArgs,
   keywordCallback: (label: string) => void,
   inferenceCallback: (inference: RhinoInference) => void
@@ -21,23 +21,23 @@ export function usePicovoice(
   isLoaded: boolean;
   isListening: boolean;
   isError: boolean;
-  errorMessage: string;
+  errorMessage: string | null;
   engine: EngineControlType;
   start: () => void;
   pause: () => void;
   resume: () => void;
 } {
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [isError, setIsError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isError, setIsError] = useState<boolean>(false);
   const [isListening, setIsListening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [engine, setEngine] = useState(null);
-  const [webVoiceProcessor, setWebVoiceProcessor] = useState(null);
+  const [engine, setEngine] = useState<EngineControlType>('ppn');
+  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor>();
   const porcupineCallback = useRef(keywordCallback);
   const rhinoCallback = useRef(inferenceCallback);
 
   const start = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.start();
       setIsListening(true);
       return true;
@@ -46,7 +46,7 @@ export function usePicovoice(
   };
 
   const pause = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.pause();
       setIsListening(false);
       return true;
@@ -55,7 +55,7 @@ export function usePicovoice(
   };
 
   const resume = (): boolean => {
-    if (webVoiceProcessor !== null) {
+    if (webVoiceProcessor !== undefined) {
       webVoiceProcessor.resume();
       setIsListening(true);
       return true;
@@ -64,6 +64,8 @@ export function usePicovoice(
   };
 
   useEffect(() => {
+    if (picovoiceWorkerFactory === null || picovoiceWorkerFactory === undefined) { return (): void => { /* NOOP */ }; }
+
     async function startPicovoice(): Promise<{
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
@@ -83,7 +85,8 @@ export function usePicovoice(
         throw Error('rhinoCallback is not a function');
       }
 
-      const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory.create(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory!.create(
         picovoiceWorkerArgs
       );
 
@@ -91,8 +94,6 @@ export function usePicovoice(
         engines: [pvWorker],
         start: picovoiceWorkerArgs.start,
       });
-
-      setEngine('ppn');
 
       pvWorker.onmessage = (
         message: MessageEvent<PicovoiceWorkerResponse>
