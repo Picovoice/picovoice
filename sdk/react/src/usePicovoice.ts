@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
+  PicovoiceHookArgs,
   PicovoiceWorker,
-  PicovoiceWorkerArgs,
   PicovoiceWorkerFactory,
   PicovoiceWorkerResponse,
   RhinoInference,
@@ -14,7 +14,7 @@ type EngineControlType = 'ppn' | 'rhn';
 
 export function usePicovoice(
   picovoiceWorkerFactory: PicovoiceWorkerFactory | null,
-  picovoiceWorkerArgs: PicovoiceWorkerArgs,
+  picovoiceHookArgs: PicovoiceHookArgs,
   keywordCallback: (label: string) => void,
   inferenceCallback: (inference: RhinoInference) => void
 ): {
@@ -32,7 +32,10 @@ export function usePicovoice(
   const [isListening, setIsListening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [engine, setEngine] = useState<EngineControlType>('ppn');
-  const [webVoiceProcessor, setWebVoiceProcessor] = useState<WebVoiceProcessor>();
+  const [
+    webVoiceProcessor,
+    setWebVoiceProcessor,
+  ] = useState<WebVoiceProcessor>();
   const porcupineCallback = useRef(keywordCallback);
   const rhinoCallback = useRef(inferenceCallback);
 
@@ -64,12 +67,20 @@ export function usePicovoice(
   };
 
   useEffect(() => {
-    if (picovoiceWorkerFactory === null || picovoiceWorkerFactory === undefined) { return (): void => { /* NOOP */ }; }
+    if (
+      picovoiceWorkerFactory === null ||
+      picovoiceWorkerFactory === undefined
+    ) {
+      return (): void => {
+        /* NOOP */
+      };
+    }
 
     async function startPicovoice(): Promise<{
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
     }> {
+      const picovoiceWorkerArgs = picovoiceHookArgs;
       // Argument checking; the engines will also do checking but we can get
       // clearer error messages from the hook
       if (picovoiceWorkerArgs.porcupineKeyword === undefined) {
@@ -86,13 +97,14 @@ export function usePicovoice(
       }
 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory!.create(
-        picovoiceWorkerArgs
-      );
+      const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory!.create({
+        ...picovoiceHookArgs,
+        start: true,
+      });
 
       const webVp = await WebVoiceProcessor.init({
         engines: [pvWorker],
-        start: picovoiceWorkerArgs.start,
+        start: picovoiceHookArgs.start,
       });
 
       pvWorker.onmessage = (
@@ -144,7 +156,7 @@ export function usePicovoice(
     // ".... we know our data structure is relatively shallow, doesn't have cycles,
     // and is easily serializable ... doesn't have functions or weird objects like Dates.
     // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
-    JSON.stringify(picovoiceWorkerArgs),
+    JSON.stringify(picovoiceHookArgs),
   ]);
 
   return {

@@ -106,6 +106,7 @@ export type PicovoiceWorkerResponseReady = {
 export type PicovoiceWorkerRequest =
   | PicovoiceWorkerRequestInit
   | WorkerRequestVoid;
+
 export type PicovoiceWorkerResponse =
   | PicovoiceWorkerResponseErrorInit
   | PicovoiceWorkerResponseReady
@@ -116,10 +117,12 @@ export interface PicovoiceWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PicovoiceWorkerRequest): void;
 }
 
-//
-
 export interface PicovoiceWorkerFactory {
   create: (
     picovoiceWorkerArgs: PicovoiceWorkerArgs
   ) => Promise<PicovoiceWorker>;
 }
+
+// Same type, but 'start' has a different meaning
+// (starts the WebVoiceProcessor since they're bundled together)
+export type PicovoiceHookArgs = PicovoiceWorkerArgs;

@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-web-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React component for Picovoice Web SDK",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
