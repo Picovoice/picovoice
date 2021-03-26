@@ -18,7 +18,7 @@ If running the project from source, run the `copy.sh` script first to copy resou
 
 The wake word for this demo is `Porcupine`. After the wake word, when you see the border light up, you can say a command to control the video player.
 
-Playback commands:
+**Playback commands:**
 - Play (video)
 - Pause (video)
 - Resume (video)
@@ -26,15 +26,15 @@ Playback commands:
 - Mute (video)
 - Unmute (video)
 
-Seek commands:
+**Seek commands:**
 - Go to 1 minute 55 seconds
 - Skip forward 30 seconds
 
-Volume commands:
+**Volume commands:**
 - set volume to 30%
 - 100% volume
 
-Playback speed:
+**Playback speed commands:**
 - set playback speed to 1.5 times
 - change playback speed to 25%
 - playback speed normal	
