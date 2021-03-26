@@ -229,6 +229,14 @@ public class VideoController : MonoBehaviour
                 if (!_videoPlayer.isPlaying)
                     _videoPlayer.Play();
             }
+            else if (action == "restart")
+            {
+                if (_videoPlayer.isPlaying)
+                    _videoPlayer.Stop();
+                else
+                    _videoPlayer.time = 0;
+                _videoPlayer.Play();
+            }
 
             _stateIcons[action].color = Color.white;
             _screenOverlay.material.color = new Color(0, 0, 0, 0.5f);
