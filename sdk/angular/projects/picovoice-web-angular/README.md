@@ -8,9 +8,9 @@ To use the Porcupine or Rhino engines individually with Angular, see [@picovoice
 
 This library provides a unified wake word and follow-on naturally spoken command engine in-browser, offline. This allows a complete Voice AI interaction loop, such as the following:
 
-> "Pico Clock, set a timer for two minutes"
+> "Picovoice, set a timer for two minutes"
 
-Where "Pico Clock" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
+Where "Picovoice" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
 
 ```json
 {
@@ -24,7 +24,7 @@ Where "Pico Clock" is the wake word to start the interaction, and the follow-on 
 
 The natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
 
-> "Pico Clock, Tell me a joke"
+> "Picovoice, Tell me a joke"
 
 ```json
 {

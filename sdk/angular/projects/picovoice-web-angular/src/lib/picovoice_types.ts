@@ -121,3 +121,9 @@ export interface PicovoiceWorkerFactory {
     picovoiceWorkerArgs: PicovoiceWorkerArgs
   ) => Promise<PicovoiceWorker>;
 }
+
+export type PicovoiceServiceArgs = {
+  porcupineKeyword: PorcupineKeyword;
+  rhinoContext: RhinoContext;
+  start?: boolean;
+};
