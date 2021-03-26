@@ -45,6 +45,12 @@ then
 fi
 cp -rp ../unity/* ./Assets/Picovoice/Demo
 
+echo "Copying Voice Processor..."
+if [ ! -d "./Assets/Picovoice/VoiceProcessor" ]
+then 
+    mkdir -p ./Assets/Picovoice/VoiceProcessor
+fi
+cp -rp ../../sdk/unity/Assets/Picovoice/VoiceProcessor/* ./Assets/Picovoice/VoiceProcessor
 
 echo "Copying keyword files..."
 cp ../../resources/porcupine/resources/keyword_files/android/porcupine_android.ppn ./Assets/StreamingAssets/keyword_files/android/porcupine_android.ppn

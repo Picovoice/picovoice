@@ -63,4 +63,10 @@ crashlytics-build.properties
 *.pv
 *.ppn
 *.rhn
-Assets/Picovoice
+Assets/Picovoice/Demo
+Assets/Picovoice/VoiceProcessor
+Assets/Picovoice/**/*.cs
+Assets/Picovoice/**/*.so
+Assets/Picovoice/**/*.dylib
+Assets/Picovoice/**/*.dll
+Assets/Picovoice/**/*.framework
