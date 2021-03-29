@@ -6,3 +6,6 @@
 
 ## [1.1.2] - 2021-02-05
 * Porcupine and Rhino upgrade
+
+## [1.1.3] - 2021-03-29
+* Voice Processor update

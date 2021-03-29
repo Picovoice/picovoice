@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_voice_processor: ^1.0.2
-  porcupine: ^1.9.6
-  rhino: ^1.6.3
+  flutter_voice_processor: ^1.0.3
+  porcupine: ^1.9.7
+  rhino: ^1.6.4
 
 dev_dependencies:
   flutter_test:
