@@ -77,8 +77,6 @@ class PicovoiceManager {
         }
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
-        try audioSession.setMode(AVAudioSession.Mode.voiceChat)
-        try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         
         var status = pv_porcupine_init(
             self.porcupineModelPath,
@@ -153,13 +151,6 @@ class PicovoiceManager {
     public func stop() {
         self.audioInputEngine?.stop()
         
-        do {
-            try AVAudioSession.sharedInstance().setActive(false)
-        }
-        catch {
-            NSLog("Unable to explicitly deactivate AVAudioSession: \(error)");
-        }
-        
         pv_porcupine_delete(self.porcupine)
         self.porcupine = nil
         
@@ -221,8 +212,10 @@ private class AudioInputEngine {
         guard let audioQueue = audioQueue else {
             return
         }
+        AudioQueueFlush(audioQueue)
         AudioQueueStop(audioQueue, true)
         AudioQueueDispose(audioQueue, true)
+        audioInput = nil
     }
     
     private func createAudioQueueCallback() -> AudioQueueInputCallback {
