@@ -191,7 +191,7 @@ try (
 
 ## Non-English Contexts
 
-In order to run inference on non-English contexts you need to use the corresponding model file. The model files for all supported languages are available [here](resources/porcupine/lib/common) and [here](resources/rhino/lib/common).
+In order to run inference on non-English contexts you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
 
 ## Demo Apps
 
