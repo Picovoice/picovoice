@@ -15,7 +15,7 @@ type EngineControlType = 'ppn' | 'rhn';
 export function usePicovoice(
   picovoiceWorkerFactory: PicovoiceWorkerFactory | null,
   picovoiceHookArgs: PicovoiceHookArgs,
-  keywordCallback: (label: string) => void,
+  keywordCallback: (keywordLabel: string) => void,
   inferenceCallback: (inference: RhinoInference) => void
 ): {
   isLoaded: boolean;
@@ -80,13 +80,13 @@ export function usePicovoice(
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
     }> {
-      const picovoiceWorkerArgs = picovoiceHookArgs;
+      const { start: startWebVp = true } = picovoiceHookArgs;
       // Argument checking; the engines will also do checking but we can get
       // clearer error messages from the hook
-      if (picovoiceWorkerArgs.porcupineKeyword === undefined) {
+      if (picovoiceHookArgs.porcupineKeyword === undefined) {
         throw Error('porcupineKeyword is missing');
       }
-      if (picovoiceWorkerArgs.rhinoContext === undefined) {
+      if (picovoiceHookArgs.rhinoContext === undefined) {
         throw Error('rhinoContext is missing');
       }
       if (typeof porcupineCallback.current !== 'function') {
@@ -104,7 +104,7 @@ export function usePicovoice(
 
       const webVp = await WebVoiceProcessor.init({
         engines: [pvWorker],
-        start: picovoiceHookArgs.start,
+        start: startWebVp,
       });
 
       pvWorker.onmessage = (

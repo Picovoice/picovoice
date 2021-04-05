@@ -1426,10 +1426,10 @@
     "@picovoice/porcupine-web-en-factory" "1.9.0"
     "@picovoice/rhino-web-en-factory" "1.6.0"
 
-"@picovoice/picovoice-web-react@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-1.0.1.tgz#a3663bd660a583ab45202b74e685d7c642dc0f3b"
-  integrity sha512-FBkV9zkZznRfP7uuz6ocayLi+k3iBoyc65Gtjch9u7rwmptVxw5VAKEVj10bH7Fm/OSE3ep7Pqdwn8S4QFzjag==
+"@picovoice/picovoice-web-react@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-1.0.2.tgz#aeef972443eb6813905d48bd63dbfac1cda3bd29"
+  integrity sha512-4ArKo9xTcpjX/OuJEhi8qza+Uu6Us+oM7vq8USLUETJ7Gg++xAwhdrgfNS5DB3eySvOczT+0ljMsHTrz08wIvw==
   dependencies:
     "@picovoice/web-voice-processor" "^2.0.0"
 
