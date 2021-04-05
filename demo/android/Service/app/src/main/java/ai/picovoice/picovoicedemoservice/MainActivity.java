@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
-            copyResourceFile(R.raw.rhino_params, "rhino_params.pv");
             copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
             copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
         } catch (IOException e) {

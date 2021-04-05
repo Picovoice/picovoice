@@ -1,7 +1,2 @@
 include ':picovoice'
 rootProject.name = "Picovoice"
-
-include ':porcupine'
-project(':porcupine').projectDir = new File(settingsDir, '../../../resources/porcupine/binding/android/Porcupine/porcupine')
-include ':rhino'
-project(':rhino').projectDir = new File(settingsDir, '../../../resources/rhino/binding/android/Rhino/rhino')

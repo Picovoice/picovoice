@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -68,9 +68,6 @@ public class PicovoiceService extends Service {
 
         startForeground(1234, notification);
 
-        final String porcupineModelPath = new File(this.getFilesDir(), "porcupine_params.pv").getAbsolutePath();
-        final String rhinoModelPath = new File(this.getFilesDir(), "rhino_params.pv").getAbsolutePath();
-
         String keywordFileName = intent.getStringExtra("keywordFileName");
         assert keywordFileName != null;
         String keywordFilePath = new File(this.getFilesDir(), keywordFileName).getAbsolutePath();
@@ -80,10 +77,10 @@ public class PicovoiceService extends Service {
         String contextPath = new File(this.getFilesDir(), contextFileName).getAbsolutePath();
 
         try {
-            picovoiceManager = new PicovoiceManager(
-                    porcupineModelPath,
-                    keywordFilePath,
-                    0.7f,
+            picovoiceManager = new PicovoiceManager.Builder()
+                    .setKeywordPath(keywordFilePath)
+                    .setPorcupineSensitivity(0.7f)
+                    .setWakeWordCallback(
                     () -> {
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
@@ -101,10 +98,10 @@ public class PicovoiceService extends Service {
                         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         assert notificationManager != null;
                         notificationManager.notify(1234, n);
-                    },
-                    rhinoModelPath,
-                    contextPath,
-                    0.25f,
+                    })
+                    .setContextPath(contextPath)
+                    .setRhinoSensitivity(0.25f)
+                    .setInferenceCallback(
                     (inference) -> {
                         PendingIntent contentIntent = PendingIntent.getActivity(
                                 this,
@@ -138,7 +135,7 @@ public class PicovoiceService extends Service {
                         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                         assert notificationManager != null;
                         notificationManager.notify(1234, n);
-                    });
+                    }).build(getApplicationContext());
             picovoiceManager.start();
         } catch (PicovoiceException e) {
             Log.e("Picovoice", e.toString());

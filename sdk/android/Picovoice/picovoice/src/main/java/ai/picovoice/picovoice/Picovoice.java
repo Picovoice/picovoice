@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -11,6 +11,8 @@
 */
 
 package ai.picovoice.picovoice;
+
+import android.content.Context;
 
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
@@ -33,76 +35,48 @@ import ai.picovoice.rhino.RhinoException;
  * engine for intent inference.
  */
 public class Picovoice {
-    final private Porcupine porcupine;
     final private PicovoiceWakeWordCallback wakeWordCallback;
-    private boolean isWakeWordDetected = false;
-    final private Rhino rhino;
     final private PicovoiceInferenceCallback inferenceCallback;
+    private Porcupine porcupine;
+    private Rhino rhino;
+    private boolean isWakeWordDetected = false;
 
     /**
-     * Constructor
+     * Private Constructor
      *
-     * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
-     * @param keywordPath          Absolute path to Porcupine's keyword model file.
-     * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
-     *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
-     *                             of increasing the false alarm rate.
-     * @param wakeWordCallback     User-defined callback invoked upon detection of the wake phrase.
-     *                             ${@link PicovoiceWakeWordCallback} defines the interface of the
-     *                             callback.
-     * @param rhinoModelPath       Absolute path to the file containing Rhino's model parameters.
-     * @param contextPath          Absolute path to file containing context parameters. A context
-     *                             represents the set of expressions (spoken commands), intents, and
-     *                             intent arguments (slots) within a domain of interest.
-     * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
-     *                             higher sensitivity value results in fewer misses at the cost of
-     *                             (potentially) increasing the erroneous inference rate.
-     * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
-     *                             #{@link PicovoiceInferenceCallback} defines the interface of the
-     *                             callback.
-     * @throws PicovoiceException if there is an error while initializing.
+     * @param porcupine         An instance of Porcupine wake word engine
+     * @param wakeWordCallback  User-defined callback invoked upon detection of the wake phrase.
+     *                          ${@link PicovoiceWakeWordCallback} defines the interface of the
+     *                          callback.
+     * @param rhino             An instance of Rhino Speech-to-Intent engine
+     * @param inferenceCallback User-defined callback invoked upon completion of intent inference.
+     *                          #{@link PicovoiceInferenceCallback} defines the interface of the
+     *                          callback.
      */
-    public Picovoice(
-            String porcupineModelPath,
-            String keywordPath,
-            float porcupineSensitivity,
+    private Picovoice(
+            Porcupine porcupine,
             PicovoiceWakeWordCallback wakeWordCallback,
-            String rhinoModelPath,
-            String contextPath,
-            float rhinoSensitivity,
-            PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
-        try {
-            porcupine = new Porcupine(porcupineModelPath, keywordPath, porcupineSensitivity);
+            Rhino rhino,
+            PicovoiceInferenceCallback inferenceCallback) {
 
-            if (!porcupine.getVersion().startsWith("1.9.")) {
-                final String message = String.format(
-                        "Expected Porcupine library with version '1.9.x' but received %s",
-                        porcupine.getVersion());
-                throw new PicovoiceException(message);
-            }
-
-            this.wakeWordCallback = wakeWordCallback;
-
-            rhino = new Rhino(rhinoModelPath, contextPath, rhinoSensitivity);
-            if (!rhino.getVersion().startsWith("1.6.")) {
-                final String message = String.format(
-                        "Expected Rhino library with version '1.6.x' but received %s",
-                        rhino.getVersion());
-                throw new PicovoiceException(message);
-            }
-
-            this.inferenceCallback = inferenceCallback;
-        } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
-        }
+        this.porcupine = porcupine;
+        this.wakeWordCallback = wakeWordCallback;
+        this.rhino = rhino;
+        this.inferenceCallback = inferenceCallback;
     }
 
     /**
      * Releases resources acquired.
      */
     public void delete() {
-        porcupine.delete();
-        rhino.delete();
+        if (porcupine != null) {
+            porcupine.delete();
+            porcupine = null;
+        }
+        if (rhino != null) {
+            rhino.delete();
+            rhino = null;
+        }
     }
 
     /**
@@ -116,15 +90,21 @@ public class Picovoice {
      * @throws PicovoiceException if there is an error while processing the audio frame.
      */
     public void process(short[] pcm) throws PicovoiceException {
+        if (porcupine == null || rhino == null) {
+            throw new PicovoiceException("Cannot process frame - resources have been released");
+        }
+
         try {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
-                if (isWakeWordDetected) {
+                if (isWakeWordDetected && wakeWordCallback != null) {
                     wakeWordCallback.invoke();
                 }
             } else {
                 if (rhino.process(pcm)) {
-                    inferenceCallback.invoke(rhino.getInference());
+                    if (inferenceCallback != null) {
+                        inferenceCallback.invoke(rhino.getInference());
+                    }
                     isWakeWordDetected = false;
                 }
             }
@@ -143,12 +123,12 @@ public class Picovoice {
     }
 
     /**
-     * Getter for number of audio samples per frame..
+     * Getter for number of audio samples per frame.
      *
      * @return Number of audio samples per frame.
      */
     public int getFrameLength() {
-        return rhino.getFrameLength();
+        return porcupine != null ? porcupine.getFrameLength() : 0;
     }
 
     /**
@@ -157,6 +137,184 @@ public class Picovoice {
      * @return Audio sample rate accepted by Picovoice.
      */
     public int getSampleRate() {
-        return porcupine.getSampleRate();
+        return porcupine != null ? porcupine.getSampleRate() : 0;
+    }
+
+    /**
+     * Getter for the Rhino context
+     *
+     * @return Rhino context
+     */
+    public String getContextInformation() {
+        return rhino != null ? rhino.getContextInformation() : "";
+    }
+
+    /**
+     * Getter for the version of Porcupine
+     *
+     * @return Porcupine version
+     */
+    public String getPorcupineVersion() {
+        return porcupine != null ? porcupine.getVersion() : "";
+    }
+
+    /**
+     * Getter for the version of Rhino
+     *
+     * @return Rhino version
+     */
+    public String getRhinoVersion() {
+        return rhino != null ? rhino.getVersion() : "";
+    }
+
+    /**
+     * Builder for creating an instance of Picovoice with a mixture of default arguments
+     */
+    public static class Builder {
+
+        private String porcupineModelPath = null;
+        private String keywordPath = null;
+        private float porcupineSensitivity = 0.5f;
+        private PicovoiceWakeWordCallback wakeWordCallback = null;
+
+        private String rhinoModelPath = null;
+        private String contextPath = null;
+        private float rhinoSensitivity = 0.5f;
+        private PicovoiceInferenceCallback inferenceCallback = null;
+
+        /**
+         * Setter for path to Porcupine model file
+         *
+         * @param porcupineModelPath Absolute path to the file containing Porcupine's model parameters.
+         */
+        public Picovoice.Builder setPorcupineModelPath(String porcupineModelPath) {
+            this.porcupineModelPath = porcupineModelPath;
+            return this;
+        }
+
+        /**
+         * Setter for path to Porcupine keyword file
+         *
+         * @param keywordPath Absolute path to Porcupine's keyword model file.
+         */
+        public Picovoice.Builder setKeywordPath(String keywordPath) {
+            this.keywordPath = keywordPath;
+            return this;
+        }
+
+        /**
+         * Setter for wake word engine sensitivity
+         *
+         * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
+         *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
+         *                             of increasing the false alarm rate.
+         */
+        public Picovoice.Builder setPorcupineSensitivity(float porcupineSensitivity) {
+            this.porcupineSensitivity = porcupineSensitivity;
+            return this;
+        }
+
+        /**
+         * Setter for wake word detection callback
+         *
+         * @param wakeWordCallback User-defined callback invoked upon detection of the wake phrase.
+         *                         ${@link PicovoiceWakeWordCallback} defines the interface of the
+         *                         callback.
+         */
+        public Picovoice.Builder setWakeWordCallback(PicovoiceWakeWordCallback wakeWordCallback) {
+            this.wakeWordCallback = wakeWordCallback;
+            return this;
+        }
+
+        /**
+         * Setter for path to Rhino model file
+         *
+         * @param rhinoModelPath Absolute path to the file containing Rhino's model parameters.
+         */
+        public Picovoice.Builder setRhinoModelPath(String rhinoModelPath) {
+            this.rhinoModelPath = rhinoModelPath;
+            return this;
+        }
+
+        /**
+         * Setter for path to Rhino context file
+         *
+         * @param contextPath Absolute path to file containing context parameters. A context
+         *                    represents the set of expressions (spoken commands), intents, and
+         *                    intent arguments (slots) within a domain of interest.
+         */
+        public Picovoice.Builder setContextPath(String contextPath) {
+            this.contextPath = contextPath;
+            return this;
+        }
+
+        /**
+         * Setter for inference engine sensitivity
+         *
+         * @param rhinoSensitivity Inference sensitivity. It should be a number within [0, 1]. A
+         *                         higher sensitivity value results in fewer misses at the cost of
+         *                         (potentially) increasing the erroneous inference rate.
+         */
+        public Picovoice.Builder setRhinoSensitivity(float rhinoSensitivity) {
+            this.rhinoSensitivity = rhinoSensitivity;
+            return this;
+        }
+
+        /**
+         * Setter for intent inference callback
+         *
+         * @param inferenceCallback User-defined callback invoked upon completion of intent inference.
+         *                          #{@link PicovoiceInferenceCallback} defines the interface of the
+         *                          callback.
+         */
+        public Picovoice.Builder setInferenceCallback(PicovoiceInferenceCallback inferenceCallback) {
+            this.inferenceCallback = inferenceCallback;
+            return this;
+        }
+
+        /**
+         * Validates properties and creates an instance of the Porcupine wake word engine.
+         *
+         * @param appContext Android app context (for extracting Porcupine resources)
+         * @return An instance of Porcupine wake word engine
+         * @throws PicovoiceException if there is an error while initializing Porcupine.
+         */
+        public Picovoice build(Context appContext) throws PicovoiceException {
+            try {
+                Porcupine porcupine = new Porcupine.Builder()
+                        .setModelPath(porcupineModelPath)
+                        .setKeywordPath(keywordPath)
+                        .setSensitivity(porcupineSensitivity)
+                        .build(appContext);
+
+                if (!porcupine.getVersion().startsWith("1.9.")) {
+                    final String message = String.format(
+                            "Expected Porcupine library with version '1.9.x' but received %s",
+                            porcupine.getVersion());
+                    throw new PicovoiceException(message);
+                }
+
+                Rhino rhino = new Rhino.Builder()
+                        .setModelPath(rhinoModelPath)
+                        .setContextPath(contextPath)
+                        .setSensitivity(rhinoSensitivity)
+                        .build(appContext);
+
+                if (!rhino.getVersion().startsWith("1.6.")) {
+                    final String message = String.format(
+                            "Expected Rhino library with version '1.6.x' but received %s",
+                            rhino.getVersion());
+                    throw new PicovoiceException(message);
+                }
+
+                return new Picovoice(
+                        porcupine,
+                        wakeWordCallback,
+                        rhino,
+                        inferenceCallback);
+            } catch (PorcupineException | RhinoException e) {
+                throw new PicovoiceException(e);
+            }
+        }
     }
 }
