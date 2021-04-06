@@ -93,7 +93,7 @@ const uint32_t pv_get_uuid_size(void) {
 void pv_board_deinit() {
 }
 
-void PeriphCommonClock_Config(void) {
+static void PeriphCommonClock_Config(void) {
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SAI4A|RCC_PERIPHCLK_SAI1;
