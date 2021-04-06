@@ -1,3 +1,5 @@
 .settings/
 *.launch
 Debug/
+Middlewares/ST/STM32_Audio/Addons/PDM/Lib/
+Middlewares/ST/STM32_Audio/Addons/PDM/Inc/

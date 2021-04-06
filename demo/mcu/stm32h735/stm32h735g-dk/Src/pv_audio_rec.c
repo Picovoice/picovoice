@@ -33,6 +33,9 @@ static int32_t read_index = 1;
 static int32_t write_index = 0;
 static int32_t buffer_index = 0;
 
+CRC_HandleTypeDef hcrc;
+
+UART_HandleTypeDef huart;
 SAI_HandleTypeDef hsai_BlockA4;
 DMA_HandleTypeDef hdma_sai4_a;
 
@@ -47,6 +50,58 @@ struct {
     uint16_t *record_pcm_buffer;
     bool is_recording;
 } pv_audio_rec;
+
+//static void MX_SAI4_Init(void)
+//{
+//
+//  hsai_BlockA4.Instance = SAI4_Block_A;
+//  hsai_BlockA4.Init.Protocol = SAI_FREE_PROTOCOL;
+//  hsai_BlockA4.Init.AudioMode = SAI_MODEMASTER_RX;
+//  hsai_BlockA4.Init.DataSize = SAI_DATASIZE_8;
+//  hsai_BlockA4.Init.FirstBit = SAI_FIRSTBIT_LSB;
+//  hsai_BlockA4.Init.ClockStrobing = SAI_CLOCKSTROBING_FALLINGEDGE;
+//  hsai_BlockA4.Init.Synchro = SAI_ASYNCHRONOUS;
+//  hsai_BlockA4.Init.OutputDrive = SAI_OUTPUTDRIVE_DISABLE;
+//  hsai_BlockA4.Init.NoDivider = SAI_MASTERDIVIDER_DISABLE;
+//  hsai_BlockA4.Init.FIFOThreshold = SAI_FIFOTHRESHOLD_1QF;
+//  hsai_BlockA4.Init.AudioFrequency = SAI_AUDIO_FREQUENCY_MCKDIV;
+//  hsai_BlockA4.Init.Mckdiv = 6;
+//  hsai_BlockA4.Init.MonoStereoMode = SAI_STEREOMODE;
+//  hsai_BlockA4.Init.CompandingMode = SAI_NOCOMPANDING;
+//  hsai_BlockA4.Init.PdmInit.Activation = ENABLE;
+//  hsai_BlockA4.Init.PdmInit.MicPairsNbr = 2;
+//  hsai_BlockA4.Init.PdmInit.ClockEnable = SAI_PDM_CLOCK2_ENABLE;
+//  hsai_BlockA4.FrameInit.FrameLength = 32;
+//  hsai_BlockA4.FrameInit.ActiveFrameLength = 1;
+//  hsai_BlockA4.FrameInit.FSDefinition = SAI_FS_STARTFRAME;
+//  hsai_BlockA4.FrameInit.FSPolarity = SAI_FS_ACTIVE_HIGH;
+//  hsai_BlockA4.FrameInit.FSOffset = SAI_FS_FIRSTBIT;
+//  hsai_BlockA4.SlotInit.FirstBitOffset = 0;
+//  hsai_BlockA4.SlotInit.SlotSize = SAI_SLOTSIZE_DATASIZE;
+//  hsai_BlockA4.SlotInit.SlotNumber = 4;
+//  hsai_BlockA4.SlotInit.SlotActive = 0x00000004;
+//  if (HAL_SAI_Init(&hsai_BlockA4) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+//
+//}
+//
+//static void MX_BDMA_Init(void)
+//{
+//  __HAL_RCC_BDMA_CLK_ENABLE();
+//  NVIC_SetPriority(BDMA_Channel0_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+//  NVIC_EnableIRQ(BDMA_Channel0_IRQn);
+//
+//}
+//
+//static void MX_DMA_Init(void)
+//{
+//  __HAL_RCC_DMA1_CLK_ENABLE();
+//  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
+//  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+//
+//}
 
 static void MX_SAI4_Init(void)
 {
@@ -77,9 +132,8 @@ static void MX_SAI4_Init(void)
   hsai_BlockA4.SlotInit.SlotSize = SAI_SLOTSIZE_DATASIZE;
   hsai_BlockA4.SlotInit.SlotNumber = 4;
   hsai_BlockA4.SlotInit.SlotActive = 0x00000004;
-  if (HAL_SAI_Init(&hsai_BlockA4) != HAL_OK)
-  {
-    Error_Handler();
+  if (HAL_SAI_Init(&hsai_BlockA4) != HAL_OK) {
+       pv_error_handler();
   }
 
 }
@@ -97,15 +151,31 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
   HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+}
+
+static void MX_CRC_Init(void)
+{
+
+  hcrc.Instance = CRC;
+  hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
+  hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+  hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+  hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
+  hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
+  if (HAL_CRC_Init(&hcrc) != HAL_OK) {
+       pv_error_handler();
+  }
+  __HAL_CRC_DR_RESET(&hcrc);
 
 }
 
 pv_status_t pv_audio_rec_init(void) {
 
-      MX_BDMA_Init();
-      MX_DMA_Init();
-      MX_SAI4_Init();
-      MX_PDM2PCM_Init();
+     MX_BDMA_Init();
+     MX_DMA_Init();
+     MX_SAI4_Init();
+     MX_CRC_Init();
+     MX_PDM2PCM_Init();
 
     return PV_STATUS_SUCCESS;
 }
