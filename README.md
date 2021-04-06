@@ -94,7 +94,10 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [React Native](#react-native-demos)
     - [Android](#android-demos)
     - [iOS](#ios-demos)
-    - [JavaScript](#javascript-demos)
+    - [Web](#web-demos)
+      - [Angular](#angular-demos)
+      - [React](#react-demos)
+      - [Vue](#vue-demos)
     - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
     - [Python](#python)
@@ -106,6 +109,10 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [React Native](#react-native)
     - [Android](#android)
     - [iOS](#ios)
+    - [Web](#web)
+      - [Angular](#angular)
+      - [React](#react)
+      - [Vue](#vue)
     - [Microcontroller](#microcontroller)
   - [Releases](#releases)
   - [FAQ](#faq)
@@ -358,10 +365,77 @@ run the application. Press the start button and say
 
 For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
 
-### JavaScript Demos
+### Web Demos
 
-There is a ["Vanilla" JavaScript demo](./demo/javascript/vanilla) and [React demo](./demo/javascript/react) available,
-both of which [run offline in the browser](https://picovoice.ai/blog/offline-voice-ai-in-a-web-browser/).
+From [demo/web](/demo/web) run the following in the terminal:
+
+```yarn
+yarn
+yarn start
+```
+
+(or)
+
+```
+npm install
+npm run start
+```
+
+Open http://localhost:5000 in your browser to try the demo.
+
+#### Angular Demos
+
+From [demo/angular](/demo/angular) run the following in the terminal:
+
+```yarn
+yarn
+yarn start
+```
+
+(or)
+
+```
+npm install
+npm run start
+```
+
+Open http://localhost:4200 in your browser to try the demo.
+
+#### React Demos
+
+From [demo/react](/demo/react) run the following in the terminal:
+
+```yarn
+yarn
+yarn start
+```
+
+(or)
+
+```
+npm install
+npm run start
+```
+
+Open http://localhost:3000 in your browser to try the demo.
+
+#### Vue Demos
+
+From [demo/vue](/demo/vue) run the following in the terminal:
+
+```yarn
+yarn
+yarn serve
+```
+
+(or)
+
+```
+npm install
+npm run serve
+```
+
+Open http://localhost:8080 in your browser to try the demo.
 
 ### Microcontroller Demos
 
@@ -1050,6 +1124,351 @@ let manager = PicovoiceManager(
 
 when initialized input audio can be processed using `manager.start()`. The processing can be interrupted using
 `manager.stop()`.
+
+### Web
+
+The Picovoice SDK for Web is available on modern web browsers (i.e. not Internet Explorer) via [WebAssembly](https://webassembly.org/). Microphone audio is handled via the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and is abstracted by the WebVoiceProcessor, which also handles downsampling to the correct format. Picovoice is provided pre-packaged as a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers).
+
+Each spoken language is available as a dedicated npm package (e.g. @picovoice/picovoice-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
+
+#### Vanilla JavaScript and HTML (CDN Script Tag / IIFE)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://unpkg.com/@picovoice/picovoice-web-en-worker/dist/iife/index.js"></script>
+    <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
+    <script type="application/javascript">
+      const CLOCK_CONTEXT_64 = /* Base64 representation of Rhino .rhn file */;
+
+      async function startPicovoice() {
+        console.log("Picovoice is loading. Please wait...");
+        picovoiceWorker = await PicovoiceWebEnWorker.PicovoiceWorkerFactory.create(
+          {
+            porcupineKeyword: { builtin: "Picovoice" },
+            rhinoContext: { base64: CLOCK_CONTEXT_64 },
+            start: true,
+          }
+        );
+
+        console.log("Picovoice worker ready!");
+
+        picovoiceWorker.onmessage = (msg) => {
+          switch (msg.data.command) {
+            case "ppn-keyword": {
+              console.log(
+                "Wake word detected: " + JSON.stringify(msg.data.keywordLabel)
+              );
+              break;
+            }
+            case "rhn-inference":
+              {
+                console.log(
+                  "Inference detected: " + JSON.stringify(msg.data.inference)
+                );
+                break;
+              }
+
+              writeMessage(msg);
+          }
+        };
+
+        console.log(
+          "WebVoiceProcessor initializing. Microphone permissions requested ..."
+        );
+
+        try {
+          let webVp = await WebVoiceProcessor.WebVoiceProcessor.init({
+            engines: [picovoiceWorker],
+            start: true,
+          });
+          console.log(
+            "WebVoiceProcessor ready! Say 'Picovoice' to start the interaction."
+          );
+        } catch (e) {
+          console.log("WebVoiceProcessor failed to initialize: " + e);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        startPicovoice();
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
+
+```
+
+#### Vanilla JavaScript and HTML (ES Modules)
+
+```
+yarn add @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+```
+
+(or)
+
+```
+npm install @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+```
+
+```javascript
+import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
+import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
+ 
+async function startPicovoice() {
+  // Create a Picovoice Worker (English language) to listen for
+  // the built-in keyword "Picovoice" and follow-on commands in the "Clock" context.
+  // Note: you receive a Worker object, _not_ an individual Picovoice instance
+  const picovoiceWorker = await PicovoiceWorkerFactory.create(
+    {
+      porcupineKeyword: { builtin: "Picovoice" },
+      rhinoContext: { base64: CLOCK_CONTEXT_64 },
+      start: true,
+    }
+  );
+ 
+  // The worker will send a message with data.command = "ppn-keyword" upon a detection event
+  // And data.command = "rhn-inference" when the follow-on inference concludes.
+  // Here, we tell it to log it to the console:
+  picovoiceWorker.onmessage = (msg) => {
+    switch (msg.data.command) {
+      case 'ppn-keyword':
+        // Wake word detection
+        console.log("Wake word: " + msg.data.keywordLabel);
+        break;
+      case 'rhn-inference:
+        // Follow-on command inference concluded
+        console.log("Inference: " + msg.data.inference)
+      default:
+        break;
+    }
+  };
+ 
+  // Start up the web voice processor. It will request microphone permission
+  // and immediately (start: true) start listening.
+  // It downsamples the audio to voice recognition standard format (16-bit 16kHz linear PCM, single-channel)
+  // The incoming microphone audio frames will then be forwarded to the Picovoice Worker
+  // n.b. This promise will reject if the user refuses permission! Make sure you handle that possibility.
+  const webVp = await WebVoiceProcessor.init({
+    engines: [picovoiceWorker],
+    start: true,
+  });
+}
+ 
+startPicovoice()
+ 
+...
+ 
+// Finished with Picovoice? Release the WebVoiceProcessor and the worker.
+if (done) {
+  webVp.release()
+  picovoiceWorker.sendMessage({command: "release"})
+}
+```
+
+#### Angular
+
+```
+yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+```
+
+(or)
+
+```
+npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+```
+
+```typescript
+import { Subscription } from "rxjs"
+import { PicovoiceService } from "@picovoice/picovoice-web-angular"
+ 
+...
+ 
+  constructor(private picovoiceService: PicovoiceService) {
+    // Subscribe to Picovoice Keyword detections
+    // Store each detection so we can display it in an HTML list
+    this.keywordDetection = picovoiceService.keyword$.subscribe(
+      keywordLabel => this.detections = [...this.detections, keywordLabel])
+    // Subscribe to Rhino Inference events
+    // Show the latest one in the widget
+    this.inferenceDetection = picovoiceService.inference$.subscribe(
+      inference => this.latestInference = inference)
+  }
+
+    async ngOnInit() {
+        // Load Picovoice worker chunk with specific language model (large ~4-6MB chunk; dynamically imported)
+        const pvFactoryEn = (await import('@picovoice/picovoice-web-en-worker')).PicovoiceWorkerFactory
+        // Initialize Picovoice Service
+        try {
+        await this.picovoiceService.init(pvFactoryEn,
+            {
+            // Built-in wake word
+            porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
+            // Rhino context (Base64 representation of a `.rhn` file)
+            rhinoContext: { base64: RHINO_CLOCK_64 },
+            start: true
+            })
+        }
+        catch (error) {
+        console.error(error)
+        }
+    }
+
+    ngOnDestroy() {
+        this.keywordDetection.unsubscribe()
+        this.inferenceDetection.unsubscribe()
+        this.picovoiceService.release()
+    }
+```
+
+#### React
+
+```
+yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+```
+
+(or)
+
+```
+npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+```
+
+```javascript
+import React, { useState } from 'react';
+import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
+import { usePicovoice } from '@picovoice/picovoice-web-react';
+ 
+const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
+ 
+export default function VoiceWidget() {
+  const [keywordDetections, setKeywordDetections] = useState([]);
+  const [inference, setInference] = useState(null);
+ 
+  const inferenceEventHandler = (rhinoInference) => {
+    console.log(rhinoInference);
+    setInference(rhinoInference);
+  };
+ 
+  const keywordEventHandler = (porcupineKeywordLabel) => {
+    console.log(porcupineKeywordLabel);
+    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
+  };
+ 
+  const {
+    isLoaded,
+    isListening,
+    isError,
+    errorMessage,
+    start,
+    resume,
+    pause,
+    engine,
+  } = usePicovoice(
+    PicovoiceWorkerFactory,
+    {
+      // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
+      // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
+      porcupineKeyword: "Picovoice",
+      rhinoContext: { base64: RHN_CONTEXT_CLOCK_64 },
+      start: true,
+    },
+    keywordEventHandler,
+    inferenceEventHandler
+  );
+ 
+return (
+  <div className="voice-widget">
+    <h3>Engine: {engine}</h3>
+    <h3>Keyword Detections:</h3>
+    {keywordDetections.length > 0 && (
+      <ul>
+        {keywordDetections.map((label, index) => (
+          <li key={index}>{label}</li>
+        ))}
+      </ul>
+    )}
+    <h3>Latest Inference:</h3>
+    {JSON.stringify(inference)}
+  </div>
+)
+```
+
+#### Vue
+
+```
+yarn add @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
+```
+
+(or)
+
+```
+npm install @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
+```
+
+```html
+<template>
+  <div class="voice-widget">
+    <Picovoice
+      v-bind:picovoiceFactoryArgs="{ start: true, porcupineKeyword:
+    'Picovoice', rhinoContext: { base64: '... Base64 representation of a .rhn file ...'}"
+      v-bind:picovoiceFactory="factory"
+      v-on:pv-init="pvInitFn"
+      v-on:pv-ready="pvReadyFn"
+      v-on:ppn-keyword="pvKeywordFn"
+      v-on:rhn-inference="pvInferenceFn"
+      v-on:pv-error="pvErrorFn"
+    />
+    <h3>Keyword Detections:</h3>
+    <ul v-if="detections.length > 0">
+      <li v-for="(item, index) in detections" :key="index">{{ item }}</li>
+    </ul>
+  </div>
+</template>
+<script>
+import Picovoice from "@picovoice/picovoice-web-vue";
+import { PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
+ 
+export default {
+  name: "VoiceWidget",
+  components: {
+    Picovoice,
+  },
+  data: function() {
+    return {
+      detections: [],
+      isError: null,
+      isLoaded: false,
+      factory: PicovoiceWorkerFactoryEn,
+    };
+  },
+  methods: {
+    pvInitFn: function () {
+      this.isError = false;
+    },
+    pvReadyFn: function () {
+      this.isLoaded = true;
+      this.isListening = true;
+      this.engine = 'ppn'
+    },
+    pvKeywordFn: function (keyword) {
+      this.detections = [...this.detections, keyword];
+      this.engine = 'rhn'
+    },
+    pvInferenceFn: function (inference) {
+      this.inference = inference;
+      this.engine = 'ppn'
+    },
+    pvErrorFn: function (error) {
+      this.isError = true;
+      this.errorMessage = error.toString();
+    },
+  },
+};
+</script>
+```
 
 ### Microcontroller
 
