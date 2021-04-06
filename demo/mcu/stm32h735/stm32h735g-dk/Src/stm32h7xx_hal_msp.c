@@ -145,7 +145,7 @@ void HAL_DFSDM_FilterMspInit(DFSDM_Filter_HandleTypeDef* hdfsdm_filter)
     PeriphClkInitStruct.Dfsdm1ClockSelection = RCC_DFSDM1CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+    	pv_error_handler();
     }
 
     /* Peripheral clock enable */
@@ -187,7 +187,7 @@ void HAL_DFSDM_FilterMspInit(DFSDM_Filter_HandleTypeDef* hdfsdm_filter)
     hdma_dfsdm1_flt0.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_dfsdm1_flt0) != HAL_OK)
     {
-      Error_Handler();
+    	pv_error_handler();
     }
 
     /* Several peripheral DMA handle pointers point to the same DMA handle.
@@ -219,7 +219,7 @@ void HAL_DFSDM_ChannelMspInit(DFSDM_Channel_HandleTypeDef* hdfsdm_channel)
     PeriphClkInitStruct.Dfsdm1ClockSelection = RCC_DFSDM1CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+    	pv_error_handler();
     }
 
     /* Peripheral clock enable */
@@ -332,7 +332,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
-      Error_Handler();
+    	pv_error_handler();
     }
 
     /* Peripheral clock enable */
@@ -441,7 +441,7 @@ void HAL_SAI_MspInit(SAI_HandleTypeDef* hsai)
     hdma_sai4_a.Init.Priority = DMA_PRIORITY_HIGH;
     if (HAL_DMA_Init(&hdma_sai4_a) != HAL_OK)
     {
-      Error_Handler();
+    	pv_error_handler();
     }
 
     /* Several peripheral DMA handle pointers point to the same DMA handle.

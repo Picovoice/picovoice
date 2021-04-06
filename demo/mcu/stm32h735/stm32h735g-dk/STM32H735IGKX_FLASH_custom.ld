@@ -39,8 +39,7 @@ MEMORY
 {
   ITCMRAM    (xrw)    : ORIGIN = 0x00000000,   LENGTH = 64K
   RAM    (xrw)    : ORIGIN = 0x24000000,   LENGTH = 320K
-  ROM (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K-128K
-  PVDATA (rx)     : ORIGIN = 0x080e0000, LENGTH = 128K
+  ROM (rx)      : ORIGIN = 0x08000000, LENGTH = 1024K
    /* RAM_D3 (xrw)    : ORIGIN = 0x38000000,   LENGTH = 16K*/
   DTCMRAM (xrw)      : ORIGIN = 0x20000000, LENGTH = 128K
   NOCACHERAM (xrw)      : ORIGIN = 0x38000000, LENGTH = 16K
@@ -235,10 +234,4 @@ SECTIONS
   }
 
   .ARM.attributes 0 : { *(.ARM.attributes) }
-  
-    .pv_data :
-  {
-      *(.pv_data)
-      *(.pv_data*)
-  } >PVDATA
 }
