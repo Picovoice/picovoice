@@ -32,5 +32,4 @@ apply from: "${rootDir}/publish-mavencentral.gradle"
 dependencies {
     implementation 'ai.picovoice:porcupine-android:1.9.0'
     implementation 'ai.picovoice:rhino-android:1.6.0'
-//    implementation fileTree(dir: "libs", include: ["*.jar"])
 }
