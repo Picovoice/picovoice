@@ -1,4 +1,4 @@
-# Porcupine Binding for Fluttter
+# Picovoice SDK for Flutter
 
 ## Picovoice
 

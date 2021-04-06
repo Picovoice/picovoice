@@ -1,4 +1,4 @@
-# Porcupine Binding for Android
+# Picovoice SDK for Android
 
 ## Picovoice
 

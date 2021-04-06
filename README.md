@@ -896,6 +896,15 @@ this._picovoice.delete();
 
 ### Android
 
+Porcupine can be found on Maven Central. To include the package in your Android project, ensure you have included `mavenCentral()` in your top-level `build.gradle` file and then add the following to your app's `build.gradle`:
+
+```groovy
+dependencies {
+    // ...
+    implementation 'ai.picovoice:picovoice-android:1.1.0'
+}
+```
+
 There are two possibilities for integrating Picovoice into an Android application.
 
 #### High-Level API
@@ -906,39 +915,28 @@ input audio stream, feeding it into Picovoice engine, and invoking user-defined 
 inference completion. The class can be initialized as follows:
 
 ```java
-import ai.picovoice.picovoice.PicovoiceManager;
+import ai.picovoice.picovoice.*;
 
-final String porcupineModelPath = ...
-final String keywordPath = ...
-final float porcupineSensitivity = 0.5f;
-final String rhinoModelPath = ...
-final String contextPath = ...
-final float rhinoSensitivity = 0.5f;
-
-PicovoiceManager manager = new PicovoiceManager(
-    porcupineModelPath,
-    keywordPath,
-    porcupineSensitivity,
-    new PicovoiceWakeWordCallback() {
+PicovoiceManager manager = new PicovoiceManager(    
+    .setKeywordPath("path/to/keyword/file.ppn")    
+    .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
             // logic to execute upon deletection of wake word
         }
-    },
-    rhinoModelPath,
-    contextPath,
-    rhinoSensitivity,
-    new PicovoiceInferenceCallback() {
+    })    
+    .setContextPath("path/to/context/file.rhn")
+    .setInferenceCallback(new PicovoiceInferenceCallback() {
         @Override
         public void invoke(final RhinoInference inference) {
             // logic to execute upon completion of intent inference
         }
-    }
+    })
+    .build(appContext);
 );
 ```
 
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. 
 
 When initialized, input audio can be processed using:
 
@@ -964,7 +962,7 @@ manager.delete();
 low-level binding for Android. It can be initialized as follows:
 
 ```java
-import ai.picovoice.picovoice.Picovoice;
+import ai.picovoice.picovoice.*;
 
 final String porcupineModelPath = ...
 final String keywordPath = ...
@@ -973,30 +971,32 @@ final String rhinoModelPath = ...
 final String contextPath = ...
 final float rhinoSensitivity = 0.5f;
 
-Picovoice picovoice = new Picovoice(
-    porcupineModelPath,
-    keywordPath,
-    porcupineSensitivity,
-    new PicovoiceWakeWordCallback() {
-        @Override
-        public void invoke() {
-            // logic to execute upon deletection of wake word
-        }
-    },
-    rhinoModelPath,
-    contextPath,
-    rhinoSensitivity,
-    new PicovoiceInferenceCallback() {
-        @Override
-        public void invoke(final RhinoInference inference) {
-            // logic to execute upon completion of intent inference
-        }
-    }
-);
+try {
+    Picovoice picovoice = new Picovoice.Builder()
+        .setPorcupineModelPath(porcupineModelPath)
+        .setKeywordPath(keywordPath)
+        .setPorcupineSensitivity(porcupineSensitivity)
+        .setWakeWordCallback(new PicovoiceWakeWordCallback() {
+            @Override
+            public void invoke() {
+                // logic to execute upon deletection of wake word
+            }
+        })
+        .setRhinoModelPath(rhinoModelPath)
+        .setContextPath(contextPath)
+        .setRhinoSensitivity(rhinoSensitivity)
+        .setInferenceCallback(new PicovoiceInferenceCallback() {
+            @Override
+            public void invoke(final RhinoInference inference) {
+                // logic to execute upon completion of intent inference
+            }
+        })
+        .build(appContext);
+} catch(PicovoiceException ex) { }
 ```
 
 Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate.
+[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate. The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
 Once initialized, `picovoice` can be used to process incoming audio.
 
