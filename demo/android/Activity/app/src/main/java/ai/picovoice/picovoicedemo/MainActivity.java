@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -71,9 +71,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         try {
-            copyResourceFile(R.raw.porcupine_params, "porcupine_params.pv");
             copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
-            copyResourceFile(R.raw.rhino_params, "rhino_params.pv");
             copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
         } catch (IOException e) {
             Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
@@ -103,11 +101,10 @@ public class MainActivity extends AppCompatActivity {
             final TextView intentTextView = findViewById(R.id.intentView);
 
             intentTextView.setText("\n    Listening ...\n");
-            picovoiceManager = new PicovoiceManager(
-                    getAbsolutePath("porcupine_params.pv"),
-                    getAbsolutePath("keyword.ppn"),
-                    0.75f,
-                    new PicovoiceWakeWordCallback() {
+            picovoiceManager = new PicovoiceManager.Builder()
+                    .setKeywordPath(getAbsolutePath("keyword.ppn"))
+                    .setPorcupineSensitivity(0.75f)
+                    .setWakeWordCallback(new PicovoiceWakeWordCallback() {
                         @Override
                         public void invoke() {
                             runOnUiThread(new Runnable() {
@@ -117,11 +114,10 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                    },
-                    getAbsolutePath("rhino_params.pv"),
-                    getAbsolutePath("context.rhn"),
-                    0.25f,
-                    new PicovoiceInferenceCallback() {
+                    })
+                    .setContextPath(getAbsolutePath("context.rhn"))
+                    .setRhinoSensitivity(0.25f)
+                    .setInferenceCallback(new PicovoiceInferenceCallback() {
                         @Override
                         public void invoke(final RhinoInference inference) {
                             runOnUiThread(new Runnable() {
@@ -144,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                    }
-            );
+                    })
+                    .build(getApplicationContext());
             picovoiceManager.start();
         } catch (PicovoiceException e) {
             displayError("Failed to initialize Picovoice.");

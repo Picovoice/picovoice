@@ -1,5 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
+ext {
+    PUBLISH_GROUP_ID = 'ai.picovoice'
+    PUBLISH_VERSION = '1.1.0'
+    PUBLISH_ARTIFACT_ID = 'picovoice-android'
+}
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -21,8 +27,9 @@ android {
     }
 }
 
+apply from: "${rootDir}/publish-mavencentral.gradle"
+
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':porcupine')
-    implementation project(path: ':rhino')
+    implementation 'ai.picovoice:porcupine-android:1.9.0'
+    implementation 'ai.picovoice:rhino-android:1.6.0'
 }
