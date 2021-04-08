@@ -6,7 +6,7 @@ Picovoice is the end-to-end platform for building voice products on your terms. 
 Picovoice runs entirely on-device while being more accurate. Using Picovoice, one can infer a user’s intent from a
 naturally spoken utterance such as:
 
-> Hey Edison, set the lights in the living room to blue.
+> "Hey Edison, set the lights in the living room to blue"
 
 Picovoice detects the occurrence of the custom wake word (`Hey Edison`), and then extracts the intent from the follow-on
 spoken command:
@@ -95,6 +95,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [Android](#android-demos)
     - [iOS](#ios-demos)
     - [Web](#web-demos)
+      - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
       - [Angular](#angular-demos)
       - [React](#react-demos)
       - [Vue](#vue-demos)
@@ -110,6 +111,8 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [Android](#android)
     - [iOS](#ios)
     - [Web](#web)
+      - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
+      - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
       - [Angular](#angular)
       - [React](#react)
       - [Vue](#vue)
@@ -367,16 +370,18 @@ For the full set of supported commands refer to [demo's readme](/demo/android/RE
 
 ### Web Demos
 
+#### Vanilla JavaScript and HTML
+
 From [demo/web](/demo/web) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -387,14 +392,14 @@ Open http://localhost:5000 in your browser to try the demo.
 
 From [demo/angular](/demo/angular) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -405,14 +410,14 @@ Open http://localhost:4200 in your browser to try the demo.
 
 From [demo/react](/demo/react) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn start
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run start
 ```
@@ -423,14 +428,14 @@ Open http://localhost:3000 in your browser to try the demo.
 
 From [demo/vue](/demo/vue) run the following in the terminal:
 
-```yarn
+```console
 yarn
 yarn serve
 ```
 
 (or)
 
-```
+```console
 npm install
 npm run serve
 ```
@@ -1131,7 +1136,7 @@ The Picovoice SDK for Web is available on modern web browsers (i.e. not Internet
 
 Each spoken language is available as a dedicated npm package (e.g. @picovoice/picovoice-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
 
-#### Vanilla JavaScript and HTML (CDN Script Tag / IIFE)
+#### Vanilla JavaScript and HTML (CDN Script Tag)
 
 ```html
 <!DOCTYPE html>
@@ -1140,14 +1145,14 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/pi
     <script src="https://unpkg.com/@picovoice/picovoice-web-en-worker/dist/iife/index.js"></script>
     <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
-      const CLOCK_CONTEXT_64 = /* Base64 representation of Rhino .rhn file */;
+      const RHINO_CONTEXT_BASE64 = /* Base64 representation of Rhino .rhn file */;
 
       async function startPicovoice() {
         console.log("Picovoice is loading. Please wait...");
         picovoiceWorker = await PicovoiceWebEnWorker.PicovoiceWorkerFactory.create(
           {
             porcupineKeyword: { builtin: "Picovoice" },
-            rhinoContext: { base64: CLOCK_CONTEXT_64 },
+            rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
             start: true,
           }
         );
@@ -1204,13 +1209,13 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/pi
 
 #### Vanilla JavaScript and HTML (ES Modules)
 
-```
+```console
 yarn add @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
 ```
 
@@ -1220,12 +1225,12 @@ import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
  
 async function startPicovoice() {
   // Create a Picovoice Worker (English language) to listen for
-  // the built-in keyword "Picovoice" and follow-on commands in the "Clock" context.
-  // Note: you receive a Worker object, _not_ an individual Picovoice instance
+  // the built-in keyword "Picovoice" and follow-on commands in the given Rhino context.
+  // Note: you receive a Web Worker object, _not_ an individual Picovoice instance
   const picovoiceWorker = await PicovoiceWorkerFactory.create(
     {
       porcupineKeyword: { builtin: "Picovoice" },
-      rhinoContext: { base64: CLOCK_CONTEXT_64 },
+      rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
       start: true,
     }
   );
@@ -1271,13 +1276,13 @@ if (done) {
 
 #### Angular
 
-```
+```console
 yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```
 
@@ -1308,7 +1313,7 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
             // Built-in wake word
             porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
             // Rhino context (Base64 representation of a `.rhn` file)
-            rhinoContext: { base64: RHINO_CLOCK_64 },
+            rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
             start: true
             })
         }
@@ -1326,13 +1331,13 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
 
 #### React
 
-```
+```console
 yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
 ```
 
@@ -1341,7 +1346,7 @@ import React, { useState } from 'react';
 import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
 import { usePicovoice } from '@picovoice/picovoice-web-react';
  
-const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
+const RHINO_CONTEXT_BASE64 = /* Base64 representation of English-language `.rhn` file, omitted for brevity */
  
 export default function VoiceWidget() {
   const [keywordDetections, setKeywordDetections] = useState([]);
@@ -1372,7 +1377,7 @@ export default function VoiceWidget() {
       // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
       // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
       porcupineKeyword: "Picovoice",
-      rhinoContext: { base64: RHN_CONTEXT_CLOCK_64 },
+      rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
       start: true,
     },
     keywordEventHandler,
@@ -1398,13 +1403,13 @@ return (
 
 #### Vue
 
-```
+```console
 yarn add @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
 ```
 
 (or)
 
-```
+```console
 npm install @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
 ```
 

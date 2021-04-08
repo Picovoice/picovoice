@@ -50,17 +50,17 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 ## Installation
 
-Install the package using `npm` or `yarn`. You will also need to add one of the `@picovoice/picovoice-web-**-worker` series of packages for the specific language model:
+Install the package using `npm` or `yarn`. You will also need to add one of the `@picovoice/picovoice-web-xx-worker` series of packages for the specific language model:
 
 E.g. English:
 
-```bash
+```console
 yarn add @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
 ```
 
 ## Usage
 
-Import the Picovoice component and the Picovoice Web Worker component. Bind the worker to Picovoice like the demo `.vue` file below.
+Import the `Picovoice` component from the `@picovoice/picovoice-web-vue` package, and the `PicovoiceWorkerFactory` from a `@picovoice/picovoice-web-xx-worker` package. Bind the worker to `Picovoice` like the demo `.vue` file below:
 
 ```html
 <Picovoice

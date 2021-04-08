@@ -48,15 +48,19 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English ('en'):
 
-`yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker`
+```console
+yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+```
 
 (or)
 
-`npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker`
+```console
+npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+```
 
 ## Usage
 
-In your Angular component, add the PicovoiceService. The PicovoiceService has `keyword` and `inference` events to which you can subscribe:
+In your Angular component, add the `PicovoiceService`. The `PicovoiceService` has `keyword` and `inference` events to which you can subscribe:
 
 ```typescript
 import { Subscription } from "rxjs"

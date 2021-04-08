@@ -84,7 +84,7 @@ To obtain a Picovoice Worker, we can use the async `create` factory method from 
 
 E.g.:
 
-```bash
+```console
 yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
 ```
 
@@ -193,7 +193,7 @@ startPicovoice();
 
 This library uses Rollup and TypeScript along with Babel and other popular rollup plugins. There are two outputs: an IIFE version intended for script tags / CDN usage, and an ESM version intended for use with modern JavaScript/TypeScript development (e.g. Create React App, Webpack).
 
-```
+```console
 yarn
 yarn build
 ```

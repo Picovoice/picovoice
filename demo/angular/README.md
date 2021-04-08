@@ -1,6 +1,6 @@
 # picovoice-web-angular-demo
 
-This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our VoiceWidget subscribes to these event and displays the results.
+This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our `VoiceWidget` subscribes to these event and displays the results.
 
 The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the ~4-6MB requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
 
@@ -14,16 +14,23 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Use `yarn` or `npm` to install then start the demo application:
 
-```
+```console
 yarn
 yarn start
 ```
 
-Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+(or)
 
-## Speech inference
+```console
+npm install
+npm run start
+```
 
-The Picovoice service, used standalone, is a push-to-talk experience. With the demo application running in your browser (and microphone permissions granted), press the "Push to Talk" button, then try saying the following:
+Open `http://localhost:4200/` in your browser.
+
+## Try Picovoice
+
+With the demo application running in your browser (and microphone permissions granted), try saying the following:
 
 > "Picovoice, set a timer for one minute"
 

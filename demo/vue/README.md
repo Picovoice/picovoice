@@ -1,8 +1,8 @@
 # picovoice-web-vue-demo
 
-This demo application includes a sample `VoiceWidget` Vue component which uses the `Picovoice` renderless Vue component service to allow processing naturally spoken phrases within a domain (context) of interest. Picovoice inference events are handled via the `pv-inference` event. Our VoiceWidget subscribes to this event and displays the results.
+This demo application includes a sample `VoiceWidget` Vue component which uses the `Picovoice` renderless Vue component service to allow processing naturally spoken phrases within a domain (context) of interest. Wake word events are handled via the `ppn-keyword` event. Inference events are handled via the `rhn-inference` event. Our VoiceWidget subscribes to this event and displays the results.
 
-The demo uses dynamic imports to split the VoiceWidget away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~3-4MB requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
+The demo uses dynamic imports to split the `VoiceWidget` away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~4-6MB requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
 
 If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
 
@@ -12,18 +12,18 @@ This project was bootstrapped with Vue CLI. See the [Configuration Reference](ht
 
 ## Install & run
 
-```
+```console
 yarn
-yarn serve
+yarn start
 ```
 
 The command-line output will provide you with a localhost link and port to open in your browser.
 
-## Test the context
+## Try Picovoice
 
-Use the "Push to Talk" button to start Picovoice, and then speak a phrase within the "Clock" context, e.g.:
+Try saying the wake word "Picovoice", and then a command in the "Clock" context:
 
-> "Set a timer for ten seconds"
+> "Picovoice, set a timer for ten seconds"
 
 Picovoice's inference result will appear:
 
@@ -36,9 +36,9 @@ Picovoice's inference result will appear:
 }
 ```
 
-Use "Push to Talk" again, and this time try a phrase outside of the Picovoice context:
+Try another interaction, and this time try follow-on command that is outside of the Clock context:
 
-> "Tell me a joke"
+> "Picovoice, tell me a joke"
 
 ```json
 { "isFinalized": true, "isUnderstood": false, "intent": null, "slots": {} }

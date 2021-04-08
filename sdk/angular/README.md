@@ -8,18 +8,26 @@ This is the Angular workspace for building the `picovoice-web-angular` package.
 
 Run `yarn` to install the Angular workspace dependencies:
 
-```bash 
+```console 
 yarn
 ```
 
-Run `ng build picovoice-web-angular --prod` to build the project.
+To build the project, run:
 
-## Commands
+```console
+yarn build picovoice-web-angular --prod
+```
+
+## Format and Lint
 
 Format code with Prettier:
 
-`yarn format`
+```console
+yarn format
+```
 
 Lint code with ESLint:
 
-`ng lint`
+```console
+yarn lint
+```

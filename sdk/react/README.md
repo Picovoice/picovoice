@@ -52,11 +52,15 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
 
-`yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker`
+```console
+yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+```
 
 (or)
 
-`npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker`
+```console
+npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+```
 
 ## Usage
 
@@ -66,7 +70,7 @@ Make sure you handle the possibility of errors with the `isError` and `errorMess
 
 ### Static Import
 
-Using static imports for the picovoice-web-xx-worker packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
+Using static imports for the `picovoice-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
 
 ```javascript
 import React, { useState } from 'react';
@@ -136,7 +140,6 @@ If you are shipping the Picovoice SDK for Web and wish to avoid adding its ~4-6M
 We add a `useEffect` hook to kick off the dynamic import. We store the result of the dynamically loaded worker chunk into a `useState` hook. When `usePicovoice` receives a non-null/undefined value for the worker factory, it will start up Picovoice.
 
 See the [Webpack docs](https://webpack.js.org/guides/code-splitting/) for more information about Code Splitting.
-
 
 ```javascript
 import { useState, useEffect } from "react";
