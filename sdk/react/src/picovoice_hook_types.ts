@@ -2,43 +2,72 @@
 // Rhino Types
 //
 export type RhinoInference = {
-  isFinalized: boolean;
-  isUnderstood?: boolean;
-  intent?: string;
-  slots?: Record<string, unknown>;
-};
+  /** Rhino has concluded the inference (isUnderstood is now set) */
+  isFinalized: boolean
+  /** The intent was understood (it matched an expression in the context) */
+  isUnderstood?: boolean
+  /** The name of the intent */
+  intent?: string
+  /** Map of the slot variables and values extracted from the utterance */
+  slots?: Record<string, string>
+}
+
+export interface RhinoEngine {
+  /** Release all resources acquired by Rhino */
+  release(): void;
+  /** Process a single frame of 16-bit 16kHz PCM audio.
+   * When the returned RhinoInference isFinalized=true, Rhino has concluded this interaction. */
+  process(frame: Int16Array): RhinoInference;
+  /** The version of the Rhino engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Rhino engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Rhino engine */
+  readonly frameLength: number;
+  /** The source of the Rhino context (YAML format) */
+  readonly contextInfo: string;
+}
+
+export type RhinoContext = {
+  /** Base64 representation of a trained Rhino context (`.rhn` file) */
+  base64: string,
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number
+}
 
 export type RhinoWorkerResponseInference = {
   command: 'rhn-inference';
   inference: RhinoInference;
 };
 
-export interface RhinoEngine {
-  release(): void;
-  process(frames: Int16Array): RhinoInference;
-  version: string;
-  sampleRate: number;
-  frameLength: number;
+
+export type RhinoWorkerRequestInfo = {
+  command: 'info'
 }
 
-export type RhinoContext = {
-  base64: string;
-  sensitivty?: number;
+export type RhinoWorkerResponseInfo = {
+  command: 'rhn-info';
+  info: string
 };
 
 //
 // Porcupine Types
 //
 export type PorcupineKeywordCustom = {
-  base64: string;
-  custom: string;
-  sensitivity?: number;
-};
+  /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
+  base64: string
+  /** An arbitrary label that you want Picovoice to report when the detection occurs */
+  custom: string
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number
+}
 
 export type PorcupineKeywordBuiltin = {
-  builtin: string; // Actually a restricted set of strings, per language
-  sensitivity?: number;
-};
+  /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
+  builtin: string
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number
+}
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
@@ -48,12 +77,18 @@ export type PorcupineWorkerResponseKeyword = {
 };
 
 export interface PorcupineEngine {
+  /** Release all resources acquired by Rhino */
   release(): void;
-  process(frames: Int16Array): number;
-  version: string;
-  sampleRate: number;
-  frameLength: number;
-  keywordLabels: Map<number, string>;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): number;
+  /** The version of the Rhino engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Rhino engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Rhino engine */
+  readonly frameLength: number;
+  /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
+  readonly keywordLabels: Map<number, string>;
 }
 
 //
@@ -73,11 +108,18 @@ export type PicovoiceEngineArgs = {
 };
 
 export interface PicovoiceEngine {
+  /** Release all resources acquired by Rhino */
   release(): void;
-  process(frames: Int16Array): void;
-  version: string;
-  sampleRate: number;
-  frameLength: number;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): void;
+  /** The version of the Rhino engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Rhino engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Rhino engine */
+  readonly frameLength: number;
+  /** The source of the Rhino context (YAML format) */
+  readonly contextInfo: string;
 }
 
 export type WorkerRequestProcess = {
@@ -105,13 +147,15 @@ export type PicovoiceWorkerResponseReady = {
 
 export type PicovoiceWorkerRequest =
   | PicovoiceWorkerRequestInit
-  | WorkerRequestVoid;
+  | WorkerRequestVoid
+  | RhinoWorkerRequestInfo;
 
 export type PicovoiceWorkerResponse =
   | PicovoiceWorkerResponseErrorInit
   | PicovoiceWorkerResponseReady
   | PorcupineWorkerResponseKeyword
-  | RhinoWorkerResponseInference;
+  | RhinoWorkerResponseInference
+  | RhinoWorkerResponseInfo;
 
 export interface PicovoiceWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PicovoiceWorkerRequest): void;
@@ -123,6 +167,8 @@ export interface PicovoiceWorkerFactory {
   ) => Promise<PicovoiceWorker>;
 }
 
-// Same type, but 'start' has a different meaning
-// (starts the WebVoiceProcessor since they're bundled together)
-export type PicovoiceHookArgs = PicovoiceWorkerArgs;
+export type PicovoiceHookArgs = {
+  porcupineKeyword: PorcupineKeyword;
+  rhinoContext: RhinoContext;
+  start?: boolean;
+};

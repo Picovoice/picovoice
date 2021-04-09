@@ -18,6 +18,7 @@ export function usePicovoice(
   keywordCallback: (keywordLabel: string) => void,
   inferenceCallback: (inference: RhinoInference) => void
 ): {
+  contextInfo: string | null;
   isLoaded: boolean;
   isListening: boolean;
   isError: boolean;
@@ -28,6 +29,7 @@ export function usePicovoice(
   resume: () => void;
 } {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [contextInfo, setContextInfo] = useState<string | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
   const [isListening, setIsListening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -102,11 +104,6 @@ export function usePicovoice(
         start: true,
       });
 
-      const webVp = await WebVoiceProcessor.init({
-        engines: [pvWorker],
-        start: startWebVp,
-      });
-
       pvWorker.onmessage = (
         message: MessageEvent<PicovoiceWorkerResponse>
       ): void => {
@@ -119,10 +116,20 @@ export function usePicovoice(
             rhinoCallback.current(message.data.inference);
             setEngine('ppn');
             break;
+          case 'rhn-info':
+            setContextInfo(message.data.info);
+            break;
           default:
             break;
         }
       };
+
+      pvWorker.postMessage({ command: 'info' });
+
+      const webVp = await WebVoiceProcessor.init({
+        engines: [pvWorker],
+        start: startWebVp,
+      });
 
       return { webVp, pvWorker };
     }
@@ -160,6 +167,7 @@ export function usePicovoice(
   ]);
 
   return {
+    contextInfo,
     isLoaded,
     isListening,
     isError,

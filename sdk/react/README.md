@@ -95,6 +95,7 @@ export default function VoiceWidget() {
   };
 
   const {
+    contextInfo,
     isLoaded,
     isListening,
     isError,
