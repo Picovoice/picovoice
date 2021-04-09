@@ -12,7 +12,7 @@
         let p = document.createElement("p");
         let text = document.createTextNode(message);
         p.appendChild(text);
-        document.body.appendChild(p);
+        document.getElementById("messages").appendChild(p);
       }
 
       async function startPicovoice() {
@@ -25,6 +25,7 @@
           }
         );
 
+        picovoiceWorker.postMessage({ command: "info" });
         writeMessage("Picovoice worker ready!");
 
         picovoiceWorker.onmessage = (msg) => {
@@ -35,15 +36,18 @@
               );
               break;
             }
-            case "rhn-inference":
-              {
-                writeMessage(
-                  "Inference detected: " + JSON.stringify(msg.data.inference)
-                );
-                break;
-              }
-
-              writeMessage(msg);
+            case "rhn-inference": {
+              writeMessage(
+                "Inference detected: " + JSON.stringify(msg.data.inference)
+              );
+              break;
+            }
+            case "rhn-info": {
+              writeMessage("Context info YAML received.");
+              document.getElementById("rhn-context-yaml").innerText =
+                msg.data.info;
+              break;
+            }
           }
         };
 
@@ -88,6 +92,12 @@
         page.
       </li>
     </ol>
+    <div id="messages"></div>
+    <br />
+    <br />
+    <br />
     <hr />
+    <h2>Context info:</h2>
+    <pre id="rhn-context-yaml"></pre>
   </body>
 </html>
