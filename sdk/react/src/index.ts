@@ -1,0 +1,1 @@
+export { usePicovoice } from './usePicovoice';

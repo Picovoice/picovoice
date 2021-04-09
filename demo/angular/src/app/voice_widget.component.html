@@ -1,0 +1,27 @@
+<div class="voice-widget">
+  <h1>VoiceWidget</h1>
+  <h3>Dynamic Import Loaded: {{ isChunkLoaded }}</h3>
+  <h3>Picovoice Loaded: {{ isLoaded }}</h3>
+  <h3>Listening: {{ isListening }}</h3>
+  <h3>Talking: {{ isTalking }}</h3>
+  <h3>Error: {{ isError }}</h3>
+
+  <p class="error-message" *ngIf="isError">{{ errorMessage }}</p>
+
+  <br />
+  <button (click)="start()" [disabled]="isError || isListening">Start</button>
+  <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
+  <button (click)="resume()" [disabled]="isError || isListening">Resume</button>
+  <h3>Keyword Detections (Listening for "Picovoice"):</h3>
+  <ul>
+    <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
+  </ul>
+  <h3>Inference:</h3>
+  <pre *ngIf="inference !== null">{{ inference | json }}</pre>
+  <br />
+  <br />
+  <br />
+  <hr />
+  <h2>Context info</h2>
+  <pre>{{ contextInfo }}</pre>
+</div>
