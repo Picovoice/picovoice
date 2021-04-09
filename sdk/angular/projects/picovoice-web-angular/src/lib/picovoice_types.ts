@@ -14,16 +14,32 @@ export type RhinoWorkerResponseInference = {
 };
 
 export interface RhinoEngine {
-  version: string;
-  sampleRate: number;
-  frameLength: number;
+  /** Release all resources acquired by Rhino */
   release(): void;
-  process(frames: Int16Array): RhinoInference;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): RhinoInference;
+  /** The version of the Rhino engine */
+  readonly version: string;
+  /** The sampling rate of audio expected by the Rhino engine */
+  readonly sampleRate: number;
+  /** The frame length of audio expected by the Rhino engine */
+  readonly frameLength: number;
+  /** The source of the Rhino context (YAML format) */
+  readonly contextInfo: string;
 }
 
 export type RhinoContext = {
   base64: string;
   sensitivty?: number;
+};
+
+export type RhinoWorkerRequestInfo = {
+  command: 'info'
+}
+
+export type RhinoWorkerResponseInfo = {
+  command: 'rhn-info';
+  info: string
 };
 
 //
@@ -55,6 +71,7 @@ export interface PorcupineEngine {
   release(): void;
   process(frames: Int16Array): number;
 }
+
 
 //
 // Picovoice Types
@@ -105,12 +122,14 @@ export type PicovoiceWorkerResponseReady = {
 
 export type PicovoiceWorkerRequest =
   | PicovoiceWorkerRequestInit
-  | WorkerRequestVoid;
+  | WorkerRequestVoid
+  | RhinoWorkerRequestInfo;
 export type PicovoiceWorkerResponse =
   | PicovoiceWorkerResponseErrorInit
   | PicovoiceWorkerResponseReady
   | PorcupineWorkerResponseKeyword
-  | RhinoWorkerResponseInference;
+  | RhinoWorkerResponseInference
+  | RhinoWorkerResponseInfo;
 
 export interface PicovoiceWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PicovoiceWorkerRequest): void;

@@ -16,6 +16,7 @@ import type {
 export class PicovoiceService implements OnDestroy {
   public webVoiceProcessor: WebVoiceProcessor | null = null;
   public isInit = false;
+  public contextInfo: string | null = null;
   public keyword$: Subject<string> = new Subject<string>();
   public inference$: Subject<RhinoInference> = new Subject<RhinoInference>();
   public isError$: Subject<boolean> = new Subject<boolean>();
@@ -92,8 +93,13 @@ export class PicovoiceService implements OnDestroy {
             this.inference$.next(message.data.inference);
             break;
           }
+          case 'rhn-info': {
+            this.contextInfo = message.data.info
+            break;
+          }
         }
       };
+      this.picovoiceWorker.postMessage({ command: "info" })
     } catch (error) {
       this.isInit = false;
       this.isError$.next(true);

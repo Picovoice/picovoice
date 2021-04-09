@@ -24,7 +24,7 @@ Where "Picovoice" is the wake word to start the interaction, and the follow-on c
 
 The natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
 
-> "Picovoice, Tell me a joke"
+> "Picovoice, tell me a joke"
 
 ```json
 {
