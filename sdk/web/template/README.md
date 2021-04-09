@@ -28,7 +28,7 @@ Where "Picovoice" is the wake word to start the interaction, and the follow-on c
 }
 ```
 
-The follow-on natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
+The follow-on natural commands are domain-specific. In this example, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
 
 > "Picovoice, tell me a joke"
 
@@ -78,11 +78,11 @@ If you are using the workers with the Angular/React/Vue packages, you will load 
 
 To obtain a Picovoice Worker, we can use the async `create` factory method from the PicovoiceWorkerFactory. Here is a complete example that:
 
-1. Obtains a Worker from the PicovoiceWorkerFactory (in this case, English) to listen for the built-in "Blueberry" wake word and then switch to handle follow-on commands in the domain of the sample "Pico Clock"
+1. Obtains a Worker from the PicovoiceWorkerFactory (in this case, English) to listen for the built-in "Blueberry" wake word and then switch to handle follow-on commands in a domain of interest
 1. Responds to keyword/inferenence detection by setting the worker's `onmessage` event handler
-1. Starts up the WebVoiceProcessor to forward microphone audio to the Picovoice Worker
+1. Starts up the `WebVoiceProcessor` to forward microphone audio to the Picovoice Worker
 
-E.g.:
+e.g.:
 
 ```console
 yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
@@ -92,18 +92,18 @@ yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
 
-const PICO_CLOCK_CONTEXT_64 = /* Base64 string of the pico_clock.rhn file for wasm platform */
+const RHINO_CONTEXT_BASE64 = /* Base64 string of the .rhn file for wasm platform, omitted for brevity */
 
 async startPicovoice()
   // Create a Picovoice Worker (English language) to listen for the built-in wake-word "Blueberry"
-  // and commands in the context of "Pico Clock" (a `.rhn` file encoded as base64, omitted for brevity). 
+  // and commands in the context (a `.rhn` file encoded as base64, omitted for brevity). 
   //
   // Note: you receive a Worker object, _not_ an individual Picovoice engine instance
   // Workers are communicated with via message passing/receiving functions postMessage/onmessage.
   // See https://developer.mozilla.org/en-US/docs/Web/API/Worker for more details.
   const pvWorker = await PicovoiceWorkerFactory.create(
     porcupineKeyword: {builtin: "Blueberry"},
-    rhinoContext: { base64: PICO_CLOCK_CONTEXT_64},
+    rhinoContext: { base64: RHINO_CONTEXT_BASE64},
     start: false }
   );
 
@@ -167,13 +167,13 @@ E.g.:
 ```javascript
 import { Picovoice } from '@picovoice/picovoice-web-en-factory';
 
-const PICO_CLOCK_64 =
-  /* Base64 string of the pico_clock.rhn file for wasm platform */
+const RHINO_CONTEXT_BASE64 =
+  /* Base64 string of the .rhn file for wasm platform */
 
   async function startPicovoice() {
     const handle = await Picovoice.create({
       porcupineKeyword: { builtin: "Blueberry" },
-      rhinoContext: PICO_CLOCK_64,
+      rhinoContext: RHINO_CONTEXT_BASE64,
       porcupineCallback: (keyword) => {console.log("Wake word detected: " + keyword)}.
       rhinoCallback: (inference) => {console.log("Inference: " + inference)}
     });
