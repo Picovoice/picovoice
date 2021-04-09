@@ -12,10 +12,16 @@
   <button (click)="start()" [disabled]="isError || isListening">Start</button>
   <button (click)="pause()" [disabled]="isError || !isListening">Pause</button>
   <button (click)="resume()" [disabled]="isError || isListening">Resume</button>
-  <h3>Keyword Detections:</h3>
+  <h3>Keyword Detections (Listening for "Picovoice"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>
   </ul>
   <h3>Inference:</h3>
   <pre *ngIf="inference !== null">{{ inference | json }}</pre>
+  <br />
+  <br />
+  <br />
+  <hr />
+  <h2>Context info</h2>
+  <pre>{{ contextInfo }}</pre>
 </div>

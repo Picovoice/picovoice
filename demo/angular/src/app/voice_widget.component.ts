@@ -36,6 +36,7 @@ export class VoiceWidget {
       builtin: "Picovoice",
     }
   }
+  contextInfo: string | null
 
   constructor(private picovoiceService: PicovoiceService) {
     // Subscribe to Porcupine keyword detections
@@ -43,6 +44,7 @@ export class VoiceWidget {
     this.keywordDetection = picovoiceService.keyword$.subscribe(
       keyword => {
         this.detections = [...this.detections, keyword]
+        this.inference = null
         console.log(keyword)
       })
 
@@ -78,6 +80,7 @@ export class VoiceWidget {
       await this.picovoiceService.init(picovoiceFactoryEn, this.picovoiceServiceArgs)
       console.info("Picovoice is ready!")
       this.isLoaded = true;
+      this.contextInfo = this.picovoiceService.contextInfo
     }
     catch (error) {
       console.error(error)
