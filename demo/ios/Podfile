@@ -1,0 +1,8 @@
+# source 'https://cdn.cocoapods.org/'
+source 'git@gitlab.com:picovoice/podspec-test.git'
+
+platform :ios, '9.0'
+
+target 'PicovoiceDemo' do    
+    pod 'Picovoice-iOS'
+end

@@ -97,12 +97,6 @@ Stop the manager with:
 manager.stop();
 ```
 
-When done be sure to release resources using:
-
-```java
-manager.delete();
-```
-
 ### Low-Level API
 
 [Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a

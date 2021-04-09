@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2020 Picovoice Inc.
+//  Copyright 2018-2021 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -8,35 +8,19 @@
 //
 
 import AVFoundation
-import PvPorcupine
-import PvRhino
+import Rhino
+import Porcupine
 
-public enum PicovoiceManagerError: Error {
-    case invalidArgument
-    case io
-    case outOfMemory
+public enum PicovoiceManagerError: Error {   
     case recordingDenied
-}
-
-public struct Inference {
-    let isUnderstood: Bool
-    let intent: String
-    let slots: Dictionary<String, String>
-    
-    public init(isUnderstood: Bool, intent: String, slots: Dictionary<String, String>) {
-        self.isUnderstood = isUnderstood
-        self.intent = intent
-        self.slots = slots
-    }
 }
 
 /// High-level iOS binding for Picovoice end-to-end platform. It handles recording audio from microphone, processes it in real-time using Picovoice, and notifies the
 /// client upon detection of the wake word or completion of in voice command inference.
-class PicovoiceManager {
-    private var porcupine: OpaquePointer? = nil
-    private var rhino: OpaquePointer? = nil
+public class PicovoiceManager {
+    private var picovoice:Picovoice?
     private var audioInputEngine: AudioInputEngine?
-    private var isWakeWordDetected: Bool = false
+
     private var porcupineModelPath: String
     private var keywordPath: String
     private var porcupineSensitivity: Float32
@@ -45,32 +29,58 @@ class PicovoiceManager {
     private var contextPath: String
     private var rhinoSensitivity: Float32
     private var onInference: ((Inference) -> Void)?
-    
+
+    /// Constructor.
+    ///
+    /// - Parameters:
+    ///   - keywordPath: Absolute paths to keyword model file.
+    ///   - onWakeWordDetection: A callback that is invoked upon detection of the keyword.
+    ///   - porcupineModelPath: Absolute path to file containing model parameters.
+    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
+    ///   - contextPath: Absolute path to file containing context parameters. A context represents the set of expressions (spoken commands), intents, and
+    ///   intent arguments (slots) within a domain of interest.
+    ///   - onInference: A callback that is invoked upon completion of intent inference.
+    ///   - rhinoModelPath: Absolute path to file containing model parameters.
+    ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially)
+    ///   increasing the erroneous inference rate.
+    /// - Throws: PicovoiceError
     public init(
-        porcupineModelPath: String,
         keywordPath: String,
-        porcupineSensitivity: Float32,
+        porcupineModelPath: String = Porcupine.defaultModelPath,
+        porcupineSensitivity: Float32 = 0.5,
         onWakeWordDetection: (() -> Void)?,
-        rhinoModelPath: String,
         contextPath: String,
-        rhinoSensitivity: Float32,
+        rhinoModelPath: String = Rhino.defaultModelPath,
+        rhinoSensitivity: Float32 = 0.5,
         onInference: ((Inference) -> Void)?) {
         
-        self.porcupineModelPath = porcupineModelPath
         self.keywordPath = keywordPath
+        self.porcupineModelPath = porcupineModelPath
         self.porcupineSensitivity = porcupineSensitivity
         self.onWakeWordDetection = onWakeWordDetection
-        self.rhinoModelPath = rhinoModelPath
+
         self.contextPath = contextPath
+        self.rhinoModelPath = rhinoModelPath
         self.rhinoSensitivity  = rhinoSensitivity
         self.onInference = onInference
     }
     
+    deinit {
+        if picovoice != nil {
+            stop()
+        }
+    }    
+
+    ///  Starts recording audio from the microphone and Picovoice processing loop.
+    ///
+    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PicovoiceManagerError if
+    ///           microphone permission is not granted.
     public func start() throws {
-        if self.porcupine != nil {
+
+        if picovoice != nil {
             return
         }
-        
         let audioSession = AVAudioSession.sharedInstance()
         if audioSession.recordPermission == .denied {
             throw PicovoiceManagerError.recordingDenied
@@ -78,16 +88,15 @@ class PicovoiceManager {
         
         try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
         
-        var status = pv_porcupine_init(
-            self.porcupineModelPath,
-            1,
-            [UnsafePointer(strdup(self.keywordPath))],
-            [self.porcupineSensitivity],
-            &self.porcupine)
-        try checkStatus(status)
-        
-        status = pv_rhino_init(self.rhinoModelPath, self.contextPath, self.rhinoSensitivity, &self.rhino)
-        try checkStatus(status)
+        picovoice = try Picovoice(
+            keywordPath: self.keywordPath,
+            onWakeWordDetection: self.onWakeWordDetection,
+            porcupineModelPath: self.porcupineModelPath,
+            porcupineSensitivity: self.porcupineSensitivity,                
+            contextPath: self.contextPath,
+            onInference: self.onInference,
+            rhinoModelPath: self.rhinoModelPath,
+            rhinoSensitivity: self.rhinoSensitivity)
         
         self.audioInputEngine = AudioInputEngine()
         
@@ -96,79 +105,24 @@ class PicovoiceManager {
                 return
             }
             
-            if !self.isWakeWordDetected {
-                var keywordIndex: Int32 = -1
-                pv_porcupine_process(self.porcupine, audio, &keywordIndex)
-                
-                self.isWakeWordDetected = keywordIndex == 0
-                
-                if self.isWakeWordDetected {
-                    self.onWakeWordDetection?()
-                }
-            } else {
-                var isFinalized: Bool = false
-                pv_rhino_process(self.rhino, audio, &isFinalized)
-                
-                if isFinalized {
-                    self.isWakeWordDetected = false
-                    
-                    var isUnderstood: Bool = false
-                    var intent = ""
-                    var slots = [String: String]()
-                    
-                    pv_rhino_is_understood(self.rhino, &isUnderstood)
-                    
-                    if isUnderstood {
-                        var cIntent: UnsafePointer<Int8>?
-                        var numSlots: Int32 = 0
-                        var cSlotKeys: UnsafeMutablePointer<UnsafePointer<Int8>?>?
-                        var cSlotValues: UnsafeMutablePointer<UnsafePointer<Int8>?>?
-                        pv_rhino_get_intent(self.rhino, &cIntent, &numSlots, &cSlotKeys, &cSlotValues)
-                        
-                        if isUnderstood {
-                            intent = String(cString: cIntent!)
-                            for i in 0...(numSlots - 1) {
-                                let slot = String(cString: cSlotKeys!.advanced(by: Int(i)).pointee!)
-                                let value = String(cString: cSlotValues!.advanced(by: Int(i)).pointee!)
-                                slots[slot] = value
-                            }
-                            
-                            pv_rhino_free_slots_and_values(self.rhino, cSlotKeys, cSlotValues)
-                        }
-                    }
-                    
-                    pv_rhino_reset(self.rhino)
-                    
-                    self.onInference?(Inference(isUnderstood: isUnderstood, intent: intent, slots: slots))
-                }
-                
+            guard self.picovoice != nil else {
+                return
+            }
+            do {
+               try self.picovoice!.process(pcm:audio)
+            } catch {
+                print("Picovoice was unable to process frame of audio.")
             }
         }
-        
+
         try self.audioInputEngine?.start()
     }
     
+    /// Stop audio recording and processing loop
     public func stop() {
         self.audioInputEngine?.stop()
-        
-        pv_porcupine_delete(self.porcupine)
-        self.porcupine = nil
-        
-        pv_rhino_delete(self.rhino)
-        self.rhino = nil
-    }
-    
-    private func checkStatus(_ status: pv_status_t) throws {
-        switch status {
-        case PV_STATUS_IO_ERROR:
-            throw PicovoiceManagerError.io
-        case PV_STATUS_OUT_OF_MEMORY:
-            throw PicovoiceManagerError.outOfMemory
-        case PV_STATUS_INVALID_ARGUMENT:
-            throw PicovoiceManagerError.invalidArgument
-        default:
-            return
-        }
+        self.picovoice?.delete()
+        self.picovoice = nil 
     }
 }
 
@@ -180,7 +134,7 @@ private class AudioInputEngine {
     
     func start() throws {
         var format = AudioStreamBasicDescription(
-            mSampleRate: Float64(pv_sample_rate()),
+            mSampleRate: Float64(Picovoice.sampleRate),
             mFormatID: kAudioFormatLinearPCM,
             mFormatFlags: kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked,
             mBytesPerPacket: 2,
@@ -196,7 +150,7 @@ private class AudioInputEngine {
             return
         }
         
-        let bufferSize = UInt32(pv_rhino_frame_length()) * 2
+        let bufferSize = UInt32(Picovoice.frameLength) * 2
         for _ in 0..<numBuffers {
             var bufferRef: AudioQueueBufferRef? = nil
             AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)

@@ -1,7 +1,11 @@
 ## Picovoice iOS Demos
 
-The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start
-and the engine can recognize commands such as:
+Before building the demo app, run the following from this directory to install the Picovoice Cocoapod:
+```ruby
+pod install
+```
+
+Open the generated xcworkspace with XCode and build the project. The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
 
 > Porcupine, turn off the lights.
 
