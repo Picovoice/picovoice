@@ -18,7 +18,7 @@ Picovoice is:
 
 ## Installation
 
-The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org/pods/Porcupine-iOS). To import it into your iOS project, add the following line to your Podfile: 
+The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile: 
 
 ```ruby
 pod 'Picovoice-iOS'
