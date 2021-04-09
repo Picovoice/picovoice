@@ -14,44 +14,85 @@ import { Rhino } from '@picovoice/rhino-web-$lang$-factory';
 import { PorcupineKeyword } from '@picovoice/porcupine-web-$lang$-factory/dist/types/porcupine_types';
 
 import {
+  PicovoiceEngine,
+  PicovoiceEngineArgs,
   PorcupineEngine,
   RhinoEngine,
   RhinoInference,
-  PicovoiceEngine,
-  PicovoiceEngineArgs,
 } from './picovoice_types';
 
-type EngineControlType = 'ppn' | 'rhn'
+type EngineControlType = 'ppn' | 'rhn';
 
 export class Picovoice implements PicovoiceEngine {
-  private _engineControl: EngineControlType = 'ppn'
-  private _frameLength: number = 512
-  private _paused: boolean
-  private _sampleRate: number = 16000
-  private _version: string = "1.0.0"
+  private _contextInfo: string;
+  private _engineControl: EngineControlType = 'ppn';
+  private _frameLength: number = 512;
+  private _paused: boolean;
+  private _porcupineCallback: (keyword: string) => void
+  private _porcupineEngine: PorcupineEngine
+  private _rhinoCallback: (inference: RhinoInference) => void
+  private _rhinoEngine: RhinoEngine
+  private _sampleRate: number = 16000;
+  private _version: string = '1.0.0';
 
   private constructor(
-    private _porcupineEngine: PorcupineEngine,
-    private _rhinoEngine: RhinoEngine,
-    private _porcupineCallback: (keyword: string) => void,
-    private _rhinoCallback: (inference: RhinoInference) => void
+    porcupineEngine: PorcupineEngine,
+    rhinoEngine: RhinoEngine,
+    porcupineCallback: (keyword: string) => void,
+    rhinoCallback: (inference: RhinoInference) => void
   ) {
+    this._porcupineEngine = porcupineEngine;
+    this._rhinoEngine = rhinoEngine;
+    this._porcupineCallback = porcupineCallback;
+    this._rhinoCallback = rhinoCallback;
     this._paused = false;
-    this._engineControl = 'ppn'
+    this._engineControl = 'ppn';
+    this._contextInfo = rhinoEngine.contextInfo;
   }
 
-  public static async create(picovoiceArgs: PicovoiceEngineArgs): Promise<Picovoice> {
-    const { porcupineKeyword, porcupineCallback, rhinoContext, rhinoCallback } = picovoiceArgs
+  /**
+   * Creates an instance of Picovoice.
+   *
+   * Behind the scenes, it requires the WebAssembly code to load and initialize before
+   * it can create an instance.
+   *
+   * @param picovoiceArgs the wake word and context for a continuous voice interaction loop
+   * @param picovoiceArgs.porcupineKeyword the Pocupine wake word to activate an interaction loop
+   * @param picovoiceArgs.rhinoContext the Rhino Speech-to-Intent context for the follow-on command
+   *
+   * @returns An instance of the Picovoice engine.
+   */
+  public static async create(
+    picovoiceArgs: PicovoiceEngineArgs
+  ): Promise<Picovoice> {
+    const {
+      porcupineKeyword,
+      porcupineCallback,
+      rhinoContext,
+      rhinoCallback,
+    } = picovoiceArgs;
 
     // We need to assert PorcupineKeyword here because we don't know the language-specific keywords
-    const porcupineEngine = await Porcupine.create(porcupineKeyword as PorcupineKeyword)
+    const porcupineEngine = await Porcupine.create(
+      porcupineKeyword as PorcupineKeyword
+    );
     const rhinoEngine = await Rhino.create(rhinoContext);
 
-    if (typeof porcupineCallback !== "function" || typeof rhinoCallback !== "function") {
-      throw new Error("Arguments porcupineCallback and rhinoCallback must be functions")
+    if (
+      typeof porcupineCallback !== 'function' ||
+      typeof rhinoCallback !== 'function'
+    ) {
+      throw new Error(
+        'Arguments porcupineCallback and rhinoCallback must be functions'
+      );
     }
 
-    return new Picovoice(porcupineEngine, rhinoEngine, porcupineCallback, rhinoCallback)
+    return new Picovoice(
+      porcupineEngine,
+      rhinoEngine,
+      porcupineCallback,
+      rhinoCallback
+    );
   }
 
   public process(inputFrame: Int16Array): void {
@@ -60,19 +101,25 @@ export class Picovoice implements PicovoiceEngine {
         case 'ppn': {
           const keywordIndex = this._porcupineEngine.process(inputFrame);
           if (keywordIndex !== -1) {
-            this._engineControl = 'rhn'
-            this._porcupineCallback(this._porcupineEngine.keywordLabels.get(keywordIndex))
+            this._engineControl = 'rhn';
+            this._porcupineCallback(
+              this._porcupineEngine.keywordLabels.get(keywordIndex)
+            );
           }
           break;
         }
         case 'rhn': {
           const inference = this._rhinoEngine.process(inputFrame);
           if (inference.isFinalized) {
-            this._engineControl = 'ppn'
-            this._rhinoCallback(inference)
+            this._engineControl = 'ppn';
+            this._rhinoCallback(inference);
           }
           break;
         }
+        default:
+          // eslint-disable-next-line no-console
+          console.warn('Unexpected engineControl state: ' + this._engineControl as any);
+          break;
       }
     }
   }
@@ -81,7 +128,7 @@ export class Picovoice implements PicovoiceEngine {
     if (this._porcupineEngine !== null) {
       this._porcupineEngine.release();
     }
-    this._porcupineEngine = null
+    this._porcupineEngine = null;
 
     if (this._rhinoEngine !== null) {
       this._rhinoEngine.release();
@@ -89,23 +136,27 @@ export class Picovoice implements PicovoiceEngine {
     this._rhinoEngine = null;
   }
 
-  get version() {
-    return this._version
+  get version(): string {
+    return this._version;
   }
 
-  get frameLength() {
-    return this._frameLength
+  get frameLength(): number {
+    return this._frameLength;
   }
 
-  get sampleRate() {
-    return this._sampleRate
+  get sampleRate(): number {
+    return this._sampleRate;
   }
 
   set paused(pause: boolean) {
-    this._paused = pause
+    this._paused = pause;
   }
 
-  get paused() {
-    return this._paused
+  get paused(): boolean {
+    return this._paused;
+  }
+
+  get contextInfo(): string {
+    return this._contextInfo;
   }
 }

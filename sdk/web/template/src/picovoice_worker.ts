@@ -13,14 +13,13 @@ import { Picovoice } from './picovoice';
 import {
   PicovoiceEngineArgs,
   PicovoiceWorkerArgs,
-  PicovoiceWorkerRequestInit,
+  PicovoiceWorkerRequest,
   PicovoiceWorkerResponseErrorInit,
   PicovoiceWorkerResponseReady,
   PorcupineWorkerResponseKeyword,
   RhinoInference,
   RhinoWorkerResponseInference,
-  WorkerRequestProcess,
-  WorkerRequestVoid,
+  RhinoWorkerResponseInfo,
 } from './picovoice_types';
 
 let picovoice: Picovoice;
@@ -30,7 +29,7 @@ let ready: boolean;
 function porcupineCallback(keywordLabel: string): void {
   const ppnKeywordResponse: PorcupineWorkerResponseKeyword = {
     command: 'ppn-keyword',
-    keywordLabel: keywordLabel
+    keywordLabel: keywordLabel,
   };
   postMessage(ppnKeywordResponse, undefined);
 }
@@ -38,9 +37,19 @@ function porcupineCallback(keywordLabel: string): void {
 function rhinoCallback(inference: RhinoInference): void {
   const rhnInferenceResponse: RhinoWorkerResponseInference = {
     command: 'rhn-inference',
-    inference: inference
+    inference: inference,
   };
   postMessage(rhnInferenceResponse, undefined);
+}
+
+function rhinoInfo(): void {
+  if (picovoice !== undefined) {
+    const rhnInfoResponse: RhinoWorkerResponseInfo = {
+      command: 'rhn-info',
+      info: picovoice.contextInfo,
+    };
+    postMessage(rhnInfoResponse, undefined);
+  }
 }
 
 async function init(pvWorkerArgs: PicovoiceWorkerArgs): Promise<void> {
@@ -48,15 +57,15 @@ async function init(pvWorkerArgs: PicovoiceWorkerArgs): Promise<void> {
   const pvEngineArgs: PicovoiceEngineArgs = {
     ...pvWorkerArgs,
     porcupineCallback: porcupineCallback,
-    rhinoCallback: rhinoCallback
-  }
+    rhinoCallback: rhinoCallback,
+  };
   ready = false;
   try {
-    picovoice = await Picovoice.create(pvEngineArgs)
+    picovoice = await Picovoice.create(pvEngineArgs);
   } catch (error) {
     const pvInitErrorMessage: PicovoiceWorkerResponseErrorInit = {
       command: 'pv-error-init',
-      error: error
+      error: error,
     };
     postMessage(pvInitErrorMessage, undefined);
     return;
@@ -71,21 +80,17 @@ async function init(pvWorkerArgs: PicovoiceWorkerArgs): Promise<void> {
 
 function process(inputFrame: Int16Array): void {
   if (!paused && ready) {
-    picovoice.process(inputFrame)
+    picovoice.process(inputFrame);
   }
 }
 
 function release(): void {
-  ready = false
-  picovoice.release()
+  ready = false;
+  picovoice.release();
   close();
 }
 
-onmessage = function (
-  event: MessageEvent<
-    WorkerRequestVoid | WorkerRequestProcess | PicovoiceWorkerRequestInit
-  >
-): void {
+onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
   switch (event.data.command) {
     case 'init':
       init(event.data.picovoiceArgs);
@@ -101,6 +106,9 @@ onmessage = function (
       break;
     case 'release':
       release();
+      break;
+    case 'info':
+      rhinoInfo();
       break;
     default:
       // eslint-disable-next-line no-console
