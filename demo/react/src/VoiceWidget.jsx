@@ -40,6 +40,7 @@ export default function VoiceWidget() {
   };
 
   const {
+    contextInfo,
     isLoaded,
     isListening,
     isError,
@@ -88,7 +89,7 @@ export default function VoiceWidget() {
       >
         Resume
       </button>
-      <h3>Keyword Detections:</h3>
+      <h3>Keyword Detections (Listening for "Bumblebee"):</h3>
       {keywordDetections.length > 0 && (
         <ul>
           {keywordDetections.map((label, index) => (
@@ -99,6 +100,11 @@ export default function VoiceWidget() {
       <h3>Inference:</h3>
       <pre>{JSON.stringify(inference, null, 2)}</pre>
       <br />
+      <br />
+      <br />
+      <hr />
+      <h2>Context info</h2>
+      <pre>{contextInfo}</pre>
     </div>
   );
 }
