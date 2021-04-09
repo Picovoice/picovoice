@@ -8,7 +8,7 @@
 //
 
 import SwiftUI
-
+import Picovoice
 @main
 struct PicovoiceDemoApp: App {
     var body: some Scene {

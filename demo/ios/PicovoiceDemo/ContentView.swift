@@ -8,11 +8,11 @@
 //
 
 import SwiftUI
+import Picovoice
 
 struct ContentView: View {
-    let porcupineModelPath = Bundle.main.path(forResource: "porcupine_params", ofType: "pv")
+    
     let keywordPath = Bundle.main.path(forResource: "porcupine_ios", ofType: "ppn")
-    let rhinoModelPath = Bundle.main.path(forResource: "rhino_params", ofType: "pv")
     let contextPath = Bundle.main.path(forResource: "smart_lighting_ios", ofType: "rhn")
     
     @State var picovoiceManager: PicovoiceManager!
@@ -27,13 +27,11 @@ struct ContentView: View {
                     
                     do {
                         self.picovoiceManager = PicovoiceManager(
-                            porcupineModelPath: self.porcupineModelPath!,
                             keywordPath: self.keywordPath!,
                             porcupineSensitivity: 0.5,
                             onWakeWordDetection: {
                                 result = "Wake Word Detected ..."
                             },
-                            rhinoModelPath: self.rhinoModelPath!,
                             contextPath: self.contextPath!,
                             rhinoSensitivity: 0.0,
                             onInference: { x in
@@ -56,7 +54,7 @@ struct ContentView: View {
 
                         try self.picovoiceManager.start()
                     } catch {
-                        
+                        print("\(error)")
                     }
                     
                     self.buttonLabel = "STOP"
