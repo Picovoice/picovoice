@@ -203,9 +203,6 @@
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
 				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params_de.pv",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params_es.pv",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params_fr.pv",
 				"${PODS_ROOT}/Rhino-iOS/lib/common/rhino_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -226,9 +223,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params_de.pv",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params_es.pv",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params_fr.pv",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/rhino_params.pv",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

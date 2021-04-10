@@ -361,12 +361,16 @@ For the full set of supported commands refer to [demo's readme](/demo/android/RE
 
 ### iOS Demos
 
-Using Xcode, open [demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj](/demo/ios/PicovoiceDemo/PicovoiceDemo.xcodeproj) and
-run the application. Press the start button and say
+Before building the demo app, run the following from this directory to install the Picovoice-iOS Cocoapod:
+```ruby
+pod install
+```
+
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceDemo.xcworkspace` and run the application. Press the start button and say:
 
 > Porcupine, shut of the lights in the living room.
 
-For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
+For the full set of supported commands refer to [demo's readme](/demo/ios/README.md).
 
 ### Web Demos
 
@@ -1029,12 +1033,6 @@ Stop the manager with:
 manager.stop();
 ```
 
-When done be sure to release resources:
-
-```java
-manager.delete();
-```
-
 #### Low-Level API
 
 [Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
@@ -1043,27 +1041,20 @@ low-level binding for Android. It can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
-final String porcupineModelPath = ...
-final String keywordPath = ...
-final float porcupineSensitivity = 0.5f;
-final String rhinoModelPath = ...
-final String contextPath = ...
-final float rhinoSensitivity = 0.5f;
-
 try {
     Picovoice picovoice = new Picovoice.Builder()
-        .setPorcupineModelPath(porcupineModelPath)
-        .setKeywordPath(keywordPath)
-        .setPorcupineSensitivity(porcupineSensitivity)
+        .setPorcupineModelPath("/path/to/porcupine/model.pv")
+        .setKeywordPath("/path/to/keyword.ppn")
+        .setPorcupineSensitivity(0.7f)
         .setWakeWordCallback(new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
                 // logic to execute upon deletection of wake word
             }
         })
-        .setRhinoModelPath(rhinoModelPath)
-        .setContextPath(contextPath)
-        .setRhinoSensitivity(rhinoSensitivity)
+        .setRhinoModelPath("/path/to/rhino/model.pv")
+        .setContextPath("/path/to/context.rhn")
+        .setRhinoSensitivity(0.55f)
         .setInferenceCallback(new PicovoiceInferenceCallback() {
             @Override
             public void invoke(final RhinoInference inference) {
@@ -1073,9 +1064,6 @@ try {
         .build(appContext);
 } catch(PicovoiceException ex) { }
 ```
-
-Sensitivity is the parameter that enables developers to trade miss rate for false alarm. It is a floating point number within
-[0, 1]. A higher sensitivity reduces miss rate at cost of increased false alarm rate. The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
 Once initialized, `picovoice` can be used to process incoming audio.
 
@@ -1091,8 +1079,7 @@ while (true) {
 }
 ```
 
-Finally, be sure to explicitly release resources acquired as the binding class does not rely on the garbage collector
-for releasing native resources:
+Finally, be sure to explicitly release resources acquired as the binding class does not rely on the garbage collector for releasing native resources:
 
 ```java
 picovoice.delete();
@@ -1100,35 +1087,83 @@ picovoice.delete();
 
 ### iOS
 
+The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile: 
+
+```ruby
+pod 'Picovoice-iOS'
+```
+
+There are two possibilities for integrating Picovoice into an iOS application.
+
+#### High-Level API
+
 [PicovoiceManager](/sdk/ios/PicovoiceManager.swift) class manages all activities related to creating an audio input
 stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and completion of
 intent inference. The class can be initialized as below:
 
 ```swift
-let porcupineModelpath: String = ...
-let keywordPath: String = ...
-let porcupineSensitivity: Float32 = 0.5
-let rhinoModelPath: String = ...
-let contextPath: String = ...
-let rhinoSensitivity: Float32 = 0.5
-let manager = PicovoiceManager(
-    porcupineModelpath: porcupineModelpath,
-    keywordPath: keywordPath,
-    porcupineSensitivity: porcupineSensitivity,
-    onWakeWordDetection: {
-        // logic to execute upon wake word detection.
+import Picovoice
+
+PicovoiceManager manager = PicovoiceManager(
+    keywordPath: "/path/to/keyword.ppn",
+    onWakeWordDetection: { 
+        // logic to execute upon deletection of wake word
     },
-    rhinoModelPath: rhinoModelPath,
-    contextPath: contextPath,
-    rhinoSensitivity: rhinoSensitivity,
-    onInference: {
-        // logic to execute upon intent inference completion.
-    }
-)
+    contextPath: "/path/to/context.rhn",
+    onInference: { inference in 
+        // logic to execute upon completion of intent inference
+    })
 ```
 
 when initialized input audio can be processed using `manager.start()`. The processing can be interrupted using
 `manager.stop()`.
+
+#### Low-Level API
+
+[Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
+
+o constuct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
+
+```swift
+import Picovoice
+
+do {
+    Picovoice picovoice = try Picovoice(
+        keywordPath: "/path/to/keyword.ppn",
+        porcupineSensitivity: 0.4,
+        porcupineModelPath: "/path/to/porcupine/model.pv"
+        onWakeWordDetection: { 
+            // logic to execute upon deletection of wake word
+        },
+        contextPath: "/path/to/context.rhn",
+        rhinoSensitivity: 0.7,
+        rhinoModelPath: "/path/to/rhino/model.pv"
+        onInference: { inference in 
+            // logic to execute upon completion of intent inference
+        })
+} catch { }
+```
+
+Once initialized, `picovoice` can be used to process incoming audio. The underlying logic of the class will handle switching between wake word detection and intent inference, as well as invoking the associated events.
+
+```swift
+func getNextAudioFrame() -> [Int16] {
+    // .. get audioFrame
+    return audioFrame;
+}
+
+while (true) {
+    do {
+        try picovoice.process(getNextAudioFrame());
+    } catch { }
+}
+```
+
+Once you're done with an instance of Picovoice you can force it to release its native resources rather than waiting for the garbage collector:
+
+```swift
+picovoice.delete();
+```
 
 ### Web
 
