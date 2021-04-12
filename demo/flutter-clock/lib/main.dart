@@ -77,7 +77,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _updateTimer?.cancel();
-    _picovoiceManager?.delete();
     super.dispose();
   }
 
@@ -98,12 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _wakeWordCallback(int keywordIndex) {
-    if (keywordIndex == 0) {
-      setState(() {
-        _listeningForCommand = true;
-      });
-    }
+  void _wakeWordCallback() {
+    setState(() {
+      _listeningForCommand = true;
+    });
   }
 
   void _inferenceCallback(Map<String, dynamic> inference) {

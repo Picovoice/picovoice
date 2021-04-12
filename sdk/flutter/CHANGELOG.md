@@ -9,3 +9,6 @@
 
 ## [1.1.3] - 2021-03-29
 * Voice Processor update
+
+## [1.1.4] - 2021-04-12
+* Flutter 2.0 upgrade

@@ -70,27 +70,18 @@ The constructor `PicovoiceManager.create` will create an instance of the Picovoi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-void createPicovoiceManager() async {
-    try{
-        _picovoiceManager = await PicovoiceManager.create(
-            "/path/to/keyword/file.ppn",
-            _wakeWordCallback,
-            "/path/to/context/file.rhn",
-            _inferenceCallback);
-    } on PvError catch (err) {
-        // handle picovoice init error
-    }
-}
+_picovoiceManager = PicovoiceManager.create(
+    "/path/to/keyword/file.ppn",
+    _wakeWordCallback,
+    "/path/to/context/file.rhn",
+    _inferenceCallback);
 ```
-NOTE: the call is asynchronous and therefore should be called in an async block with a try/catch.
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```dart
-void _wakeWordCallback(int keywordIndex){
-    if(keywordIndex == 0){
-        // wake word detected
-    }
+void _wakeWordCallback(){    
+    // wake word detected    
 }
 
 void _infererenceCallback(Map<String, dynamic> inference){
@@ -107,23 +98,19 @@ void _infererenceCallback(Map<String, dynamic> inference){
 
 You can override the default model files and sensitivities. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
 ```dart
-void createPicovoiceManager() async {
+void createPicovoiceManager() {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
-    try{
-        _picovoiceManager = await PicovoiceManager.create(
-            "/path/to/keyword/file.ppn",
-            wakeWordCallback,
-            "/path/to/context/file.rhn",
-            inferenceCallback,
-            porcupineSensitivity: porcupineSensitivity,
-            rhinoSensitivity: rhinoSensitivity,
-            porcupineModelPath: "/path/to/porcupine/model.pv",
-            rhinoModelPath: "/path/to/rhino/model.pv",
-            errorCallback: _errorCallback);
-    } on PvError catch (err) {
-        // handle picovoice init error
-    }
+    _picovoiceManager = PicovoiceManager.create(
+        "/path/to/keyword/file.ppn",
+        wakeWordCallback,
+        "/path/to/context/file.rhn",
+        inferenceCallback,
+        porcupineSensitivity: porcupineSensitivity,
+        rhinoSensitivity: rhinoSensitivity,
+        porcupineModelPath: "/path/to/porcupine/model.pv",
+        rhinoModelPath: "/path/to/rhino/model.pv",
+        errorCallback: _errorCallback);    
 }
 
 void _errorCallback(PvError error){
@@ -138,6 +125,8 @@ try{
     await _picovoiceManager.start();
 } on PvAudioException catch (ex) {
     // deal with audio exception     
+} on PvError catch(ex){
+    // deal with Picovoice init error
 }
 ```
 
@@ -145,11 +134,6 @@ And then stop it by calling:
 
 ```dart
 await _picovoiceManager.stop();
-```
-
-Once the app is done with using an instance of PicovoiceManager, be sure you explicitly release the resources allocated to Picovoice:
-```dart
-await _picovoiceManager.delete();
 ```
 
 PicovoiceManager uses our
@@ -185,10 +169,8 @@ void createPicovoice() async {
     }
 }
 
-void wakeWordCallback(int keywordIndex){
-    if(keywordIndex == 0){
-        // wake word detected
-    }
+void wakeWordCallback(){    
+    // wake word detected
 }
 
 void infererenceCallback(Map<String, dynamic> inference){

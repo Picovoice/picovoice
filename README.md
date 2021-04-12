@@ -808,16 +808,12 @@ The static constructor `PicovoiceManager.create` will create an instance of a Pi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-void createPicovoiceManager() async {
-    try{
-        _picovoiceManager = await PicovoiceManager.create(
-            "/path/to/keyword/file.ppn",
-            _wakeWordCallback,
-            "/path/to/context/file.rhn",
-            _inferenceCallback);
-    } on PvError catch (err) {
-        // handle picovoice init error
-    }
+void createPicovoiceManager() {  
+  _picovoiceManager = PicovoiceManager.create(
+      "/path/to/keyword/file.ppn",
+      _wakeWordCallback,
+      "/path/to/context/file.rhn",
+      _inferenceCallback);    
 }
 ```
 
@@ -829,11 +825,6 @@ Once you have instantiated a PicovoiceManager, you can start/stop audio capture 
 await _picovoiceManager.start();
 // .. use for detecting wake words and commands
 await _picovoiceManager.stop();
-```
-
-Once the app is done with using an instance of PicovoiceManager, be sure you explicitly release the resources allocated to Picovoice:
-```dart
-await _picovoiceManager.delete();
 ```
 
 Our [flutter_voice_processor](https://github.com/Picovoice/flutter-voice-processor/)

@@ -15,7 +15,7 @@ import 'package:porcupine/porcupine_error.dart' as porcupineErr;
 import 'package:rhino/rhino.dart';
 import 'package:rhino/rhino_error.dart' as rhinoErr;
 
-typedef WakeWordCallback(int keywordIndex);
+typedef WakeWordCallback();
 typedef InferenceCallback(Map<String, dynamic> inference);
 typedef ErrorCallback(PvError error);
 
@@ -27,19 +27,19 @@ class Picovoice {
   bool _isWakeWordDetected = false;
 
   /// The required number of audio samples per frame
-  int get frameLength => _porcupine?.frameLength;
+  static int get frameLength => Porcupine.frameLength;
 
   /// The required audio sample rate
-  int get sampleRate => _porcupine?.sampleRate;
+  static int get sampleRate => Porcupine.sampleRate;
 
   /// Version of Picovoice
-  String get version => "1.1.0";
+  static String get version => "1.1.0";
 
   /// Version of Porcupine
-  String get porcupineVersion => _porcupine?.version;
+  static String get porcupineVersion => Porcupine.version;
 
   /// Version of Rhino
-  String get rhinoVersion => _rhino?.version;
+  static String get rhinoVersion => Rhino.version;
 
   /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
   /// which expressions map to those intents, as well as slots and their possible values.
@@ -94,12 +94,12 @@ class Picovoice {
       throw new PvError("${ex.runtimeType}: ${ex.message}");
     }
 
-    if (porcupine.frameLength != rhino.frameLength) {
+    if (Porcupine.frameLength != Rhino.frameLength) {
       throw new PvArgumentError(
           "Porcupine and Rhino frame lengths are different.");
     }
 
-    if (porcupine.sampleRate != rhino.sampleRate) {
+    if (Porcupine.sampleRate != Rhino.sampleRate) {
       throw new PvArgumentError(
           "Porcupine and Rhino sample rates are different.");
     }
@@ -129,7 +129,7 @@ class Picovoice {
       final int keywordIndex = _porcupine.process(frame);
       if (keywordIndex >= 0) {
         _isWakeWordDetected = true;
-        _wakeWordCallback(keywordIndex);
+        _wakeWordCallback();
       }
     } else {
       Map<String, dynamic> rhinoResult = _rhino.process(frame);

@@ -10,8 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   
-  path_provider: ^1.6.24
-  picovoice: ^1.1.3
+  path_provider: ^2.0.1
+  picovoice: ^1.1.4
 
 flutter:
   assets:

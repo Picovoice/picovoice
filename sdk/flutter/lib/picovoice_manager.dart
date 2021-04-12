@@ -18,6 +18,17 @@ class PicovoiceManager {
   Picovoice _picovoice;
   VoiceProcessor _voiceProcessor;
   RemoveListener _removeVoiceProcessorListener;
+  ErrorCallback _errorCallback;
+
+  String _porcupineModelPath;
+  String _keywordPath;
+  double _porcupineSensitivity = 0.5;
+  WakeWordCallback _wakeWordCallback;
+
+  String _rhinoModelPath;
+  String _contextPath;
+  double _rhinoSensitivity = 0.5;
+  InferenceCallback _inferenceCallback;
 
   /// Picovoice constructor
   ///
@@ -52,21 +63,48 @@ class PicovoiceManager {
       double rhinoSensitivity = 0.5,
       String porcupineModelPath,
       String rhinoModelPath,
-      ErrorCallback errorCallback}) async {
-    Picovoice picovoice = await Picovoice.create(
-        keywordPath, wakeWordCallback, contextPath, inferenceCallback,
-        porcupineSensitivity: porcupineSensitivity,
-        rhinoSensitivity: rhinoSensitivity,
-        porcupineModelPath: porcupineModelPath,
-        rhinoModelPath: rhinoModelPath);
-
-    return new PicovoiceManager._(picovoice, errorCallback);
+      ErrorCallback errorCallback}) {
+    return new PicovoiceManager._(
+        keywordPath,
+        wakeWordCallback,
+        contextPath,
+        inferenceCallback,
+        porcupineSensitivity,
+        rhinoSensitivity,
+        porcupineModelPath,
+        rhinoModelPath,
+        errorCallback);
   }
 
   // private constructor
-  PicovoiceManager._(this._picovoice, ErrorCallback errorCallback)
+  PicovoiceManager._(
+      this._keywordPath,
+      this._wakeWordCallback,
+      this._contextPath,
+      this._inferenceCallback,
+      this._porcupineSensitivity,
+      this._rhinoSensitivity,
+      this._porcupineModelPath,
+      this._rhinoModelPath,
+      this._errorCallback)
       : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
-            _picovoice.frameLength, _picovoice.sampleRate) {
+            Picovoice.frameLength, Picovoice.sampleRate);
+
+  /// Opens audio input stream and sends audio frames to Picovoice.
+  /// Throws a `PvAudioException` if there was a problem starting the audio engine.
+  /// Throws a `PvError` if an instance of Picovoice could not be created.
+  Future<void> start() async {
+    if (_picovoice != null) {
+      return;
+    }
+
+    _picovoice = await Picovoice.create(
+        _keywordPath, _wakeWordCallback, _contextPath, _inferenceCallback,
+        porcupineSensitivity: _porcupineSensitivity,
+        rhinoSensitivity: _rhinoSensitivity,
+        porcupineModelPath: _porcupineModelPath,
+        rhinoModelPath: _rhinoModelPath);
+
     _removeVoiceProcessorListener = _voiceProcessor.addListener((buffer) async {
       // cast from dynamic to int array
       List<int> picovoiceFrame;
@@ -75,31 +113,23 @@ class PicovoiceManager {
       } on Error {
         PvError castError = new PvError(
             "flutter_voice_processor sent an unexpected data type.");
-        errorCallback == null
+        _errorCallback == null
             ? print(castError.message)
-            : errorCallback(castError);
+            : _errorCallback(castError);
         return;
       }
 
       // process frame with Picovoice
       try {
-        _picovoice.process(picovoiceFrame);
+        _picovoice?.process(picovoiceFrame);
       } on PvError catch (error) {
-        errorCallback == null ? print(error.message) : errorCallback(error);
+        _errorCallback == null ? print(error.message) : _errorCallback(error);
       }
     });
-  }
-
-  /// Opens audio input stream and sends audio frames to Picovoice
-  /// Throws a `PvAudioException` if there was a problem starting the audio engine
-  Future<void> start() async {
-    if (_picovoice == null || _voiceProcessor == null) {
-      throw new PvStateError(
-          "Cannot start PicovoiceManager - resources have already been released");
-    }
 
     if (await _voiceProcessor.hasRecordAudioPermission()) {
       try {
+        // create picovoice
         await _voiceProcessor.start();
       } on PlatformException {
         throw new PvAudioException(
@@ -112,21 +142,10 @@ class PicovoiceManager {
   }
 
   /// Closes audio stream and stops Picovoice processing
-  Future<void> stop() async => await _voiceProcessor.stop();
-
-  /// Releases Picovoice and audio resouces
-  void delete() async {
-    if (_voiceProcessor != null) {
-      if (_voiceProcessor.isRecording) {
-        await _voiceProcessor.stop();
-      }
-      _removeVoiceProcessorListener?.call();
-      _voiceProcessor = null;
-    }
-
-    if (_picovoice != null) {
-      _picovoice.delete();
-      _picovoice = null;
-    }
+  Future<void> stop() async {
+    await _voiceProcessor.stop();
+    _removeVoiceProcessorListener?.call();
+    _picovoice?.delete();
+    _picovoice = null;
   }
 }

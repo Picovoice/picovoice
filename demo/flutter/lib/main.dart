@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
     String contextPath = await _extractAsset(contextAsset);
 
     try {
-      _picovoiceManager = await PicovoiceManager.create(
+      _picovoiceManager = PicovoiceManager.create(
           keywordPath, wakeWordCallback, contextPath, inferenceCallback,
           errorCallback: errorCallback);
       this.setState(() {
@@ -72,13 +72,11 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  void wakeWordCallback(int keywordIndex) {
-    if (keywordIndex == 0) {
-      this.setState(() {
-        wakeWordDetected = true;
-        rhinoText = "Wake word detected!\nListening for intent...";
-      });
-    }
+  void wakeWordCallback() {
+    this.setState(() {
+      wakeWordDetected = true;
+      rhinoText = "Wake word detected!\nListening for intent...";
+    });
   }
 
   void inferenceCallback(Map<String, dynamic> inference) {
@@ -212,16 +210,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   buildStartButton(BuildContext context) {
+    final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
+        primary: picoBlue,
+        shape: CircleBorder(),
+        textStyle: TextStyle(color: Colors.white));
+
     return new Expanded(
       flex: 4,
       child: Container(
           child: SizedBox(
               width: 130,
               height: 130,
-              child: RaisedButton(
-                shape: CircleBorder(),
-                textColor: Colors.white,
-                color: picoBlue,
+              child: ElevatedButton(
+                style: buttonStyle,
                 onPressed: isButtonDisabled
                     ? null
                     : isProcessing
