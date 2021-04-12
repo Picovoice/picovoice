@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name = 'Picovoice-iOS'
     s.module_name = 'Picovoice'
-    s.version = '1.1.0'
+    s.version = '1.1.1'
     s.license = {:type => 'Apache 2.0', :file => 'LICENSE'}
     s.summary = 'iOS SDK for the Picovoice Offline Voice Recognition Platform'
     s.description = 
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
         * Accurate: Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins *.
         * Cross-Platform: Design once, deploy anywhere. Build using familiar languages and frameworks.
     DESC
-    s.homepage = 'https://picovoice.ai/'
+    s.homepage = 'https://github.com/Picovoice/picovoice/tree/master/sdk/ios'
     s.author = { 'Picovoice' => 'hello@picovoice.ai' }
     s.source = { :git => "https://github.com/Picovoice/picovoice.git"}
     s.ios.deployment_target = '9.0'
