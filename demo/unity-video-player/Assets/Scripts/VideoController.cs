@@ -74,16 +74,9 @@ public class VideoController : MonoBehaviour
         _notificationText.text = "Say 'Porcupine, what can I say?' for help";
         _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
 
-        _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");
-        try
-        {
-            _picovoiceManager = PicovoiceManager.Create(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("PicovoiceManager was unable to initialize: " + ex.ToString());
-        }
-
+        _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");        
+        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);        
+        
         StartCoroutine(FadeIntroNotification());
     }
 
@@ -105,7 +98,16 @@ public class VideoController : MonoBehaviour
         if (!_picovoiceManager.IsRecording)
         {
             if (_picovoiceManager.IsAudioDeviceAvailable())
-                _picovoiceManager.Start();
+            {
+                try
+                {
+                    _picovoiceManager.Start();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError(ex.ToString());
+                }
+            }
             else
                 Debug.LogError("No audio recording device available!");
         }
@@ -124,7 +126,7 @@ public class VideoController : MonoBehaviour
         }
     }
 
-    private void OnWakeWordDetected(int keywordIndex)
+    private void OnWakeWordDetected()
     {
         isListening = true;
         Debug.Log("Listening...");

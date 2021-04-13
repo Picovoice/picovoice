@@ -707,30 +707,27 @@ The constructor `PicovoiceManager.Create` will create an instance of the Picovoi
 ```csharp
 using Pv.Unity;
 
+PicovoiceManager _picovoiceManager = new PicovoiceManager(
+                                "/path/to/keyword/file.ppn",
+                                () => {},
+                                "/path/to/context/file.rhn",
+                                (inference) => {};
+```
+
+Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
+```csharp
 try 
-{    
-    PicovoiceManager _picovoiceManager = PicovoiceManager.Create(
-                                    "/path/to/keyword/file.ppn",
-                                    (keywordIndex) => {},
-                                    "/path/to/context/file.rhn",
-                                    (inference) => {};
-}
-catch (Exception ex)
 {
-    // handle picovoice init error
+    _picovoiceManager.Start();
 }
-```
+catch(Exception ex)
+{
+    Debug.LogError(ex.ToString());
+}
 
-Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
-```csharp
-_picovoiceManager.Start();
 // .. use picovoice
-_picovoiceManager.Stop();
-```
 
-Once the app is done with using an instance of PicovoiceManager, you can explicitly release the audio resources and the resources allocated to Picovoice:
-```csharp
-_picovoiceManager.Delete();
+_picovoiceManager.Stop();
 ```
 
 PicovoiceManager uses our

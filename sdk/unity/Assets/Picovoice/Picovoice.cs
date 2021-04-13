@@ -24,7 +24,7 @@ namespace Pv.Unity
     {        
         private Porcupine _porcupine;
         private Rhino _rhino;
-        private Action<int> _wakeWordCallback;
+        private Action _wakeWordCallback;
         private Action<Inference> _inferenceCallback;
         
         private bool _isWakeWordDetected;
@@ -94,7 +94,7 @@ namespace Pv.Unity
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </returns>
-        public static Picovoice Create(string keywordPath, Action<int> wakeWordCallback,
+        public static Picovoice Create(string keywordPath, Action wakeWordCallback,
                                        string contextPath, Action<Inference> inferenceCallback,
                                        string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
                                        string rhinoModelPath = null, float rhinoSensitivity = 0.5f)
@@ -121,7 +121,7 @@ namespace Pv.Unity
         }
 
         // private constructor
-        private Picovoice(Porcupine porcupine, Action<int> wakeWordCallback, Rhino rhino, Action<Inference> inferenceCallback)
+        private Picovoice(Porcupine porcupine, Action wakeWordCallback, Rhino rhino, Action<Inference> inferenceCallback)
         {
             _porcupine = porcupine;
             _wakeWordCallback = wakeWordCallback;
@@ -163,7 +163,7 @@ namespace Pv.Unity
                 if (keywordIndex >= 0)
                 {
                     _isWakeWordDetected = true;
-                    _wakeWordCallback.Invoke(keywordIndex);
+                    _wakeWordCallback.Invoke();
                 }
             }
             else 

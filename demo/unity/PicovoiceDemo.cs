@@ -13,7 +13,7 @@ public class PicovoiceDemo : MonoBehaviour
 {
     Text _activityText;
     Image[] _locationStates;
-            
+
     PicovoiceManager _picovoiceManager;
 
     private static readonly string _platform;
@@ -41,23 +41,16 @@ public class PicovoiceDemo : MonoBehaviour
 
     void Start()
     {
-        _activityText = gameObject.GetComponentInChildren<Text>();        
+        _activityText = gameObject.GetComponentInChildren<Text>();
         _locationStates = gameObject.GetComponentsInChildren<Image>();
-        
-        try
-        {
-            _picovoiceManager = PicovoiceManager.Create(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("PicovoiceManager was unable to initialize: " + ex.ToString());
-        }
+
+        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
     }
 
 
-    private void OnWakeWordDetected(int keywordIndex)
+    private void OnWakeWordDetected()
     {
-        _activityText.text = "Listening...";                   
+        _activityText.text = "Listening...";
     }
 
     private void OnInferenceResult(Inference inference)
@@ -86,14 +79,14 @@ public class PicovoiceDemo : MonoBehaviour
                 bool state = false;
                 if (inference.Slots.ContainsKey("state"))
                 {
-                    state = inference.Slots["state"] == "on";                    
+                    state = inference.Slots["state"] == "on";
                 }
 
                 Image[] locations = _locationStates;
                 if (inference.Slots.ContainsKey("location"))
                 {
                     string locationName = inference.Slots["location"];
-                    locations = _locationStates.Where(g => g.name == locationName).ToArray();                       
+                    locations = _locationStates.Where(g => g.name == locationName).ToArray();
                 }
 
                 ChangeLightState(locations, state);
@@ -115,11 +108,11 @@ public class PicovoiceDemo : MonoBehaviour
             Debug.Log("Didn't understand the command.\n");
         }
 
-        _activityText.text = "Say 'Picovoice'!";              
+        _activityText.text = "Say 'Picovoice'!";
     }
 
-    private void ChangeLightState(Image[] locations, bool state) 
-    {        
+    private void ChangeLightState(Image[] locations, bool state)
+    {
         float alphaValue = state ? 1 : 0.1f;
         for (int i = 0; i < locations.Length; i++)
         {
@@ -139,14 +132,23 @@ public class PicovoiceDemo : MonoBehaviour
 
     void Update()
     {
-        if (!_picovoiceManager.IsRecording) 
+        if (!_picovoiceManager.IsRecording)
         {
             if (_picovoiceManager.IsAudioDeviceAvailable())
-                _picovoiceManager.Start();
+            {
+                try
+                {
+                    _picovoiceManager.Start();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError(ex.ToString());
+                }
+            }
             else
                 Debug.LogError("No audio recording device available!");
         }
-            
+
     }
 
     void OnApplicationQuit()
@@ -154,7 +156,6 @@ public class PicovoiceDemo : MonoBehaviour
         if (_picovoiceManager != null)
         {
             _picovoiceManager.Stop();
-            _picovoiceManager.Delete();
         }
     }
 
@@ -182,7 +183,7 @@ public class PicovoiceDemo : MonoBehaviour
 
 
     public static string GetKeywordPath()
-    {                        
+    {
         string fileName = string.Format("picovoice_{0}.ppn", _platform);
         string srcPath = Path.Combine(Application.streamingAssetsPath, string.Format("keyword_files/{0}/{1}", _platform, fileName));
 #if !UNITY_EDITOR && UNITY_ANDROID

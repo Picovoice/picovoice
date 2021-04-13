@@ -28,6 +28,15 @@ namespace Pv.Unity
         private Picovoice _picovoice;
         private Action<Exception> _errorCallback;
         
+        string _keywordPath;
+        Action _wakeWordCallback;
+        string _contextPath;
+        Action<Inference> _inferenceCallback;
+        string _porcupineModelPath;
+        float _porcupineSensitivity = 0.5f;
+        string _rhinoModelPath;
+        float _rhinoSensitivity = 0.5f;
+
         /// <summary>
         /// PicovoiceManager constructor
         /// </summary>
@@ -58,28 +67,24 @@ namespace Pv.Unity
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </returns>
         /// <param name="errorCallback">Callback that triggers is the engine experiences a problem while processing audio.</param>
-        /// <returns>An instance of PicovoiceManager.</returns>                             
-        public static PicovoiceManager Create(string keywordPath, Action<int> wakeWordCallback,
-                                              string contextPath, Action<Inference> inferenceCallback,
-                                              string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
-                                              string rhinoModelPath = null, float rhinoSensitivity = 0.5f,
-                                              Action<Exception> errorCallback = null)
+        /// <returns>An instance of PicovoiceManager.</returns>        
+        public PicovoiceManager(string keywordPath, Action wakeWordCallback,
+                                string contextPath, Action<Inference> inferenceCallback,
+                                string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
+                                string rhinoModelPath = null, float rhinoSensitivity = 0.5f,
+                                Action<Exception> errorCallback = null)
         {
-            Picovoice picovoice = Picovoice.Create(keywordPath, wakeWordCallback,
-                                                   contextPath, inferenceCallback,
-                                                   porcupineModelPath, porcupineSensitivity,
-                                                   rhinoModelPath, rhinoSensitivity);
-            return new PicovoiceManager(picovoice, errorCallback);
-        }
-
-        // private constructor
-        private PicovoiceManager(Picovoice picovoice, Action<Exception> errorCallback = null)
-        {
-            _picovoice = picovoice;
+            _keywordPath = keywordPath;
+            _wakeWordCallback = wakeWordCallback;
+            _contextPath = contextPath;
+            _inferenceCallback = inferenceCallback;
+            _porcupineModelPath = porcupineModelPath;
+            _porcupineSensitivity = porcupineSensitivity;
+            _rhinoModelPath = rhinoModelPath;
+            _rhinoSensitivity = rhinoSensitivity;
             _errorCallback = errorCallback;
 
             _voiceProcessor = VoiceProcessor.Instance;
-            _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
         }
 
         /// <summary>
@@ -122,11 +127,15 @@ namespace Pv.Unity
         /// </summary>
         public void Start()
         {
-            if (_picovoice == null || _voiceProcessor == null)
-            {
-                throw new ObjectDisposedException("Picovoice", "Cannot start PicovoiceManager - resources have already been released");
-            }
+            if (_picovoice != null)
+                return;            
 
+            _picovoice = Picovoice.Create(_keywordPath, _wakeWordCallback,
+                                          _contextPath, _inferenceCallback,
+                                          _porcupineModelPath, _porcupineSensitivity,
+                                          _rhinoModelPath, _rhinoSensitivity);
+
+            _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
             _voiceProcessor.StartRecording(_picovoice.SampleRate, _picovoice.FrameLength);
         }
 
@@ -135,34 +144,14 @@ namespace Pv.Unity
         /// </summary>
         public void Stop()
         {
-            if (_picovoice == null || _voiceProcessor == null)
+            if (_voiceProcessor.IsRecording)
             {
-                throw new ObjectDisposedException("Picovoice", "Cannot start PicovoiceManager - resources have already been released");
+                _voiceProcessor.StopRecording();
             }
-            _voiceProcessor.StopRecording();
-        }
+            _voiceProcessor.OnFrameCaptured -= OnFrameCaptured;
 
-        /// <summary>
-        /// Free resources that were allocated to Porcupine and the voice processor
-        /// </summary>
-        public void Delete()
-        {
-            if (_voiceProcessor != null)
-            {
-                if (_voiceProcessor.IsRecording)
-                {
-                    _voiceProcessor.StopRecording();
-                }
-
-                _voiceProcessor.OnFrameCaptured -= OnFrameCaptured;
-                _voiceProcessor = null;
-            }
-
-            if (_picovoice != null)
-            {
-                _picovoice.Dispose();
-                _picovoice = null;
-            }
+            _picovoice?.Dispose();
+            _picovoice = null;
         }
     }
 }

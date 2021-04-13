@@ -50,32 +50,22 @@ The module provides you with two levels of API to choose from depending on your 
 
 >**NOTE:** If running on iOS, you must fill in the Microphone Usage Description under Project Settings>Other Settings in order to enable audio recording.
 
-The constructor `PicovoiceManager.Create` will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
+The constructor will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
 ```csharp
 using Pv.Unity;
 
-try 
-{    
-    PicovoiceManager _picovoiceManager = PicovoiceManager.Create(
-                                    "/path/to/keyword/file.ppn",
-                                    OnWakeWordDetected,
-                                    "/path/to/context/file.rhn",
-                                    OnInferenceResult);
-}
-catch (Exception ex)
-{
-    // handle picovoice init error
-}
+PicovoiceManager _picovoiceManager = new PicovoiceManager(
+                                "/path/to/keyword/file.ppn",
+                                OnWakeWordDetected,
+                                "/path/to/context/file.rhn",
+                                OnInferenceResult);
 ```
 The `wakeWordCallback` and `inferenceCallback` arguments are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```csharp
-private void OnWakeWordDetected(int keywordIndex)
+private void OnWakeWordDetected()
 {
-    if(keywordIndex >= 0)
-    {
-        // wake word detected!
-    }
+    // wake word detected!
 }
 
 private void OnInferenceResult(Inference inference)
@@ -96,7 +86,7 @@ private void OnInferenceResult(Inference inference)
 You can override the default model files and sensitivities. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
 
 ```csharp
-PicovoiceManager _picovoiceManager = PicovoiceManager.Create(
+PicovoiceManager _picovoiceManager = new PicovoiceManager(
                                         "/path/to/keyword/file.ppn",
                                         OnWakeWordDetected,
                                         "/path/to/context/file.rhn",
@@ -114,17 +104,19 @@ void OnError(Exception ex){
 
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
 ```csharp
-_picovoiceManager.Start();
+try 
+{
+    _picovoiceManager.Start();
+}
+catch(Exception ex)
+{
+    Debug.LogError(ex.ToString());
+}
 ```
 
 And then stop it by calling:
 ```csharp
 _picovoiceManager.Stop();
-```
-
-Once the app is done with using an instance of PicovoiceManager, you can explicitly release the audio resources and the resources allocated to Picovoice:
-```csharp
-_picovoiceManager.Delete();
 ```
 
 PicovoiceManager uses our
