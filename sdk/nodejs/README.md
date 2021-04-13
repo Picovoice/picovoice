@@ -2,8 +2,7 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. Picovoice is:
 
 - **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
 - **Reliable:** Runs without needing constant connectivity.
@@ -16,7 +15,7 @@ See the [Picovoice Docs](https://picovoice.ai/docs/quick-start/picovoice-nodejs/
 
 ## Compatibility
 
-This binding is for running Porcupine on **NodeJS 10+** on the following platforms:
+This binding is for running Picovoice on **NodeJS 10+** on the following platforms:
 
 - Linux (x86_64)
 - macOS (x86_64)
@@ -24,37 +23,39 @@ This binding is for running Porcupine on **NodeJS 10+** on the following platfor
 
 ### Web Browsers
 
-This binding is for NodeJS and **does not work in a browser**. Looking to run Porcupine in-browser? Use the [JavaScript WebAssembly](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) binding instead.
+This binding is for NodeJS and **does not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue).
 
-## Usage
+## Installation
 
-The Picovoice SDK for NodeJS is available from NPM:
+The Picovoice SDK for NodeJS is available from npm:
 
-```bash
+```console
 yarn add @picovoice/picovoice-node
 ```
 
 (or)
 
-```bash
+```console
 npm install @picovoice/picovoice-node
 ```
+
+## Usage
 
 The SDK provides the `Picovoice` class. Create an instance of this class using a Porcupine keyword and Rhino context file, as well as callback functions that will be invoked on wake word and inference events, respectively:
 
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
 
-let keywordCallback = function (keyword) {
+const keywordCallback = function (keyword) {
   console.log(`Wake word detected`);
 };
 
-let inferenceCallback = function (inference) {
+const inferenceCallback = function (inference) {
   console.log("Inference:");
   console.log(JSON.stringify(inference, null, 4));
 };
 
-let handle = new Picovoice(
+const handle = new Picovoice(
   keywordArgument,
   keywordCallback,
   contextPath,
@@ -69,15 +70,15 @@ Upon constructing the Picovoice class, send it frames of audio via its `process`
 ```javascript
 // process audio frames that match the Picovoice requirements (16-bit linear pcm audio, single-channel)
 while (true) {
-  handle.process(frame_of_audio);
+  handle.process(frameOfAudio);
 }
 ```
 
 As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the built-in "picovoice" keyword and [sample "coffee maker" context](./resources/rhino/resources/contexts/) to the Picovoice class, and then provide it a [test WAV file](./resources/audio_samples/picovoice-coffee.wav) that contains the following utterance:
 
-> Picovoice, make me a large coffee
+> "Picovoice, make me a large coffee"
 
-```bash
+```console
 Wake word detected
 
 Inference:

@@ -1,13 +1,12 @@
 # Picovoice SDK for NodeJS Demos
 
-This package provides two demonstration command-line applications for Picovoice: a file based demo, which scans a compatible WAV file, and a microphone demo.
+This package provides two demonstration command-line applications for Picovoice: a file-based demo, which scans a compatible WAV file, and a microphone demo.
 
 ## Introduction to Picovoice SDK
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. Picovoice is:
 
 - **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
 - **Reliable:** Runs without needing constant connectivity.
@@ -26,7 +25,7 @@ These demos run Rhino on **NodeJS 10+** on the following platforms:
 
 ### Web Browsers
 
-These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? Use the [Porcupine JavaScript WebAssembly binding](https://github.com/Picovoice/porcupine/tree/master/binding/javascript) and [Rhino JavaScript WebAssembly binding](https://github.com/Picovoice/rhino/tree/master/binding/javascript) instead. Also see this [tutorial for running Picovoice in-browser](https://picovoice.ai/docs/tutorials/using-picovoice-engines-with-react/).
+These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue).
 
 ## Prerequisites
 
@@ -52,13 +51,13 @@ See [this quick start](https://picovoice.ai/quick-start/wake-word-raspberrypi/) 
 
 To install the demos and make them available on the command line, use either of the following `yarn` or `npm` commands:
 
-```bash
+```console
 yarn global add @picovoice/picovoice-node-demo
 ```
 
 (or)
 
-```bash
+```console
 npm install -g @picovoice/picovoice-node-demo
 ```
 
@@ -68,7 +67,7 @@ Here is an example which will understand commands from the "Smart Lighting" demo
 
 Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. Specify the Wake Word (.ppn) with `--keyword_file_path` and the Speech-to-Intent context (.rhn file) with `--context_file_path`.
 
-```bash
+```console
 pv-mic-demo \
 --keyword bumblebee \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
@@ -76,7 +75,7 @@ pv-mic-demo \
 
 You can use custom Wake Word files (.ppn) with `--keyword_file_path`:
 
-```bash
+```console
 pv-mic-demo \
 --keyword_file_path ./hey_edison.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
@@ -120,7 +119,7 @@ Inference result:
 
 Now try again, but this time say something that the context is not designed to understand, like "tell me a joke":
 
-```bash
+```console
 pv-mic-demo --context_file_path ../../resources/contexts/mac/smart_lighting_mac.rhn
 
 ...
@@ -150,7 +149,7 @@ We can use the WAV file that are bundled in the [Picovoice GitHub repostiory](ht
 
 Run the file demo and the successful inference with the intent "orderDrink" along with the specific details are returned:
 
-```bash
+```console
 pv-file-demo \
 --input_audio_file_path ../../resources/audio_samples/picovoice-coffee.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
@@ -178,15 +177,15 @@ The microphone and file demos both have additional options.
 
 To see the full set of options, use `--help`:
 
-```bash
+```console
 pv-mic-demo --help
 ```
 
-```bash
+```console
 pv-file-demo --help
 ```
 
-```bash
+```console
 Options:
   -k, --keyword_file_path <string>        absolute path(s) to porcupine keyword files (.ppn extension)
   -b, --keyword <string>                  built in keyword(s) (americano,blueberry,bumblebee,grapefruit,grasshopper,picovoice,porcupine,terminator)
@@ -203,7 +202,7 @@ Options:
 
 The sensitivity is a floating point value in the range [0,1] which specifies the tradeoff between miss rate and false alarm. The demo defaults to 0.5. You can override this with `--sensitivity`:
 
-```bash
+```console
 pv-mic-demo \
 --keyword GRASSHOPPER \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
@@ -222,7 +221,7 @@ If desired, you may override the Porcupine and Rhino model and dynamic libraries
 
 e.g. for macOS (x86_64):
 
-```
+```console
 pv-mic-demo \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
@@ -236,14 +235,14 @@ pv-mic-demo \
 
 From the `demo/nodejs` folder, use one of `yarn` or `npm` to install the package dependencies:
 
-```bash
+```console
 cd demo/nodejs
 yarn
 ```
 
 (or)
 
-```bash
+```console
 cd demo/nodejs
 npm install
 ```
@@ -252,7 +251,7 @@ npm install
 
 From the `demo/nodejs` folder, use `yarn mic` (or `npm run mic`) to run the mic demo. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm or for the demo script. As before, pick a context that matches the platform you are using (these examples use 'mac'):
 
-```bash
+```console
 yarn mic \
 --keyword AMERICANO \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
@@ -260,7 +259,7 @@ yarn mic \
 
 (or)
 
-```bash
+```console
 npm run mic -- --keyword AMERICANO --context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
 ```
 
@@ -268,7 +267,7 @@ npm run mic -- --keyword AMERICANO --context_file_path ../../resources/contexts/
 
 From the `demo/nodejs` folder, use `yarn file` or `npm run file`. For `npm run`, note the extra `--` needed before specifying commands. This is to disambiguate whether the options are intended for npm itself, or for the demo script.
 
-```bash
+```console
 yarn file \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
@@ -277,7 +276,7 @@ yarn file \
 
 (or)
 
-```bash
+```console
 npm run file -- \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
