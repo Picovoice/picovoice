@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -11,7 +11,7 @@
 
 import { Porcupine } from '@picovoice/porcupine-react-native';
 import { Rhino } from '@picovoice/rhino-react-native';
-type WakeWordCallback = (keywordIndex: number) => void;
+type WakeWordCallback = () => void;
 type InferenceCallback = (inference: object) => void;
 
 class Picovoice {
@@ -111,7 +111,7 @@ class Picovoice {
 
       if (keywordIndex >= 0) {
         this._isWakeWordDetected = true;
-        this._wakeWordCallback(keywordIndex);
+        this._wakeWordCallback();
       }
     } else {
       const result = await this._rhino.process(frame);

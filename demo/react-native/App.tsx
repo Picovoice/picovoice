@@ -51,46 +51,39 @@ export default class App extends Component<Props, State> {
       contextFilename += '_ios.rhn';
       contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
     }
+    
+    this._picovoiceManager = PicovoiceManager.create(
+      wakeWordPath,
+      () => {         
+        this.setState({
+          picovoiceText: 'Wake word detected! Listening for intent...',
+        });        
+      },
+      contextPath,
+      (inference: object) => {
+        this.setState({
+          picovoiceText: this._prettyPrintInference(inference),
+        });
 
-    try {
-      this._picovoiceManager = await PicovoiceManager.create(
-        wakeWordPath,
-        (keywordIndex: number) => {
-          if (keywordIndex === 0) {
+        setTimeout(() => {
+          if (this.state.isListening) {
             this.setState({
-              picovoiceText: 'Wake word detected! Listening for intent...',
+              picovoiceText: 'Listening for wake word...',
+            });
+          } else {
+            this.setState({
+              picovoiceText: '',
             });
           }
-        },
-        contextPath,
-        (inference: object) => {
-          this.setState({
-            picovoiceText: this._prettyPrintInference(inference),
-          });
-
-          setTimeout(() => {
-            if (this.state.isListening) {
-              this.setState({
-                picovoiceText: 'Listening for wake word...',
-              });
-            } else {
-              this.setState({
-                picovoiceText: '',
-              });
-            }
-          }, 2000);
-        },
-      );
-    } catch (e) {
-      console.error(e);
-    }
+        }, 2000);
+      },
+    );    
   }
 
   componentWillUnmount() {
     if (this.state.isListening) {
       this._stopProcessing();
     }
-    this._picovoiceManager?.delete();
   }
 
   _prettyPrintInference(inference: object) {
@@ -111,6 +104,7 @@ export default class App extends Component<Props, State> {
   }
 
   async _startProcessing() {
+    
     this.setState({
       buttonDisabled: true,
     });
@@ -131,8 +125,8 @@ export default class App extends Component<Props, State> {
           buttonDisabled: false,
         });
         return;
-      }
-
+      }      
+      try{
       this._picovoiceManager?.start().then((didStart) => {
         if (didStart) {
           this.setState({
@@ -142,7 +136,10 @@ export default class App extends Component<Props, State> {
             isListening: true,
           });
         }
-      });
+      });}
+      catch(err){
+        console.error(err);
+      }
     });
   }
 

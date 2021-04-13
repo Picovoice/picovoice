@@ -860,10 +860,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@picovoice/picovoice-react-native@^1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-1.1.6.tgz#9945915bbed23d01cf13fa1344ec7f21a6b5e698"
-  integrity sha512-SZohmgO11q2DnMLYQgnmbRT6ggmU5tkMv3+V87EOTklvIbMPdTJBise3CfFBzs67xBVRjp0w837lPWFUkrz6BQ==
+"@picovoice/picovoice-react-native@^1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-1.1.7.tgz#3b18a50e3caff904f0fc15b53f5c977b28419f36"
+  integrity sha512-Hctvr9gK1hUDm4A7IQ0IFimQJCfR8fTS0MKYqyK9YB4agKN93xPii8i/ZYMJimOLuPwuX/yzxCBuTnhNN1s2sw==
 
 "@picovoice/porcupine-react-native@^1.9.6":
   version "1.9.6"

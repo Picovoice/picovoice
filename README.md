@@ -893,18 +893,12 @@ The [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
-```javascript
-async createPicovoiceManager(){
-    try{
-        this._picovoiceManager = await PicovoiceManager.create(
-            '/path/to/keyword/file.ppn',
-            wakeWordCallback,
-            '/path/to/context/file.rhn',
-            inferenceCallback);
-    } catch (err) {
-        // handle error
-    }
-}
+```javascript    
+this._picovoiceManager = PicovoiceManager.create(
+    '/path/to/keyword/file.ppn',
+    wakeWordCallback,
+    '/path/to/context/file.rhn',
+    inferenceCallback);
 ```
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
@@ -912,14 +906,11 @@ The `wakeWordCallback` and `inferenceCallback` parameters are functions that you
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
 
 ```javascript
-let didStart = await this._picovoiceManager.start();
+try {
+  let didStart = await this._picovoiceManager.start();
+} catch(err) { }
 // .. use for detecting wake words and commands
 let didStop = await this._picovoiceManager.stop();
-```
-
-Once the app is done with using PicovoiceManager, be sure you explicitly release the resources allocated for it:
-```javascript
-this._picovoiceManager.delete();
 ```
 
 [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)

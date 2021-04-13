@@ -105,27 +105,18 @@ audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
 ```javascript
-async createPicovoiceManager(){
-    try{
-        this._picovoiceManager = await PicovoiceManager.create(
-            '/path/to/keyword/file.ppn',
-            wakeWordCallback,
-            '/path/to/context/file.rhn',
-            inferenceCallback);
-    } catch (err) {
-        // handle error
-    }
-}
+this._picovoiceManager = PicovoiceManager.create(
+    '/path/to/keyword/file.ppn',
+    wakeWordCallback,
+    '/path/to/context/file.rhn',
+    inferenceCallback);
 ```
-NOTE: the call is asynchronous and therefore should be called in an async block with a try/catch.
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```javascript
-wakeWordCallback(keywordIndex){
-    if(keywordIndex === 0){
-        // wake word detected!
-    }
+wakeWordCallback(){    
+    // wake word detected!
 }
 
 inferenceCallback(inference){
@@ -140,7 +131,7 @@ You can override the default model files and sensitivities:
 ```javascript
 let porcupineSensitivity = 0.7
 let rhinoSensitivity = 0.6
-this._picovoiceManager = await PicovoiceManager.create(
+this._picovoiceManager = PicovoiceManager.create(
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
             '/path/to/context/file.rhn',
@@ -154,18 +145,15 @@ this._picovoiceManager = await PicovoiceManager.create(
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
 
 ```javascript
-let didStart = await this._picovoiceManager.start();
+try {
+    let didStart = await this._picovoiceManager.start();
+} catch (e) { }
 ```
 
 And then stop it by calling:
 
 ```javascript
 let didStop = await this._picovoiceManager.stop();
-```
-
-Once the app is done with using PicovoiceManager, be sure you explicitly release the resources allocated for it:
-```javascript
-this._picovoiceManager.delete();
 ```
 
 There is no need to deal with audio capture to enable intent inference with PicovoiceManager.

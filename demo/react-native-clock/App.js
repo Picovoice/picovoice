@@ -98,14 +98,12 @@ export default class App extends Component {
     }
 
     try {
-      this._picovoiceManager = await PicovoiceManager.create(
+      this._picovoiceManager = PicovoiceManager.create(
         wakeWordPath,
-        (keywordIndex) => {
-          if (keywordIndex === 0) {
-            this.setState({
-              isListening: true,
-            });
-          }
+        () => {         
+          this.setState({
+            isListening: true,
+          });        
         },
         contextPath,
         (inference) => {
@@ -217,11 +215,15 @@ export default class App extends Component {
         return;
       }
 
-      this._picovoiceManager?.start().then((didStart) => {
-        if (didStart) {
-          setInterval(this._updateTime.bind(this), 100);
-        }
-      });
+      try{
+        this._picovoiceManager?.start().then((didStart) => {
+          if (didStart) {
+            setInterval(this._updateTime.bind(this), 100);
+          }
+        });
+      } catch(err) {
+        console.error(err);
+      }
     });
   }
 

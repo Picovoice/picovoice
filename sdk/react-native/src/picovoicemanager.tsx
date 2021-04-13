@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -39,12 +39,22 @@ import { EventSubscription, NativeEventEmitter } from 'react-native';
  * @returns an instance of the Picovoice end-to-end platform.
  */
 class PicovoiceManager {
-  private _voiceProcessor: VoiceProcessor;
-  private _picovoice: Picovoice | null;
-  private _bufferListener?: EventSubscription;
-  private _bufferEmitter: NativeEventEmitter;
+  private _voiceProcessor?: VoiceProcessor;
+  private _picovoice?: Picovoice;
+  private _keywordPath: string;
+  private _wakeWordCallback: WakeWordCallback;
+  private _contextPath: string;
+  private _inferenceCallback: InferenceCallback;
+  private _porcupineSensitivity: number = 0.5;
+  private _rhinoSensitivity: number = 0.5;
+  private _porcupineModelPath?: string;
+  private _rhinoModelPath?: string;
 
-  static async create(
+
+  private _bufferListener?: EventSubscription;
+  private _bufferEmitter?: NativeEventEmitter;
+
+  static create(
     keywordPath: string,
     wakeWordCallback: WakeWordCallback,
     contextPath: string,
@@ -53,31 +63,64 @@ class PicovoiceManager {
     rhinoSensitivity: number = 0.5,
     porcupineModelPath?: string,
     rhinoModelPath?: string
-  ) {
-    let picovoice = await Picovoice.create(
-      keywordPath,
-      wakeWordCallback,
-      contextPath,
-      inferenceCallback,
-      porcupineSensitivity,
-      rhinoSensitivity,
-      porcupineModelPath,
-      rhinoModelPath
-    );
-    return new PicovoiceManager(picovoice);
+  ) {    
+    return new PicovoiceManager(keywordPath, 
+      wakeWordCallback, 
+      contextPath, 
+      inferenceCallback, 
+      porcupineSensitivity, 
+      rhinoSensitivity, 
+      porcupineModelPath, 
+      rhinoModelPath);
   }
 
-  constructor(picovoice: Picovoice) {
-    this._picovoice = picovoice;
-    this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
-      picovoice.frameLength,
-      picovoice.sampleRate
-    );
-    this._bufferEmitter = new NativeEventEmitter(BufferEmitter);
+  private constructor(
+    keywordPath: string,
+    wakeWordCallback: WakeWordCallback,
+    contextPath: string,
+    inferenceCallback: InferenceCallback,
+    porcupineSensitivity: number = 0.5,
+    rhinoSensitivity: number = 0.5,
+    porcupineModelPath?: string,
+    rhinoModelPath?: string) {
+      this._keywordPath = keywordPath;
+      this._wakeWordCallback = wakeWordCallback;
+      this._contextPath = contextPath;
+      this._inferenceCallback = inferenceCallback;
+      this._porcupineSensitivity = porcupineSensitivity;
+      this._rhinoSensitivity = rhinoSensitivity;
+      this._porcupineModelPath = porcupineModelPath;
+      this._rhinoModelPath = rhinoModelPath;
+  }
+
+  /**
+   * Opens audio input stream and sends audio frames to Picovoice
+   */
+  async start() {
+    if(this._picovoice !== undefined){
+      return;
+    }
+
+    this._picovoice = await Picovoice.create(
+      this._keywordPath,
+      this._wakeWordCallback,
+      this._contextPath,
+      this._inferenceCallback,
+      this._porcupineSensitivity,
+      this._rhinoSensitivity,
+      this._porcupineModelPath,
+      this._rhinoModelPath)
+
+    if(this._voiceProcessor === undefined) {
+      this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
+        this._picovoice.frameLength,
+        this._picovoice.sampleRate
+      );
+      this._bufferEmitter = new NativeEventEmitter(BufferEmitter);
+    }
 
     const bufferProcess = async (buffer: number[]) => {
-      if (this._picovoice === null) return;
-
+      if (this._picovoice === undefined) return;      
       try {
         await this._picovoice.process(buffer);
       } catch (e) {
@@ -85,37 +128,24 @@ class PicovoiceManager {
       }
     };
 
-    this._bufferListener = this._bufferEmitter.addListener(
+    this._bufferListener = this._bufferEmitter?.addListener(
       BufferEmitter.BUFFER_EMITTER_KEY,
       async (buffer: number[]) => {
         await bufferProcess(buffer);
       }
     );
-  }
-
-  /**
-   * Opens audio input stream and sends audio frames to Picovoice
-   */
-  async start() {
+    
     return this._voiceProcessor.start();
   }
 
   /**
    * Closes audio stream
    */
-  async stop() {
-    return this._voiceProcessor.stop();
-  }
-
-  /**
-   * Releases resources and listeners
-   */
-  delete() {
+  async stop() {    
     this._bufferListener?.remove();
-    if (this._picovoice != null) {
-      this._picovoice.delete();
-      this._picovoice = null;
-    }
+    this._picovoice?.delete();
+    this._picovoice = undefined;
+    return this._voiceProcessor?.stop();
   }
 }
 
