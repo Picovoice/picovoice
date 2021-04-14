@@ -146,12 +146,9 @@ catch (Exception ex)
     // handle Picovoice init error
 }
 
-private void OnWakeWordDetected(int keywordIndex)
-{
-    if(keywordIndex >= 0)
-    {
-        // wake word detected!
-    }
+private void OnWakeWordDetected()
+{    
+    // wake word detected!
 }
 
 private void OnInferenceResult(Inference inference)
@@ -197,6 +194,19 @@ Picovoice implements the `IDisposable` interface, so you can use Picovoice in a 
 ```csharp
 _picovoice.Dispose();
 ```
+
+## Custom Model Integration
+
+To add custom models to your Unity app, you'll need to add them to your project root under `/StreamingAssets`. Then, in a script, retrieve them like so:
+```csharp
+
+string keywordPath = Path.Combine(Application.streamingAssetsPath, "keyword.ppn");
+string contextPath = Path.Combine(Application.streamingAssetsPath, "context.rhn");
+```
+
+## Non-English Models
+
+In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
 
 ## Demo
 

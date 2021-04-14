@@ -206,6 +206,45 @@ Finally, once you no longer need the Picovoice, be sure to explicitly release th
 _picovoice.delete();
 ```
 
+## Custom Model Integration
+
+To add custom models to your Flutter application, first add them to an `assets` folder in your project directory. Then add them to you your pubspec.yaml:
+```yaml
+flutter:
+  assets:
+    - assets/keyword.ppn
+    - assets/context.rhn
+```
+
+In your Flutter code, using the [path_provider](https://pub.dev/packages/path_provider) plugin, extract the asset files to your device like so:
+```dart
+String keywordAsset = "assets/keyword.ppn"
+String extractedKeywordPath = await _extractAsset(keywordAsset);
+String contextAsset = "assets/context.rhn"
+String extractedContextPath = await _extractAsset(contextAsset);
+// create Picovoice
+// ...
+
+Future<String> _extractAsset(String resourcePath) async {
+    // extraction destination
+    String resourceDirectory = (await getApplicationDocumentsDirectory()).path;
+    String outputPath = '$resourceDirectory/$resourcePath';
+    File outputFile = new File(outputPath);
+
+    ByteData data = await rootBundle.load(resourcePath);
+    final buffer = data.buffer;
+
+    await outputFile.create(recursive: true);
+    await outputFile.writeAsBytes(
+        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+    return outputPath;
+}
+```
+
+## Non-English Models
+
+In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
+
 ## Demo App
 
 Check out the [Picovoice Flutter demo](/demo/flutter) to see what it looks like to use Picovoice in a cross-platform app!

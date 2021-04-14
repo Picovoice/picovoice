@@ -47,7 +47,7 @@ inference completion. The class can be initialized using the PicovoiceManager Bu
 ```java
 import ai.picovoice.picovoice.*;
 
-PicovoiceManager manager = new PicovoiceManager(    
+PicovoiceManager manager = new PicovoiceManager.Builder()    
     .setKeywordPath("path/to/keyword/file.ppn")    
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
@@ -63,7 +63,6 @@ PicovoiceManager manager = new PicovoiceManager(
         }
     })
     .build(appContext);
-);
 ```
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
@@ -164,9 +163,9 @@ for releasing native resources.
 picovoice.delete();
 ```
 
-## How to Integrate Custom Model Files (.ppn and .rhn files)
+## Custom Model Integration
 
-To add a custom model to your Android application a couple of extra steps must be taken. First, add your model file to the `/res/raw` folder. All resources are compressed when the build system creates an APK, so you will have to extract your file first before using it:
+To add custom models to your Android application a couple of extra steps must be taken. First, add your model file to the `/res/raw` folder. All resources are compressed when the build system creates an APK, so you will have to extract your file first before using it:
 
 ```java
 try (
@@ -183,9 +182,9 @@ try (
 }
 ```
 
-## Non-English Contexts
+## Non-English Models
 
-In order to run inference on non-English contexts you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
+In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
 
 ## Demo Apps
 

@@ -188,10 +188,8 @@ async createPicovoice(){
     }
 }
 
-wakeWordCallback(keywordIndex){
-    if(keywordIndex === 0){
-        // wake word detected!
-    }
+wakeWordCallback(){    
+    // wake word detected!    
 }
 
 inferenceCallback(inference){
@@ -222,6 +220,41 @@ Finally, once you no longer need the Picovoice, be sure to explicitly release th
 ```javascript
 this._picovoice.delete();
 ```
+
+## Custom Model Integration
+
+To add custom models to your React Native application you'll need to add the files to your platform projects. Android models must be added to `./android/app/src/main/res/raw/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS project. Then in your app javascript code, using the [react-native-fs](https://www.npmjs.com/package/react-native-fs) package, retreive the files like so:
+```javascript
+const RNFS = require('react-native-fs');
+
+let wakeWordName = 'keyword';
+let wakeWordFilename = wakeWordName;
+let wakeWordPath = '';
+let contextName = 'context';
+let contextFilename = contextName;
+let contextPath = '';
+
+if (Platform.OS == 'android') {
+    // for Android, extract resources from APK
+    wakeWordFilename += '_android.ppn';
+    wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename}`;
+    await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
+
+    contextFilename += '_android.rhn';
+    contextPath = `${RNFS.DocumentDirectoryPath}/${contextFilename}`;
+    await RNFS.copyFileRes(contextFilename, contextPath);
+} else if (Platform.OS == 'ios') {
+    wakeWordFilename += '_ios.ppn';
+    wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
+
+    contextFilename += '_ios.rhn';
+    contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
+}
+```
+
+## Non-English Models
+
+In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
 
 ## Demo App
 
