@@ -76,6 +76,10 @@ When done resources have to be released explicitly
 handle.delete()
 ```
 
+## Non-English Models
+
+In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
+
 ## Demos
 
 [picovoicedemo](https://pypi.org/project/picovoicedemo/) provides command-line utilities for processing real-time
