@@ -24,6 +24,7 @@ export function usePicovoice(
   isError: boolean;
   errorMessage: string | null;
   engine: EngineControlType;
+  webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
   resume: () => void;
@@ -37,12 +38,12 @@ export function usePicovoice(
   const [
     webVoiceProcessor,
     setWebVoiceProcessor,
-  ] = useState<WebVoiceProcessor>();
+  ] = useState<WebVoiceProcessor | null>(null);
   const porcupineCallback = useRef(keywordCallback);
   const rhinoCallback = useRef(inferenceCallback);
 
   const start = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.start();
       setIsListening(true);
       return true;
@@ -51,7 +52,7 @@ export function usePicovoice(
   };
 
   const pause = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.pause();
       setIsListening(false);
       return true;
@@ -60,7 +61,7 @@ export function usePicovoice(
   };
 
   const resume = (): boolean => {
-    if (webVoiceProcessor !== undefined) {
+    if (webVoiceProcessor !== null) {
       webVoiceProcessor.resume();
       setIsListening(true);
       return true;
@@ -173,6 +174,7 @@ export function usePicovoice(
     isError,
     errorMessage,
     engine,
+    webVoiceProcessor,
     start,
     pause,
     resume,
