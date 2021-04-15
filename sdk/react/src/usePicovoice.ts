@@ -36,6 +36,10 @@ export function usePicovoice(
   const [isLoaded, setIsLoaded] = useState(false);
   const [engine, setEngine] = useState<EngineControlType>('ppn');
   const [
+    picovoiceWorker,
+    setPicovoiceWorker,
+  ] = useState<PicovoiceWorker | null>(null);
+  const [
     webVoiceProcessor,
     setWebVoiceProcessor,
   ] = useState<WebVoiceProcessor | null>(null);
@@ -68,6 +72,32 @@ export function usePicovoice(
     }
     return false;
   };
+
+  /** Refresh the keyword and inference callbacks
+   * when they change (avoid stale closure) */
+  useEffect(() => {
+    if (picovoiceWorker !== null) {
+      picovoiceWorker.onmessage = (
+        message: MessageEvent<PicovoiceWorkerResponse>
+      ): void => {
+        switch (message.data.command) {
+          case 'ppn-keyword':
+            porcupineCallback.current(message.data.keywordLabel);
+            setEngine('rhn');
+            break;
+          case 'rhn-inference':
+            rhinoCallback.current(message.data.inference);
+            setEngine('ppn');
+            break;
+          case 'rhn-info':
+            setContextInfo(message.data.info);
+            break;
+          default:
+            break;
+        }
+      };
+    }
+  }, [porcupineCallback, rhinoCallback]);
 
   useEffect(() => {
     if (
@@ -137,10 +167,11 @@ export function usePicovoice(
     const startPicovoicePromise = startPicovoice();
 
     startPicovoicePromise
-      .then(({ webVp }) => {
+      .then(({ webVp, pvWorker }) => {
         setIsLoaded(true);
         setIsListening(webVp.isRecording);
         setWebVoiceProcessor(webVp);
+        setPicovoiceWorker(pvWorker);
         setIsError(false);
       })
       .catch(error => {

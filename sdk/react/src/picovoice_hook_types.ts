@@ -3,14 +3,14 @@
 //
 export type RhinoInference = {
   /** Rhino has concluded the inference (isUnderstood is now set) */
-  isFinalized: boolean
+  isFinalized: boolean;
   /** The intent was understood (it matched an expression in the context) */
-  isUnderstood?: boolean
+  isUnderstood?: boolean;
   /** The name of the intent */
-  intent?: string
+  intent?: string;
   /** Map of the slot variables and values extracted from the utterance */
-  slots?: Record<string, string>
-}
+  slots?: Record<string, string>;
+};
 
 export interface RhinoEngine {
   /** Release all resources acquired by Rhino */
@@ -30,24 +30,23 @@ export interface RhinoEngine {
 
 export type RhinoContext = {
   /** Base64 representation of a trained Rhino context (`.rhn` file) */
-  base64: string,
+  base64: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
-  sensitivity?: number
-}
+  sensitivity?: number;
+};
 
 export type RhinoWorkerResponseInference = {
   command: 'rhn-inference';
   inference: RhinoInference;
 };
 
-
 export type RhinoWorkerRequestInfo = {
-  command: 'info'
-}
+  command: 'info';
+};
 
 export type RhinoWorkerResponseInfo = {
   command: 'rhn-info';
-  info: string
+  info: string;
 };
 
 //
@@ -55,19 +54,19 @@ export type RhinoWorkerResponseInfo = {
 //
 export type PorcupineKeywordCustom = {
   /** Base64 representation of a trained Porcupine keyword (`.ppn` file) */
-  base64: string
+  base64: string;
   /** An arbitrary label that you want Picovoice to report when the detection occurs */
-  custom: string
+  custom: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
-  sensitivity?: number
-}
+  sensitivity?: number;
+};
 
 export type PorcupineKeywordBuiltin = {
   /** Name of a builtin keyword for the specific language (e.g. "Grasshopper" for English, or "Ananas" for German) */
-  builtin: string
+  builtin: string;
   /** Value in range [0,1] that trades off miss rate for false alarm */
-  sensitivity?: number
-}
+  sensitivity?: number;
+};
 
 export type PorcupineKeyword = PorcupineKeywordCustom | PorcupineKeywordBuiltin;
 
@@ -77,15 +76,15 @@ export type PorcupineWorkerResponseKeyword = {
 };
 
 export interface PorcupineEngine {
-  /** Release all resources acquired by Rhino */
+  /** Release all resources acquired by Porcupine */
   release(): void;
   /** Process a single frame of 16-bit 16kHz PCM audio */
   process(frame: Int16Array): number;
-  /** The version of the Rhino engine */
+  /** The version of the Porcupine engine */
   readonly version: string;
-  /** The sampling rate of audio expected by the Rhino engine */
+  /** The sampling rate of audio expected by the Porcupine engine */
   readonly sampleRate: number;
-  /** The frame length of audio expected by the Rhino engine */
+  /** The frame length of audio expected by the Porcupine engine */
   readonly frameLength: number;
   /** Maps the keyword detection index (e.g. 0, 1) returned by Porcupine to the label (e.g. "Hey Pico", "Grasshopper") */
   readonly keywordLabels: Map<number, string>;

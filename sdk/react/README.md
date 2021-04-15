@@ -4,7 +4,7 @@ React hook for Picovoice SDK for Web.
 
 Picovoice is also available for React Native, as a separate package. See [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native).
 
-To use the Porcupine or Rhino engines individually with React, see [@picovoice/porcupine-web-react](https://www.npmjs.com/package/@picovoice/porcupine-web-react) and [@picovoice/porcupine-rhino-react](https://www.npmjs.com/package/@picovoice/rhino-web-react), respectively
+To use the Porcupine or Rhino engines individually with React, see [@picovoice/porcupine-web-react](https://www.npmjs.com/package/@picovoice/porcupine-web-react) and [@picovoice/porcupine-rhino-react](https://www.npmjs.com/package/@picovoice/rhino-web-react), respectively.
 
 ## Introduction
 
