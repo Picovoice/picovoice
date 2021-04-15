@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const PORCUPINE_VERSION = "1.9.2";
+const PORCUPINE_VERSION = "1.9.3";
 const RHINO_VERSION = "1.6.1";
 
 for (const language of ["en", "de", "es", "fr"]) {
