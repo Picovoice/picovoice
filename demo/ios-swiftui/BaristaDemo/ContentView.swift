@@ -111,7 +111,7 @@ struct ContentView: View {
                     .foregroundColor(activeBlue)
                     .opacity(viewModel.missedCommand ? 1 : 0)
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.white`)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.white)
     }
 }
 
