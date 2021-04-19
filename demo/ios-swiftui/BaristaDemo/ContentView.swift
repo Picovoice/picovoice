@@ -59,8 +59,8 @@ struct ContentView: View {
                     }
                     
                     // Beverage row
-                    VStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/, spacing: 7) {
-                        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
+                    VStack(alignment: .center, spacing: 7) {
+                        HStack(alignment: .center) {
                             ForEach(0..<viewModel.bevSel.count/2) { i in
                                 Button(action: {}){
                                     Text(viewModel.bevSel[i].title)
@@ -78,7 +78,7 @@ struct ContentView: View {
                                 )
                             }
                         }
-                        HStack(alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/) {
+                        HStack(alignment: .center) {
                             ForEach(viewModel.bevSel.count/2..<viewModel.bevSel.count) { i in
                                 Button(action: {}){
                                     Text(viewModel.bevSel[i].title)
