@@ -3,7 +3,7 @@ PODS:
     - Porcupine-iOS
     - Rhino-iOS
   - Porcupine-iOS (1.9.1)
-  - Rhino-iOS (1.6.1)
+  - Rhino-iOS (1.6.2)
 
 DEPENDENCIES:
   - Picovoice-iOS
@@ -17,7 +17,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Picovoice-iOS: 2177e3f101341b7f06beeb16220d3067677a4024
   Porcupine-iOS: fb6a5f2565e006b8670bd8c5a4731f905d54d09f
-  Rhino-iOS: a25d88c5bda19ac1ae4f844fa8cef037af332082
+  Rhino-iOS: aec1a06883e690e7ced689583f293fcb99f1402a
 
 PODFILE CHECKSUM: 22a7c5201acc7578828a3c27d0320f536b92c7df
 
