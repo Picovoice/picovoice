@@ -302,7 +302,7 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - rhino-react-native (1.6.6):
+  - rhino-react-native (1.6.7):
     - React
   - RNFS (2.16.6):
     - React
@@ -488,12 +488,12 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  rhino-react-native: 085ead1219598b7d5b95d1bcdcfce011db1349f4
+  rhino-react-native: 3f5f149b7ad3f6566724b20ffbe901aff34e7f25
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: d2aa6c9e0ff166723478670e48d9b0dbe5d52e61
+PODFILE CHECKSUM: 589fd181509386017796acb07742639d032e3b4e
 
 COCOAPODS: 1.10.0
