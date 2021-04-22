@@ -23,14 +23,14 @@ This binding is for running Picovoice on **React Native 0.62.2+** on the followi
 
 To start installation be sure you have installed yarn and cocoapods. Then add these native modules to your React Native project.
 
-```sh
+```console
 yarn add @picovoice/react-native-voice-processor
 yarn add @picovoice/porcupine-react-native
 yarn add @picovoice/rhino-react-native
 yarn add @picovoice/picovoice-react-native
 ```
 or
-```sh
+```console
 npm i @picovoice/react-native-voice-processor
 npm i @picovoice/porcupine-react-native
 npm i @picovoice/rhino-react-native
@@ -39,7 +39,7 @@ npm i @picovoice/picovoice-react-native
 
 Link the iOS packages:
 
-```sh
+```console
 cd ios && pod install && cd ..
 ```
 

@@ -1,6 +1,6 @@
 ## Requirements
 
-```bash
+```console
 sudo apt-get install wiringpi
 ```
 
@@ -8,7 +8,7 @@ sudo apt-get install wiringpi
 
 From the root of the repository run:
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/respeaker-rpi0/picovoice_demo_mic \
 -I sdk/c/include/ demo/respeaker-rpi0/picovoice_demo_mic.c \
 -ldl -lasound -lwiringPi
@@ -18,7 +18,7 @@ gcc -std=c99 -O3 -o demo/respeaker-rpi0/picovoice_demo_mic \
 
 From the root of the repository run:
 
-```bash
+```console
 ./demo/respeaker-rpi0/picovoice_demo_mic \
 sdk/c/lib/raspberry-pi/arm11/libpicovoice.so \
 resources/porcupine/lib/common/porcupine_params.pv \

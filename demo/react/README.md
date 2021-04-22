@@ -12,7 +12,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Use `yarn` or `npm` to install the demo packages and start a local server where you can try the demo:
 
-```bash
+```console
 yarn
 yarn start
 ```

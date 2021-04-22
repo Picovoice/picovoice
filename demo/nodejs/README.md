@@ -83,7 +83,7 @@ pv-mic-demo \
 
 The Rhino context source in YAML format will be output to show you the grammar and options that the context supports. First, the demo will listen for the wake word (Porcupine engine). Upon the wake word detection, the demo will switch to follow-on command inference (Rhino engine). The demo will listen for a phrase that the context understands, and upon reaching a conclusion (or timeout), it will output the results.
 
-```bash
+```console
 Context info:
 -------------
 context:

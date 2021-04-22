@@ -151,13 +151,13 @@ models.
 
 If using SSH, clone the repository with:
 
-```bash
+```console
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
 ```
 
 If using HTTPS, clone the repository with:
 
-```bash
+```console
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 ```
 
@@ -165,13 +165,13 @@ git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 
 Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
 
-```bash
+```console
 sudo pip3 install picovoicedemo
 ```
 
 From the root of the repository run the following in the terminal:
 
-```bash
+```console
 picovoice_demo_mic \
 --keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 --context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
@@ -206,13 +206,13 @@ Make sure there is a working microphone connected to your device. Refer to docum
 [node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) to set up your microphone for access from NodeJS.
 Then install the demo package:
 
-```bash
+```console
 npm install -g @picovoice/picovoice-node-demo
 ```
 
 From the root of the repository run:
 
-```bash
+```console
 pv-mic-demo \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
@@ -244,7 +244,7 @@ Please see the [demo instructions](./demo/nodejs/README.md) for details.
 
 Install [OpenAL](https://openal.org/). From the root of the repository run the following in the terminal:
 
-```bash
+```console
 dotnet run -p demo/dotnet/PicovoiceDemo/PicovoiceDemo.csproj -c MicDemo.Release -- \
 --keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 --context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
@@ -276,7 +276,7 @@ For more information about .NET demos go to [demo/dotnet](/demo/dotnet/README.md
 Make sure there is a working microphone connected to your device. Then, from the root of the repository run the
 following in a terminal:
 
-```bash
+```console
 java -jar demo/java/bin/picovoice-mic-demo.jar \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
@@ -316,7 +316,7 @@ To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flu
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
 Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
-```sh
+```console
 flutter run
 ```
 
@@ -330,7 +330,7 @@ For the full set of supported commands refer to [demo's readme](/demo/flutter/RE
 To run the React Native Picovoice demo app you'll first need to install yarn and setup your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
 
 #### Running On Android
-```sh
+```console
 cd demo/react-native
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
@@ -338,7 +338,7 @@ yarn android-run        # builds and deploys to Android
 
 #### Running On iOS
 
-```sh
+```console
 cd demo/react-native
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
@@ -456,7 +456,7 @@ There are several projects for various development boards inside the [mcu demo](
 
 Install the package:
 
-```bash
+```console
 pip3 install picovoice
 ```
 
@@ -510,13 +510,13 @@ When done, resources have to be released explicitly `handle.delete()`.
 
 The Picovoice SDK for NodeJS is available from NPM:
 
-```bash
+```console
 yarn add @picovoice/picovoice-node
 ```
 
 (or)
 
-```bash
+```console
 npm install @picovoice/picovoice-node
 ```
 
@@ -565,7 +565,7 @@ As the audio is processed through the Picovoice engines, the callbacks will fire
 You can install the latest version of Picovoice by adding the latest
 [Picovoice NuGet package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
-```bash
+```console
 dotnet add package Picovoice
 ```
 
@@ -875,7 +875,7 @@ _picovoice.delete();
 ### React Native
 
 First add our React Native modules to your project via yarn or npm:
-```sh
+```console
 yarn add @picovoice/react-native-voice-processor
 yarn add @picovoice/porcupine-react-native
 yarn add @picovoice/rhino-react-native

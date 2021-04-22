@@ -25,7 +25,7 @@ to install and setup the microphone array.
 
 Then install the demo:
 
-```bash
+```console
 sudo pip3 install pvrespeakerdemo
 ```
 
@@ -33,7 +33,7 @@ sudo pip3 install pvrespeakerdemo
 
 Run the demo:
 
-```bash
+```console
 picovoice_respeaker_demo
 ```
 

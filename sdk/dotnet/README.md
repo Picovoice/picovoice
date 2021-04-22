@@ -21,7 +21,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 You can install the latest version of Picovoice by adding the latest [Picovoice Nuget package](https://www.nuget.org/packages/Picovoice/) in Visual Studio or using the .NET CLI.
 
-```bash
+```console
 dotnet add package Picovoice
 ```
 

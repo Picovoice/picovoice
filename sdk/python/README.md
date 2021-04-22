@@ -19,7 +19,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Installation
 
-```bash
+```console
 pip3 install picovoice
 ```
 

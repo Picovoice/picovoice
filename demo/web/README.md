@@ -6,14 +6,14 @@ This is a basic demo to show how to use the Picovoice SDK for Web in a browsers,
 
 Use `yarn` or `npm` to install the dependencies, and the `start` script to start a local web server hosting the demo.
 
-```bash
+```console
 yarn
 yarn start
 ```
 
 Open `localhost:5000` in your web browser, as hinted at in the output:
 
-```bash
+```console
    ┌──────────────────────────────────────────────────┐
    │                                                  │
    │   Serving!                                       │

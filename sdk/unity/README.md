@@ -32,7 +32,7 @@ The easiest way to install the Picovoice Unity SDK is to import [picovoice.unity
 
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
-```bash
+```console
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
 # or 
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git

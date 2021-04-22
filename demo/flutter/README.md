@@ -7,7 +7,7 @@ To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flu
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
 Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
-```sh
+```console
 flutter run
 ```
 

@@ -1,9 +1,9 @@
-```bash
+```console
 gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic \
 -I sdk/c/include demo/c/picovoice_demo_mic.c -ldl -lasound
 ```
 
-```bash
+```console
 ./demo/c/picovoice_demo_mic \
 ${LIBRARY_PATH} \
 resources/porcupine/lib/common/porcupine_params.pv \
@@ -15,12 +15,12 @@ resources/rhino/resources/contexts/${PLATFORM}/coffee_maker_${PLATFORM}.rhn \
 ${INPUT_AUDIO_DEVICE}
 ```
 
-```bash
+```console
 gcc -std=c99 -O3 -o demo/c/picovoice_demo_file \
 -I sdk/c/include demo/c/picovoice_demo_file.c -ldl
 ```
 
-```bash
+```console
 ./demo/c/picovoice_demo_file \
 ${LIBRARY_PATH} \
 resources/porcupine/lib/common/porcupine_params.pv \

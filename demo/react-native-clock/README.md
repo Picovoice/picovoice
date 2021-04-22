@@ -5,14 +5,14 @@ To run the PicoClock app you'll first need to install yarn and setup your React 
 ## Usage
 
 ### Running On Android
-```sh
+```console
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
 ### Running On iOS
 
-```sh
+```console
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
 ```

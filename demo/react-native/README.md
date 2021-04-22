@@ -5,14 +5,14 @@ To run the React Native Picovoice demo app you'll first need to install yarn and
 ## Usage
 
 ### Running On Android
-```sh
+```console
 yarn android-install    # sets up environment
 yarn android-run        # builds and deploys to Android
 ```
 
 ### Running On iOS
 
-```sh
+```console
 yarn ios-install        # sets up environment
 yarn ios-run            # builds and deploys to iOS
 ```

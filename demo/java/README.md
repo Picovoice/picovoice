@@ -33,7 +33,7 @@ Select "Build > Build Project" to build the two demo classes or "Build > Build A
 
 NOTE: the working directory for all dotnet commands is:
 
-```bash
+```console
 picovoice/demo/java/bin
 ```
 
@@ -44,7 +44,7 @@ Picovoice processes a 16kHz, single-channel audio stream. If a stereo file is pr
 The following processes a file looking for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` 
 and then infers the follow-on spoken command using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
-```bash
+```console
 java -jar picovoice-file-demo.jar \
 -i ${PATH_TO_INPUT_AUDIO_FILE} \
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
@@ -59,7 +59,7 @@ incoming audio from the microphone for instances of the wake phrase defined in t
 located at `${PATH_TO_RHINO_CONTEXT_FILE)}`. Upon completion of the spoken command inference it resumes wake word
 detection.
 
-```bash
+```console
 java -jar picovoice-mic-demo.jar \
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE}
@@ -68,7 +68,7 @@ java -jar picovoice-mic-demo.jar \
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
-```bash
+```console
 java -jar picovoice-mic-demo.jar -sd
 ```
 
@@ -84,7 +84,7 @@ Available input devices:
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
 microphone in the above example, you can invoke the demo application as below:
 
-```bash
+```console
 java -jar picovoice-mic-demo.jar \
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE}
@@ -93,7 +93,7 @@ java -jar picovoice-mic-demo.jar \
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
-```bash
+```console
 java -jar picovoice-mic-demo.jar \
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE)} \

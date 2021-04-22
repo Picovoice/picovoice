@@ -32,19 +32,19 @@ On Windows, install using the [OpenAL Windows Installer](https://openal.org/down
 
 On Linux use apt-get:
 
-```bash
+```console
 sudo apt-get install libopenal-dev
 ```
 
 On Mac use Brew:
 
-```bash
+```console
 brew install openal-soft
 ```
 
 Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI:
 
-```bash
+```console
 dotnet build -c MicDemo.Release
 dotnet build -c FileDemo.Release
 ```
@@ -53,7 +53,7 @@ dotnet build -c FileDemo.Release
 
 NOTE: the working directory for all dotnet commands is:
 
-```bash
+```console
 picovoice/demo/dotnet/PicovoiceDemo
 ```
 
@@ -64,7 +64,7 @@ Picovoice processes a 16kHz, single-channel audio stream. If a stereo file is pr
 The following processes a file looking for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and infers spoken commands
 using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
-```bash
+```console
 dotnet run -c FileDemo.Release -- \
 --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
@@ -78,7 +78,7 @@ incoming audio from the microphone for instances of the wake phrase defined in t
 `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the follow-on spoken command using the context defined by the file
 located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
-```bash
+```console
 dotnet run -c MicDemo.Release -- \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
@@ -87,7 +87,7 @@ dotnet run -c MicDemo.Release -- \
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console:
 
-```bash
+```console
 dotnet run -c MicDemo.Release -- --show_audio_devices
 ```
 
@@ -103,7 +103,7 @@ Available input devices:
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
 microphone in the above example, you can invoke the demo application as below:
 
-```bash
+```console
 dotnet run -c MicDemo.Release -- \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
@@ -112,7 +112,7 @@ dotnet run -c MicDemo.Release -- \
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
 
-```bash
+```console
 dotnet run -c MicDemo.Release -- \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \

@@ -27,7 +27,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 Microphone demo uses [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) for recording input audio. Consult the
 installation guide at [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/).
 
-```bash
+```console
 sudo pip3 install picovoicedemo
 ```
 
@@ -41,7 +41,7 @@ provided it only processes the first (left) channel. The following processes a f
 phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and then infers the follow-on spoken command
 using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
-```bash
+```console
 picovoice_demo_file \
 --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
@@ -56,7 +56,7 @@ incoming audio from the microphone for instances of the wake phrase defined in t
 located at `${PATH_TO_RHINO_CONTEXT_FILE)}`. Upon completion of the spoken command inference it resumes wake word
 detection.
 
-```bash
+```console
 picovoice_demo_mic \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
@@ -65,7 +65,7 @@ picovoice_demo_mic \
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
 of debugging facilities baked into the demo application to solve this. First, type the following into the console
 
-```bash
+```console
 picovoice_demo_mic --show_audio_devices
 ```
 
@@ -99,7 +99,7 @@ It provides information about various audio input devices on the box. On a Linux
 It can be seen that the last device (index 21) is considered default. But on this machine, a headset is being used as 
 the input device which has an index of 10. After finding the correct index the demo application can be invoked as below
 
-```bash
+```console
 picovoice_demo_mic \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
@@ -108,7 +108,7 @@ picovoice_demo_mic \
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved by
 
-```bash
+```console
 picovoice_demo_mic \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
