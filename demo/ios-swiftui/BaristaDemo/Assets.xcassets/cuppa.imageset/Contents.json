@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "icons8-coffee-maker-240.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "icons8-coffee-maker-240.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -17,5 +17,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "compression-type" : "lossless"
   }
 }

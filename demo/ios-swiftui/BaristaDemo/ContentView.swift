@@ -11,21 +11,23 @@ struct ContentView: View {
     var body: some View {
         
         return
-            VStack(alignment: .center) {
+            VStack(alignment: .center, spacing:20) {
                 Text("Say 'Hey Barista!'").font(.largeTitle).foregroundColor(activeBlue)
-                Image("cuppa")
-                    .padding(50.0)
+                Image("cuppa").resizable().scaledToFit().padding(.horizontal,50.0)
                 
-                VStack(alignment: .center, spacing: 20) {
+                VStack(alignment: .center, spacing: 5) {
+            
+                    Text("Beverage Size").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey)
+            
                     
                     // Size row
-                    HStack(alignment: .center, spacing: 20) {
+                    HStack(alignment: .center, spacing: 10) {
                         ForEach(viewModel.sizeSel) { item in
                             Button(action: {}){
                                 Text(item.title)
-                                    .font(.system(size: 25))
+                                    .font(.system(size: 20))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
-                                    .padding(10.0)
+                                    .padding(10)
                                 
                             }.background(
                                 Capsule()
@@ -39,13 +41,14 @@ struct ContentView: View {
                     }
                     
                     // # Shot row
-                    HStack(alignment: .center, spacing: 15) {
+                    Text("Espresso Shots").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    HStack(alignment: .center, spacing: 7) {
                         ForEach(viewModel.shotSel) { item in
                             Button(action: {}){
                                 Text(item.title)
-                                    .font(.system(size: 20))
+                                    .font(.system(size: 16))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
-                                    .padding(10.0)
+                                    .padding(8.0)
                                 
                             }.background(
                                 Capsule()
@@ -59,7 +62,8 @@ struct ContentView: View {
                     }
                     
                     // Beverage row
-                    VStack(alignment: .center, spacing: 7) {
+                    Text("Beverage Type").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    VStack(alignment: .center, spacing: 6) {
                         HStack(alignment: .center) {
                             ForEach(0..<viewModel.bevSel.count/2) { i in
                                 Button(action: {}){
@@ -98,19 +102,19 @@ struct ContentView: View {
                         }
                     }
                 }
-                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                
-                Text("Listening...")
-                    .offset(x: 0, y: 50)
-                    .font(.body)
-                    .foregroundColor(activeBlue)
-                    .opacity(viewModel.isListening ? 1 : 0)
-                Text("Didn't understand the command")
-                    .offset(x: 0, y: 50)
-                    .font(.body)
-                    .foregroundColor(activeBlue)
-                    .opacity(viewModel.missedCommand ? 1 : 0)
-            }
+                .padding(.top, 10.0)
+                ZStack(alignment: .center) {
+                    Text("Listening...")
+                        .font(.body)
+                        .foregroundColor(activeBlue)
+                        .opacity(viewModel.isListening ? 1 : 0)
+                    Text("Didn't understand the command")
+                        .font(.body)
+                        .foregroundColor(activeBlue)
+                        .opacity(viewModel.missedCommand ? 1 : 0)
+                }.padding(.top, 10.0)
+               
+            }.padding(.vertical, 6.0)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.white)
     }
 }
