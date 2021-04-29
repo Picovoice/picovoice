@@ -18,3 +18,5 @@ build/*
 *.xcworkspace
 xcuserdata
 Pods
+BaristaDemo/Resources/*.ppn
+BaristaDemo/Resources/*.rhn
