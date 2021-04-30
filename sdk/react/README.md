@@ -50,16 +50,16 @@ Using the Web Audio API requires a secure context (HTTPS connection), with the e
 
 ## Installation
 
-Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
+Use `npm` or `yarn` to install the Picovoice React package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
 
 ```console
-yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
 ```
 
 ## Usage

@@ -14,7 +14,7 @@ type EngineControlType = 'ppn' | 'rhn';
 
 export function usePicovoice(
   picovoiceWorkerFactory: PicovoiceWorkerFactory | null,
-  picovoiceHookArgs: PicovoiceHookArgs,
+  picovoiceHookArgs: PicovoiceHookArgs | null,
   keywordCallback: (keywordLabel: string) => void,
   inferenceCallback: (inference: RhinoInference) => void
 ): {
@@ -109,17 +109,23 @@ export function usePicovoice(
       };
     }
 
+    if (picovoiceHookArgs === null || picovoiceHookArgs === undefined) {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPicovoice(): Promise<{
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
     }> {
-      const { start: startWebVp = true } = picovoiceHookArgs;
+      const { start: startWebVp = true } = picovoiceHookArgs!;
       // Argument checking; the engines will also do checking but we can get
       // clearer error messages from the hook
-      if (picovoiceHookArgs.porcupineKeyword === undefined) {
+      if (picovoiceHookArgs!.porcupineKeyword === undefined) {
         throw Error('porcupineKeyword is missing');
       }
-      if (picovoiceHookArgs.rhinoContext === undefined) {
+      if (picovoiceHookArgs!.rhinoContext === undefined) {
         throw Error('rhinoContext is missing');
       }
       if (typeof porcupineCallback.current !== 'function') {
@@ -129,9 +135,8 @@ export function usePicovoice(
         throw Error('rhinoCallback is not a function');
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory!.create({
-        ...picovoiceHookArgs,
+        ...picovoiceHookArgs!,
         start: true,
       });
 

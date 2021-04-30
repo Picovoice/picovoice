@@ -1092,9 +1092,9 @@
     regenerator-runtime "^0.13.4"
 
 "@babel/runtime@^7.12.18":
-  version "7.13.10"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
-  integrity sha512-4QPkjJq6Ns3V/RgpEahRk+AGfL0eO6RHHtTWoNNr5mO49G6B5+X6d6THgWEAvTrznU5xYpbAlVKRYcsCgh/Akw==
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.0.tgz#46794bc20b612c5f75e62dd071e24dfd95f1cbe6"
+  integrity sha512-JELkvo/DlpNdJ7dlyw/eY7E0suy5i5GQH+Vlxaq1nsNJ+H7f4Vtv3jMeCEgRhZZQFXTjldYfQgv2qmM6M1v5wA==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1426,12 +1426,10 @@
     "@picovoice/porcupine-web-en-factory" "1.9.2"
     "@picovoice/rhino-web-en-factory" "1.6.1"
 
-"@picovoice/picovoice-web-react@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-1.0.3.tgz#220902a88584f8e7b316174d96d1e47975a1ad6c"
-  integrity sha512-PfDBCce4iVIgpO3eLlW0dmpz8c6lHN/IV7/ueIle6+W9GoMI7J6VE+8Euw0Mpvay7wqGY1TDvjwfL8MNy9kSjQ==
-  dependencies:
-    "@picovoice/web-voice-processor" "^2.0.0"
+"@picovoice/picovoice-web-react@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-1.0.6.tgz#16f8663a6cf26ae44479e7e94321bfaa0c7889b7"
+  integrity sha512-cv6pR+Z7S0jkNDktVyGTMDraP9NN+r9CLGi8uvy08z0kgf5QKH2xWb1xi43BBJpejAdLKGAq62YFpCGgNZHDfQ==
 
 "@picovoice/porcupine-web-en-factory@1.9.2":
   version "1.9.2"
@@ -1443,10 +1441,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-1.6.1.tgz#4f733d0b2731dda56fc3b2fb082b7dddfe3ee3ff"
   integrity sha512-7aofFwOfwC6O+9ggDMAqfKl18SEY7xbtENlx6rtBrdOAOBKDsX3tMwPka+sv6kfJ9a4FjzpqDGhM7mxqE8l2OA==
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
-  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
+"@picovoice/web-voice-processor@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.3.tgz#72d089e19eaf7f782c0338ef8751fc91e8662b2d"
+  integrity sha512-lvEsEvpUXbMUsEcrJ+pmCF6+O/jWyzhs9Gu24jNlVs/yFKjuLAckusdTWeURLjYMzOLwcvdMCD+aK2fcNRhOSw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
