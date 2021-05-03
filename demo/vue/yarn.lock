@@ -941,35 +941,33 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-web-en-worker@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-1.1.0.tgz#384f066d854b1164e0f096a8314c5d4c71333146"
-  integrity sha512-CkDhAtnuZ30b3jraW62xuqFslItvLFQAB4MY+kizT+L8Gjy071CD721PsnsZ/qcz26Qe/KwvkSzloYAGSv6+IA==
+"@picovoice/picovoice-web-en-worker@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-1.1.2.tgz#5d1e405c520dadb045cf12566216f44d0869a33f"
+  integrity sha512-5c9amWv9G9xqoMaAIfqyrpv4M4ukg3MJ9hNhufZ4urBjL1/37TKctGZKGNid5qZWhPqJ3R7t9QPet9HXd8GYlw==
   dependencies:
-    "@picovoice/porcupine-web-en-factory" "1.9.0"
-    "@picovoice/rhino-web-en-factory" "1.6.0"
+    "@picovoice/porcupine-web-en-factory" "1.9.3"
+    "@picovoice/rhino-web-en-factory" "1.6.1"
 
-"@picovoice/picovoice-web-vue@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-1.0.0.tgz#47842b01e9b26a63ace68bc000411a7101982601"
-  integrity sha512-nXzYD/bC40whCjjqZ9edazAiaeDaoZ+uCEkWu1QKgAO/bzjO6C9FZ2l9dL5PHGQoOkg4Sz9iaQEcQreF6ousTg==
-  dependencies:
-    "@picovoice/web-voice-processor" "^2.0.0"
+"@picovoice/picovoice-web-vue@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-1.0.1.tgz#780fbbd551244aa5943d1378c0212c69d0d8c0ae"
+  integrity sha512-UPo4Icm9HsVanbn8+/nBCweshdHUlWiSvHyGb0aHajDuo9RoQpMsPEh3YUp5+0qDRo/Jrd6u33813VFkuYByQQ==
 
-"@picovoice/porcupine-web-en-factory@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-1.9.0.tgz#cbeb929a9d191e0718863927505e741d6ae89ae0"
-  integrity sha512-KKfeSjt8zdoWx+LEVzdagLkqzeFzl1pWKv8iaSlLBHM/ApdpqxGBhecUHopfP+4+jsQoW74e1vcTRQSdrBzwxA==
+"@picovoice/porcupine-web-en-factory@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-1.9.3.tgz#c29d39a7db7aaba67d77d1719cb9d704efbf5435"
+  integrity sha512-0L+pYcH3unPATVaURkI7eCM8wzszy0bmSubn1AGyR3sm87hagMBCI3haprdUYfGd1LZvTbTQK9TaSATnSKEBKQ==
 
-"@picovoice/rhino-web-en-factory@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-1.6.0.tgz#2b7ffac9e483e580613bf3364e420447728d94d4"
-  integrity sha512-DEO1IdDUEpi8AyF/rp3zPveio3JeWht1nT8WXCMl8CRtL7oz8b+s8i100IWuaWWSY/AnJn/YmLQnph+Gx6FyBQ==
+"@picovoice/rhino-web-en-factory@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-1.6.1.tgz#4f733d0b2731dda56fc3b2fb082b7dddfe3ee3ff"
+  integrity sha512-7aofFwOfwC6O+9ggDMAqfKl18SEY7xbtENlx6rtBrdOAOBKDsX3tMwPka+sv6kfJ9a4FjzpqDGhM7mxqE8l2OA==
 
-"@picovoice/web-voice-processor@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.0.tgz#e4743389e846f42c7532e1ae4c32a45f6f9feff6"
-  integrity sha512-WWSpb/HCdJknpdcSYTbzMzmWnXIiM7jP96EhTR7FG92PGERyhhyWc+vem7+Ne59uEb1JtNlUdH8hQv64sf+vmw==
+"@picovoice/web-voice-processor@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.0.3.tgz#72d089e19eaf7f782c0338ef8751fc91e8662b2d"
+  integrity sha512-lvEsEvpUXbMUsEcrJ+pmCF6+O/jWyzhs9Gu24jNlVs/yFKjuLAckusdTWeURLjYMzOLwcvdMCD+aK2fcNRhOSw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 
