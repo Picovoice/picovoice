@@ -12,3 +12,6 @@
 
 ## [1.1.4] - 2021-04-12
 * Flutter 2.0 upgrade
+
+## [1.1.5] - 2021-05-03
+* Porcupine and Rhino upgrades
