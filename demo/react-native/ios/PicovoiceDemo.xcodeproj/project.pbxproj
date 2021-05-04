@@ -266,7 +266,6 @@
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey siri_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/jarvis_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/ok google_ios.ppn",
-				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/pico clock_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/picovoice_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/porcupine_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/terminator_ios.ppn",
@@ -287,7 +286,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/pico clock_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
@@ -433,7 +431,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -486,7 +483,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
-					"\"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)\"",
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
