@@ -27,18 +27,25 @@ HEADER = """
     specific language governing permissions and limitations under the License.
 */
 
+#ifndef PV_PRAMS_H
+#define PV_PRAMS_H
+
 #include <stdint.h>
 
 """
 
+FOOTER = """
 
+#endif // PV_PARAMS
+
+"""
 def generate_pv_params(ppn_file, rhn_file, header_file_folders):
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.join(script_dir, '../..')
     ppn_dir = os.path.join(repo_dir, 'resources/porcupine/resources/keyword_files/cortexm')
     rhn_dir = os.path.join(repo_dir, 'resources/rhino/resources/contexts/cortexm')
-    
+
     for header_file_path in header_file_folders:
         header_file = os.path.join(header_file_path, 'pv_params.h')
         with open(header_file, 'w') as f_out:
@@ -56,8 +63,10 @@ def generate_pv_params(ppn_file, rhn_file, header_file_folders):
             f_out.write('// context = %s \n' % rhn_file)
             f_out.write('static const uint8_t CONTEXT_ARRAY[] = {\n')
             f_out.write('\n'.join(ppn_c_array))
-            f_out.write('};\n\n')
-        
+            f_out.write('};\n')
+
+            f_out.write(FOOTER)
+
 
 
 def ppn_to_c_array(binary_file_path):
