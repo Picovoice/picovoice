@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -192,7 +192,7 @@ namespace Pv
         /// <summary>
         /// Version
         /// </summary>
-        public string Version => "1.1.0";
+        public string Version => "1.1.1";
 
         public override string ToString()
         {

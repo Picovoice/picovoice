@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -26,14 +26,18 @@ namespace PicovoiceTest
     {
         private readonly static string _cwd;
         private readonly static string _env;
+        private readonly static Architecture _arch;
         private readonly static string _contextPath;
 
         static MainTest()
         {
             _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _arch = RuntimeInformation.ProcessArchitecture;
             _env = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
-                   RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "linux" :
-                   RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" : "";
+                                                     RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
+                                                     RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
+                                                     RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
+                                                        (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? "raspberry-pi" : "";
             _contextPath = Path.Combine(_cwd, $"resources/rhino/resources/contexts/{_env}/coffee_maker_{_env}.rhn");
         }
 
