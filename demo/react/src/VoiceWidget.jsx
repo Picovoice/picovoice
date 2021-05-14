@@ -5,27 +5,34 @@ import { CLOCK_EN_64 } from "./dist/rhn_contexts_base64";
 
 export default function VoiceWidget() {
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
-  const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
-
-  useEffect(() => {
-    async function loadPorcupineWorkerChunk() {
-      const pvWorkerFactory = (
-        await import("@picovoice/picovoice-web-en-worker")
-      ).PicovoiceWorkerFactory; // <-- Dynamically import the worker
-      console.log("Picovoice worker chunk is loaded.");
-      return pvWorkerFactory;
-    }
-    if (workerChunk.workerFactory === null) {
-      // <-- We only want to load once!
-      loadPorcupineWorkerChunk().then((ppnWorkerFactory) => {
-        setWorkerChunk({ workerFactory: ppnWorkerFactory });
-        setIsChunkLoaded(true);
-      });
-    }
-  }, [workerChunk]);
+  const [workerChunk, setWorkerChunk] = useState({ factory: null });
 
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [inference, setInference] = useState(null);
+
+  useEffect(() => {
+    if (workerChunk.factory === null) {
+      let isCanceled = false;
+
+      const loadPicovoice = async () => {
+        const pvWorkerFactory = (
+          await import("@picovoice/picovoice-web-en-worker")
+        ).PicovoiceWorkerFactory;
+        console.log("Picovoice worker chunk is loaded.");
+
+        if (!isCanceled) {
+          setWorkerChunk({ factory: pvWorkerFactory });
+          setIsChunkLoaded(true);
+        }
+      };
+
+      loadPicovoice();
+
+      return () => {
+        isCanceled = true;
+      };
+    }
+  }, [workerChunk]);
 
   const inferenceEventHandler = (rhinoInference) => {
     console.log(rhinoInference);
