@@ -66,8 +66,13 @@ export default {
           case 'rhn-inference':
             this.$emit('rhn-inference', messageEvent.data.inference);
             break;
+          case 'rhn-info':
+            this.$emit('rhn-info', messageEvent.data.info);
+            break;
         }
       };
+
+      this.pvWorker.postMessage({ command: 'info' });
     } catch (error) {
       this.$emit('pv-error', error);
     }
