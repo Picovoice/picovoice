@@ -2,7 +2,7 @@ import { Component } from "@angular/core"
 import { Subscription } from "rxjs"
 
 import { PicovoiceService } from "@picovoice/picovoice-web-angular"
-import { PicovoiceServiceArgs, RhinoInference } from "@picovoice/picovoice-web-angular/lib/picovoice_types"
+import { PicovoiceServiceArgs, RhinoInferenceFinalized } from "@picovoice/picovoice-web-angular/lib/picovoice_types"
 import { ALARM_CLOCK_64 } from "./rhino_context"
 
 @Component({
@@ -26,7 +26,7 @@ export class VoiceWidget {
   isTalking: boolean = false
   errorMessage: string
   detections: string[] = []
-  inference: RhinoInference | null = null
+  inference: RhinoInferenceFinalized | null = null
   picovoiceServiceArgs: PicovoiceServiceArgs = {
     rhinoContext: {
       base64:
