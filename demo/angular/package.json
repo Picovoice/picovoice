@@ -7,8 +7,11 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "base64": "node scripts/base64.js",
+    "postinstall": "node scripts/base64.js"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
     "@angular/animations": "~11.0.5",

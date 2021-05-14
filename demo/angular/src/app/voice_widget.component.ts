@@ -3,7 +3,7 @@ import { Subscription } from "rxjs"
 
 import { PicovoiceService } from "@picovoice/picovoice-web-angular"
 import { PicovoiceServiceArgs, RhinoInferenceFinalized } from "@picovoice/picovoice-web-angular/lib/picovoice_types"
-import { ALARM_CLOCK_64 } from "./rhino_context"
+import { CLOCK_EN_64 } from "../dist/rhn_contexts_base64"
 
 @Component({
   selector: 'voice-widget',
@@ -30,7 +30,7 @@ export class VoiceWidget {
   picovoiceServiceArgs: PicovoiceServiceArgs = {
     rhinoContext: {
       base64:
-        ALARM_CLOCK_64
+        CLOCK_EN_64
     },
     porcupineKeyword: {
       builtin: "Picovoice",
