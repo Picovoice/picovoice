@@ -8,7 +8,9 @@
     "start": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "base64": "node scripts/base64.mjs",
+    "postinstall": "node scripts/base64.mjs"
   },
   "dependencies": {
     "@picovoice/picovoice-web-en-worker": "^1.1.2",
