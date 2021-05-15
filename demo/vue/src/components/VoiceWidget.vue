@@ -15,6 +15,7 @@
       v-on:pv-ready="pvReadyFn"
       v-on:ppn-keyword="pvKeywordFn"
       v-on:rhn-inference="pvInferenceFn"
+      v-on:rhn-info="pvInfoFn"
       v-on:pv-error="pvErrorFn"
     />
     <h2>VoiceWidget</h2>
@@ -40,6 +41,11 @@
     <code v-if="inference !== null">
       {{ inference }}
     </code>
+    <br />
+    <div>
+      <h2>Context Info</h2>
+      <pre>{{ info }}</pre>
+    </div>
   </div>
 </template>
 
@@ -60,6 +66,7 @@ export default {
       isLoaded: false,
       isListening: false,
       isTalking: false,
+      info: null,
       engine: null,
       factory: PicovoiceWorkerFactoryEn,
     };
@@ -87,15 +94,18 @@ export default {
     pvReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
-      this.engine = 'ppn'
+      this.engine = "ppn";
+    },
+    pvInfoFn: function (info) {
+      this.info = info;
     },
     pvKeywordFn: function (keyword) {
       this.detections = [...this.detections, keyword];
-      this.engine = 'rhn'
+      this.engine = "rhn";
     },
     pvInferenceFn: function (inference) {
       this.inference = inference;
-      this.engine = 'ppn'
+      this.engine = "ppn";
     },
     pvErrorFn: function (error) {
       this.isError = true;
