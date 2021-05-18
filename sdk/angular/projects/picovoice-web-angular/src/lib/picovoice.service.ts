@@ -3,11 +3,11 @@ import { Subject } from 'rxjs';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 import type {
-  RhinoInference,
   PicovoiceWorker,
   PicovoiceWorkerResponse,
   PicovoiceWorkerFactory,
   PicovoiceServiceArgs,
+  RhinoInferenceFinalized,
 } from './picovoice_types';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class PicovoiceService implements OnDestroy {
   public isInit = false;
   public contextInfo: string | null = null;
   public keyword$: Subject<string> = new Subject<string>();
-  public inference$: Subject<RhinoInference> = new Subject<RhinoInference>();
+  public inference$: Subject<RhinoInferenceFinalized> = new Subject<RhinoInferenceFinalized>();
   public isError$: Subject<boolean> = new Subject<boolean>();
   public listening$: Subject<boolean> = new Subject<boolean>();
   public error$: Subject<Error | string | null> = new Subject<
@@ -26,7 +26,7 @@ export class PicovoiceService implements OnDestroy {
   >();
   private picovoiceWorker: PicovoiceWorker | null = null;
 
-  constructor() { }
+  constructor() {}
 
   public pause(): boolean {
     if (this.webVoiceProcessor !== null) {
@@ -90,16 +90,18 @@ export class PicovoiceService implements OnDestroy {
             break;
           }
           case 'rhn-inference': {
-            this.inference$.next(message.data.inference);
+            this.inference$.next(
+              message.data.inference as RhinoInferenceFinalized
+            );
             break;
           }
           case 'rhn-info': {
-            this.contextInfo = message.data.info
+            this.contextInfo = message.data.info;
             break;
           }
         }
       };
-      this.picovoiceWorker.postMessage({ command: "info" })
+      this.picovoiceWorker.postMessage({ command: 'info' });
     } catch (error) {
       this.isInit = false;
       this.isError$.next(true);

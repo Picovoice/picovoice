@@ -2,15 +2,36 @@
 // Rhino Types
 //
 export type RhinoInference = {
+  /** Rhino has concluded the inference (isUnderstood is now set) */
   isFinalized: boolean;
+  /** The intent was understood (it matched an expression in the context) */
   isUnderstood?: boolean;
+  /** The name of the intent */
   intent?: string;
-  slots?: Record<string, unknown>;
+  /** Map of the slot variables and values extracted from the utterance */
+  slots?: Record<string, string>;
 };
 
-export type RhinoWorkerResponseInference = {
-  command: 'rhn-inference';
-  inference: RhinoInference;
+export type RhinoInferenceFinalized = {
+  /** Rhino has concluded the inference (isUnderstood is now set) */
+  isFinalized: true;
+  /** The intent was understood (it matched an expression in the context) */
+  isUnderstood: boolean;
+  /** The name of the intent */
+  intent?: string;
+  /** Map of the slot variables and values extracted from the utterance */
+  slots?: Record<string, string>;
+};
+
+export type RhinoInferenceUnderstood = {
+  /** Rhino has concluded the inference (isUnderstood is now true) */
+  isFinalized: true;
+  /** The intent was understood (it matched an expression in the context) */
+  isUnderstood: true;
+  /** The name of the intent */
+  intent: string;
+  /** Map of the slot variables and values extracted from the utterance */
+  slots?: Record<string, string>;
 };
 
 export interface RhinoEngine {
@@ -29,17 +50,24 @@ export interface RhinoEngine {
 }
 
 export type RhinoContext = {
+  /** Base64 representation of a trained Rhino context (`.rhn` file) */
   base64: string;
-  sensitivty?: number;
+  /** Value in range [0,1] that trades off miss rate for false alarm */
+  sensitivity?: number;
+};
+
+export type RhinoWorkerResponseInference = {
+  command: 'rhn-inference';
+  inference: RhinoInference;
 };
 
 export type RhinoWorkerRequestInfo = {
-  command: 'info'
-}
+  command: 'info';
+};
 
 export type RhinoWorkerResponseInfo = {
   command: 'rhn-info';
-  info: string
+  info: string;
 };
 
 //
@@ -71,7 +99,6 @@ export interface PorcupineEngine {
   release(): void;
   process(frames: Int16Array): number;
 }
-
 
 //
 // Picovoice Types
