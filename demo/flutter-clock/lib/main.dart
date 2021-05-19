@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title = ""}) : super(key: key);
 
   final String title;
 
@@ -61,12 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _alarmTextInvisible = false;
   bool _alarmSounding = false;
   DateTime _clockTime = DateTime.now();
-  DateTime _alarmTime;
+  DateTime? _alarmTime;
   Stopwatch _stopwatch = Stopwatch();
   Stopwatch _timerStopwatch = Stopwatch();
   Duration _timerDuration = Duration();
-  PicovoiceManager _picovoiceManager;
-  Timer _updateTimer;
+  PicovoiceManager? _picovoiceManager;
+  Timer? _updateTimer;
   @override
   void initState() {
     super.initState();
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _picovoiceManager = await PicovoiceManager.create(
           keywordPath, _wakeWordCallback, contextPath, _inferenceCallback,
           errorCallback: _errorCallback);
-      _picovoiceManager.start();
+      _picovoiceManager?.start();
     } on PvError catch (ex) {
       print(ex);
     }
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _performAlarmCommand(Map<String, String> slots) {
-    String action = slots['action'];
+    String? action = slots['action'];
     if (action == 'delete') {
       _alarmTime = null;
     }
@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _performTimerCommand(Map<String, String> slots) {
-    String action = slots['action'];
+    String? action = slots['action'];
     if (action == 'start') {
       if (!_timerStopwatch.isRunning) _timerStopwatch.start();
     } else if (action == 'pause' || action == 'stop') {
@@ -189,14 +189,14 @@ class _MyHomePageState extends State<MyHomePage> {
     int alarmWeekday = DateTime.now().weekday;
 
     if (slots['day'] != null) {
-      alarmWeekday = _dayToWeekday(slots['day']);
+      alarmWeekday = _dayToWeekday(slots['day']!);
     }
     if (slots['hour'] != null) {
-      hour = int.parse(slots['hour']);
+      hour = int.parse(slots['hour']!);
       if (hour == 12) hour = 0;
     }
     if (slots['minute'] != null) {
-      minute = int.parse(slots['minute']);
+      minute = int.parse(slots['minute']!);
     }
 
     if (slots['amPm'] == "p m") hour += 12;
@@ -266,13 +266,13 @@ class _MyHomePageState extends State<MyHomePage> {
     int minutes = 0;
     int seconds = 0;
     if (slots['hours'] != null) {
-      hours = int.parse(slots['hours']);
+      hours = int.parse(slots['hours']!);
     }
     if (slots['minutes'] != null) {
-      minutes = int.parse(slots['minutes']);
+      minutes = int.parse(slots['minutes']!);
     }
     if (slots['seconds'] != null) {
-      seconds = int.parse(slots['seconds']);
+      seconds = int.parse(slots['seconds']!);
     }
     _timerDuration = Duration(hours: hours, minutes: minutes, seconds: seconds);
     _timerStopwatch.start();
@@ -282,7 +282,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _performStopwatchCommand(Map<String, String> slots) {
-    String action = slots['action'];
+    String? action = slots['action'];
     if (action == 'start') {
       if (!_stopwatch.isRunning) _stopwatch.start();
     } else if (action == 'pause' || action == 'stop') {
@@ -323,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime now = DateTime.now();
     if (_alarmTime != null &&
         !_alarmSounding &&
-        (_alarmTime.isBefore(now) || _alarmTime.isAtSameMomentAs(now))) {
+        (_alarmTime!.isBefore(now) || _alarmTime!.isAtSameMomentAs(now))) {
       _alarmComplete();
     }
 

@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   bool wakeWordDetected = false;
   String rhinoText = "";
   String errorText = "";
-  PicovoiceManager _picovoiceManager;
+  PicovoiceManager? _picovoiceManager;
 
   @override
   void initState() {
@@ -151,7 +151,10 @@ class _MyAppState extends State<MyApp> {
     });
 
     try {
-      await _picovoiceManager.start();
+      if (_picovoiceManager == null) {
+        throw PvAudioException("_picovoiceManager not initialized.");
+      }
+      await _picovoiceManager!.start();
       this.setState(() {
         isProcessing = true;
         rhinoText = "Listening for wake word...";
@@ -174,7 +177,10 @@ class _MyAppState extends State<MyApp> {
     });
 
     try {
-      await _picovoiceManager.stop();
+      if (_picovoiceManager == null) {
+        throw PvAudioException("_picovoiceManager not initialized.");
+      }
+      await _picovoiceManager!.stop();
       this.setState(() {
         isProcessing = false;
         rhinoText = "";
