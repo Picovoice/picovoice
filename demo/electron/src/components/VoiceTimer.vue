@@ -87,6 +87,41 @@ export default {
         this.isListening = !this.isListening;
       }
     },
+    startTimer: function () {
+      if (this.interval !== null) {
+        clearInterval(this.interval);
+      }
+
+      this.interval = setInterval(() => {
+        this.timeRemaining = this.timeRemaining - 1;
+        if (this.timeRemaining <= 0) {
+          clearInterval(this.interval);
+        }
+
+        const hours = Math.floor(this.timeRemaining / 3600);
+        const minutes = Math.floor((this.timeRemaining - hours * 3600) / 60);
+        const seconds = this.timeRemaining - hours * 3600 - minutes * 60;
+
+        this.timeRemainingDisplay = `${hours
+          .toString()
+          .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+      }, 1000);
+    },
+    pauseTimer: function () {
+      if (this.interval !== null) {
+        clearInterval(this.interval);
+        this.interval === null;
+      }
+    },
+    stopTimer: function () {
+      if (this.interval !== null) {
+        clearInterval(this.interval);
+        this.interval === null;
+        this.timeRemaining = 0;
+      }
+    },
     pvInitFn: function () {
       this.isError = false;
     },
@@ -99,10 +134,49 @@ export default {
       this.info = info;
     },
     pvKeywordFn: function (keyword) {
-      console.log(keyword);
+      this.detections = [...this.detections, keyword];
+      this.engine = "rhn";
+
+      // Reset the inference from the follow-on command now that we started a new one;
+      // If it was previously not understood, showing "not understood" at this point is confusing.
+      this.inference = null;
     },
     pvInferenceFn: function (inference) {
-      console.log(inference);
+      this.inference = inference;
+      this.engine = "ppn";
+
+      if (inference.isUnderstood) {
+        switch (inference.intent) {
+          case "setAlarm":
+            let hours = 0;
+            let minutes = 0;
+            let seconds = 0;
+            if (inference.slots["hours"] !== undefined) {
+              hours = parseInt(inference.slots["hours"]);
+            }
+            if (inference.slots["minutes"] !== undefined) {
+              minutes = parseInt(inference.slots["minutes"]);
+            }
+            if (inference.slots["seconds"] !== undefined) {
+              seconds = parseInt(inference.slots["seconds"]);
+            }
+            const timerInSeconds = hours * 3600 + minutes * 60 + seconds;
+            this.timeRemaining = timerInSeconds;
+            this.timeInitial = timerInSeconds;
+            this.startTimer();
+            break;
+          case "pause":
+            this.pauseTimer();
+            break;
+          case "reset":
+            this.timeRemaining = this.timeInitial;
+            this.stopTimer();
+            break;
+          case "resume":
+            this.startTimer();
+            break;
+        }
+      }
     },
     pvErrorFn: function (error) {
       this.isError = true;
