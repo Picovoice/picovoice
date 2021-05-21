@@ -9,6 +9,18 @@
 // limitations under the License.
 //
 
+// Go binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but
+// runs entirely on-device (offline).
+
+// Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of audio in real-time.
+// After detection of wake word, it begins to infer the user's intent from the follow-on spoken command. Upon detection
+// of wake word and completion of voice command, it invokes user-provided callbacks to signal these events.
+
+// Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
+// `FrameLength`. The incoming audio needs to have a sample rate equal to `SampleRate` and be 16-bit
+// linearly-encoded. Picovoice operates on single-channel audio. It uses Porcupine wake word engine for wake word
+// detection and Rhino Speech-to-Intent engine for intent inference.
+
 package picovoice
 
 import (
@@ -19,6 +31,7 @@ import (
 	rhn "github.com/Picovoice/rhino/binding/go"
 )
 
+// PvStatus descibes error codes returned from native code
 type PvStatus int
 
 const (
@@ -60,28 +73,43 @@ type InferenceCallbackType func(rhn.RhinoInference)
 
 // Picovoice struct
 type Picovoice struct {
+	// instance of porcupine
 	porcupine ppn.Porcupine
 
+	// instance of rhino
 	rhino rhn.Rhino
 
+	// only true after init and before delete
 	initialized bool
 
+	// true after Porcupine detected wake word
 	wakeWordDetected bool
 
+	// Path to Porcupine keyword file (.ppn)
 	KeywordPath string
 
+	// Function to be called once the wake word has been detected
 	WakeWordCallback WakeWordCallbackType
 
+	// Path to Rhino context file (.rhn)
 	ContextPath string
 
+	// Function to be called once Rhino has an inference ready
 	InferenceCallback InferenceCallbackType
 
+	// Path to Porcupine model file (.pv)
 	PorcupineModelPath string
 
+	// Sensitivity value for detecting keyword. The value should be a number within [0, 1]. A
+	// higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
 	PorcupineSensitivity float32
 
+	// Path to Rhino model file (.pv)
 	RhinoModelPath string
 
+	// Inference sensitivity. A higher sensitivity value results in
+	// fewer misses at the cost of (potentially) increasing the erroneous inference rate.
+	// Sensitivity should be a floating-point number within 0 and 1.
 	RhinoSensitivity float32
 
 	// Once initialized, stores the source of the Rhino context in YAML format. Shows the list of intents,
@@ -89,6 +117,7 @@ type Picovoice struct {
 	ContextInfo string
 }
 
+// Returns a Picovoice stuct with default parameters
 func NewPicovoice(keywordPath string,
 	wakewordCallback WakeWordCallbackType,
 	contextPath string,
@@ -105,13 +134,23 @@ func NewPicovoice(keywordPath string,
 }
 
 var (
-	FrameLength      = ppn.FrameLength
-	SampleRate       = ppn.SampleRate
+	// Required number of audio samples per frame.
+	FrameLength = ppn.FrameLength
+
+	// Required sample rate of input audio
+	SampleRate = ppn.SampleRate
+
+	// Version of Porcupine being used
 	PorcupineVersion = ppn.Version
-	RhinoVersion     = rhn.Version
-	Version          = fmt.Sprintf("1.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
+
+	// Version of Rhino being used
+	RhinoVersion = rhn.Version
+
+	// Picovoice version
+	Version = fmt.Sprintf("1.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
 )
 
+// Init function for Picovoice. Must be called before attempting process.
 func (picovoice *Picovoice) Init() error {
 
 	if picovoice.KeywordPath == "" {
@@ -167,6 +206,7 @@ func (picovoice *Picovoice) Init() error {
 	return nil
 }
 
+// Releases resouces aquired by Picovoice
 func (picovoice *Picovoice) Delete() error {
 	err := picovoice.porcupine.Delete()
 	if err != nil {
@@ -182,6 +222,8 @@ func (picovoice *Picovoice) Delete() error {
 	return nil
 }
 
+// Process a frame of pcm audio with the Picovoice platform.
+// Invokes user-defined callbacks upon detection of wake word and completion of follow-on command inference
 func (picovoice *Picovoice) Process(pcm []int16) error {
 	if !picovoice.initialized {
 		return fmt.Errorf("Picovoice could not process because it has either not been initialized or has been deleted.")
