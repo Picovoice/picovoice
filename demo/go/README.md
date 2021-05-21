@@ -27,6 +27,11 @@ go run filedemo/picovoice_file_demo.go \
 -context_path "/path/to/context.rhn"
 ```
 
+To see all available arguments, use the `-h` flag:
+```console
+go run filedemo/picovoice_file_demo.go
+```
+
 ### Microphone Demo
 
 It opens an audio stream from a microphone and detects utterances of a give wake word(s). The following processes
@@ -38,6 +43,11 @@ detection.
 go run micdemo/picovoice_mic_demo.go \
 -keyword_path "/path/to/keyword.ppn" \
 -context_path "/path/to/context.rhn"
+```
+
+To see all available arguments, use the `-h` flag:
+```console
+go run micdemo/picovoice_mic_demo.go
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple

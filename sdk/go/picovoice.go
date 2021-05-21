@@ -169,6 +169,10 @@ func (picovoice *Picovoice) Init() error {
 		return fmt.Errorf("%s: Context file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), picovoice.ContextPath)
 	}
 
+	if picovoice.InferenceCallback == nil {
+		return fmt.Errorf("%s: No InferenceCallback was provided.", pvStatusToString(INVALID_ARGUMENT))
+	}
+
 	if ppn.SampleRate != rhn.SampleRate {
 		return fmt.Errorf("%s: Pocupine sample rate (%d) was differenct than Rhino sample rate (%d)",
 			pvStatusToString(INVALID_ARGUMENT),
@@ -196,6 +200,7 @@ func (picovoice *Picovoice) Init() error {
 	picovoice.rhino = rhn.Rhino{
 		ModelPath:   picovoice.RhinoModelPath,
 		ContextPath: picovoice.ContextPath,
+		Sensitivity: picovoice.RhinoSensitivity,
 	}
 	err = picovoice.rhino.Init()
 	if err != nil {
@@ -208,14 +213,14 @@ func (picovoice *Picovoice) Init() error {
 
 // Releases resouces aquired by Picovoice
 func (picovoice *Picovoice) Delete() error {
-	err := picovoice.porcupine.Delete()
-	if err != nil {
-		return err
-	}
+	porcupineErr := picovoice.porcupine.Delete()
+	rhinoErr := picovoice.rhino.Delete()
 
-	err = picovoice.rhino.Delete()
-	if err != nil {
-		return err
+	if porcupineErr != nil {
+		return porcupineErr
+	}
+	if rhinoErr != nil {
+		return rhinoErr
 	}
 
 	picovoice.initialized = false
@@ -257,9 +262,7 @@ func (picovoice *Picovoice) Process(pcm []int16) error {
 				return err
 			}
 
-			if picovoice.InferenceCallback != nil {
-				picovoice.InferenceCallback(inference)
-			}
+			picovoice.InferenceCallback(inference)
 		}
 	}
 	return nil

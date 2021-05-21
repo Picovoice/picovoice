@@ -81,20 +81,21 @@ func TestProcess(t *testing.T) {
 	}
 
 	if !isWakeWordDetected {
-		t.Fatalf("Did not detect wake word.")
+		t.Fatalf("Did not detect wake word 'picovoice'.")
 	}
 
 	if !inference.IsUnderstood {
 		t.Fatalf("Didn't understand.")
 	}
 
-	if inference.Intent != "orderBeverage" {
-		t.Fatalf("Incorrect intent '%s'", inference.Intent)
+	expectedIntent := "orderBeverage"
+	if inference.Intent != expectedIntent {
+		t.Fatalf("Incorrect intent '%s' (expected %s)", inference.Intent, expectedIntent)
 	}
 
 	expectedSlotValues := map[string]string{"beverage": "coffee", "size": "large"}
 	if !reflect.DeepEqual(inference.Slots, expectedSlotValues) {
-		t.Fatalf("Incorrect slots '%v'", inference.Slots)
+		t.Fatalf("Incorrect slots '%v'\n Expected %v", inference.Slots, expectedSlotValues)
 	}
 }
 
