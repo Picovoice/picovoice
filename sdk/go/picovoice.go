@@ -56,7 +56,7 @@ func pvStatusToString(status PvStatus) string {
 type WakeWordCallbackType func()
 
 // Callback for when Rhino has made an inference
-type InferenceCallbackType func(rhn.RhinoInferece)
+type InferenceCallbackType func(rhn.RhinoInference)
 
 // Picovoice struct
 type Picovoice struct {

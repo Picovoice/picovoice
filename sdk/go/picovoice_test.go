@@ -29,7 +29,7 @@ var (
 	osName             = getOS()
 	p                  Picovoice
 	isWakeWordDetected = false
-	inference          rhn.RhinoInferece
+	inference          rhn.RhinoInference
 )
 
 func TestMain(m *testing.M) {
@@ -37,7 +37,7 @@ func TestMain(m *testing.M) {
 	keywordPath, _ := filepath.Abs(fmt.Sprintf("../../resources/porcupine/resources/keyword_files/%s/picovoice_%s.ppn", osName, osName))
 	contextPath, _ := filepath.Abs(fmt.Sprintf("../../resources/rhino/resources/contexts/%s/coffee_maker_%s.rhn", osName, osName))
 	wakeWordCallback := func() { isWakeWordDetected = true }
-	inferenceCallback := func(inferenceResult rhn.RhinoInferece) { inference = inferenceResult }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
 	p = NewPicovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback)
 	err := p.Init()
 	if err != nil {
