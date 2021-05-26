@@ -15,17 +15,17 @@ import 'package:picovoice/picovoice.dart';
 import 'package:picovoice/picovoice_error.dart';
 
 class PicovoiceManager {
-  Picovoice _picovoice;
-  VoiceProcessor _voiceProcessor;
-  RemoveListener _removeVoiceProcessorListener;
-  ErrorCallback _errorCallback;
+  Picovoice? _picovoice;
+  VoiceProcessor? _voiceProcessor;
+  RemoveListener? _removeVoiceProcessorListener;
+  ErrorCallback? _errorCallback;
 
-  String _porcupineModelPath;
+  String? _porcupineModelPath;
   String _keywordPath;
   double _porcupineSensitivity = 0.5;
   WakeWordCallback _wakeWordCallback;
 
-  String _rhinoModelPath;
+  String? _rhinoModelPath;
   String _contextPath;
   double _rhinoSensitivity = 0.5;
   InferenceCallback _inferenceCallback;
@@ -61,9 +61,9 @@ class PicovoiceManager {
       String contextPath, InferenceCallback inferenceCallback,
       {double porcupineSensitivity = 0.5,
       double rhinoSensitivity = 0.5,
-      String porcupineModelPath,
-      String rhinoModelPath,
-      ErrorCallback errorCallback}) {
+      String? porcupineModelPath,
+      String? rhinoModelPath,
+      ErrorCallback? errorCallback}) {
     return new PicovoiceManager._(
         keywordPath,
         wakeWordCallback,
@@ -105,7 +105,10 @@ class PicovoiceManager {
         porcupineModelPath: _porcupineModelPath,
         rhinoModelPath: _rhinoModelPath);
 
-    _removeVoiceProcessorListener = _voiceProcessor.addListener((buffer) async {
+    if (_voiceProcessor == null) {
+      throw new PvError("flutter_voice_processor not available.");
+    }
+    _removeVoiceProcessorListener = _voiceProcessor!.addListener((buffer) async {
       // cast from dynamic to int array
       List<int> picovoiceFrame;
       try {
@@ -115,7 +118,7 @@ class PicovoiceManager {
             "flutter_voice_processor sent an unexpected data type.");
         _errorCallback == null
             ? print(castError.message)
-            : _errorCallback(castError);
+            : _errorCallback!(castError);
         return;
       }
 
@@ -123,14 +126,14 @@ class PicovoiceManager {
       try {
         _picovoice?.process(picovoiceFrame);
       } on PvError catch (error) {
-        _errorCallback == null ? print(error.message) : _errorCallback(error);
+        _errorCallback == null ? print(error.message) : _errorCallback!(error);
       }
     });
 
-    if (await _voiceProcessor.hasRecordAudioPermission()) {
+    if (await _voiceProcessor?.hasRecordAudioPermission() != null) {
       try {
         // create picovoice
-        await _voiceProcessor.start();
+        await _voiceProcessor!.start();
       } on PlatformException {
         throw new PvAudioException(
             "Audio engine failed to start. Hardware may not be supported.");
@@ -143,7 +146,7 @@ class PicovoiceManager {
 
   /// Closes audio stream and stops Picovoice processing
   Future<void> stop() async {
-    await _voiceProcessor.stop();
+    await _voiceProcessor?.stop();
     _removeVoiceProcessorListener?.call();
     _picovoice?.delete();
     _picovoice = null;

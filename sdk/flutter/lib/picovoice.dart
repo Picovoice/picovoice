@@ -20,9 +20,9 @@ typedef InferenceCallback(Map<String, dynamic> inference);
 typedef ErrorCallback(PvError error);
 
 class Picovoice {
-  Porcupine _porcupine;
+  Porcupine? _porcupine;
   WakeWordCallback _wakeWordCallback;
-  Rhino _rhino;
+  Rhino? _rhino;
   InferenceCallback _inferenceCallback;
   bool _isWakeWordDetected = false;
 
@@ -43,7 +43,7 @@ class Picovoice {
 
   /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
   /// which expressions map to those intents, as well as slots and their possible values.
-  String get contextInfo => _rhino?.contextInfo;
+  String? get contextInfo => _rhino?.contextInfo;
 
   /// Picovoice constructor
   ///
@@ -76,8 +76,8 @@ class Picovoice {
       String contextPath, InferenceCallback inferenceCallback,
       {double porcupineSensitivity = 0.5,
       double rhinoSensitivity = 0.5,
-      String porcupineModelPath,
-      String rhinoModelPath}) async {
+      String? porcupineModelPath,
+      String? rhinoModelPath}) async {
     Porcupine porcupine;
     try {
       porcupine = await Porcupine.fromKeywordPaths([keywordPath],
@@ -126,13 +126,13 @@ class Picovoice {
     }
 
     if (!_isWakeWordDetected) {
-      final int keywordIndex = _porcupine.process(frame);
+      final int keywordIndex = _porcupine!.process(frame);
       if (keywordIndex >= 0) {
         _isWakeWordDetected = true;
         _wakeWordCallback();
       }
     } else {
-      Map<String, dynamic> rhinoResult = _rhino.process(frame);
+      Map<String, dynamic> rhinoResult = _rhino!.process(frame);
       if (rhinoResult['isFinalized']) {
         _isWakeWordDetected = false;
         rhinoResult.remove('isFinalized');
@@ -145,11 +145,11 @@ class Picovoice {
   /// Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
   void delete() {
     if (_porcupine != null) {
-      _porcupine.delete();
+      _porcupine!.delete();
       _porcupine = null;
     }
     if (_rhino != null) {
-      _rhino.delete();
+      _rhino!.delete();
       _rhino = null;
     }
   }
