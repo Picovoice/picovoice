@@ -15,3 +15,6 @@
 
 ## [1.1.5] - 2021-05-03
 * Porcupine and Rhino upgrades
+
+## [1.1.6] - 2021-05-26
+* Migrated to null safety

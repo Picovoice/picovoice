@@ -108,7 +108,8 @@ class PicovoiceManager {
     if (_voiceProcessor == null) {
       throw new PvError("flutter_voice_processor not available.");
     }
-    _removeVoiceProcessorListener = _voiceProcessor!.addListener((buffer) async {
+    _removeVoiceProcessorListener =
+        _voiceProcessor!.addListener((buffer) async {
       // cast from dynamic to int array
       List<int> picovoiceFrame;
       try {

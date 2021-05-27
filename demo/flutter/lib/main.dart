@@ -103,9 +103,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void errorCallback(PvError error) {
-    this.setState(() {
-      errorText = error.message;
-    });
+    if (error.message != null) {
+      this.setState(() {
+        errorText = error.message!;
+      });
+    }
   }
 
   String prettyPrintInference(Map<String, dynamic> inference) {

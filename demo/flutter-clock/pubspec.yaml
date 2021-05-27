@@ -10,11 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.16.1
+  intl: ^0.17.0
   path_provider: ^2.0.1
-  picovoice: ^1.1.5
-  flutter_ringtone_player: ^2.0.0  
-  fluttertoast: ^7.1.6
+  picovoice: ^1.1.6
+  flutter_ringtone_player: ^3.0.0  
+  fluttertoast: ^8.0.7
 
 
 dev_dependencies:

@@ -434,7 +434,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text(
             _alarmTime == null || _alarmTextInvisible
                 ? ""
-                : DateFormat.MMMEd().add_jm().format(_alarmTime),
+                : DateFormat.MMMEd().add_jm().format(_alarmTime!),
             style: Theme.of(context).textTheme.subtitle2,
           )),
     ]);
