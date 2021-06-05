@@ -18,3 +18,6 @@
 
 ## [1.1.6] - 2021-05-26
 * Migrated to null safety
+
+## [1.1.7] - 2021-06-04
+* Lib update
