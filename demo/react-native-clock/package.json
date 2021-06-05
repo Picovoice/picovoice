@@ -12,10 +12,10 @@
     "ios-run": "react-native run-ios"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "1.1.9",
-    "@picovoice/porcupine-react-native": "^1.9.8",
+    "@picovoice/picovoice-react-native": "1.1.10",
+    "@picovoice/porcupine-react-native": "^1.9.9",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "^1.6.8",
+    "@picovoice/rhino-react-native": "^1.6.9",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-moment": "^1.1.1",
