@@ -13,11 +13,14 @@
 package ai.picovoice.picovoice;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import ai.picovoice.porcupine.Porcupine;
 import ai.picovoice.porcupine.PorcupineException;
 import ai.picovoice.rhino.Rhino;
 import ai.picovoice.rhino.RhinoException;
+import ai.picovoice.rhino.RhinoInference;
 
 /**
  * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
@@ -40,6 +43,7 @@ public class Picovoice {
     private Porcupine porcupine;
     private Rhino rhino;
     private boolean isWakeWordDetected = false;
+    private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
     /**
      * Private Constructor
@@ -98,12 +102,23 @@ public class Picovoice {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
                 if (isWakeWordDetected && wakeWordCallback != null) {
-                    wakeWordCallback.invoke();
+                    callbackHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            wakeWordCallback.invoke();
+                        }
+                    });
                 }
             } else {
                 if (rhino.process(pcm)) {
                     if (inferenceCallback != null) {
-                        inferenceCallback.invoke(rhino.getInference());
+                        final RhinoInference inference = rhino.getInference();
+                        callbackHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                inferenceCallback.invoke(inference);
+                            }
+                        });
                     }
                     isWakeWordDetected = false;
                 }
