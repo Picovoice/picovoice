@@ -301,21 +301,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Future<String> _extractAsset(String resourcePath) async {
-    // extraction destination
-    String resourceDirectory = (await getApplicationDocumentsDirectory()).path;
-    String outputPath = '$resourceDirectory/$resourcePath';
-    File outputFile = new File(outputPath);
-
-    ByteData data = await rootBundle.load(resourcePath);
-    final buffer = data.buffer;
-
-    await outputFile.create(recursive: true);
-    await outputFile.writeAsBytes(
-        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-    return outputPath;
-  }
-
   void _updateTime() {
     if (_timerStopwatch.isRunning &&
         _timerStopwatch.elapsed >= _timerDuration) {
