@@ -11,11 +11,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
-import 'package:path_provider/path_provider.dart';
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
@@ -50,13 +47,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> initPicovoice() async {
-    String platform = Platform.isAndroid ? "android" : "ios";
-    String keywordAsset =
+    String platform = Platform.isAndroid
+        ? "android"
+        : Platform.isIOS
+            ? "ios"
+            : throw new PvError("This demo supports iOS and Android only.");
+    String keywordPath =
         "assets/keyword_files/$platform/picovoice_$platform.ppn";
-    String keywordPath = await _extractAsset(keywordAsset);
-    String contextAsset =
+    String contextPath =
         "assets/contexts/$platform/smart_lighting_$platform.rhn";
-    String contextPath = await _extractAsset(contextAsset);
 
     try {
       _picovoiceManager = PicovoiceManager.create(
@@ -126,21 +125,6 @@ class _MyAppState extends State<MyApp> {
     }
     printText += '}';
     return printText;
-  }
-
-  Future<String> _extractAsset(String resourcePath) async {
-    // extraction destination
-    String resourceDirectory = (await getApplicationDocumentsDirectory()).path;
-    String outputPath = '$resourceDirectory/$resourcePath';
-    File outputFile = new File(outputPath);
-
-    ByteData data = await rootBundle.load(resourcePath);
-    final buffer = data.buffer;
-
-    await outputFile.create(recursive: true);
-    await outputFile.writeAsBytes(
-        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-    return outputPath;
   }
 
   Future<void> _startProcessing() async {

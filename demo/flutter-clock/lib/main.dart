@@ -81,15 +81,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _initPicovoice() async {
-    String platform = Platform.isAndroid ? "android" : "ios";
+    String platform = Platform.isAndroid
+        ? "android"
+        : Platform.isIOS
+            ? "ios"
+            : throw new PvError("This demo supports iOS and Android only.");
     String keywordAsset = "assets/$platform/pico clock_$platform.ppn";
-    String keywordPath = await _extractAsset(keywordAsset);
     String contextAsset = "assets/$platform/clock_$platform.rhn";
-    String contextPath = await _extractAsset(contextAsset);
 
     try {
       _picovoiceManager = await PicovoiceManager.create(
-          keywordPath, _wakeWordCallback, contextPath, _inferenceCallback,
+          keywordAsset, _wakeWordCallback, contextAsset, _inferenceCallback,
           errorCallback: _errorCallback);
       _picovoiceManager?.start();
     } on PvError catch (ex) {
