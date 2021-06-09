@@ -9,15 +9,9 @@ PODS:
     - Toast
   - path_provider (0.0.1):
     - Flutter
-  - porcupine (1.9.5):
+  - porcupine (1.9.12):
     - Flutter
-    - porcupine/pv_porcupine (= 1.9.5)
-  - porcupine/pv_porcupine (1.9.5):
-    - Flutter
-  - rhino (1.6.2):
-    - Flutter
-    - rhino/pv_rhino (= 1.6.2)
-  - rhino/pv_rhino (1.6.2):
+  - rhino (1.6.9):
     - Flutter
   - Toast (4.0.0)
 
@@ -51,15 +45,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/rhino/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
-  flutter_voice_processor: b4295092e5365b517b75f2af026c05d897ce4450
+  flutter_voice_processor: f563048750dd0dcdca5aac253fa57e86f83a6e54
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  porcupine: 62bb2ea5f3806a602062ad0e6c92e71fbe7b6317
-  rhino: ada5afb7f35aaae468132af5a10f01e5242f958e
+  porcupine: 1db970f35ac2d993b0718bf6b15c158e630505f2
+  rhino: 7bb93c8fd1eec8c75369cbc357d836aa536ee4db
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

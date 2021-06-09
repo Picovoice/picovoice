@@ -21,3 +21,6 @@
 
 ## [1.1.7] - 2021-06-04
 * Lib update
+
+## [1.1.8] - 2021-06-09
+* Handle auto extraction of assets

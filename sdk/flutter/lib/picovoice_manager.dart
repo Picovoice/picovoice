@@ -147,8 +147,11 @@ class PicovoiceManager {
 
   /// Closes audio stream and stops Picovoice processing
   Future<void> stop() async {
-    await _voiceProcessor?.stop();
+    if (_voiceProcessor?.isRecording ?? false) {
+      await _voiceProcessor!.stop();
+    }
     _removeVoiceProcessorListener?.call();
+
     _picovoice?.delete();
     _picovoice = null;
   }

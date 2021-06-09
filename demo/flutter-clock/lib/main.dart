@@ -81,15 +81,17 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _initPicovoice() async {
-    String platform = Platform.isAndroid ? "android" : "ios";
+    String platform = Platform.isAndroid
+        ? "android"
+        : Platform.isIOS
+            ? "ios"
+            : throw new PvError("This demo supports iOS and Android only.");
     String keywordAsset = "assets/$platform/pico clock_$platform.ppn";
-    String keywordPath = await _extractAsset(keywordAsset);
     String contextAsset = "assets/$platform/clock_$platform.rhn";
-    String contextPath = await _extractAsset(contextAsset);
 
     try {
       _picovoiceManager = await PicovoiceManager.create(
-          keywordPath, _wakeWordCallback, contextPath, _inferenceCallback,
+          keywordAsset, _wakeWordCallback, contextAsset, _inferenceCallback,
           errorCallback: _errorCallback);
       _picovoiceManager?.start();
     } on PvError catch (ex) {
@@ -297,21 +299,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _selectedIndex = 2;
     });
-  }
-
-  Future<String> _extractAsset(String resourcePath) async {
-    // extraction destination
-    String resourceDirectory = (await getApplicationDocumentsDirectory()).path;
-    String outputPath = '$resourceDirectory/$resourcePath';
-    File outputFile = new File(outputPath);
-
-    ByteData data = await rootBundle.load(resourcePath);
-    final buffer = data.buffer;
-
-    await outputFile.create(recursive: true);
-    await outputFile.writeAsBytes(
-        buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
-    return outputPath;
   }
 
   void _updateTime() {
