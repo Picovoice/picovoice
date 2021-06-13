@@ -1,6 +1,25 @@
 # Picovoice
 
+[![GitHub release](https://img.shields.io/github/release/Picovoice/picovoice.svg)](https://github.com/Picovoice/picovoice/releases)
+[![GitHub](https://img.shields.io/github/license/Picovoice/picovoice)](https://github.com/Picovoice/picovoice/)
+[![GitHub language count](https://img.shields.io/github/languages/count/Picovoice/picovoice)](https://github.com/Picovoice/picovoice/)
+
+[![PyPI](https://img.shields.io/pypi/v/picovoice)](https://pypi.org/project/picovoice/)
+[![Nuget](https://img.shields.io/nuget/v/picovoice)](https://www.nuget.org/packages/Picovoice/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/picovoice/sdk/go.svg)](https://pkg.go.dev/github.com/Picovoice/picovoice/sdk/go)
+[![Pub Version](https://img.shields.io/pub/v/picovoice)](https://pub.dev/packages/picovoice)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react-native)
+[![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
+[![Cocoapods](https://img.shields.io/cocoapods/v/Picovoice-iOS)](https://github.com/Picovoice/picovoice/tree/master/sdk/ios)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-angular)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-react)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-vue)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
+
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/AiPicovoice)](https://twitter.com/AiPicovoice)
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCAdi9sTCXLosG1XeqDwLx7w?style=social)](https://www.youtube.com/channel/UCAdi9sTCXLosG1XeqDwLx7w)
 
 Picovoice is the end-to-end platform for building voice products on your terms. Unlike Alexa and Google services,
 Picovoice runs entirely on-device while being more accurate. Using Picovoice, one can infer a user’s intent from a
