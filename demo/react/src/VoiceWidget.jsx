@@ -5,13 +5,13 @@ import { CLOCK_EN_64 } from "./dist/rhn_contexts_base64";
 
 export default function VoiceWidget() {
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
-  const [workerChunk, setWorkerChunk] = useState({ factory: null });
+  const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
 
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [inference, setInference] = useState(null);
 
   useEffect(() => {
-    if (workerChunk.factory === null) {
+    if (workerChunk.workerFactory === null) {
       let isCanceled = false;
 
       const loadPicovoice = async () => {
@@ -21,7 +21,7 @@ export default function VoiceWidget() {
         console.log("Picovoice worker chunk is loaded.");
 
         if (!isCanceled) {
-          setWorkerChunk({ factory: pvWorkerFactory });
+          setWorkerChunk({ workerFactory: pvWorkerFactory });
           setIsChunkLoaded(true);
         }
       };
