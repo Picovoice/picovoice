@@ -1,3 +1,4 @@
-out
 res
-lib
+.idea
+.gradle
+*.iml
