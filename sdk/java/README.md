@@ -2,14 +2,15 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. 
+
+Picovoice is:
 
 - **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
-[*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+  [\*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Compatibility
@@ -19,12 +20,30 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Installation
 
-You can add the Picovoice Java SDK by downloading and referencing the latest [Picovoice JAR](/binding/java/bin/).
+The latest Java bindings are available from the Maven Central Repository at:
+
+```console
+ai.picovoice:picovoice-java:${version}
+```
+
+If you're using Gradle for your Java project, include the following line in your `build.gradle` file to add Picovoice:
+```console
+implementation 'ai.picovoice:picovoice-java:${version}'
+```
+
+If you're using IntelliJ, open the Project Structure dialog (`File > Project Structure`) and go to the `Libraries` section.
+Click the plus button at the top to add a new project library and select `From Maven...`. Search for `ai.picovoice:picovoice-java`
+in the search box and add the latest version to your project.
 
 ## Build
 
-To build from source, we recommend using the [IntelliJ IDE](https://www.jetbrains.com/idea/download/). Open the .iml file with IntelliJ and
-click "Build > Build Project" to build or "Build > Build Artifacts" to package as a JAR file.
+To build from source, invoke the Gradle build task from the command-line:
+```console
+cd picovoice/sdk/java
+./gradlew build
+```
+
+Once the task is complete, the output JAR can be found in `picovoice/sdk/java/build/libs`.
 
 ## Usage
 

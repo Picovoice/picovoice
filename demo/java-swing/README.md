@@ -4,6 +4,19 @@ A voice-controlled smart lighting panel using Java Swing and the Picovoice platf
 
 Before running the demo, run the `copy.sh` script to copy wake word and context files from elsewhere in the repo.
 
+Build the app with Gradle:
+```console
+cd picovoice/demo/java-swing
+./gradlew build
+```
+
+Then launch the app:
+
+```console
+cd picovoice/demo/java-swing/build/libs
+java -jar JavaSwingDemo.jar
+```
+
 For this demo, the wake word is `Javis` and the context is `Smart Lighting`. You can say things like:
 
 > Jarvis, turn off the lights.

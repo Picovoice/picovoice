@@ -1,4 +1,4 @@
-# Picovoice Demos
+# Picovoice Java Demos
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -8,7 +8,9 @@ using Picovoice platform.
 ## Picovoice
 
 Picovoice is the end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
+similar to Alexa and Google, but it entirely runs 100% on-device. 
+
+Picovoice is:
 
 - **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
 - **Reliable:** Runs without needing constant connectivity.
@@ -24,17 +26,18 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Installation
 
-You can get the latest Java demo executable JARs [here](/demo/java/bin).
-
-If you wish, you can build the demos from source by opening the project with the [IntelliJ IDE](https://www.jetbrains.com/idea/download/).
-Select "Build > Build Project" to build the two demo classes or "Build > Build Artifacts" to create the executable JARs.
+Build the demo jars with Gradle:
+```console
+cd picovoice/demo/java
+./gradlew build
+```
 
 ## Usage
 
-NOTE: the working directory for all dotnet commands is:
+Navigate to the output directory to use the demos:
 
 ```console
-picovoice/demo/java/bin
+cd picovoice/demo/java/build/libs
 ```
 
 ### File Demo

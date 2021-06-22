@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'Main',
+                "Class-Path": "picovoice-1.1.2.jar"
+    }
+    from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+
+dependencies {
+    implementation 'ai.picovoice:picovoice-java:1.1.2'
+}
