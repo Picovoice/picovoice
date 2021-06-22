@@ -294,11 +294,13 @@ For more information about .NET demos go to [demo/dotnet](/demo/dotnet/README.md
 
 ### Java Demos
 
-Make sure there is a working microphone connected to your device. Then, from the root of the repository run the
-following in a terminal:
+Make sure there is a working microphone connected to your device. Then invoke the following commands from the terminal:
 
 ```console
-java -jar demo/java/bin/picovoice-mic-demo.jar \
+cd demo/java
+./gradlew build
+cd build/libs
+java -jar picovoice-mic-demo.jar \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -685,7 +687,7 @@ using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPat
 
 ### Java
 
-You can add the Picovoice Java SDK by downloading and referencing the latest Picovoice JAR available [here](/sdk/java/bin).
+The Picovoice Java library is available from Maven Central at `ai.picovoice:picovoice-java:${version}`.
 
 The easiest way to create an instance of the engine is with the Picovoice Builder:
 
