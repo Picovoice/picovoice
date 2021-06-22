@@ -45,11 +45,3 @@ then
 fi
 echo "Copying Windows keyword file..."
 cp ../../resources/porcupine/resources/keyword_files/windows/jarvis_windows.ppn ./res/keyword_files/windows/jarvis_windows.ppn
-
-if [ ! -d "./lib" ]
-then
-    echo "Creating lib directory..."
-    mkdir -p ./lib
-fi
-echo "Copying Picovoice JAR"
-cp ../../sdk/java/bin/*.jar ./lib/picovoice.jar

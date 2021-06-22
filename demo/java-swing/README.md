@@ -6,14 +6,14 @@ Before running the demo, run the `copy.sh` script to copy wake word and context 
 
 Build the app with Gradle:
 ```console
-cd porcupine/demo/java-swing
+cd picovoice/demo/java-swing
 ./gradlew build
 ```
 
 Then launch the app:
 
 ```console
-cd porcupine/demo/java-swing/build/libs
+cd picovoice/demo/java-swing/build/libs
 java -jar JavaSwingDemo.jar
 ```
 
