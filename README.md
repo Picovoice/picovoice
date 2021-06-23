@@ -9,7 +9,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/picovoice/sdk/go.svg)](https://pkg.go.dev/github.com/Picovoice/picovoice/sdk/go)
 [![Pub Version](https://img.shields.io/pub/v/picovoice)](https://pub.dev/packages/picovoice)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react-native)
-[![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
+[![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android?label=maven%20central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Picovoice-iOS)](https://github.com/Picovoice/picovoice/tree/master/sdk/ios)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-angular)
