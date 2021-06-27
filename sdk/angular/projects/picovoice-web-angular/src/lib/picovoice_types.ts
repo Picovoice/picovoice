@@ -35,10 +35,6 @@ export type RhinoInferenceUnderstood = {
 };
 
 export interface RhinoEngine {
-  /** Release all resources acquired by Rhino */
-  release(): void;
-  /** Process a single frame of 16-bit 16kHz PCM audio */
-  process(frame: Int16Array): RhinoInference;
   /** The version of the Rhino engine */
   readonly version: string;
   /** The sampling rate of audio expected by the Rhino engine */
@@ -47,6 +43,10 @@ export interface RhinoEngine {
   readonly frameLength: number;
   /** The source of the Rhino context (YAML format) */
   readonly contextInfo: string;
+  /** Release all resources acquired by Rhino */
+  release(): void;
+  /** Process a single frame of 16-bit 16kHz PCM audio */
+  process(frame: Int16Array): RhinoInference;
 }
 
 export type RhinoContext = {
