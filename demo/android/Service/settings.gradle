@@ -1,2 +1,2 @@
-include ':app'
+include ':picovoice-service-demo-app'
 rootProject.name = "Service"
