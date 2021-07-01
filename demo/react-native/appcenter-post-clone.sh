@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Copying demo resources"
+
 if [ ! -d "./android/app/src/main/res/raw" ]
 then 
     echo "Creating Android demo resources directory..."
@@ -17,4 +21,4 @@ fi
 echo "Copying iOS demo resources..."
 cp ../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn ./ios/resources/smart_lighting_ios.rhn
 
-echo "Copy complete"
+echo "Copy complete!"
