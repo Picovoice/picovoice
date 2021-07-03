@@ -3,6 +3,7 @@
     package="ai.picovoice.picovoicedemoservice">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <application
