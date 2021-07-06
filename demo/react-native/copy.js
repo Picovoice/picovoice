@@ -14,14 +14,14 @@ const fs = require('fs');
 const mkdirp = require('mkdirp');
 
 // copy Android resources
-mkdirp.sync('./android/app/src/main/res/raw');
+mkdirp.sync('./android/picovoice-rn-demo-app/src/main/res/raw');
 fs.copyFileSync(
   '../../resources/porcupine/resources/keyword_files/android/porcupine_android.ppn',
-  './android/app/src/main/res/raw/porcupine_android.ppn',
+  './android/picovoice-rn-demo-app/src/main/res/raw/porcupine_android.ppn',
 );
 fs.copyFileSync(
   '../../resources/rhino/resources/contexts/android/smart_lighting_android.rhn',
-  './android/app/src/main/res/raw/smart_lighting_android.rhn',
+  './android/picovoice-rn-demo-app/src/main/res/raw/smart_lighting_android.rhn',
 );
 
 // copy iOS resources
