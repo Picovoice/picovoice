@@ -5,7 +5,9 @@ Before building the demo app, run the following from this directory to install t
 pod install
 ```
 
-Open the generated xcworkspace with XCode and build the project. The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
+Open `PicovoiceDemo.xcworkspace` and run the demo.
+
+The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
 
 > Porcupine, turn off the lights.
 
@@ -64,3 +66,7 @@ context:
       - "living room"
       - "pantry"
 ```
+
+### Running the On-Device Unit Tests
+
+Open `PicovoiceDemo.xcworkspace` with XCode and run the tests with `Product > Test`.
