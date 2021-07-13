@@ -21,11 +21,11 @@ public class PicovoiceManager {
     private var picovoice:Picovoice?
     private var audioInputEngine: AudioInputEngine?
 
-    private var porcupineModelPath: String
+    private var porcupineModelPath: String?
     private var keywordPath: String
     private var porcupineSensitivity: Float32
     private var onWakeWordDetection: (() -> Void)?
-    private var rhinoModelPath: String
+    private var rhinoModelPath: String?
     private var contextPath: String
     private var rhinoSensitivity: Float32
     private var onInference: ((Inference) -> Void)?
@@ -47,11 +47,11 @@ public class PicovoiceManager {
     /// - Throws: PicovoiceError
     public init(
         keywordPath: String,
-        porcupineModelPath: String = Porcupine.defaultModelPath,
+        porcupineModelPath: String? = nil,
         porcupineSensitivity: Float32 = 0.5,
         onWakeWordDetection: (() -> Void)?,
         contextPath: String,
-        rhinoModelPath: String = Rhino.defaultModelPath,
+        rhinoModelPath: String? = nil,
         rhinoSensitivity: Float32 = 0.5,
         onInference: ((Inference) -> Void)?) {
         

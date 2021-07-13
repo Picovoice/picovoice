@@ -17,13 +17,13 @@ public enum PicovoiceError: Error {
     case rhinoError(Error)
     
     // wraps Porcupine and Rhino errors
-    init(_ error: Error) {        
+    init(_ error: Error) {
         if let error = error as? PorcupineError {
             self = .porcupineError(error)
         } else {
           self = .rhinoError(error)
         }
-    }   
+    }
 }
 
 /// Low-level iOS binding for Picovoice end-to-end platform.
@@ -62,11 +62,11 @@ public class Picovoice {
     public init (
         keywordPath: String,
         onWakeWordDetection: (() -> Void)?,
-        porcupineModelPath: String = Porcupine.defaultModelPath,
-        porcupineSensitivity: Float32 = 0.5,                
+        porcupineModelPath: String? = nil,
+        porcupineSensitivity: Float32 = 0.5,
         contextPath: String,
         onInference: ((Inference) -> Void)?,
-        rhinoModelPath: String = Rhino.defaultModelPath,
+        rhinoModelPath: String? = nil,
         rhinoSensitivity: Float32 = 0.5) throws {
         
         do{
@@ -125,13 +125,13 @@ public class Picovoice {
 
         do {
             if !isWakeWordDetected {
-                isWakeWordDetected = porcupine!.process(pcm:pcm) == 0
+                isWakeWordDetected = try porcupine!.process(pcm:pcm) == 0
                 if isWakeWordDetected {
                     self.onWakeWordDetection?()
                 }
             }
             else{
-                if rhino!.process(pcm:pcm) {
+                if try rhino!.process(pcm:pcm) {
                     self.onInference?(try rhino!.getInference())
                     isWakeWordDetected = false
                 }

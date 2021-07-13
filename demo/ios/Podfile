@@ -5,3 +5,7 @@ platform :ios, '9.0'
 target 'PicovoiceDemo' do    
     pod 'Picovoice-iOS'
 end
+
+target 'PicovoiceDemoUITests' do    
+    pod 'Picovoice-iOS'
+end
