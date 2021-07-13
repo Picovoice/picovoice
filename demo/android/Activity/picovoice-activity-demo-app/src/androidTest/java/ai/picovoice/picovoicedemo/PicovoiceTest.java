@@ -220,7 +220,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithMismatchedRhinoLanguage() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/de/test_de_android.rhn");
 
         boolean didFail = false;
@@ -239,31 +239,35 @@ public class PicovoiceTest {
         assertTrue(didFail);
     }
 
-//    @Test
-//    public void testInitFailWithNoKeyword() {
-//        File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
-//        boolean didFail = false;
-//        try {
-//            new Picovoice.Builder()
-//                    .setContextPath(contextPath.getAbsolutePath())
-//                    .setWakeWordCallback(wakeWordCallback)
-//                    .setInferenceCallback(inferenceCallback)
-//                    .build(appContext);
-//
-//        } catch (PicovoiceException e) {
-//            didFail = true;
-//        }
-//
-//        assertTrue(didFail);
-//    }
-
     @Test
-    public void testInitFailWithNoContext() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+    public void testInitFailWithInvalidKeywordPath() {
+        File keywordPath = new File(testResourcesPath, "bad_path/bad_path.ppn");
+        File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         boolean didFail = false;
         try {
             new Picovoice.Builder()
                     .setKeywordPath(keywordPath.getAbsolutePath())
+                    .setContextPath(contextPath.getAbsolutePath())
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setInferenceCallback(inferenceCallback)
+                    .build(appContext);
+
+        } catch (PicovoiceException e) {
+            didFail = true;
+        }
+
+        assertTrue(didFail);
+    }
+
+    @Test
+    public void testInitFailWithInvalidContextPath() {
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+        File contextPath = new File(testResourcesPath, "bad_path/bad_path.rhn");
+        boolean didFail = false;
+        try {
+            new Picovoice.Builder()
+                    .setKeywordPath(keywordPath.getAbsolutePath())
+                    .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
@@ -277,7 +281,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithInvalidPorcupineModelPath() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         File porcupineModelPath = new File(testResourcesPath, "bad_path/bad_path.pv");
 
@@ -300,7 +304,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithInvalidRhinoModelPath() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         File rhinoModelPath = new File(testResourcesPath, "bad_path/bad_path.pv");
 
@@ -323,7 +327,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithInvalidPorcupineSensitivity() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
 
         boolean didFail = false;
@@ -345,7 +349,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithInvalidRhinoSensitivity() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
 
         boolean didFail = false;
@@ -367,7 +371,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithWrongPorcupinePlatform() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/alexa_linux.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/alexa_linux.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
 
         boolean didFail = false;
@@ -388,7 +392,7 @@ public class PicovoiceTest {
 
     @Test
     public void testInitFailWithWrongRhinoPlatform() {
-        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.rhn");
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_linux.rhn");
 
         boolean didFail = false;
