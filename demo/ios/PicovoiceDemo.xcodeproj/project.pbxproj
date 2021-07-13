@@ -21,9 +21,9 @@
 		0251C393269E1D9F00B77F69 /* porcupine_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C390269E1D9E00B77F69 /* porcupine_params_de.pv */; };
 		0251C394269E1D9F00B77F69 /* porcupine_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 0251C391269E1D9E00B77F69 /* porcupine_params_fr.pv */; };
 		0251C396269E1E4600B77F69 /* coffee_maker_linux.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C395269E1E4600B77F69 /* coffee_maker_linux.rhn */; };
-		0251C398269E2BB300B77F69 /* test_de_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C397269E2BB300B77F69 /* test_de_ios.rhn */; };
-		0251C39A269E2BD400B77F69 /* test_es_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C399269E2BD400B77F69 /* test_es_ios.rhn */; };
-		0251C39C269E2C0200B77F69 /* test_fr_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C39B269E2C0200B77F69 /* test_fr_ios.rhn */; };
+		0251C39E269E55A300B77F69 /* test_fr_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C39D269E55A300B77F69 /* test_fr_ios.rhn */; };
+		0251C3A0269E55B300B77F69 /* test_es_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C39F269E55B300B77F69 /* test_es_ios.rhn */; };
+		0251C3A2269E55D000B77F69 /* test_de_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 0251C3A1269E55D000B77F69 /* test_de_ios.rhn */; };
 		1760DF2D253A175000395344 /* PicovoiceDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */; };
 		1760DF2F253A175000395344 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1760DF2E253A175000395344 /* ContentView.swift */; };
 		1760DF31253A175500395344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF30253A175500395344 /* Assets.xcassets */; };
@@ -73,9 +73,9 @@
 		0251C390269E1D9E00B77F69 /* porcupine_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_de.pv; path = ../../../resources/porcupine/lib/common/porcupine_params_de.pv; sourceTree = "<group>"; };
 		0251C391269E1D9E00B77F69 /* porcupine_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_fr.pv; path = ../../../resources/porcupine/lib/common/porcupine_params_fr.pv; sourceTree = "<group>"; };
 		0251C395269E1E4600B77F69 /* coffee_maker_linux.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_linux.rhn; path = ../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn; sourceTree = "<group>"; };
-		0251C397269E2BB300B77F69 /* test_de_ios.rhn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test_de_ios.rhn; path = ../../../../rhino/demo/ios/RhinoDemoUITests/test_de_ios.rhn; sourceTree = "<group>"; };
-		0251C399269E2BD400B77F69 /* test_es_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_es_ios.rhn; path = ../../../../rhino/demo/ios/RhinoDemoUITests/test_es_ios.rhn; sourceTree = "<group>"; };
-		0251C39B269E2C0200B77F69 /* test_fr_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_fr_ios.rhn; path = ../../../../rhino/demo/ios/RhinoDemoUITests/test_fr_ios.rhn; sourceTree = "<group>"; };
+		0251C39D269E55A300B77F69 /* test_fr_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_fr_ios.rhn; path = ../../../resources/rhino/demo/ios/RhinoDemoUITests/test_fr_ios.rhn; sourceTree = "<group>"; };
+		0251C39F269E55B300B77F69 /* test_es_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_es_ios.rhn; path = ../../../resources/rhino/demo/ios/RhinoDemoUITests/test_es_ios.rhn; sourceTree = "<group>"; };
+		0251C3A1269E55D000B77F69 /* test_de_ios.rhn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test_de_ios.rhn; path = ../../../resources/rhino/demo/ios/RhinoDemoUITests/test_de_ios.rhn; sourceTree = "<group>"; };
 		1760DF29253A175000395344 /* PicovoiceDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicovoiceDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1760DF2C253A175000395344 /* PicovoiceDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicovoiceDemoApp.swift; sourceTree = "<group>"; };
 		1760DF2E253A175000395344 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 		0251C373269E1C4800B77F69 /* de */ = {
 			isa = PBXGroup;
 			children = (
-				0251C397269E2BB300B77F69 /* test_de_ios.rhn */,
+				0251C3A1269E55D000B77F69 /* test_de_ios.rhn */,
 			);
 			name = de;
 			sourceTree = "<group>";
@@ -203,7 +203,7 @@
 		0251C374269E1C4B00B77F69 /* es */ = {
 			isa = PBXGroup;
 			children = (
-				0251C399269E2BD400B77F69 /* test_es_ios.rhn */,
+				0251C39F269E55B300B77F69 /* test_es_ios.rhn */,
 			);
 			name = es;
 			sourceTree = "<group>";
@@ -211,7 +211,7 @@
 		0251C375269E1C5200B77F69 /* fr */ = {
 			isa = PBXGroup;
 			children = (
-				0251C39B269E2C0200B77F69 /* test_fr_ios.rhn */,
+				0251C39D269E55A300B77F69 /* test_fr_ios.rhn */,
 			);
 			name = fr;
 			sourceTree = "<group>";
@@ -404,16 +404,16 @@
 				0251C38E269E1D8B00B77F69 /* rhino_params_es.pv in Resources */,
 				0251C37D269E1CB600B77F69 /* coffee_maker_ios.rhn in Resources */,
 				0251C393269E1D9F00B77F69 /* porcupine_params_de.pv in Resources */,
-				0251C39C269E2C0200B77F69 /* test_fr_ios.rhn in Resources */,
 				0251C384269E1D2800B77F69 /* alexa_linux.ppn in Resources */,
+				0251C3A2269E55D000B77F69 /* test_de_ios.rhn in Resources */,
 				0251C38D269E1D8B00B77F69 /* rhino_params_de.pv in Resources */,
+				0251C39E269E55A300B77F69 /* test_fr_ios.rhn in Resources */,
 				0251C388269E1D4700B77F69 /* framboise_ios.ppn in Resources */,
-				0251C398269E2BB300B77F69 /* test_de_ios.rhn in Resources */,
 				0251C37F269E1CED00B77F69 /* ananas_ios.ppn in Resources */,
 				0251C394269E1D9F00B77F69 /* porcupine_params_fr.pv in Resources */,
 				0251C396269E1E4600B77F69 /* coffee_maker_linux.rhn in Resources */,
 				0251C392269E1D9F00B77F69 /* porcupine_params_es.pv in Resources */,
-				0251C39A269E2BD400B77F69 /* test_es_ios.rhn in Resources */,
+				0251C3A0269E55B300B77F69 /* test_es_ios.rhn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
