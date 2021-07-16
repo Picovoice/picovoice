@@ -98,6 +98,18 @@ public class Picovoice {
             throw new PicovoiceException("Cannot process frame - resources have been released");
         }
 
+        if (pcm == null) {
+            throw new PicovoiceException(
+                    new IllegalArgumentException("Passed null frame to Porcupine process."));
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PicovoiceException(
+                    new IllegalArgumentException(
+                            String.format("Porcupine process requires frames of length %d. " +
+                                    "Received frame of size %d.", getFrameLength(), pcm.length)));
+        }
+
         try {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
