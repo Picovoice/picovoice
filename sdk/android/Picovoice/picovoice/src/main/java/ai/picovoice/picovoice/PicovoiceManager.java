@@ -16,7 +16,10 @@ import android.content.Context;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Process;
+import android.util.Log;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
@@ -37,6 +40,7 @@ public class PicovoiceManager {
     private final String contextPath;
     private final float rhinoSensitivity;
     private final PicovoiceInferenceCallback inferenceCallback;
+    private final PicovoiceManagerErrorCallback errorCallback;
     private final MicrophoneReader microphoneReader;
     private Picovoice picovoice = null;
 
@@ -62,6 +66,7 @@ public class PicovoiceManager {
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
+     * @param errorCallback        A callback that reports errors encountered while processing audio.
      */
     public PicovoiceManager(Context appContext,
                             String porcupineModelPath,
@@ -71,7 +76,8 @@ public class PicovoiceManager {
                             String rhinoModelPath,
                             String contextPath,
                             float rhinoSensitivity,
-                            PicovoiceInferenceCallback inferenceCallback) {
+                            PicovoiceInferenceCallback inferenceCallback,
+                            PicovoiceManagerErrorCallback errorCallback) {
         this.appContext = appContext;
         this.porcupineModelPath = porcupineModelPath;
         this.keywordPath = keywordPath;
@@ -81,6 +87,7 @@ public class PicovoiceManager {
         this.contextPath = contextPath;
         this.rhinoSensitivity = rhinoSensitivity;
         this.inferenceCallback = inferenceCallback;
+        this.errorCallback = errorCallback;
 
         microphoneReader = new MicrophoneReader();
     }
@@ -122,6 +129,8 @@ public class PicovoiceManager {
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
         private PicovoiceInferenceCallback inferenceCallback = null;
+
+        private PicovoiceManagerErrorCallback errorCallback = null;
 
         /**
          * Setter for path to Porcupine model file
@@ -214,6 +223,18 @@ public class PicovoiceManager {
         }
 
         /**
+         * Setter for error callback
+         *
+         * @param errorCallback User-defined callback invoked when an error is encountered while processing audio.
+         *                      #{@link PicovoiceManagerErrorCallback} defines the interface of the
+         *                      callback.
+         */
+        public PicovoiceManager.Builder setErrorCallback(PicovoiceManagerErrorCallback errorCallback) {
+            this.errorCallback = errorCallback;
+            return this;
+        }
+
+        /**
          * Validates properties and creates an instance of the PicovoiceManager.
          *
          * @param appContext Android app context (for extracting Picovoice resources)
@@ -229,7 +250,8 @@ public class PicovoiceManager {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
-                    inferenceCallback);
+                    inferenceCallback,
+                    errorCallback);
         }
     }
 
@@ -237,6 +259,8 @@ public class PicovoiceManager {
         private final AtomicBoolean started = new AtomicBoolean(false);
         private final AtomicBoolean stop = new AtomicBoolean(false);
         private final AtomicBoolean stopped = new AtomicBoolean(false);
+
+        private final Handler callbackHandler = new Handler(Looper.getMainLooper());
 
         void start() throws PicovoiceException {
             if (started.get()) {
@@ -282,7 +306,7 @@ public class PicovoiceManager {
             stopped.set(false);
         }
 
-        private void read() throws PicovoiceException {
+        private void read() {
             final int minBufferSize = AudioRecord.getMinBufferSize(
                     picovoice.getSampleRate(),
                     AudioFormat.CHANNEL_IN_MONO,
@@ -310,8 +334,17 @@ public class PicovoiceManager {
 
                 audioRecord.stop();
                 picovoice.delete();
-            } catch (IllegalArgumentException | IllegalStateException e) {
-                throw new PicovoiceException(e);
+            } catch (final Exception e) {
+                if (errorCallback != null) {
+                    callbackHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            errorCallback.invoke(new PicovoiceException(e));
+                        }
+                    });
+                } else {
+                    Log.e("PorcupineManager", e.toString());
+                }
             } finally {
                 if (audioRecord != null) {
                     audioRecord.release();

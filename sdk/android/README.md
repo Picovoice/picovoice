@@ -23,7 +23,7 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:picovoice-android:1.1.0'
+    implementation 'ai.picovoice:picovoice-android:1.1.*'
 }
 ```
 ## Permissions
@@ -48,14 +48,14 @@ inference completion. The class can be initialized using the PicovoiceManager Bu
 import ai.picovoice.picovoice.*;
 
 PicovoiceManager manager = new PicovoiceManager.Builder()    
-    .setKeywordPath("path/to/keyword/file.ppn")    
+    .setKeywordPath("assets_sub_folder/keyword.ppn")    
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
             // logic to execute upon deletection of wake word
         }
     })    
-    .setContextPath("path/to/context/file.rhn")
+    .setContextPath("assets_sub_folder/context.rhn")
     .setInferenceCallback(new PicovoiceInferenceCallback() {
         @Override
         public void invoke(final RhinoInference inference) {
@@ -65,25 +65,35 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .build(appContext);
 ```
 
+The keyword (.ppn) and context (.rhn) file are obtained from the [Picovoice Console](https://picovoice.ai/console/). You can store in your Android assets folder (`src/main/assets`) and pass them into the Picovoice Builder.
+
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
 
 ```java
 PicovoiceManager manager = new PicovoiceManager(    
-    .setKeywordPath("path/to/keyword/file.ppn")
+    .setKeywordPath("assets_sub_folder/keyword.ppn")
     .setWakeWordCallback(wakeWordCallback)    
-    .setContextPath("path/to/context/file.rhn")
+    .setContextPath("assets_sub_folder/context.rhn")
     .setInferenceCallback(inferenceCallback)
-    .setPorcupineModelPath("path/to/porcupine/model.pv")
+    .setPorcupineModelPath("assets_sub_folder/porcupine_model.pv")
     .setPorcupineSensitivity(0.7f)
-    .setRhinoModelPath("path/to/rhino/model.pv")
+    .setRhinoModelPath("assets_sub_folder/rhino_model.pv")
     .setRhinoSensitivity(0.35f)
+    .setErrorCallback(new PicovoiceManangerErrorCallback() {
+        @Override
+        public void invoke(final PicovoiceException e) {
+            // error handling
+        }
+    })
     .build(appContext);
 );
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
 
-The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
+The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language. This should also be placed in the `assets` folder. 
+
+There is also the option to pass an error callback, which will be invoked if an error is encountered while PicovoiceManager is processing audio.
 
 Once you have instantiated a PicovoiceManager, you can start audio capture and voice recognition by calling:
 ```java
@@ -163,23 +173,21 @@ for releasing native resources.
 picovoice.delete();
 ```
 
-## Custom Model Integration
+## Custom Context Integration
 
-To add custom models to your Android application a couple of extra steps must be taken. First, add your model file to the `/res/raw` folder. All resources are compressed when the build system creates an APK, so you will have to extract your file first before using it:
+To add a custom context or model file to your application, add the files to your assets folder (`src/main/assets`) and then pass the path to the Picovoice Builder:
+
 
 ```java
-try (
-        InputStream is = new BufferedInputStream(
-            getResources().openRawResource(R.raw.keyword), 256);
-        OutputStream os = new BufferedOutputStream(
-            openFileOutput(modelFileName, Context.MODE_PRIVATE), 256)
-) {
-    int r;
-    while ((r = is.read()) != -1) {
-        os.write(r);
-    }
-    os.flush();
-}
+// in this example our files are located at 
+// '/assets/picovoice_files/keyword.ppn'
+// '/assets/picovoice_files/context.rhn' 
+try {    
+    Rhino rhino = new Rhino.Builder()
+                        .setKeywordPath("picovoice_files/keyword.ppn")
+                        .setContextPath("picovoice_files/context.rhn")                    
+                        .build(appContext);
+} catch (RhinoException e) { }
 ```
 
 ## Non-English Models

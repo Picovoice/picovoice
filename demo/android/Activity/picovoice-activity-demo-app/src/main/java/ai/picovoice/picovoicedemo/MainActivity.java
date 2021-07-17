@@ -43,24 +43,6 @@ import ai.picovoice.rhino.RhinoInference;
 public class MainActivity extends AppCompatActivity {
     private PicovoiceManager picovoiceManager;
 
-    private void copyResourceFile(int resourceId, String filename) throws IOException {
-        Resources resources = getResources();
-        try (
-                InputStream is = new BufferedInputStream(resources.openRawResource(resourceId), 256);
-                OutputStream os = new BufferedOutputStream(openFileOutput(filename, Context.MODE_PRIVATE), 256)
-        ) {
-            int r;
-            while ((r = is.read()) != -1) {
-                os.write(r);
-            }
-            os.flush();
-        }
-    }
-
-    private String getAbsolutePath(String filename) {
-        return new File(this.getFilesDir(), filename).getAbsolutePath();
-    }
-
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -69,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        try {
-            copyResourceFile(R.raw.porcupine_android, "keyword.ppn");
-            copyResourceFile(R.raw.smart_lighting_android, "context.rhn");
-        } catch (IOException e) {
-            Toast.makeText(this, "Failed to copy resource files.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private boolean hasRecordPermission() {
@@ -103,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             intentTextView.setText("\n    Listening ...\n");
             picovoiceManager = new PicovoiceManager.Builder()
-                    .setKeywordPath(getAbsolutePath("keyword.ppn"))
+                    .setKeywordPath("porcupine_android.ppn")
                     .setPorcupineSensitivity(0.75f)
                     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
                         @Override
@@ -116,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                             });
                         }
                     })
-                    .setContextPath(getAbsolutePath("context.rhn"))
+                    .setContextPath("smart_lighting_android.rhn")
                     .setRhinoSensitivity(0.25f)
                     .setInferenceCallback(new PicovoiceInferenceCallback() {
                         @Override
