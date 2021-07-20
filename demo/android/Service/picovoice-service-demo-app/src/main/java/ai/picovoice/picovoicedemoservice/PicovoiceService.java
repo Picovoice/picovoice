@@ -68,13 +68,8 @@ public class PicovoiceService extends Service {
 
         startForeground(1234, notification);
 
-        String keywordFileName = intent.getStringExtra("keywordFileName");
-        assert keywordFileName != null;
-        String keywordFilePath = new File(this.getFilesDir(), keywordFileName).getAbsolutePath();
-
-        String contextFileName = intent.getStringExtra("contextFileName");
-        assert contextFileName != null;
-        String contextPath = new File(this.getFilesDir(), contextFileName).getAbsolutePath();
+        String keywordFilePath = intent.getStringExtra("keywordFileName");
+        String contextPath = intent.getStringExtra("contextFileName");
 
         try {
             picovoiceManager = new PicovoiceManager.Builder()
