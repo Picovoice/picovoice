@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                     requestRecordPermission();
                 }
             } else {
-                intentTextView.setText("");
                 picovoiceManager.stop();
             }
         } catch (PicovoiceException e) {
