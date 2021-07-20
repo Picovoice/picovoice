@@ -13,9 +13,7 @@
 package ai.picovoice.picovoicedemo;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +28,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Map;
 
 import ai.picovoice.picovoice.PicovoiceException;
@@ -165,8 +157,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (PicovoiceException e) {
             displayError("Something went wrong");
         }
-
-
 
         AlertDialog dialog = builder.create();
         dialog.show();
