@@ -18,12 +18,15 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -43,6 +46,7 @@ import ai.picovoice.rhino.RhinoInference;
 
 public class MainActivity extends AppCompatActivity {
     private PicovoiceManager picovoiceManager;
+    private TextView intentTextView;
 
     private void displayError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -52,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        initPicovoice();
+        intentTextView = findViewById(R.id.intentView);
     }
 
     private boolean hasRecordPermission() {
@@ -74,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPicovoice() {
-        try {
-            final TextView intentTextView = findViewById(R.id.intentView);
-
-            intentTextView.setText("\n    Listening ...\n");
             picovoiceManager = new PicovoiceManager.Builder()
                     .setKeywordPath("porcupine_android.ppn")
                     .setPorcupineSensitivity(0.75f)
@@ -120,12 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .build(getApplicationContext());
 
-            picovoiceManager.start();
-
             Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
-        } catch (PicovoiceException e) {
-            displayError("Failed to initialize Picovoice.");
-        }
     }
 
     public void process(View view) {
@@ -134,15 +132,43 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (recordButton.isChecked()) {
                 if (hasRecordPermission()) {
-                    initPicovoice();
+                    intentTextView.setText("\n    Listening ...\n");
+                    picovoiceManager.start();
                 } else {
                     requestRecordPermission();
                 }
             } else {
+                intentTextView.setText("");
                 picovoiceManager.stop();
             }
         } catch (PicovoiceException e) {
             displayError("Something went wrong");
         }
+    }
+
+    public void showContextCheatSheet(View view) {
+        if (!hasRecordPermission()) {
+            requestRecordPermission();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        ViewGroup viewGroup = findViewById(R.id.content);
+        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.context_cheat_sheet, viewGroup, false);
+        builder.setView(dialogView);
+
+        try {
+            picovoiceManager.start();
+            TextView contextField = (TextView) dialogView.findViewById(R.id.contextField);
+            contextField.setText(picovoiceManager.getContextInformation());
+            picovoiceManager.stop();
+        } catch (PicovoiceException e) {
+            displayError("Something went wrong");
+        }
+
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
