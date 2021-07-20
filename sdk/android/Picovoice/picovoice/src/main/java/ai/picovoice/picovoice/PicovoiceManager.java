@@ -116,6 +116,42 @@ public class PicovoiceManager {
     }
 
     /**
+     * Getter for the Rhino context
+     *
+     * @return Rhino context
+     */
+    public String getContextInformation() {
+        return picovoice != null ? picovoice.getContextInformation() : "";
+    }
+
+    /**
+     * Getter for version.
+     *
+     * @return Version.
+     */
+    public String getVersion() {
+        return "1.1.0";
+    }
+
+    /**
+     * Getter for the version of Porcupine
+     *
+     * @return Porcupine version
+     */
+    public String getPorcupineVersion() {
+        return picovoice != null ? picovoice.getPorcupineVersion() : "";
+    }
+
+    /**
+     * Getter for the version of Rhino
+     *
+     * @return Rhino version
+     */
+    public String getRhinoVersion() {
+        return picovoice != null ? picovoice.getRhinoVersion() : "";
+    }
+
+    /**
      * Builder for creating an instance of PicovoiceManager with a mixture of default arguments
      */
     public static class Builder {

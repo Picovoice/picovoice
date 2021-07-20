@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,7 +119,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .build(getApplicationContext());
+
             picovoiceManager.start();
+
+            Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
         } catch (PicovoiceException e) {
             displayError("Failed to initialize Picovoice.");
         }
