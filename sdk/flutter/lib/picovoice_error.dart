@@ -62,22 +62,22 @@ enum PvStatus {
   INVALID_STATE
 }
 
-pvStatusToException(PvStatus pvStatus, String errorMessage) {
+void pvStatusToException(PvStatus pvStatus, String errorMessage) {
   switch (pvStatus) {
     case PvStatus.OUT_OF_MEMORY:
-      throw new PvStatusOutOfMemoryError(errorMessage);
+      throw PvStatusOutOfMemoryError(errorMessage);
     case PvStatus.IO_ERROR:
-      throw new PvStatusIoError(errorMessage);
+      throw PvStatusIoError(errorMessage);
     case PvStatus.INVALID_ARGUMENT:
-      throw new PvStatusInvalidArgumentError(errorMessage);
+      throw PvStatusInvalidArgumentError(errorMessage);
     case PvStatus.STOP_ITERATION:
-      throw new PvStatusStopIterationError(errorMessage);
+      throw PvStatusStopIterationError(errorMessage);
     case PvStatus.KEY_ERROR:
-      throw new PvStatusKeyError(errorMessage);
+      throw PvStatusKeyError(errorMessage);
     case PvStatus.INVALID_STATE:
-      throw new PvStatusInvalidStateError(errorMessage);
+      throw PvStatusInvalidStateError(errorMessage);
     default:
-      print("Unmapped error code: $pvStatus");
-      throw new PvError(errorMessage);
+      print('Unmapped error code: $pvStatus');
+      throw PvError(errorMessage);
   }
 }

@@ -33,7 +33,7 @@ class Picovoice {
   static int get sampleRate => Porcupine.sampleRate;
 
   /// Version of Picovoice
-  static String get version => "1.1.0";
+  static String get version => '1.1.0';
 
   /// Version of Porcupine
   static String get porcupineVersion => Porcupine.version;
@@ -72,7 +72,7 @@ class Picovoice {
   /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
   ///
   /// returns an instance of the Picovoice end-to-end platform.
-  static create(String keywordPath, WakeWordCallback wakeWordCallback,
+  static Future<Picovoice> create(String keywordPath, WakeWordCallback wakeWordCallback,
       String contextPath, InferenceCallback inferenceCallback,
       {double porcupineSensitivity = 0.5,
       double rhinoSensitivity = 0.5,
@@ -83,7 +83,7 @@ class Picovoice {
       porcupine = await Porcupine.fromKeywordPaths([keywordPath],
           modelPath: porcupineModelPath, sensitivities: [porcupineSensitivity]);
     } on porcupineErr.PvError catch (ex) {
-      throw new PvError("${ex.runtimeType}: ${ex.message}");
+      throw PvError('${ex.runtimeType}: ${ex.message}');
     }
 
     Rhino rhino;
@@ -91,20 +91,20 @@ class Picovoice {
       rhino = await Rhino.create(contextPath,
           modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
     } on rhinoErr.PvError catch (ex) {
-      throw new PvError("${ex.runtimeType}: ${ex.message}");
+      throw PvError('${ex.runtimeType}: ${ex.message}');
     }
 
     if (Porcupine.frameLength != Rhino.frameLength) {
-      throw new PvArgumentError(
-          "Porcupine and Rhino frame lengths are different.");
+      throw PvArgumentError(
+          'Porcupine and Rhino frame lengths are different.');
     }
 
     if (Porcupine.sampleRate != Rhino.sampleRate) {
-      throw new PvArgumentError(
-          "Porcupine and Rhino sample rates are different.");
+      throw PvArgumentError(
+          'Porcupine and Rhino sample rates are different.');
     }
 
-    return new Picovoice._(
+    return Picovoice._(
         porcupine, wakeWordCallback, rhino, inferenceCallback);
   }
 
@@ -121,8 +121,8 @@ class Picovoice {
   /// Picovoice operates on single-channel audio.
   void process(List<int> frame) {
     if (_porcupine == null || _rhino == null) {
-      throw new PvStateError(
-          "Cannot process frame - resources have been released.");
+      throw PvStateError(
+          'Cannot process frame - resources have been released.');
     }
 
     if (!_isWakeWordDetected) {
@@ -132,8 +132,8 @@ class Picovoice {
         _wakeWordCallback();
       }
     } else {
-      Map<String, dynamic> rhinoResult = _rhino!.process(frame);
-      if (rhinoResult['isFinalized']) {
+      final rhinoResult = _rhino!.process(frame);
+      if (rhinoResult['isFinalized'] as bool) {
         _isWakeWordDetected = false;
         rhinoResult.remove('isFinalized');
 
