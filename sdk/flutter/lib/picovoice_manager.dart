@@ -93,11 +93,15 @@ class PicovoiceManager {
     }
 
     _picovoice = await Picovoice.create(
-        _keywordPath, _wakeWordCallback, _contextPath, _inferenceCallback,
-        porcupineSensitivity: _porcupineSensitivity,
-        rhinoSensitivity: _rhinoSensitivity,
-        porcupineModelPath: _porcupineModelPath,
-        rhinoModelPath: _rhinoModelPath);
+      _keywordPath,
+      _wakeWordCallback,
+      _contextPath,
+      _inferenceCallback,
+      porcupineSensitivity: _porcupineSensitivity,
+      rhinoSensitivity: _rhinoSensitivity,
+      porcupineModelPath: _porcupineModelPath,
+      rhinoModelPath: _rhinoModelPath,
+    );
 
     if (_voiceProcessor == null) {
       throw PvError('flutter_voice_processor not available.');
