@@ -57,18 +57,26 @@ public class MainActivity extends AppCompatActivity {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void requestRecordPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+    private void requestRecordPermission(int requestCode) {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, requestCode);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-            ToggleButton toggleButton = findViewById(R.id.startButton);
-            toggleButton.toggle();
+            if (requestCode == 0) {
+                ToggleButton toggleButton = findViewById(R.id.startButton);
+                toggleButton.toggle();
+            }
+            displayError("Permission denied.");
         } else {
-            initPicovoice();
+            if (requestCode == 0) {
+                process(null);
+            } else if (requestCode == 1) {
+                View view = findViewById(R.id.cheatSheetButton);
+                showContextCheatSheet(view);
+            }
         }
     }
 
@@ -127,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     intentTextView.setText("\n    Listening ...\n");
                     picovoiceManager.start();
                 } else {
-                    requestRecordPermission();
+                    requestRecordPermission(0);
                 }
             } else {
                 picovoiceManager.stop();
@@ -138,16 +146,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showContextCheatSheet(View view) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        ViewGroup viewGroup = findViewById(R.id.content);
-        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.context_cheat_sheet, viewGroup, false);
-        builder.setView(dialogView);
-
         String contextInformation = picovoiceManager.getContextInformation();
 
         if (contextInformation.equals("")) {
             if (!hasRecordPermission()) {
-                requestRecordPermission();
+                requestRecordPermission(1);
                 return;
             }
             try {
@@ -159,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        ViewGroup viewGroup = findViewById(R.id.content);
+        View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.context_cheat_sheet, viewGroup, false);
+        builder.setView(dialogView);
 
         TextView contextField = (TextView) dialogView.findViewById(R.id.contextField);
         contextField.setText(contextInformation);
