@@ -138,24 +138,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showContextCheatSheet(View view) {
-        if (!hasRecordPermission()) {
-            requestRecordPermission();
-            return;
-        }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         ViewGroup viewGroup = findViewById(R.id.content);
         View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.context_cheat_sheet, viewGroup, false);
         builder.setView(dialogView);
 
-        try {
-            picovoiceManager.start();
-            TextView contextField = (TextView) dialogView.findViewById(R.id.contextField);
-            contextField.setText(picovoiceManager.getContextInformation());
-            picovoiceManager.stop();
-        } catch (PicovoiceException e) {
-            displayError("Something went wrong");
+        String contextInformation = picovoiceManager.getContextInformation();
+
+        if (contextInformation.equals("")) {
+            if (!hasRecordPermission()) {
+                requestRecordPermission();
+                return;
+            }
+            try {
+                picovoiceManager.start();
+                contextInformation = picovoiceManager.getContextInformation();
+                picovoiceManager.stop();
+            } catch (PicovoiceException e) {
+                displayError("Something went wrong");
+                return;
+            }
         }
+
+        TextView contextField = (TextView) dialogView.findViewById(R.id.contextField);
+        contextField.setText(contextInformation);
 
         AlertDialog dialog = builder.create();
         dialog.show();
