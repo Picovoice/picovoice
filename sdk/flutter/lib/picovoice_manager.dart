@@ -147,4 +147,8 @@ class PicovoiceManager {
     _picovoice?.delete();
     _picovoice = null;
   }
+
+  void wake() {
+    _picovoice!.wake();
+  }
 }

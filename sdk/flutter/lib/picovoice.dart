@@ -88,29 +88,25 @@ class Picovoice {
 
     Rhino rhino;
     try {
-      rhino = await Rhino.create(contextPath,
-          modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
+      rhino =
+          await Rhino.create(contextPath, modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
     } on rhinoErr.PvError catch (ex) {
       throw PvError('${ex.runtimeType}: ${ex.message}');
     }
 
     if (Porcupine.frameLength != Rhino.frameLength) {
-      throw PvArgumentError(
-          'Porcupine and Rhino frame lengths are different.');
+      throw PvArgumentError('Porcupine and Rhino frame lengths are different.');
     }
 
     if (Porcupine.sampleRate != Rhino.sampleRate) {
-      throw PvArgumentError(
-          'Porcupine and Rhino sample rates are different.');
+      throw PvArgumentError('Porcupine and Rhino sample rates are different.');
     }
 
-    return Picovoice._(
-        porcupine, wakeWordCallback, rhino, inferenceCallback);
+    return Picovoice._(porcupine, wakeWordCallback, rhino, inferenceCallback);
   }
 
   // private constructor
-  Picovoice._(this._porcupine, this._wakeWordCallback, this._rhino,
-      this._inferenceCallback);
+  Picovoice._(this._porcupine, this._wakeWordCallback, this._rhino, this._inferenceCallback);
 
   ///
   /// Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command
@@ -121,8 +117,7 @@ class Picovoice {
   /// Picovoice operates on single-channel audio.
   void process(List<int> frame) {
     if (_porcupine == null || _rhino == null) {
-      throw PvStateError(
-          'Cannot process frame - resources have been released.');
+      throw PvStateError('Cannot process frame - resources have been released.');
     }
 
     if (!_isWakeWordDetected) {
@@ -152,5 +147,9 @@ class Picovoice {
       _rhino!.delete();
       _rhino = null;
     }
+  }
+
+  void wake() {
+    _isWakeWordDetected = true;
   }
 }
