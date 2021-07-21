@@ -153,4 +153,8 @@ class Picovoice {
       _rhino = null;
     }
   }
+  
+  void wake() {
+    _isWakeWordDetected = true;
+  }
 }
