@@ -81,49 +81,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPicovoice() {
-            picovoiceManager = new PicovoiceManager.Builder()
-                    .setKeywordPath("porcupine_android.ppn")
-                    .setPorcupineSensitivity(0.75f)
-                    .setWakeWordCallback(new PicovoiceWakeWordCallback() {
-                        @Override
-                        public void invoke() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    intentTextView.setText("\n    Wake Word Detected ...\n");
-                                }
-                            });
-                        }
-                    })
-                    .setContextPath("smart_lighting_android.rhn")
-                    .setRhinoSensitivity(0.25f)
-                    .setInferenceCallback(new PicovoiceInferenceCallback() {
-                        @Override
-                        public void invoke(final RhinoInference inference) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    intentTextView.setText("\n    {\n");
-                                    intentTextView.append(String.format("        \"isUnderstood\" : \"%b\",\n", inference.getIsUnderstood()));
-                                    if (inference.getIsUnderstood()) {
-                                        intentTextView.append(String.format("        \"intent\" : \"%s\",\n", inference.getIntent()));
-                                        final Map<String, String> slots = inference.getSlots();
-                                        if (slots.size() > 0) {
-                                            intentTextView.append("        \"slots\" : {\n");
-                                            for (String key : slots.keySet()) {
-                                                intentTextView.append(String.format("            \"%s\" : \"%s\",\n", key, slots.get(key)));
-                                            }
-                                            intentTextView.append("        }\n");
+        picovoiceManager = new PicovoiceManager.Builder()
+                .setKeywordPath("porcupine_android.ppn")
+                .setPorcupineSensitivity(0.75f)
+                .setWakeWordCallback(new PicovoiceWakeWordCallback() {
+                    @Override
+                    public void invoke() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                intentTextView.setText("\n    Wake Word Detected ...\n");
+                            }
+                        });
+                    }
+                })
+                .setContextPath("smart_lighting_android.rhn")
+                .setRhinoSensitivity(0.25f)
+                .setInferenceCallback(new PicovoiceInferenceCallback() {
+                    @Override
+                    public void invoke(final RhinoInference inference) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                intentTextView.setText("\n    {\n");
+                                intentTextView.append(String.format("        \"isUnderstood\" : \"%b\",\n", inference.getIsUnderstood()));
+                                if (inference.getIsUnderstood()) {
+                                    intentTextView.append(String.format("        \"intent\" : \"%s\",\n", inference.getIntent()));
+                                    final Map<String, String> slots = inference.getSlots();
+                                    if (slots.size() > 0) {
+                                        intentTextView.append("        \"slots\" : {\n");
+                                        for (String key : slots.keySet()) {
+                                            intentTextView.append(String.format("            \"%s\" : \"%s\",\n", key, slots.get(key)));
                                         }
+                                        intentTextView.append("        }\n");
                                     }
-                                    intentTextView.append("    }\n");
                                 }
-                            });
-                        }
-                    })
-                    .build(getApplicationContext());
+                                intentTextView.append("    }\n");
+                            }
+                        });
+                    }
+                })
+                .build(getApplicationContext());
 
-            Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
+        Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
     }
 
     public void process(View view) {
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.context_cheat_sheet, viewGroup, false);
         builder.setView(dialogView);
 
-        TextView contextField = (TextView) dialogView.findViewById(R.id.contextField);
+        TextView contextField = dialogView.findViewById(R.id.contextField);
         contextField.setText(contextInformation);
 
         AlertDialog dialog = builder.create();
