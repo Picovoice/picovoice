@@ -7,3 +7,6 @@
 [submodule "sdk/unity/Assets/Picovoice/VoiceProcessor"]
 	path = sdk/unity/Assets/Picovoice/VoiceProcessor
 	url = ../unity-voice-processor.git
+[submodule "demo/c/miniaudio"]
+	path = demo/c/miniaudio
+	url = ../../mackron/miniaudio.git
