@@ -505,7 +505,7 @@ Open http://localhost:8080 in your browser to try the demo.
 
 ### C Demos
 
-The [Microphone demo](/demo/c/rhino_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 #### Linux (x86_64), macOS (x86_64) and Raspberry Pi
 
@@ -565,7 +565,7 @@ resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
 {AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${PICOVOICE_LIBRARY_PATH}` with path to appropriate library available under [lib](sdk/c/lib), `${SYSTEM}` with the
+Replace `${PICOVOICE_LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](sdk/c/lib), `${SYSTEM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device. The demo opens an audio stream and initially waits for the wake word phrase. Once the wake
 word is detected, a message is printed to the console:
