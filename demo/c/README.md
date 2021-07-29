@@ -34,7 +34,8 @@ For Linux, macOS, and Raspberry Pi:
 
 ```console
 ./demo/c/picovoice_demo_mic
-usage : ./demo/c/picovoice_demo_mic library_path model_path context_path input_audio_device
+usage : ./demo/c/picovoice_demo_mic library_path porcupine_model_path keyword_path porcupine_sensitivity \
+                                    rhino_model_path context_path rhino_sensitivity input_audio_device
         ./demo/c/picovoice_demo_mic --show_audio_devices
 ```
 
@@ -42,7 +43,8 @@ on Windows:
 
 ```console
 ./demo/c/picovoice_demo_mic.exe
-usage : ./demo/c/picovoice_demo_mic.exe library_path model_path context_path input_audio_device
+usage : ./demo/c/picovoice_demo_mic.exe library_path porcupine_model_path keyword_path porcupine_sensitivity \
+                                        rhino_model_path context_path rhino_sensitivity input_audio_device
         ./demo/c/picovoice_demo_mic.exe --show_audio_devices
 ```
 
@@ -58,7 +60,7 @@ on Windows run:
 ./demo/c/picovoice_demo_mic.exe --show_audio_devices
 ```
 
-The following commands start up a microphone audio steam and wil wait for the `picovoice` wake word phrase.
+The following commands start up a microphone audio steam and will wait for the `picovoice` wake word phrase.
 
 ### Linux
 
@@ -141,7 +143,8 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 $ ./demo/c/picovoice_demo_file
-usage : ./demo/c/picovoice_demo_file library_path model_path context_path wav_path
+usage : ./demo/c/picovoice_demo_file library_path porcupine_model_path keyword_path porcupine_sensitivity \
+                                     rhino_model_path context_path rhino_sensitivity wav_path
 ```
 
 For example the following processes one of the WAV files under resources folder on  an Ubuntu 18.04:
