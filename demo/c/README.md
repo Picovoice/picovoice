@@ -17,13 +17,13 @@ The microphone based demo requires [miniaudio](https://github.com/mackron/miniau
 ### Linux, macOS, Raspberry Pi
 
 ```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
 ```
 
 ### Windows
 
 ```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c
 ```
 
 ## Run
@@ -155,8 +155,8 @@ sdk/c/lib/linux/x86_64/libpicovoice.so \
 resources/porcupine/lib/common/porcupine_params.pv \
 resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn \
 0.5 \
-resources/picovoice/lib/common/picovoice_params.pv \
-resources/picovoice/resources/contexts/linux/smart_lighting_linux.rhn \
+resources/rhino/lib/common/rhino_params.pv \
+resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn \
 0.5 \
 resources/audio_samples/picovoice-coffee.wav
 ```
@@ -169,8 +169,8 @@ sdk/c/lib/raspberry-pi/cortex-a72/libpicovoice.so \
 resources/porcupine/lib/common/porcupine_params.pv \
 resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
 0.5 \
-resources/picovoice/lib/common/picovoice_params.pv \
-resources/picovoice/resources/contexts/raspberry-pi/smart_lighting_raspberry-pi.rhn \
+resources/rhino/lib/common/rhino_params.pv \
+resources/rhino/resources/contexts/raspberry-pi/coffe_maker_raspberry-pi.rhn \
 0.5 \
 resources/audio_samples/picovoice-coffee.wav
 ```
