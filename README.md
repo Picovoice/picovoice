@@ -502,6 +502,82 @@ npm run serve
 
 Open http://localhost:8080 in your browser to try the demo.
 
+### C Demos
+
+The [Microphone demo](/demo/c/rhino_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+
+#### Linux (x86_64), macOS (x86_64) and Raspberry Pi
+
+At the root of the repository, build with:
+
+```console
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
+```
+
+List input audio devices with:
+
+```console
+./demo/c/picovoice_demo_mic --show_audio_devices
+```
+
+Run the demo using:
+
+```console
+./demo/c/picovoice_demo_mic \
+${PICOVOICE_LIBRARY_PATH} \
+resources/porcupine/lib/common/porcupine_params.pv \
+resources/porcupine/resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn \
+0.5 \
+resources/rhino/lib/common/rhino_params.pv \
+resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
+0.5 \
+{AUDIO_DEVICE_INDEX}
+```
+
+#### Windows
+
+**Requires MingW to run the demo.**
+
+At the root of the repository, build with:
+
+```console
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c
+```
+
+List input audio devices with:
+
+```console
+./demo/c/picovoice_demo_mic.exe --show_audio_devices
+```
+
+Run the demo using:
+
+```console
+./demo/c/picovoice_demo_mic.exe \
+${PICOVOICE_LIBRARY_PATH} \
+resources/porcupine/lib/common/porcupine_params.pv \
+resources/porcupine/resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn \
+0.5 \
+resources/rhino/lib/common/rhino_params.pv \
+resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
+0.5 \
+{AUDIO_DEVICE_INDEX}
+```
+
+Replace `${PICOVOICE_LIBRARY_PATH}` with path to appropriate library available under [lib](sdk/c/lib), `${SYSTEM}` with the
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
+the index of your audio device. The demo opens an audio stream and initially waits for the wake word phrase. Once the wake
+word is detected, a message is printed to the console:
+
+> [wake word]
+
+Once the message is printed, it will infer follow-on commands within the context of smart lighting.
+For example, you can say:
+
+> Turn on the lights in the bedroom.
+
+For more information about C demos go to [demo/c](demo/c).
+
 ### Microcontroller Demos
 
 There are several projects for various development boards inside the [mcu demo](./demo/mcu) folder.
