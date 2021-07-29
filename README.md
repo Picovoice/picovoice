@@ -512,7 +512,7 @@ The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https:/
 At the root of the repository, build with:
 
 ```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
 ```
 
 List input audio devices with:
@@ -542,7 +542,7 @@ resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
 At the root of the repository, build with:
 
 ```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I include demo/c/picovoice_demo_mic.c
+gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c
 ```
 
 List input audio devices with:
