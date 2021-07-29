@@ -120,6 +120,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
       - [Angular](#angular-demos)
       - [React](#react-demos)
       - [Vue](#vue-demos)
+    - [C](#c-demos)
     - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
     - [Python](#python)
