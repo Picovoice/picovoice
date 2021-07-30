@@ -577,16 +577,15 @@ For example, you can say:
 
 > "Turn on the lights in the bedroom."
 
-The previous example will print:
+The previous command will print to the console:
 
 ```
-[wake word]
 {
     is_understood : 'true',
     intent : 'changeLightState',
     slots : {
-    'state' : 'on',
-    'location' : 'bedroom',
+        'state' : 'on',
+        'location' : 'bedroom',
     }
 }
 ```
