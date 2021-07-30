@@ -10,7 +10,7 @@ You need a C99-compatible compiler to build these demos.
 
 **For Windows, MingW is required to run the demo.**
 
-The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The microphone-based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 ## Build
 
@@ -30,7 +30,7 @@ gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_
 
 Running the executable without any commandline arguments prints the usage info to the console.
 
-For Linux, macOS, and Raspberry Pi:
+#### Linux, macOS, and Raspberry Pi
 
 ```console
 ./demo/c/picovoice_demo_mic
@@ -39,7 +39,7 @@ usage : ./demo/c/picovoice_demo_mic library_path porcupine_model_path keyword_pa
         ./demo/c/picovoice_demo_mic --show_audio_devices
 ```
 
-on Windows:
+#### Windows
 
 ```console
 ./demo/c/picovoice_demo_mic.exe
@@ -48,19 +48,21 @@ usage : ./demo/c/picovoice_demo_mic.exe library_path porcupine_model_path keywor
         ./demo/c/picovoice_demo_mic.exe --show_audio_devices
 ```
 
-To show the available audio input devices, on Linux, macOS, Raspberry Pi run:
+To show the available audio input devices, run the following.
+
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/picovoice_demo_mic --show_audio_devices
 ```
 
-on Windows run:
+#### Windows
 
 ```console
 ./demo/c/picovoice_demo_mic.exe --show_audio_devices
 ```
 
-The following commands start up a microphone audio steam and will wait for the `picovoice` wake word phrase.
+The following commands start up a microphone audio steam and will wait for the "Picovoice" wake word phrase.
 
 ### Linux
 
@@ -92,8 +94,8 @@ resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn \
 
 ### RaspberryPi
 
-Replace `${PROCESSOR}` with one of Raspberry Pi's processor defined [here](../../sdk/c/lib/raspberry-pi) (for Raspberry Pi 4 this would
-be cortex-a72) and run:
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../sdk/c/lib/raspberry-pi) 
+(e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
 ./demo/c/picovoice_demo_mic \
@@ -127,12 +129,14 @@ Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.  Once the wa
 
 Then it will infer follow-on commands within the context of smart lighting system. For example, you can say:
 
-> "turn on the lights."
+> "Turn on the lights."
+
+
 
 ## File Demo
 
-**Note that the demo expect a single-channel WAV file with a sampling rate of 16000 and 16-bit linear PCM encoding. If you
-provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect result.**
+**Note that the demo requires a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
+provide a file with incorrect format the demo does not perform any format validation and will output erroneous data.**
 
 Compile by executing the following command from the root of the repository:
 
@@ -147,7 +151,7 @@ usage : ./demo/c/picovoice_demo_file library_path porcupine_model_path keyword_p
                                      rhino_model_path context_path rhino_sensitivity wav_path
 ```
 
-For example the following processes one of the WAV files under resources folder on  an Ubuntu 18.04:
+For example, the following processes one of the WAV files under the resources folder on an Ubuntu 18.04
 
 ```console
 ./demo/c/picovoice_demo_file \

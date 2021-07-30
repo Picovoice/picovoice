@@ -565,7 +565,7 @@ resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
 {AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${PICOVOICE_LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](sdk/c/lib), `${SYSTEM}` with the
+Replace `${PICOVOICE_LIBRARY_PATH}` with the path to the appropriate library available under [sdk/c/lib](sdk/c/lib), `${SYSTEM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device. The demo opens an audio stream and initially waits for the wake word phrase. Once the wake
 word is detected, a message is printed to the console:
@@ -575,7 +575,21 @@ word is detected, a message is printed to the console:
 Once the message is printed, it will infer follow-on commands within the context of smart lighting.
 For example, you can say:
 
-> Turn on the lights in the bedroom.
+> "Turn on the lights in the bedroom."
+
+The previous example will print:
+
+```
+[wake word]
+{
+    is_understood : 'true',
+    intent : 'changeLightState',
+    slots : {
+    'state' : 'on',
+    'location' : 'bedroom',
+    }
+}
+```
 
 For more information about C demos go to [demo/c](demo/c).
 
