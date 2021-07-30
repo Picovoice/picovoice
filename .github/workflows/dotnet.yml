@@ -25,7 +25,10 @@ jobs:
         dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: sdk/dotnet/Picovoice
     - name: Build
       run: dotnet build --no-restore
+      working-directory: sdk/dotnet/Picovoice
     - name: Test
       run: dotnet test
+      working-directory: sdk/dotnet/PicovoiceTest
