@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -9,12 +9,79 @@
     specific language governing permissions and limitations under the License.
 */
 
+#if !defined(_WIN32) && !defined(_WIN64)
+
 #include <dlfcn.h>
+
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
 
+#if defined(_WIN32) || defined(_WIN64)
+
+#include <windows.h>
+
+#endif
+
 #include "pv_picovoice.h"
+
+static void *open_dl(const char *dl_path) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return LoadLibrary(dl_path);
+
+#else
+
+    return dlopen(dl_path, RTLD_NOW);
+
+#endif
+
+}
+
+static void *load_symbol(void *handle, const char *symbol) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    return GetProcAddress((HMODULE) handle, symbol);
+
+#else
+
+    return dlsym(handle, symbol);
+
+#endif
+
+}
+
+static void close_dl(void *handle) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    FreeLibrary((HMODULE) handle);
+
+#else
+
+    dlclose(handle);
+
+#endif
+
+}
+
+static void print_dl_error(const char *message) {
+
+#if defined(_WIN32) || defined(_WIN64)
+
+    fprintf(stderr, "%s with code '%lu'.\n", message, GetLastError());
+
+#else
+
+    fprintf(stderr, "%s with '%s'.\n", message, dlerror());
+
+#endif
+
+}
 
 static void wake_word_callback(void) {
     fprintf(stdout, "[wake word]\n");
@@ -52,29 +119,27 @@ int main(int argc, char *argv[]) {
     const char *library_path = argv[1];
     const char *porcupine_model_path = argv[2];
     const char *keyword_path = argv[3];
-    const float porcupine_sensitivity = (float) atof(argv[4]);
+    const float porcupine_sensitivity = strtof(argv[4], NULL);
     const char *rhino_model_path = argv[5];
     const char *context_path = argv[6];
-    const float rhino_sensitivity = (float) atof(argv[7]);
+    const float rhino_sensitivity = strtof(argv[7], NULL);
     const char *wav_path = argv[8];
 
-    void *picovoice_library = dlopen(library_path, RTLD_NOW);
+    void *picovoice_library = open_dl(library_path);
     if (!picovoice_library) {
         fprintf(stderr, "failed to open library.\n");
         exit(1);
     }
 
-    char *error = NULL;
-
-    const char *(*pv_status_to_string_func)(pv_status_t) = dlsym(picovoice_library, "pv_status_to_string");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_status_to_string' with '%s'.\n", error);
+    const char *(*pv_status_to_string_func)(pv_status_t) = load_symbol(picovoice_library, "pv_status_to_string");
+    if (!pv_status_to_string_func) {
+        print_dl_error("failed to load 'pv_status_to_string'");
         exit(1);
     }
 
-    int32_t (*pv_sample_rate_func)() = dlsym(picovoice_library, "pv_sample_rate");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_sample_rate' with '%s'.\n", error);
+    int32_t (*pv_sample_rate_func)() = load_symbol(picovoice_library, "pv_sample_rate");
+    if (!pv_sample_rate_func) {
+        print_dl_error("failed to load 'pv_sample_rate'");
         exit(1);
     }
 
@@ -88,34 +153,34 @@ int main(int argc, char *argv[]) {
             float,
             void (*)(pv_inference_t *),
             pv_picovoice_t **) = NULL;
-    pv_picovoice_init_func = dlsym(picovoice_library, "pv_picovoice_init");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_picovoice_init' with '%s'", error);
+    pv_picovoice_init_func = load_symbol(picovoice_library, "pv_picovoice_init");
+    if (!pv_picovoice_init_func) {
+        print_dl_error("failed to load 'pv_picovoice_init'");
         exit(1);
     }
 
-    void (*pv_picovoice_delete_func)(pv_picovoice_t *) = dlsym(picovoice_library, "pv_picovoice_delete");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_picovoice_delete' with '%s'", error);
+    void (*pv_picovoice_delete_func)(pv_picovoice_t *) = load_symbol(picovoice_library, "pv_picovoice_delete");
+    if (!pv_picovoice_delete_func) {
+        print_dl_error("failed to load 'pv_picovoice_delete'");
         exit(1);
     }
 
     pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *) =
-    dlsym(picovoice_library, "pv_picovoice_process");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_picovoice_process' with '%s'", error);
+            load_symbol(picovoice_library, "pv_picovoice_process");
+    if (!pv_picovoice_process_func) {
+        print_dl_error("failed to load 'pv_picovoice_process'");
         exit(1);
     }
 
-    int32_t (*pv_picovoice_frame_length_func)() = dlsym(picovoice_library, "pv_picovoice_frame_length");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_picovoice_frame_length' with '%s'", error);
+    int32_t (*pv_picovoice_frame_length_func)() = load_symbol(picovoice_library, "pv_picovoice_frame_length");
+    if (!pv_picovoice_frame_length_func) {
+        print_dl_error("failed to load 'pv_picovoice_frame_length'");
         exit(1);
     }
 
-    pv_inference_delete_func = dlsym(picovoice_library, "pv_inference_delete");
-    if ((error = dlerror()) != NULL) {
-        fprintf(stderr, "failed to load 'pv_inference_delete' with '%s'", error);
+    pv_inference_delete_func = load_symbol(picovoice_library, "pv_inference_delete");
+    if (!pv_inference_delete_func) {
+        print_dl_error("failed to load 'pv_inference_delete'");
         exit(1);
     }
 
@@ -183,7 +248,7 @@ int main(int argc, char *argv[]) {
     free(pcm);
     fclose(wav);
     pv_picovoice_delete_func(handle);
-    dlclose(picovoice_library);
+    close_dl(picovoice_library);
 
     return 0;
 }

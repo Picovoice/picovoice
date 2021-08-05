@@ -505,92 +505,106 @@ Open http://localhost:8080 in your browser to try the demo.
 
 ### C Demos
 
-The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
-#### Linux (x86_64), macOS (x86_64) and Raspberry Pi
+The [Microphone demo](/demo/c/rhino_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+
+**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
+
+#### Microphone Demo
 
 At the root of the repository, build with:
 
 ```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c -ldl -lpthread -lm
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target picovoice_demo_mic
 ```
+
+#### Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone
 
 List input audio devices with:
 
 ```console
-./demo/c/picovoice_demo_mic --show_audio_devices
+./demo/c/build/picovoice_demo_mic --show_audio_devices
 ```
 
 Run the demo using:
 
 ```console
-./demo/c/picovoice_demo_mic \
+./demo/c/build/picovoice_demo_mic \
 ${PICOVOICE_LIBRARY_PATH} \
 resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn \
+resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
 0.5 \
 resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
+resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn \
 0.5 \
 {AUDIO_DEVICE_INDEX}
+
 ```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [/sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`), and `${AUDIO_DEVICE_INDEX}` with
+the index of your audio device.
 
 #### Windows
 
-**Requires MingW to run the demo.**
-
-At the root of the repository, build with:
-
-```console
-gcc -std=c99 -O3 -o demo/c/picovoice_demo_mic -I sdk/c/include demo/c/picovoice_demo_mic.c
-```
-
 List input audio devices with:
 
 ```console
-./demo/c/picovoice_demo_mic.exe --show_audio_devices
+.\\demo\\c\\build\\picovoice_demo_mic.exe --show_audio_devices
 ```
 
 Run the demo using:
 
 ```console
-./demo/c/picovoice_demo_mic.exe \
-${PICOVOICE_LIBRARY_PATH} \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/${SYSTEM}/picovoice_${SYSTEM}.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/${SYSTEM}/smart_lighting_${SYSTEM}.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\picovoice_demo_mic.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn 0.5 {AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${PICOVOICE_LIBRARY_PATH}` with the path to the appropriate library available under [sdk/c/lib](sdk/c/lib), `${SYSTEM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac` or `windows`), and `${AUDIO_DEVICE_INDEX}` with
-the index of your audio device. The demo opens an audio stream and initially waits for the wake word phrase. Once the wake
-word is detected, a message is printed to the console:
+Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device.
 
-> [wake word]
-
-Once the message is printed, it will infer follow-on commands within the context of smart lighting.
-For example, you can say:
+The demo opens an audio stream and waits for the wake word "Picovoice" to be detected. Once it is detected, it infers 
+your intent from spoken commands in the context of a smart lighting system. For example, you can say:
 
 > "Turn on the lights in the bedroom."
 
-The previous command will print to the console:
+#### File Demo
 
-```
-{
-    is_understood : 'true',
-    intent : 'changeLightState',
-    slots : {
-        'state' : 'on',
-        'location' : 'bedroom',
-    }
-}
+At the root of the repository, build with:
+
+```console
+cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target picovoice_demo_file
 ```
 
-For more information about C demos go to [demo/c](demo/c).
+#### Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone
+
+Run the demo using:
+
+```console
+./demo/c/build/picovoice_demo_file \
+${LIBRARY_PATH} \
+resources/porcupine/lib/common/porcupine_params.pv \
+resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
+0.5 \
+resources/rhino/lib/common/rhino_params.pv \
+resources/rhino/resources/contexts/${PLATFORM}/coffee_maker_${PLATFORM}.rhn \
+0.5 \
+resources/audio_samples/picovoice-coffee.wav
+```
+
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
+name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`).
+
+#### Windows
+
+Run the demo using:
+
+```console
+.\\demo\\c\\build\\picovoice_demo_file.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn 0.5 resources/audio_samples/picovoice-coffee.wav
+```
+
+The demo opens up the WAV file. It detects the wake word and infers the intent in the context of a coffee maker system.
+
+For more information about C demos go to [demo/c](/demo/c).
 
 ### Microcontroller Demos
 
