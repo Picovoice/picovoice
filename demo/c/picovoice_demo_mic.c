@@ -24,7 +24,13 @@
 
 #endif
 
+#pragma GCC diagnostic push
+
+#pragma GCC diagnostic ignored "-Wunused-result"
+
 #define MINIAUDIO_IMPLEMENTATION
+
+#pragma GCC diagnostic pop
 
 #include "miniaudio/miniaudio.h"
 
