@@ -119,10 +119,10 @@ int main(int argc, char *argv[]) {
     const char *library_path = argv[1];
     const char *porcupine_model_path = argv[2];
     const char *keyword_path = argv[3];
-    const float porcupine_sensitivity = (float) strtod(argv[4], NULL);
+    const float porcupine_sensitivity = strtof(argv[4], NULL);
     const char *rhino_model_path = argv[5];
     const char *context_path = argv[6];
-    const float rhino_sensitivity = (float) strtod(argv[7], NULL);
+    const float rhino_sensitivity = strtof(argv[7], NULL);
     const char *wav_path = argv[8];
 
     void *picovoice_library = open_dl(library_path);

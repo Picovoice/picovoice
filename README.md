@@ -507,7 +507,7 @@ Open http://localhost:8080 in your browser to try the demo.
 
 The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
-The [Microphone demo](/demo/c/rhino_demo_mic.c) requires  [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The [Microphone demo](/demo/c/rhino_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 **Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
 
