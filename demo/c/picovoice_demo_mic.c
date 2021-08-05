@@ -30,9 +30,9 @@
 
 #define MINIAUDIO_IMPLEMENTATION
 
-#pragma GCC diagnostic pop
-
 #include "miniaudio/miniaudio.h"
+
+#pragma GCC diagnostic pop
 
 #include "pv_picovoice.h"
 

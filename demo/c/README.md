@@ -58,7 +58,7 @@ The following commands shows the available audio input devices to the console.
 .\\demo\\c\\build\\picovoice_demo_mic.exe --show_audio_devices
 ```
 
-### Follow-on Commands
+### Wake Phrase and Follow-on Commands
 
 The following commands start up a microphone audio steam and will wait for the "Picovoice" wake word phrase.
 Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.
@@ -177,7 +177,7 @@ usage : .\\demo\\c\\build\\picovoice_demo_file library_path porcupine_model_path
                                                rhino_model_path context_path rhino_sensitivity wav_pat
 ```
 
-### Follow-on Commands
+### Wake Phrase and Follow-on Commands
 
 **Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
@@ -219,13 +219,13 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
-./demo/c/picovoice_demo_file \
+./demo/c/build/picovoice_demo_file \
 sdk/c/lib/raspberry-pi/${PROCESSOR}/libpicovoice.so \
 resources/porcupine/lib/common/porcupine_params.pv \
 resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
 0.5 \
 resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/raspberry-pi/coffe_maker_raspberry-pi.rhn \
+resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn \
 0.5 \
 resources/audio_samples/picovoice-coffee.wav
 ```

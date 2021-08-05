@@ -591,7 +591,7 @@ resources/rhino/resources/contexts/${PLATFORM}/coffee_maker_${PLATFORM}.rhn \
 resources/audio_samples/picovoice-coffee.wav
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [lib](/lib), `${PLATFORM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`).
 
 #### Windows
