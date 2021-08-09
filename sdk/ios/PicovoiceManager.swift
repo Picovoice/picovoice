@@ -113,7 +113,7 @@ public class PicovoiceManager {
         self.picovoice = nil 
     }
     
-    /// /// Callback to run after after voice processor processes frames.
+    /// Callback to run after after voice processor processes frames.
     private func audioCallback(pcm: [Int16]) {
         guard self.picovoice != nil else {
             return
