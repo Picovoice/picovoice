@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name = 'Picovoice-iOS'
     s.module_name = 'Picovoice'
-    s.version = '1.1.2'
+    s.version = '1.1.3'
     s.license = {:type => 'Apache 2.0', :file => 'LICENSE'}
     s.summary = 'iOS SDK for the Picovoice Offline Voice Recognition Platform'
     s.description = 
@@ -18,11 +18,12 @@ Pod::Spec.new do |s|
     DESC
     s.homepage = 'https://github.com/Picovoice/picovoice/tree/master/sdk/ios'
     s.author = { 'Picovoice' => 'hello@picovoice.ai' }
-    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :tag => "Picovoice-iOS-v1.1.2"} 
+    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :tag => "Picovoice-iOS-v1.1.3"}
     s.ios.deployment_target = '9.0'
     s.swift_version = '5.0'
-    s.ios.framework = 'AVFoundation'
     s.source_files = 'sdk/ios/*.{swift}'
-    s.dependency 'Porcupine-iOS', '~> 1.9.3'
-    s.dependency 'Rhino-iOS', '~> 1.6.3'
+    
+    s.dependency 'Porcupine-iOS', '~> 1.9.4'
+    s.dependency 'Rhino-iOS', '~> 1.6.4'
+    s.dependency 'ios-voice-processor', '~> 1.0.2'
   end
