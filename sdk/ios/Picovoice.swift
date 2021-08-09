@@ -116,34 +116,6 @@ public class Picovoice {
     /// Process a frame of audio with the platform
     ///
     /// - Parameters:
-    ///   - pcm: A pointer to a frame of 16-bit pcm
-    /// - Throws: PicovoiceError
-    public func process(pcm:UnsafePointer<Int16>) throws {
-        if porcupine == nil || rhino == nil {
-            throw PicovoiceError.objectDisposed
-        }
-
-        do {
-            if !isWakeWordDetected {
-                isWakeWordDetected = try porcupine!.process(pcm:pcm) == 0
-                if isWakeWordDetected {
-                    self.onWakeWordDetection?()
-                }
-            }
-            else{
-                if try rhino!.process(pcm:pcm) {
-                    self.onInference?(try rhino!.getInference())
-                    isWakeWordDetected = false
-                }
-            }
-        } catch {
-            throw PicovoiceError(error)
-        }
-    }
-
-    /// Process a frame of audio with the platform
-    ///
-    /// - Parameters:
     ///   - pcm: An array of 16-bit pcm samples
     /// - Throws: PicovoiceError
     public func process(pcm:[Int16]) throws {

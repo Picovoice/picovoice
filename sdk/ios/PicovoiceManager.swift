@@ -7,7 +7,7 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-import AVFoundation
+import ios_voice_processor
 import Rhino
 import Porcupine
 
@@ -19,7 +19,6 @@ public enum PicovoiceManagerError: Error {
 /// client upon detection of the wake word or completion of in voice command inference.
 public class PicovoiceManager {
     private var picovoice:Picovoice?
-    private var audioInputEngine: AudioInputEngine?
 
     private var porcupineModelPath: String?
     private var keywordPath: String
@@ -29,6 +28,7 @@ public class PicovoiceManager {
     private var contextPath: String
     private var rhinoSensitivity: Float32
     private var onInference: ((Inference) -> Void)?
+    private var errorCallback: ((Error) -> Void)?
 
     /// Constructor.
     ///
@@ -44,6 +44,7 @@ public class PicovoiceManager {
     ///   - rhinoModelPath: Absolute path to file containing model parameters.
     ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially)
     ///   increasing the erroneous inference rate.
+    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PicovoiceError
     public init(
         keywordPath: String,
@@ -53,7 +54,8 @@ public class PicovoiceManager {
         contextPath: String,
         rhinoModelPath: String? = nil,
         rhinoSensitivity: Float32 = 0.5,
-        onInference: ((Inference) -> Void)?) {
+        onInference: ((Inference) -> Void)?,
+        errorCallback: ((Error) -> Void)? = nil) {
         
         self.keywordPath = keywordPath
         self.porcupineModelPath = porcupineModelPath
@@ -64,6 +66,7 @@ public class PicovoiceManager {
         self.rhinoModelPath = rhinoModelPath
         self.rhinoSensitivity  = rhinoSensitivity
         self.onInference = onInference
+        self.errorCallback = errorCallback
     }
     
     deinit {
@@ -81,12 +84,10 @@ public class PicovoiceManager {
         if picovoice != nil {
             return
         }
-        let audioSession = AVAudioSession.sharedInstance()
-        if audioSession.recordPermission == .denied {
+        
+        guard try VoiceProcessor.shared.hasPermissions() else {
             throw PicovoiceManagerError.recordingDenied
         }
-        
-        try audioSession.setCategory(AVAudioSession.Category.playAndRecord, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetooth])
         
         picovoice = try Picovoice(
             keywordPath: self.keywordPath,
@@ -98,96 +99,34 @@ public class PicovoiceManager {
             rhinoModelPath: self.rhinoModelPath,
             rhinoSensitivity: self.rhinoSensitivity)
         
-        self.audioInputEngine = AudioInputEngine()
-        
-        self.audioInputEngine!.audioInput = { [weak self] audio in
-            guard let `self` = self else {
-                return
-            }
-            
-            guard self.picovoice != nil else {
-                return
-            }
-            do {
-               try self.picovoice!.process(pcm:audio)
-            } catch {
-                print("Picovoice was unable to process frame of audio.")
-            }
-        }
-
-        try self.audioInputEngine?.start()
+        try VoiceProcessor.shared.start(
+            frameLength: Picovoice.frameLength,
+            sampleRate: Picovoice.sampleRate,
+            audioCallback: self.audioCallback
+        )
     }
     
     /// Stop audio recording and processing loop
     public func stop() {
-        self.audioInputEngine?.stop()
+        VoiceProcessor.shared.stop()
         self.picovoice?.delete()
         self.picovoice = nil 
     }
-}
-
-private class AudioInputEngine {
-    private let numBuffers = 3
-    private var audioQueue: AudioQueueRef?
     
-    var audioInput: ((UnsafePointer<Int16>) -> Void)?
-    
-    func start() throws {
-        var format = AudioStreamBasicDescription(
-            mSampleRate: Float64(Picovoice.sampleRate),
-            mFormatID: kAudioFormatLinearPCM,
-            mFormatFlags: kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked,
-            mBytesPerPacket: 2,
-            mFramesPerPacket: 1,
-            mBytesPerFrame: 2,
-            mChannelsPerFrame: 1,
-            mBitsPerChannel: 16,
-            mReserved: 0)
-        let userData = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
-        AudioQueueNewInput(&format, createAudioQueueCallback(), userData, nil, nil, 0, &audioQueue)
-        
-        guard let queue = audioQueue else {
+    /// /// Callback to run after after voice processor processes frames.
+    private func audioCallback(pcm: [Int16]) {
+        guard self.picovoice != nil else {
             return
         }
         
-        let bufferSize = UInt32(Picovoice.frameLength) * 2
-        for _ in 0..<numBuffers {
-            var bufferRef: AudioQueueBufferRef? = nil
-            AudioQueueAllocateBuffer(queue, bufferSize, &bufferRef)
-            if let buffer = bufferRef {
-                AudioQueueEnqueueBuffer(queue, buffer, 0, nil)
+        do {
+           try self.picovoice!.process(pcm: pcm)
+        } catch {
+            if self.errorCallback != nil {
+                self.errorCallback!(error)
+            } else {
+                print("\(error)")
             }
-        }
-        
-        AudioQueueStart(queue, nil)
-    }
-    
-    func stop() {
-        guard let audioQueue = audioQueue else {
-            return
-        }
-        AudioQueueFlush(audioQueue)
-        AudioQueueStop(audioQueue, true)
-        AudioQueueDispose(audioQueue, true)
-        audioInput = nil
-    }
-    
-    private func createAudioQueueCallback() -> AudioQueueInputCallback {
-        return { userData, queue, bufferRef, startTimeRef, numPackets, packetDescriptions in
-            
-            // `self` is passed in as userData in the audio queue callback.
-            guard let userData = userData else {
-                return
-            }
-            let `self` = Unmanaged<AudioInputEngine>.fromOpaque(userData).takeUnretainedValue()
-            
-            let pcm = bufferRef.pointee.mAudioData.assumingMemoryBound(to: Int16.self)
-            
-            if let audioInput = self.audioInput {
-                audioInput(pcm)
-            }
-            
-            AudioQueueEnqueueBuffer(queue, bufferRef, 0, nil)
         }
     }
 }
