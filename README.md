@@ -418,16 +418,36 @@ For the full set of supported commands refer to [demo's readme](/demo/android/RE
 
 ### iOS Demos
 
-Before building the demo app, run the following from this directory to install the Picovoice-iOS Cocoapod:
-```ruby
+The BackgroundService demo runs audio recording in the background while the application is **not** in focus and remains running in the background.
+The ForegroundApp demo runs **only** when the application is in focus.
+
+#### BackgroundService Demo
+
+To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService) and run:
+
+```console
 pod install
 ```
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceDemo.xcworkspace` and run the application. Press the start button and say:
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceBackgroundServiceDemo.xcworkspace` and run the application.
 
-> Porcupine, shut of the lights in the living room.
+#### ForegroundApp Demo
 
-For the full set of supported commands refer to [demo's readme](/demo/ios/README.md).
+To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run:
+
+```console
+pod install
+```
+
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceForegroundAppDemo.xcworkspace` and run the application.
+
+### Wake Word Detenction and Context Inference
+
+After running the demo, press the start button and try saying the following:
+
+> Picovoice, shut of the lights in the living room.
+
+For more details about the iOS demos and full set of supported commands refer to [demo's readme](/demo/ios/README.md).
 
 ### Web Demos
 

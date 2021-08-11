@@ -1,19 +1,40 @@
 ## Picovoice iOS Demos
 
-Before building the demo app, run the following from this directory to install the Picovoice Cocoapod:
-```ruby
+The minimum iOS version required to run the demo is iOS 14.0 or higher.
+
+## BackgroundService Demo
+
+This demo runs microphone recording in the background and detects the wake word and context inference while the application is **not** in focus. The demo will continue to run as long as the application remains running in the background.
+
+To run the background service demo, go to [BackgroundService](./BackgroundService) directory. Then run:
+
+```console
 pod install
 ```
 
-Open `PicovoiceDemo.xcworkspace` and run the demo.
+Open `PicovoiceBackgroundServiceDemo.xcworkspace` and run the demo.
 
-The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
+## ForegroundApp Demo
 
-> Porcupine, turn off the lights.
+This demo runs wake word detection and context inference while the application is in focus. 
+
+To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
+
+```console
+pod install
+```
+
+Open the `PicovoiceForegroundAppDemo.xcworkspace` and run the demo.
+
+## Wake Word Detection and Context Inference
+
+The default wake word is `Picovoice`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
+
+> Picovoice, turn off the lights.
 
 or
 
-> Porcupine, set the lights in the bedroom to blue.
+> Picovoice, set the lights in the bedroom to blue.
 
 See below for the full context:
 
@@ -67,6 +88,6 @@ context:
       - "pantry"
 ```
 
-### Running the On-Device Unit Tests
+## Running the On-Device Unit Tests
 
-Open `PicovoiceDemo.xcworkspace` with XCode and run the tests with `Product > Test`.
+Open `PicovoiceForegroundAppDemo.xcworkspace` with XCode and run the tests with `Product > Test`.
