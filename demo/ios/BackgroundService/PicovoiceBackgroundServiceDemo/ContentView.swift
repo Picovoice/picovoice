@@ -20,7 +20,9 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Press the Start button and say the wake word \"Picovoice\". Once the 'Wake Word Detected' notification appears, you may try saying commands in the context of 'Smart Lighting' such as: \"Turn off the lights\". Try pressing the home button and saying it again.").padding()
+            Text("Press the Start button and say the wake word \"Picovoice, turn off the lights\". Try pressing the home button and saying it again.")
+                .padding()
+                .multilineTextAlignment(.center)
             
             Button(action: {
                 if self.buttonLabel == "START" {
