@@ -1,0 +1,11 @@
+[package]
+name = "pv_rhino_filedemo"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+clap = "2.33.3"
+rodio = "0.14"
+itertools = "0.10.1"
+picovoice = { path = "../../../sdk/rust" }
+

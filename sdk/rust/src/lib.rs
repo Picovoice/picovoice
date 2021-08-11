@@ -126,6 +126,7 @@ macro_rules! porcupine_to_picovoice_result {
     };
 }
 
+#[derive(Clone)]
 pub struct Picovoice<W, I>
 where
     W: FnMut(),
