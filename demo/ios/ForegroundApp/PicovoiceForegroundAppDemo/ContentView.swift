@@ -21,6 +21,10 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Text("Press the Start button and say \"Picovoice, turn off the lights\".")
+                .padding()
+                .multilineTextAlignment(.center)
+            
             Button(action: {
                 if self.buttonLabel == "START" {
                     self.result = ""
@@ -61,6 +65,7 @@ struct ContentView: View {
                 } else {
                     self.picovoiceManager.stop()
                     self.buttonLabel = "START"
+                    self.result = ""
                 }
             }) {
                 Text("\(buttonLabel)")

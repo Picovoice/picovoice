@@ -20,7 +20,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Press the Start button and say the wake word \"Picovoice, turn off the lights\". Try pressing the home button and saying it again.")
+            Text("Press the Start button and say \"Picovoice, turn off the lights\". Try pressing the home button and saying it again.")
                 .padding()
                 .multilineTextAlignment(.center)
             
