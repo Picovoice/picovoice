@@ -1,0 +1,25 @@
+[package]
+name = "picovoice"
+version = "0.0.1"
+edition = "2018"
+description = "The Rust version of Picovoice's SDK"
+license = "Apache-2.0"
+homepage = "https://picovoice.ai/"
+repository = "https://github.com/Picovoice/picovoice"
+keywords = [
+    "natural-language",
+    "speech-recognition",
+    "voice-control",
+    "voice-recognition",
+    "wake-word",
+]
+publish = false
+
+[lib]
+name = "picovoice"
+path = "src/lib.rs"
+crate_type = ["lib"]
+
+[dependencies]
+pv_porcupine = "1.9"
+pv_rhino = "1.6"
