@@ -441,7 +441,7 @@ pod install
 
 Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceForegroundAppDemo.xcworkspace` and run the application.
 
-### Wake Word Detenction and Context Inference
+#### Wake Word Detenction and Context Inference
 
 After running the demo, press the start button and try saying the following:
 
