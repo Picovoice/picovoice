@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2020 Picovoice Inc.
+//  Copyright 2018-2021 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -12,7 +12,7 @@ import Picovoice
 
 struct ContentView: View {
     
-    let keywordPath = Bundle.main.path(forResource: "porcupine_ios", ofType: "ppn")
+    let keywordPath = Bundle.main.path(forResource: "picovoice_ios", ofType: "ppn")
     let contextPath = Bundle.main.path(forResource: "smart_lighting_ios", ofType: "rhn")
     
     @State var picovoiceManager: PicovoiceManager!
