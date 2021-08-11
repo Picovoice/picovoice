@@ -16,28 +16,22 @@ mod tests {
     use std::fs::File;
     use std::io::BufReader;
     use std::io::Read;
+    use std::sync::{Arc, Mutex};
 
-    use picovoice::PicovoiceBuilder;
+    use picovoice::{rhino::RhinoInference, Picovoice, PicovoiceBuilder};
 
-    #[test]
-    fn test_process() {
-        let keyword_path =
-            "../../resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn";
-        let context_path = "../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn";
-
-        let mut is_wake_word_detected = false;
-        let mut detected_inference = None;
-
-        let wake_word_callback = || is_wake_word_detected = true;
-        let inference_callback = |inference| detected_inference = Some(inference);
-        let mut picovoice = PicovoiceBuilder::new(
-            keyword_path,
-            wake_word_callback,
-            context_path,
-            inference_callback,
-        )
-        .init()
-        .expect("Failed to init Picovoice");
+    fn do_test<W: FnMut(), I: FnMut(RhinoInference)>(
+        picovoice: &mut Picovoice<W, I>,
+        is_wake_word_detected: Arc<Mutex<bool>>,
+        detected_inference: Arc<Mutex<Option<RhinoInference>>>,
+    ) {
+        {
+            // Reset test asserts in block expression to drop mutex locks before processing
+            let mut is_wake_word_detected = is_wake_word_detected.lock().unwrap();
+            let mut detected_inference = detected_inference.lock().unwrap();
+            *is_wake_word_detected = false;
+            *detected_inference = None;
+        }
 
         let testfile = "../../resources/audio_samples/picovoice-coffee.wav";
         let mut reader = BufReader::new(File::open(testfile).unwrap());
@@ -57,15 +51,59 @@ mod tests {
             picovoice.process(&frame_samples).unwrap();
         }
 
-        assert!(is_wake_word_detected);
+        assert_eq!(*is_wake_word_detected.lock().unwrap(), true);
 
-        let inference = detected_inference.expect("Inference callback not called");
-        assert!(inference.is_understood);
-        assert_eq!(inference.intent.unwrap(), "orderBeverage");
+        let locked_inference = detected_inference.lock().unwrap();
+        let inference = locked_inference
+            .as_ref()
+            .expect("Inference callback not called");
+        assert_eq!(inference.is_understood, true);
+        assert_eq!(inference.intent.as_ref().unwrap(), "orderBeverage");
 
         let mut expected_slot_values = HashMap::new();
         expected_slot_values.insert(String::from("beverage"), String::from("coffee"));
         expected_slot_values.insert(String::from("size"), String::from("large"));
         assert_eq!(inference.slots, expected_slot_values);
+    }
+
+    #[test]
+    fn test_process() {
+        let keyword_path =
+            "../../resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn";
+        let context_path = "../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn";
+
+        let is_wake_word_detected = Arc::new(Mutex::new(false));
+        let detected_inference = Arc::new(Mutex::new(None));
+
+        let wake_word_callback = || {
+            if let Ok(mut is_wake_word_detected) = is_wake_word_detected.lock() {
+                *is_wake_word_detected = true;
+            }
+        };
+        let inference_callback = |inference| {
+            if let Ok(mut detected_inference) = detected_inference.lock() {
+                *detected_inference = Some(inference);
+            }
+        };
+        let mut picovoice = PicovoiceBuilder::new(
+            keyword_path,
+            wake_word_callback,
+            context_path,
+            inference_callback,
+        )
+        .init()
+        .expect("Failed to init Picovoice");
+
+        do_test(
+            &mut picovoice,
+            is_wake_word_detected.clone(),
+            detected_inference.clone(),
+        );
+
+        do_test(
+            &mut picovoice,
+            is_wake_word_detected.clone(),
+            detected_inference.clone(),
+        );
     }
 }

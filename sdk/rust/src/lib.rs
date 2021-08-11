@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 
-use porcupine;
-use rhino;
+pub use porcupine;
+pub use rhino;
 
 pub struct PicovoiceBuilder<W, I>
 where
