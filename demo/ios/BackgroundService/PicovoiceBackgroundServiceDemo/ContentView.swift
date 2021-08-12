@@ -1,5 +1,5 @@
 //
-//  Copyright 2018-2020 Picovoice Inc.
+//  Copyright 2021 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -12,43 +12,48 @@ import Picovoice
 
 struct ContentView: View {
     
-    let keywordPath = Bundle.main.path(forResource: "porcupine_ios", ofType: "ppn")
+    let keywordPath = Bundle.main.path(forResource: "picovoice_ios", ofType: "ppn")
     let contextPath = Bundle.main.path(forResource: "smart_lighting_ios", ofType: "rhn")
     
     @State var picovoiceManager: PicovoiceManager!
     @State var buttonLabel = "START"
-    @State var result: String = ""
     
     var body: some View {
         VStack {
+            Text("Press the Start button and say \"Picovoice, turn off the lights\". Try pressing the home button and saying it again.")
+                .padding()
+                .multilineTextAlignment(.center)
+            
             Button(action: {
                 if self.buttonLabel == "START" {
-                    self.result = ""
+                    NotificationManager.shared.requestNotificationAuthorization()
                     
                     do {
                         self.picovoiceManager = PicovoiceManager(
                             keywordPath: self.keywordPath!,
                             porcupineSensitivity: 0.5,
                             onWakeWordDetection: {
-                                result = "Wake Word Detected ..."
+                                NotificationManager.shared.sendNotification(message: "Wake Word Detected")
                             },
                             contextPath: self.contextPath!,
                             rhinoSensitivity: 0.0,
                             onInference: { x in
                                 DispatchQueue.main.async {
-                                    result = "{\n"
-                                    self.result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
+                                    var result = "{\n"
+                                    result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
                                     if x.isUnderstood {
-                                        self.result += "    \"intent : \"" + x.intent + "\",\n"
+                                        result += "    \"intent : \"" + x.intent + "\",\n"
                                         if !x.slots.isEmpty {
                                             result += "    \"slots\" : {\n"
                                             for (k, v) in x.slots {
-                                                self.result += "        \"" + k + "\" : \"" + v + "\",\n"
+                                                result += "        \"" + k + "\" : \"" + v + "\",\n"
                                             }
                                             result += "    }\n"
                                         }
                                     }
                                     result += "}\n"
+                                    
+                                    NotificationManager.shared.sendNotification(message: result)
                                 }
                             })
 
@@ -69,9 +74,6 @@ struct ContentView: View {
                     .foregroundColor(Color.white)
                     .font(.largeTitle)
             }
-            
-            Text("\(result)")
-                .padding()
         }
     }
 }
