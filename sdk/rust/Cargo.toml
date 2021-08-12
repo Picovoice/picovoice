@@ -13,7 +13,11 @@ keywords = [
     "voice-recognition",
     "wake-word",
 ]
-publish = false
+publish = true
+
+exclude = [
+    "tests/",
+]
 
 [lib]
 name = "picovoice"

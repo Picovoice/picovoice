@@ -7,5 +7,4 @@ edition = "2018"
 clap = "2.33.3"
 hound = "3.4.0"
 itertools = "0.10.1"
-picovoice = { path = "../../../sdk/rust" }
-
+picovoice = "0.0.1"

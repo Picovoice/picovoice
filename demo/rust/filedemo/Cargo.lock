@@ -107,6 +107,8 @@ dependencies = [
 [[package]]
 name = "picovoice"
 version = "0.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "20926d198812910d240e927a13f7b4c56d50416fddcd638d4f39678a2e6fb02e"
 dependencies = [
  "pv_porcupine",
  "pv_rhino",
