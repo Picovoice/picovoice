@@ -77,7 +77,7 @@ fn picovoice_demo(
 
     let wavspec = hound::WavSpec {
         channels: 1,
-        sample_rate: 16000,
+        sample_rate: picovoice.sample_rate(),
         bits_per_sample: 16,
         sample_format: hound::SampleFormat::Int,
     };

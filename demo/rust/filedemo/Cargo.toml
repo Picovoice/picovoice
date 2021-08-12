@@ -5,7 +5,7 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.3"
-rodio = "0.14"
+hound = "3.4.0"
 itertools = "0.10.1"
 picovoice = { path = "../../../sdk/rust" }
 

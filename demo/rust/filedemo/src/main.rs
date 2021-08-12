@@ -10,11 +10,9 @@
 */
 
 use clap::{App, Arg};
+use hound;
 use itertools::Itertools;
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
-use rodio::{source::Source, Decoder};
-use std::fs::File;
-use std::io::BufReader;
 use std::path::PathBuf;
 
 fn picovoice_demo(
@@ -26,9 +24,6 @@ fn picovoice_demo(
     porcupine_sensitivity: Option<f32>,
     rhino_sensitivity: Option<f32>,
 ) {
-    let soundfile = BufReader::new(File::open(input_audio_path).unwrap());
-    let audiosource = Decoder::new(soundfile).unwrap();
-
     let wake_word_callback = || println!("[wake word]");
     let inference_callback = |inference: RhinoInference| {
         if inference.is_understood {
@@ -70,16 +65,41 @@ fn picovoice_demo(
         .init()
         .expect("Failed to create Picovoice");
 
-    if picovoice.sample_rate() != audiosource.sample_rate() {
+    let mut wav_reader = match hound::WavReader::open(input_audio_path.clone()) {
+        Ok(reader) => reader,
+        Err(err) => panic!(
+            "Failed to open .wav audio file {}: {}",
+            input_audio_path.display(),
+            err
+        ),
+    };
+
+    if wav_reader.spec().sample_rate != picovoice.sample_rate() {
         panic!(
             "Audio file should have the expected sample rate of {}, got {}",
             picovoice.sample_rate(),
-            audiosource.sample_rate()
+            wav_reader.spec().sample_rate
         );
     }
 
-    for frame in &audiosource.chunks(picovoice.frame_length() as usize) {
-        let frame = frame.collect_vec();
+    if wav_reader.spec().channels != 1u16 {
+        panic!(
+            "Audio file should have the expected number of channels 1, got {}",
+            wav_reader.spec().channels
+        );
+    }
+
+    if wav_reader.spec().bits_per_sample != 16u16
+        || wav_reader.spec().sample_format != hound::SampleFormat::Int
+    {
+        panic!("WAV format should be in the signed 16 bit format",);
+    }
+
+    for frame in &wav_reader
+        .samples()
+        .chunks(picovoice.frame_length() as usize)
+    {
+        let frame: Vec<i16> = frame.map(|s| s.unwrap()).collect_vec();
         if frame.len() == picovoice.frame_length() as usize {
             picovoice.process(&frame).unwrap();
         }

@@ -17,8 +17,7 @@ picovoice/demo/rust/micdemo  # Microphone Demo
 
 ### File Demo
 
-The file demo allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance benchmarking. It accepts 16kHz audio files. Picovoice processes a single-channel audio stream if a stereo file is
-provided it only processes the first (left) channel. The following processes a file looking for instances of the wake phrase defined in the file passed to the `--keyword_path` argument and then infers the follow-on spoken command
+The file demo allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance benchmarking. It accepts mono 16kHz WAV audio files. The following processes a file looking for instances of the wake phrase defined in the file passed to the `--keyword_path` argument and then infers the follow-on spoken command
 using the context defined by the file passed to the `--context_path` argument:
 
 ```console
