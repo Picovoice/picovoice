@@ -98,6 +98,16 @@ pub enum PicovoiceError {
     LibraryError(String),
 }
 
+impl PicovoiceError {
+    pub fn from_rhino(rhino_err: rhino::RhinoError) -> Self {
+        PicovoiceError::RhinoError(rhino_err)
+    }
+
+    pub fn from_porcupine(porcupine_err: porcupine::PorcupineError) -> Self {
+        PicovoiceError::PorcupineError(porcupine_err)
+    }
+}
+
 impl std::fmt::Display for PicovoiceError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self {
@@ -106,24 +116,6 @@ impl std::fmt::Display for PicovoiceError {
             PicovoiceError::LibraryError(err) => write!(f, "Picovoice error: {}", err),
         }
     }
-}
-
-macro_rules! rhino_to_picovoice_result {
-    ($with_result:expr) => {
-        match $with_result {
-            Ok(result) => Ok(result),
-            Err(rhino_err) => Err(PicovoiceError::RhinoError(rhino_err)),
-        }
-    };
-}
-
-macro_rules! porcupine_to_picovoice_result {
-    ($with_result:expr) => {
-        match $with_result {
-            Ok(result) => Ok(result),
-            Err(porcupine_err) => Err(PicovoiceError::PorcupineError(porcupine_err)),
-        }
-    };
 }
 
 #[derive(Clone)]
@@ -170,7 +162,9 @@ where
         if let Some(porcupine_sensitivity) = porcupine_sensitivity {
             porcupine_builder.sensitivities(&[porcupine_sensitivity]);
         }
-        let porcupine = porcupine_to_picovoice_result!(porcupine_builder.init())?;
+        let porcupine = porcupine_builder
+            .init()
+            .map_err(PicovoiceError::from_porcupine)?;
 
         let mut rhino_builder = rhino::RhinoBuilder::new(context_path);
         if let Some(rhino_library_path) = rhino_library_path {
@@ -182,7 +176,7 @@ where
         if let Some(rhino_sensitivity) = rhino_sensitivity {
             rhino_builder.sensitivity(rhino_sensitivity);
         }
-        let rhino = rhino_to_picovoice_result!(rhino_builder.init())?;
+        let rhino = rhino_builder.init().map_err(PicovoiceError::from_rhino)?;
 
         if porcupine.sample_rate() != rhino.sample_rate() {
             return Err(PicovoiceError::LibraryError(format!(
@@ -222,18 +216,27 @@ where
 
     pub fn process(&mut self, pcm: &[i16]) -> Result<(), PicovoiceError> {
         if !self.wake_word_detected {
-            let keyword_index = porcupine_to_picovoice_result!(self.porcupine.process(pcm))?;
+            let keyword_index = self
+                .porcupine
+                .process(pcm)
+                .map_err(PicovoiceError::from_porcupine)?;
 
             if keyword_index == 0 {
                 self.wake_word_detected = true;
                 (self.wake_word_callback)();
             }
         } else {
-            let is_finalized = rhino_to_picovoice_result!(self.rhino.process(pcm))?;
+            let is_finalized = self
+                .rhino
+                .process(pcm)
+                .map_err(PicovoiceError::from_rhino)?;
 
             if is_finalized {
                 self.wake_word_detected = false;
-                let inference = rhino_to_picovoice_result!(self.rhino.get_inference())?;
+                let inference = self
+                    .rhino
+                    .get_inference()
+                    .map_err(PicovoiceError::from_rhino)?;
                 (self.inference_callback)(inference);
             }
         }

@@ -1,6 +1,6 @@
-# Rhino Rust Demos
+# Picovoice Rust Demos
 
-This Rust module contains demos for processing real-time audio (i.e. microphone) and audio files using the Rhino Speech-to-Intent engine.
+This Rust module contains demos for processing real-time audio (i.e. microphone) and audio files using the Picovoice Platform.
 
 ## Installation
 
