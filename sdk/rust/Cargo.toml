@@ -2,7 +2,7 @@
 name = "picovoice"
 version = "0.0.1"
 edition = "2018"
-description = "The Rust version of Picovoice's SDK"
+description = "Rust SDK for Picovoice's voice recognition platform"
 license = "Apache-2.0"
 homepage = "https://picovoice.ai/"
 repository = "https://github.com/Picovoice/picovoice"

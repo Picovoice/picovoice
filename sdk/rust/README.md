@@ -54,6 +54,7 @@ let mut picovoice = PicovoiceBuilder::new(
     inference_callback,
 ).init().expect("Failed to create picovoice");
 ```
+
 Upon detection of wake word defined by `keyword_path` it starts inferring user's intent from the follow-on voice command within
 the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
@@ -72,6 +73,41 @@ fn next_audio_frame() -> Vec<i16> {
 loop {
     picovoice.process(&next_audio_frame()).expect("Picovoice failed to process audio");
 }
+```
+
+The sensitivity of the Porcupine (wake word) and Rhino (inference) engines can be tuned
+using the `porcupine_sensitivity()` and `rhino_sensitivity()` methods respectively. It is a floating point number within
+[0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially) increasing the erroneous
+inference rate.
+
+```rust
+let mut picovoice = PicovoiceBuilder::new(
+    keyword_path,
+    wake_word_callback,
+    context_path,
+    inference_callback,
+)
+.porcupine_sensitivity(0.4f32)
+.rhino_sensitivity(0.77f32)
+.init().expect("Failed to create picovoice");
+```
+
+Non-standard model and library paths (For example, when using a non-english model) for both engines can be tuned in a similar manner.
+
+```rust
+let mut picovoice = PicovoiceBuilder::new(
+    keyword_path,
+    wake_word_callback,
+    context_path,
+    inference_callback,
+)
+.porcupine_sensitivity(0.4f32)
+.rhino_sensitivity(0.77f32)
+.porcupine_model_path("path/to/model/params.pv")
+.rhino_model_path("path/to/model/params.pv")
+.porcupine_library_path("path/to/library.so")
+.rhino_library_path("path/to/library.so")
+.init().expect("Failed to create picovoice");
 ```
 
 ## Non-English Models

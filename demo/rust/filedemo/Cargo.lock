@@ -629,6 +629,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "picovoice_filedemo"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "itertools",
+ "picovoice",
+ "rodio",
+]
+
+[[package]]
 name = "pkg-config"
 version = "0.3.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -682,16 +692,6 @@ dependencies = [
  "libc",
  "libloading",
  "log",
-]
-
-[[package]]
-name = "pv_rhino_filedemo"
-version = "0.1.0"
-dependencies = [
- "clap",
- "itertools",
- "picovoice",
- "rodio",
 ]
 
 [[package]]

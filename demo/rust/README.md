@@ -4,20 +4,20 @@ This Rust module contains demos for processing real-time audio (i.e. microphone)
 
 ## Installation
 
-MicDemo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture. It uses `bindgen` and therefore requires `clang` to be installed and on the path. Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
+The microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture. It uses `bindgen` and therefore requires `clang` to be installed and on the path. Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
 
 ## Usage
 
 NOTE: The working directory for the following `Cargo` commands is:
 
 ```console
-rhino/demo/rust/filedemo  # File Demo
-rhino/demo/rust/micdemo  # Mic Demo
+picovoice/demo/rust/filedemo  # File Demo
+picovoice/demo/rust/micdemo  # Microphone Demo
 ```
 
 ### File Demo
 
-It allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance benchmarking. It accepts 16kHz audio files. Picovoice processes a single-channel audio stream if a stereo file is
+The file demo allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance benchmarking. It accepts 16kHz audio files. Picovoice processes a single-channel audio stream if a stereo file is
 provided it only processes the first (left) channel. The following processes a file looking for instances of the wake phrase defined in the file passed to the `--keyword_path` argument and then infers the follow-on spoken command
 using the context defined by the file passed to the `--context_path` argument:
 
@@ -35,7 +35,7 @@ cargo run --release -- --help
 
 ### Microphone Demo
 
-It opens an audio stream from a microphone and detects utterances of a give wake word(s). The following processes
+The microphone demo opens an audio stream from a microphone and detects utterances of a give wake word(s). The following processes
 incoming audio from the microphone for instances of the wake phrase defined in the file  passed to the `--keyword_path` argument and then infers the follow-on spoken command using the context defined by the file
 passed to the `--context_path` argument. Upon completion of the spoken command inference it resumes wake word
 detection.
