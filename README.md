@@ -16,6 +16,7 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
+[![Crates.io](https://img.shields.io/crates/v/picovoice)](https://crates.io/crates/picovoice)
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -120,6 +121,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
       - [Angular](#angular-demos)
       - [React](#react-demos)
       - [Vue](#vue-demos)
+    - [Rust](#rust-demos)
     - [C](#c-demos)
     - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
@@ -139,6 +141,7 @@ permitted for use in commercial settings, and have a path to graduate to commerc
       - [Angular](#angular)
       - [React](#react)
       - [Vue](#vue)
+    - [Rust](#rust)
     - [Microcontroller](#microcontroller)
   - [Releases](#releases)
   - [FAQ](#faq)
@@ -522,6 +525,41 @@ npm run serve
 ```
 
 Open http://localhost:8080 in your browser to try the demo.
+
+### Rust Demos
+
+The Rust microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture.
+It uses `bindgen` and therefore requires `clang` to be installed and on the path.
+Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
+
+From [demo/rust/micdemo](demo/rust/micdemo) run the following command from the terminal to build and run the mic demo:
+```console
+cargo run --release -- \
+--keyword_path "../../../resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn" \
+--context_path "../../../resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn"
+```
+
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux`, `mac`, or `windows`).
+The microphone demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the follow-on spoken command.
+Once the demo initializes, it prints `Listening ...` to the console.
+Then say:
+
+> Porcupine, set the lights in the kitchen to orange.
+
+Upon success the following it printed into the terminal:
+
+```text
+[wake word]
+{
+  intent : 'changeColor'
+  slots : {
+    location : 'kitchen'
+    color : 'orange'
+  }
+}
+```
+
+For more information about the Rust demos go to [demo/rust](/demo/rust/README.md).
 
 ### C Demos
 
@@ -1733,6 +1771,63 @@ export default {
   },
 };
 </script>
+```
+
+### Rust
+
+To add the picovoice library into your app, add `picovoice` to your app's `Cargo.toml` manifest:
+```toml
+[dependencies]
+picovoice = "*"
+```
+
+To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function.
+You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function.
+You must then make a call to `init()`:
+
+```rust
+use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
+
+let wake_word_callback = || {
+    // let user know wake word detected
+};
+let inference_callback = |inference: RhinoInference| {
+    if inference.is_understood {
+        let intent = inference.intent.unwrap();
+        let slots = inference.slots;
+        // add code to take action based on inferred intent and slot values
+    } else {
+        // add code to handle unsupported commands
+    }
+};
+
+let mut picovoice = PicovoiceBuilder::new(
+    keyword_path,
+    wake_word_callback,
+    context_path,
+    inference_callback,
+).init().expect("Failed to create picovoice");
+```
+
+Upon detection of wake word defined by `keyword_path` it starts inferring user's intent
+from the follow-on voice command within the context defined by the file located at `context_path`.
+`keyword_path` is the absolute path to [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file (with `.rhn` suffix).
+`wake_word_callback` is invoked upon the detection of wake phrase and
+`inference_callback` isinvoked upon completion of follow-on voice command inference.
+
+When instantiated, valid sample rate can be obtained via `sample_rate()`.
+Expected number of audio samples per frame is `frame_length()`.
+The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio:
+
+```rust
+fn next_audio_frame() -> Vec<i16> {
+    // get audio frame
+}
+
+loop {
+    picovoice.process(&next_audio_frame()).expect("Picovoice failed to process audio");
+}
 ```
 
 ### Microcontroller
