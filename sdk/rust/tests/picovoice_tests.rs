@@ -8,6 +8,40 @@
     an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
     specific language governing permissions and limitations under the License.
 */
+mod platform {
+    #[allow(dead_code)]
+    const RPI_MACHINES: [&str; 4] = ["arm11", "cortex-a7", "cortex-a53", "cortex-a72"];
+    #[allow(dead_code)]
+    const JETSON_MACHINES: [&str; 1] = ["cortex-a57"];
+
+    #[cfg(target_os = "macos")]
+    pub fn pv_platform() -> String {
+        return String::from("mac");
+    }
+
+    #[cfg(target_os = "windows")]
+    pub fn pv_platform() -> String {
+        return String::from("windows");
+    }
+
+    #[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+    pub fn pv_platform() -> String {
+        return String::from("linux");
+    }
+
+    #[cfg(all(target_os = "linux", any(target_arch = "arm", target_arch = "aarch64")))]
+    pub fn pv_platform() -> String {
+        let machine = find_machine_type();
+        return match machine.as_str() {
+            machine if RPI_MACHINES.contains(&machine) => String::from("raspberry-pi"),
+            machine if JETSON_MACHINES.contains(&machine) => String::from("jetson"),
+            "beaglebone" => String::from("beaglebone"),
+            _ => {
+                panic!("ERROR: Please be advised that this device is not officially supported by Picovoice");
+            }
+        };
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -18,6 +52,7 @@ mod tests {
     use std::io::Read;
     use std::sync::{Arc, Mutex};
 
+    use super::platform::pv_platform;
     use picovoice::{rhino::RhinoInference, Picovoice, PicovoiceBuilder};
 
     fn do_test<W: FnMut(), I: FnMut(RhinoInference)>(
@@ -68,9 +103,16 @@ mod tests {
 
     #[test]
     fn test_process() {
-        let keyword_path =
-            "../../resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn";
-        let context_path = "../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn";
+        let keyword_path = format!(
+            "../../resources/porcupine/resources/keyword_files/{}/picovoice_{}.ppn",
+            pv_platform(),
+            pv_platform(),
+        );
+        let context_path = format!(
+            "../../resources/rhino/resources/contexts/{}/coffee_maker_{}.rhn",
+            pv_platform(),
+            pv_platform(),
+        );
 
         let is_wake_word_detected = Arc::new(Mutex::new(false));
         let detected_inference = Arc::new(Mutex::new(None));
