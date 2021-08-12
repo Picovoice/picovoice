@@ -58,7 +58,7 @@ let mut picovoice = PicovoiceBuilder::new(
 Upon detection of wake word defined by `keyword_path` it starts inferring user's intent from the follow-on voice command within
 the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
-`contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
+`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
 (with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
 invoked upon completion of follow-on voice command inference.
 
