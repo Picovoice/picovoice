@@ -24,12 +24,14 @@ First you will need [Rust and Cargo](https://rustup.rs/) installed on your syste
 To add the picovoice library into your app, add `picovoice` to your app's `Cargo.toml` manifest:
 ```toml
 [dependencies]
-picovoice = "${version}"
+picovoice = "*"
 ```
 
 ## Usage
 
-To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function. You must then make a call to `init()`.
+To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function.
+You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function.
+You must then make a call to `init()`:
 
 ```rust
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
@@ -55,15 +57,16 @@ let mut picovoice = PicovoiceBuilder::new(
 ).init().expect("Failed to create picovoice");
 ```
 
-Upon detection of wake word defined by `keyword_path` it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
-`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
-invoked upon completion of follow-on voice command inference.
+Upon detection of wake word defined by `keyword_path` it starts inferring user's intent
+from the follow-on voice command within the context defined by the file located at `context_path`.
+`keyword_path` is the absolute path to [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
+`context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file (with `.rhn` suffix).
+`wake_word_callback` is invoked upon the detection of wake phrase and
+`inference_callback` isinvoked upon completion of follow-on voice command inference.
 
-When instantiated, valid sample rate can be obtained via `sample_rate()`. Expected number of audio samples per
-frame is `frame_length()`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When instantiated, valid sample rate can be obtained via `sample_rate()`.
+Expected number of audio samples per frame is `frame_length()`.
+The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```rust
 fn next_audio_frame() -> Vec<i16> {
@@ -76,9 +79,9 @@ loop {
 ```
 
 The sensitivity of the Porcupine (wake word) and Rhino (inference) engines can be tuned
-using the `porcupine_sensitivity()` and `rhino_sensitivity()` methods respectively. It is a floating point number within
-[0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially) increasing the erroneous
-inference rate.
+using the `porcupine_sensitivity()` and `rhino_sensitivity()` methods respectively.
+They are floating point numbers within [0, 1].
+A higher sensitivity value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate:
 
 ```rust
 let mut picovoice = PicovoiceBuilder::new(
@@ -92,7 +95,7 @@ let mut picovoice = PicovoiceBuilder::new(
 .init().expect("Failed to create picovoice");
 ```
 
-Non-standard model and library paths (For example, when using a non-english model) for both engines can be tuned in a similar manner.
+Non-standard model and library paths (For example, when using a non-english model) for both engines can be tuned in a similar manner:
 
 ```rust
 let mut picovoice = PicovoiceBuilder::new(
