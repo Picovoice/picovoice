@@ -19,7 +19,6 @@ import pvporcupine
 import soundfile
 from picovoice import Picovoice
 
-
 class PicovoiceTestCase(unittest.TestCase):
     @staticmethod
     def _context_path():
@@ -53,38 +52,45 @@ class PicovoiceTestCase(unittest.TestCase):
         else:
             raise NotImplementedError('Unsupported platform')
 
-    def _wake_word_callback(self):
-        self._is_wake_word_detected = True
+    @classmethod
+    def _wake_word_callback(cls):
+        cls._is_wake_word_detected = True
 
-    def _inference_callback(self, inference):
-        self._inference = inference
+    @classmethod
+    def _inference_callback(cls, inference):
+        cls._inference = inference
 
-    def setUp(self):
-        self._pv = Picovoice(
+    @classmethod
+    def setUpClass(cls):
+        cls._pv = Picovoice(
             keyword_path=pvporcupine.KEYWORD_PATHS['picovoice'],
-            wake_word_callback=self._wake_word_callback,
-            context_path=self._context_path(),
-            inference_callback=self._inference_callback)
+            wake_word_callback=cls._wake_word_callback,
+            context_path=cls._context_path(),
+            inference_callback=cls._inference_callback)
 
-        self._is_wake_word_detected = False
-        self._inference = None
+        cls._is_wake_word_detected = False
+        cls._inference = None
 
-    def tearDown(self):
-        self._pv.delete()
+    @classmethod
+    def tearDownClass(cls):
+        cls._pv.delete()
 
     def test_process(self):
+        PicovoiceTestCase._is_wake_word_detected = False
+        PicovoiceTestCase._inference = None
+
         audio, sample_rate = \
             soundfile.read(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples/picovoice-coffee.wav'),
                 dtype='int16')
 
-        for i in range(len(audio) // self._pv.frame_length):
-            frame = audio[i * self._pv.frame_length:(i + 1) * self._pv.frame_length]
-            self._pv.process(frame)
+        for i in range(len(audio) // PicovoiceTestCase._pv.frame_length):
+            frame = audio[i * PicovoiceTestCase._pv.frame_length:(i + 1) * PicovoiceTestCase._pv.frame_length]
+            PicovoiceTestCase._pv.process(frame)
 
-        self.assertTrue(self._is_wake_word_detected)
-        self.assertEqual(self._inference.intent, 'orderBeverage')
-        self.assertEqual(self._inference.slots, dict(size='large', beverage='coffee'))
+        self.assertTrue(PicovoiceTestCase._is_wake_word_detected)
+        self.assertEqual(PicovoiceTestCase._inference.intent, 'orderBeverage')
+        self.assertEqual(PicovoiceTestCase._inference.slots, dict(size='large', beverage='coffee'))
 
     def test_process_again(self):
         self.test_process()
