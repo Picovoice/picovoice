@@ -17,7 +17,6 @@ publish = true
 
 exclude = [
     "tests/",
-    "github 2"
 ]
 
 [lib]
