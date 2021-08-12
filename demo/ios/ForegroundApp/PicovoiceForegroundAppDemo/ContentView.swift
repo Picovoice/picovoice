@@ -20,63 +20,76 @@ struct ContentView: View {
     @State var result: String = ""
     
     var body: some View {
-        VStack {
-            Text("Press the Start button and say \"Picovoice, turn off the lights\".")
-                .padding()
-                .multilineTextAlignment(.center)
-            
-            Button(action: {
-                if self.buttonLabel == "START" {
-                    self.result = ""
-                    
-                    do {
-                        self.picovoiceManager = PicovoiceManager(
-                            keywordPath: self.keywordPath!,
-                            porcupineSensitivity: 0.5,
-                            onWakeWordDetection: {
-                                result = "Wake Word Detected ..."
-                            },
-                            contextPath: self.contextPath!,
-                            rhinoSensitivity: 0.0,
-                            onInference: { x in
-                                DispatchQueue.main.async {
-                                    result = "{\n"
-                                    self.result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
-                                    if x.isUnderstood {
-                                        self.result += "    \"intent : \"" + x.intent + "\",\n"
-                                        if !x.slots.isEmpty {
-                                            result += "    \"slots\" : {\n"
-                                            for (k, v) in x.slots {
-                                                self.result += "        \"" + k + "\" : \"" + v + "\",\n"
-                                            }
-                                            result += "    }\n"
-                                        }
-                                    }
-                                    result += "}\n"
-                                }
-                            })
-
-                        try self.picovoiceManager.start()
-                    } catch {
-                        print("\(error)")
-                    }
-                    
-                    self.buttonLabel = "STOP"
-                } else {
-                    self.picovoiceManager.stop()
-                    self.buttonLabel = "START"
-                    self.result = ""
-                }
-            }) {
-                Text("\(buttonLabel)")
+        ZStack {
+            VStack{
+                Spacer()
+                
+                Text("Press the Start button and say \"Picovoice, turn off the lights\".")
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(Color.white)
-                    .font(.largeTitle)
+                    .multilineTextAlignment(.center)
+                
+                Button(action: {
+                    if self.buttonLabel == "START" {
+                        self.result = ""
+                        
+                        do {
+                            self.picovoiceManager = PicovoiceManager(
+                                keywordPath: self.keywordPath!,
+                                porcupineSensitivity: 0.5,
+                                onWakeWordDetection: {
+                                    result = "Wake Word Detected ..."
+                                },
+                                contextPath: self.contextPath!,
+                                rhinoSensitivity: 0.0,
+                                onInference: { x in
+                                    DispatchQueue.main.async {
+                                        result = "{\n"
+                                        self.result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
+                                        if x.isUnderstood {
+                                            self.result += "    \"intent : \"" + x.intent + "\",\n"
+                                            if !x.slots.isEmpty {
+                                                result += "    \"slots\" : {\n"
+                                                for (k, v) in x.slots {
+                                                    self.result += "        \"" + k + "\" : \"" + v + "\",\n"
+                                                }
+                                                result += "    }\n"
+                                            }
+                                        }
+                                        result += "}\n"
+                                    }
+                                })
+
+                            try self.picovoiceManager.start()
+                        } catch {
+                            print("\(error)")
+                        }
+                        
+                        self.buttonLabel = "STOP"
+                    } else {
+                        self.picovoiceManager.stop()
+                        self.buttonLabel = "START"
+                        self.result = ""
+                    }
+                }) {
+                    Text("\(buttonLabel)")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(Color.white)
+                        .font(.largeTitle)
+                }
+                
+                Spacer()
+                Spacer()
+                Spacer()
             }
-            
-            Text("\(result)")
-                .padding()
+            VStack(alignment: .trailing) {
+                Spacer()
+                Spacer()
+                Spacer()
+                Text("\(result)")
+                    .padding()
+                Spacer()
+            }
         }
     }
 }
