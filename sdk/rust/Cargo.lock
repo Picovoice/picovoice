@@ -35,7 +35,7 @@ dependencies = [
 
 [[package]]
 name = "picovoice"
-version = "0.0.1"
+version = "1.1.0"
 dependencies = [
  "pv_porcupine",
  "pv_rhino",
