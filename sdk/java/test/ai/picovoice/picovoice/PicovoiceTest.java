@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -118,23 +120,46 @@ public class PicovoiceTest {
         testProcess();
     }
 
-    private String getEnvironmentName() {
-        String arch = System.getProperty("os.arch");
-        if (arch.equals("amd64") || arch.equals("x86_64")) {
-            String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-            if (os.contains("mac") || os.contains("darwin")) {
-                return "mac";
-            } else if (os.contains("win")) {
-                return "windows";
-            } else if (os.contains("linux")) {
-                return "linux";
-            } else {
-                throw new RuntimeException("Execution environment not supported. Picovoice " +
-                        "Java is supported on MacOS, Linux and Windows");
+    private static String getEnvironmentName() throws RuntimeException {
+        String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+        if (os.contains("mac") || os.contains("darwin")) {
+            return "mac";
+        } else if (os.contains("win")) {
+            return "windows";
+        } else if (os.contains("linux")) {
+            String arch = System.getProperty("os.arch");
+            if (arch.equals("arm") || arch.equals("aarch64")) {
+                String cpuPart = getCpuPart();
+                switch (cpuPart) {
+                    case "0xc07":
+                    case "0xd03":
+                    case "0xd08":
+                        return "raspberry-pi";
+                    case "0xd07":
+                        return "jetson";
+                    case "0xc08":
+                        return "beaglebone";
+                    default:
+                        throw new RuntimeException(String.format("Execution environment not supported. " +
+                                "Picovoice Java does not support CPU Part (%s).", cpuPart));
+                }
             }
+            return "linux";
         } else {
-            throw new RuntimeException(String.format("Platform architecture (%s) not supported. " +
-                    "Picovoice Java is only supported on amd64 and x86_64 architectures.", arch));
+            throw new RuntimeException("Execution environment not supported. " +
+                    "Picovoice Java is supported on MacOS, Linux and Windows");
+        }
+    }
+
+    private static String getCpuPart() throws RuntimeException {
+        try {
+            return Files.lines(Paths.get("/proc/cpuinfo"))
+                    .filter(line -> line.startsWith("CPU part"))
+                    .map(line -> line.substring(line.lastIndexOf(" ") + 1))
+                    .findFirst()
+                    .orElse("");
+        } catch (IOException e) {
+            throw new RuntimeException("Picovoice failed to get get CPU information.");
         }
     }
 }
