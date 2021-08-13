@@ -35,8 +35,8 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:1.9.2'
-    implementation 'ai.picovoice:rhino-java:1.6.2'
+    implementation 'ai.picovoice:porcupine-java:1.9.3'
+    implementation 'ai.picovoice:rhino-java:1.6.3'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 }
 
