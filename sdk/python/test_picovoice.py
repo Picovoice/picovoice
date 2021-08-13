@@ -19,6 +19,7 @@ import pvporcupine
 import soundfile
 from picovoice import Picovoice
 
+
 class PicovoiceTestCase(unittest.TestCase):
     @staticmethod
     def _context_path():
