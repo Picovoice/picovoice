@@ -154,7 +154,7 @@ var (
 func (picovoice *Picovoice) Init() error {
 
 	if picovoice.KeywordPath == "" {
-		return fmt.Errorf("%s: No valid keyword was provided.", pvStatusToString(INVALID_ARGUMENT))
+		return fmt.Errorf("%s: No valid keyword was provided", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	if _, err := os.Stat(picovoice.KeywordPath); os.IsNotExist(err) {
@@ -162,7 +162,7 @@ func (picovoice *Picovoice) Init() error {
 	}
 
 	if picovoice.ContextPath == "" {
-		return fmt.Errorf("%s: No valid context was provided.", pvStatusToString(INVALID_ARGUMENT))
+		return fmt.Errorf("%s: No valid context was provided", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	if _, err := os.Stat(picovoice.ContextPath); os.IsNotExist(err) {
@@ -170,7 +170,7 @@ func (picovoice *Picovoice) Init() error {
 	}
 
 	if picovoice.InferenceCallback == nil {
-		return fmt.Errorf("%s: No InferenceCallback was provided.", pvStatusToString(INVALID_ARGUMENT))
+		return fmt.Errorf("%s: No InferenceCallback was provided", pvStatusToString(INVALID_ARGUMENT))
 	}
 
 	if ppn.SampleRate != rhn.SampleRate {
@@ -231,11 +231,11 @@ func (picovoice *Picovoice) Delete() error {
 // Invokes user-defined callbacks upon detection of wake word and completion of follow-on command inference
 func (picovoice *Picovoice) Process(pcm []int16) error {
 	if !picovoice.initialized {
-		return fmt.Errorf("Picovoice could not process because it has either not been initialized or has been deleted.")
+		return fmt.Errorf("Picovoice could not process because it has either not been initialized or has been deleted")
 	}
 
 	if len(pcm) != FrameLength {
-		return fmt.Errorf("Input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
+		return fmt.Errorf("input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
 	}
 
 	if !picovoice.wakeWordDetected {

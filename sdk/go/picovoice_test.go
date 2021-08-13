@@ -17,9 +17,11 @@ import (
 	"log"
 	"math"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strings"
 	"testing"
 
 	rhn "github.com/Picovoice/rhino/binding/go"
@@ -108,11 +110,51 @@ func getOS() string {
 	case "darwin":
 		return "mac"
 	case "linux":
-		return "linux"
+		return getLinuxDetails()
 	case "windows":
 		return "windows"
 	default:
 		log.Fatalf("%s is not a supported OS", os)
 		return ""
+	}
+}
+
+func getLinuxDetails() string {
+	if runtime.GOARCH == "amd64" {
+		return "linux"
+	}
+
+	cmd := exec.Command("cat", "/proc/cpuinfo")
+	cpuInfo, err := cmd.Output()
+
+	if err != nil {
+		log.Fatalf("Failed to get CPU details: %s", err.Error())
+	}
+
+	var cpuPart = ""
+	for _, line := range strings.Split(string(cpuInfo), "\n") {
+		if strings.Contains(line, "CPU part") {
+			split := strings.Split(line, " ")
+			cpuPart = strings.ToLower(split[len(split) - 1])
+			break
+		}
+	}
+
+	switch cpuPart {
+	case "0xb76":
+		return "raspberry-pi"
+	case "0xc07":
+		return "raspberry-pi"
+	case "0xd03":
+		return "raspberry-pi"
+	case "0xd07":
+		return "jetson"
+	case "0xd08":
+		return "raspberry-pi"
+	case "0xc08":
+		return "beaglebone"
+	default:
+		log.Printf(`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n`, cpuPart)
+		return "linux"
 	}
 }
