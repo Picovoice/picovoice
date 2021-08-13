@@ -28,6 +28,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1E1A67BC26C4388300EDD6EC"
+               BuildableName = "PicovoiceForegroundAppDemoUITests.xctest"
+               BlueprintName = "PicovoiceForegroundAppDemoUITests"
+               ReferencedContainer = "container:PicovoiceForegroundAppDemo.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
