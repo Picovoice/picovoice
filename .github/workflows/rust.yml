@@ -6,35 +6,15 @@ on:
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
-      - 'resources/porcupine/lib/beaglebone/**'
-      - 'resources/porcupine/lib/jetson/**'
-      - 'resources/porcupine/lib/linux/**'
-      - 'resources/porcupine/lib/mac/**'
-      - 'resources/porcupine/lib/raspberry-pi/**'
-      - 'resources/porcupine/lib/windows/**'
-      - 'resources/rhino/lib/beaglebone/**'
-      - 'resources/rhino/lib/jetson/**'
-      - 'resources/rhino/lib/linux/**'
-      - 'resources/rhino/lib/mac/**'
-      - 'resources/rhino/lib/raspberry-pi/**'
-      - 'resources/rhino/lib/windows/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
-      - 'resources/porcupine/lib/beaglebone/**'
-      - 'resources/porcupine/lib/jetson/**'
-      - 'resources/porcupine/lib/linux/**'
-      - 'resources/porcupine/lib/mac/**'
-      - 'resources/porcupine/lib/raspberry-pi/**'
-      - 'resources/porcupine/lib/windows/**'
-      - 'resources/rhino/lib/beaglebone/**'
-      - 'resources/rhino/lib/jetson/**'
-      - 'resources/rhino/lib/linux/**'
-      - 'resources/rhino/lib/mac/**'
-      - 'resources/rhino/lib/raspberry-pi/**'
-      - 'resources/rhino/lib/windows/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 env:
   CARGO_TERM_COLOR: always
