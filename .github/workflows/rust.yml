@@ -1,0 +1,39 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'sdk/rust/**'
+      - '!sdk/rust/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'sdk/rust/**'
+      - '!sdk/rust/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Rust build
+      run: cargo build --verbose
+      working-directory: sdk/rust
+
+    - name: Rust run tests
+      run: cargo test --verbose
+      working-directory: sdk/rust
