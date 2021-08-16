@@ -21,8 +21,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository and submodules
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
       - name: Install Cocoapods
