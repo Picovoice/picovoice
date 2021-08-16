@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
     s.name = 'Picovoice-iOS'
     s.module_name = 'Picovoice'
     s.version = '1.1.3'
-    s.license = {:type => 'Apache 2.0', :file => 'LICENSE'}
+    s.license = {:type => 'Apache 2.0'}
     s.summary = 'iOS SDK for the Picovoice Offline Voice Recognition Platform'
     s.description = 
     <<-DESC
