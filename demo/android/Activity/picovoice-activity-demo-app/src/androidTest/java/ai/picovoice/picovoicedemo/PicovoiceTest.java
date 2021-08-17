@@ -41,6 +41,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class PicovoiceTest {
 
+    @Rule
+    public ReportHelper reportHelper = Factory.getReportHelper();
     boolean isInitialized = false;
     Context testContext;
     Context appContext;
@@ -67,18 +69,16 @@ public class PicovoiceTest {
     public void TearDown() {
         isWakeWordDetected = false;
         inferenceResult = null;
+        reportHelper.label("Stopping App");
     }
 
     @Before
     public void Setup() throws IOException {
-        if (!isInitialized) {
-            testContext = InstrumentationRegistry.getInstrumentation().getContext();
-            appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-            assetManager = testContext.getAssets();
-            extractAssetsRecursively("test_resources");
-            testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
-        }
-        isInitialized = true;
+        testContext = InstrumentationRegistry.getInstrumentation().getContext();
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assetManager = testContext.getAssets();
+        extractAssetsRecursively("test_resources");
+        testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
     }
 
     @Test
