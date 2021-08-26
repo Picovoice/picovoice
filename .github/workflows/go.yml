@@ -5,18 +5,18 @@ on:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/go/**'
-      - '!binding/go/README.md'
+      - 'sdk/go/**'
+      - '!sdk/go/README.md'
   pull_request:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/go/**'
-      - '!binding/go/README.md'
+      - 'sdk/go/**'
+      - '!sdk/go/README.md'
 
 defaults:
   run:
-    working-directory: binding/go
+    working-directory: sdk/go
 
 jobs:
   build:

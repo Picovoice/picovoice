@@ -16,7 +16,7 @@ on:
 
 defaults:
   run:
-    working-directory: binding/java
+    working-directory: sdk/java
 
 jobs:
   build:

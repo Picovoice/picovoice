@@ -4,18 +4,18 @@ on:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/react-native/**'
-      - '!binding/react-native/README.md'
+      - 'sdk/react-native/**'
+      - '!sdk/react-native/README.md'
   pull_request:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/react-native/**'
-      - '!binding/react-native/README.md'
+      - 'sdk/react-native/**'
+      - '!sdk/react-native/README.md'
 
 defaults:
   run:
-    working-directory: binding/react-native
+    working-directory: sdk/react-native
 
 jobs:
   build:

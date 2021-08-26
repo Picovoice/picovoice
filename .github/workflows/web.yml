@@ -5,18 +5,18 @@ on:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/web/**'
-      - '!binding/web/README.md'
+      - 'sdk/web/**'
+      - '!sdk/web/README.md'
   pull_request:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/web/**'
-      - '!binding/web/README.md'
+      - 'sdk/web/**'
+      - '!sdk/web/README.md'
 
 defaults:
   run:
-    working-directory: binding/web
+    working-directory: sdk/web
 
 jobs:
   build:

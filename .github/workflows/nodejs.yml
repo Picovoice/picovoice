@@ -5,18 +5,18 @@ on:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/nodejs/**'
-      - '!binding/nodejs/README.md'
+      - 'sdk/nodejs/**'
+      - '!sdk/nodejs/README.md'
   pull_request:
     branches: [ github-actions ]
     paths:
       - 'DELETEME.TXT'
-      - 'binding/nodejs/**'
-      - '!binding/nodejs/README.md'
+      - 'sdk/nodejs/**'
+      - '!sdk/nodejs/README.md'
 
 defaults:
   run:
-    working-directory: binding/nodejs
+    working-directory: sdk/nodejs
 
 jobs:
   build:
