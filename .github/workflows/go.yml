@@ -28,14 +28,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Setup go
       uses: actions/setup-go@v1
       with:
         go-version: ${{ matrix.go }}
-
-    - name: Pre-build dependencies
-      run: ./copy.sh
 
     - name: Install dependencies
       run: go get

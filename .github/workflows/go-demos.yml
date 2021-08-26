@@ -29,6 +29,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Setup go
       uses: actions/setup-go@v1
@@ -48,6 +50,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - name: Setup go
       uses: actions/setup-go@v1
