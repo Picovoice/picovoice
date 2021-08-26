@@ -2,15 +2,13 @@ name: Nodejs
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
 

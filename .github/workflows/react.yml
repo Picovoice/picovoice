@@ -2,15 +2,13 @@ name: React
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/react/**'
       - '!sdk/react/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/react/**'
       - '!sdk/react/README.md'
 

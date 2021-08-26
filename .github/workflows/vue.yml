@@ -2,15 +2,13 @@ name: Vue
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/vue/**'
       - '!sdk/vue/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/vue/**'
       - '!sdk/vue/README.md'
 

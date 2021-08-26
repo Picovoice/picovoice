@@ -2,15 +2,13 @@ name: Go
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/go/**'
       - '!sdk/go/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/go/**'
       - '!sdk/go/README.md'
 

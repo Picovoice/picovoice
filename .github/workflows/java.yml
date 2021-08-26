@@ -2,15 +2,13 @@ name: Java
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/java/**'
       - '!sdk/java/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/java/**'
       - '!sdk/java/README.md'
 

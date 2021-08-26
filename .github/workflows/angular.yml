@@ -2,15 +2,13 @@ name: Angular
 
 on:
   push:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
   pull_request:
-    branches: [ github-actions ]
+    branches: [ master ]
     paths:
-      - 'DELETEME.TXT'
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
 
