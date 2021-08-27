@@ -42,3 +42,6 @@ jobs:
 
     - name: Build
       run: yarn build picovoice-web-angular --prod
+
+    - name: Lint
+      run: yarn lint
