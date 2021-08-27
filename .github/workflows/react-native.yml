@@ -39,5 +39,8 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
+    - name: Prepare
+      run: yarn prepare
+
     - name: Test
       run: yarn test --passWithNoTests
