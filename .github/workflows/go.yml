@@ -1,0 +1,44 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'sdk/go/**'
+      - '!sdk/go/README.md'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'sdk/go/**'
+      - '!sdk/go/README.md'
+
+defaults:
+  run:
+    working-directory: sdk/go
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go: [ '1.16' ]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Setup go
+      uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+
+    - name: Install dependencies
+      run: go get
+
+    - name: Build
+      run: go build
+
+    - name: Test
+      run: go test

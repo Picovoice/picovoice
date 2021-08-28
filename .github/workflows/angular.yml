@@ -1,0 +1,47 @@
+name: Angular
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'sdk/angular/**'
+      - '!sdk/angular/README.md'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'sdk/angular/**'
+      - '!sdk/angular/README.md'
+
+defaults:
+  run:
+    working-directory: sdk/angular
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn --force
+
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Build
+      run: yarn build picovoice-web-angular --prod
+
+    - name: Lint
+      run: yarn lint
