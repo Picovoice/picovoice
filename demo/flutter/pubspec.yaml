@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
   
   path_provider: ^2.0.1
-  picovoice: 1.1.8
+  picovoice: 1.1.9
 
 flutter:
   assets:

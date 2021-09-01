@@ -24,3 +24,6 @@
 
 ## [1.1.8] - 2021-06-09
 * Handle auto extraction of assets
+
+## [1.1.9] - 2021-09-01
+* flutter-voice-processor update

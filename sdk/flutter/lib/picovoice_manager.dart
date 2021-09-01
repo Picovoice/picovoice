@@ -18,6 +18,7 @@ class PicovoiceManager {
   Picovoice? _picovoice;
   VoiceProcessor? _voiceProcessor;
   RemoveListener? _removeVoiceProcessorListener;
+  RemoveListener? _removeErrorListener;
   ErrorCallback? _errorCallback;
 
   String? _porcupineModelPath;
@@ -131,7 +132,14 @@ class PicovoiceManager {
       }
     });
 
-    if (await _voiceProcessor?.hasRecordAudioPermission() != null) {
+    _removeErrorListener = _voiceProcessor!.addErrorListener((errorMsg) {
+      PvError nativeError = new PvError(errorMsg as String);
+      _errorCallback == null
+          ? print(nativeError.message)
+          : _errorCallback!(nativeError);
+    });
+
+    if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
       try {
         // create picovoice
         await _voiceProcessor!.start();
@@ -151,6 +159,7 @@ class PicovoiceManager {
       await _voiceProcessor!.stop();
     }
     _removeVoiceProcessorListener?.call();
+    _removeErrorListener?.call();
 
     _picovoice?.delete();
     _picovoice = null;
