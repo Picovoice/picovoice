@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -11,19 +11,19 @@
 
 import argparse
 import os
-import struct
 import sys
 from threading import Thread
 
 import numpy as np
-import pyaudio
 import soundfile
 from picovoice import Picovoice
+from pvrecorder import PvRecorder
 
 
 class PicovoiceDemo(Thread):
     def __init__(
             self,
+            audio_device_index,
             keyword_path,
             context_path,
             porcupine_library_path=None,
@@ -47,6 +47,7 @@ class PicovoiceDemo(Thread):
             rhino_model_path=rhino_model_path,
             rhino_sensitivity=rhino_sensitivity)
 
+        self.audio_device_index = audio_device_index
         self.output_path = output_path
         if self.output_path is not None:
             self._recorded_frames = list()
@@ -69,24 +70,17 @@ class PicovoiceDemo(Thread):
             print("Didn't understand the command.\n")
 
     def run(self):
-        pa = None
-        audio_stream = None
+        recorder = None
 
         try:
-            pa = pyaudio.PyAudio()
+            recorder = PvRecorder(device_index=self.audio_device_index, frame_length=self._picovoice.frame_length)
+            recorder.start()
 
-            audio_stream = pa.open(
-                rate=self._picovoice.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=self._picovoice.frame_length)
-
+            print(f"Using device: {recorder.selected_device}")
             print('[Listening ...]')
 
             while True:
-                pcm = audio_stream.read(self._picovoice.frame_length)
-                pcm = struct.unpack_from("h" * self._picovoice.frame_length, pcm)
+                pcm = recorder.read()
 
                 if self.output_path is not None:
                     self._recorded_frames.append(pcm)
@@ -96,11 +90,8 @@ class PicovoiceDemo(Thread):
             sys.stdout.write('\b' * 2)
             print('Stopping ...')
         finally:
-            if audio_stream is not None:
-                audio_stream.close()
-
-            if pa is not None:
-                pa.terminate()
+            if recorder is not None:
+                recorder.delete()
 
             if self.output_path is not None and len(self._recorded_frames) > 0:
                 recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
@@ -114,15 +105,10 @@ class PicovoiceDemo(Thread):
 
     @classmethod
     def show_audio_devices(cls):
-        fields = ('index', 'name', 'defaultSampleRate', 'maxInputChannels')
+        devices = PvRecorder.get_audio_devices()
 
-        pa = pyaudio.PyAudio()
-
-        for i in range(pa.get_device_count()):
-            info = pa.get_device_info_by_index(i)
-            print(', '.join("'%s': '%s'" % (k, str(info[k])) for k in fields))
-
-        pa.terminate()
+        for i in range(len(devices)):
+            print(f'index: {i}, device name: {devices[i]}')
 
 
 def main():
@@ -152,7 +138,7 @@ def main():
              "misses at the cost of (potentially) increasing the erroneous inference rate.",
         default=0.5)
 
-    parser.add_argument('--audio_device_index', help='index of input audio device', type=int, default=None)
+    parser.add_argument('--audio_device_index', help='index of input audio device', type=int, default=-1)
 
     parser.add_argument('--output_path', help='Absolute path to recorded audio for debugging.', default=None)
 
@@ -170,6 +156,7 @@ def main():
             raise ValueError("Missing path to Rhino's context file.")
 
         PicovoiceDemo(
+            audio_device_index=args.audio_device_index,
             keyword_path=args.keyword_path,
             context_path=args.context_path,
             porcupine_library_path=args.porcupine_library_path,

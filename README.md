@@ -189,8 +189,6 @@ git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 
 ### Python Demos
 
-Install [PyAudio](https://people.csail.mit.edu/hubert/pyaudio/) and then the demo package:
-
 ```console
 sudo pip3 install picovoicedemo
 ```

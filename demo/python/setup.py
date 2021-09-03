@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -39,7 +39,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="picovoicedemo",
-    version="1.1.3",
+    version="1.1.4",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice demos.",
@@ -47,7 +47,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoicedemo"],
-    install_requires=["numpy", "picovoice==1.1.3", "pyaudio", "soundfile"],
+    install_requires=["numpy", "picovoice==1.1.3", "pvrecorder==1.0.0", "soundfile"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
