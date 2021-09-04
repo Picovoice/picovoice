@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="OpenTK" Version="4.0.1" />
-		<PackageReference Include="Picovoice" Version="1.1.1" />
+		<PackageReference Include="PvRecorder" Version="1.0.0" />
+		<PackageReference Include="Picovoice" Version="1.1.2" />
 	</ItemGroup>
 </Project>

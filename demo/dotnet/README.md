@@ -17,32 +17,25 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
-## Compatibility
+## Requirements
 
 - .NET Core 3.1
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64) and Raspberry Pi
+
+## Compatibility
+
+- Linux (x86_64)
+- macOS (x86_64)
+- Windows (x86_64)
+- Raspberry Pi:
+  - 2
+  - 3 (32 and 64 bit)
+  - 4 (32 and 64 bit)
+- NVIDIA Jetson Nano
+- BeagleBone
 
 ## Installation
 
 Both demos use [Microsoft's .NET Core framework](https://dotnet.microsoft.com/download).
-
-The Microphone Demo uses [OpenAL](https://openal.org/). You must install this before running the demo.  
-
-On Windows, install using the [OpenAL Windows Installer](https://openal.org/downloads/oalinst.zip).
-
-On Linux use apt-get:
-
-```console
-sudo apt-get install libopenal-dev
-```
-
-On Mac use Brew:
-
-```console
-brew install openal-soft
-```
-
-Once .NET Core and OpenAL have been installed, you can build with the dotnet CLI:
 
 ```console
 dotnet build -c MicDemo.Release
@@ -91,23 +84,21 @@ of debugging facilities baked into the demo application to solve this. First, ty
 dotnet run -c MicDemo.Release -- --show_audio_devices
 ```
 
-It provides information about various audio input devices on the box. On a Windows PC, this is the output:
+It provides information about various audio input devices on the box. This is an example of the output:
 
 ```
-Available input devices:
-
-    Device 0: Microphone Array (Realtek(R) Au
-    Device 1: Microphone Headset USB
+index: 0, device name: USB Audio Device
+index: 1, device name: MacBook Air Microphone
 ``` 
 
-You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the Headset 
-microphone in the above example, you can invoke the demo application as below:
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device 
+in the above example, you can invoke the demo application as below:
 
 ```console
 dotnet run -c MicDemo.Release -- \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
---audio_device_index 1
+--audio_device_index 0
 ```
 
 If the problem persists we suggest storing the recorded audio into a file for inspection. This can be achieved with:
@@ -116,7 +107,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 dotnet run -c MicDemo.Release -- \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
---audio_device_index 1
+--audio_device_index 0
 --output_path ./test.wav
 ```
 

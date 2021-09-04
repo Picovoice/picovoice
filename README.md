@@ -268,7 +268,7 @@ Please see the [demo instructions](./demo/nodejs/README.md) for details.
 
 ### .NET Demos
 
-Install [OpenAL](https://openal.org/). From the root of the repository run the following in the terminal:
+From the root of the repository run the following in the terminal:
 
 ```console
 dotnet run -p demo/dotnet/PicovoiceDemo/PicovoiceDemo.csproj -c MicDemo.Release -- \

@@ -12,10 +12,30 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
+## Requirements
+
+- .NET Core 3.1
+
 ## Compatibility
 
-- .NET Standard 2.0, .NET Core 2.0+, .NET Framework 4.6.1+
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64) and Raspberry Pi (.NET Core 3.1+)
+Platform compatible with .NET Framework 4.6.1+:
+
+- Windows (x86_64)
+
+Platforms compatible with .NET Core 2.0+:
+
+- Linux (x86_64)
+- macOS (x86_64)
+- Windows (x86_64)
+
+Platforms compatible with .NET Core 3.1+:
+
+- Raspberry Pi:
+  - 2
+  - 3 (32 and 64 bit)
+  - 4 (32 and 64 bit)
+- NVIDIA Jetson Nano
+- BeagleBone
 
 ## Installation
 
