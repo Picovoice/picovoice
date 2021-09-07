@@ -17,7 +17,7 @@ Picovoice is an end-to-end platform for building voice products on your terms. I
 
 ## Compatibility
 
-These demos run Rhino on **NodeJS 10+** on the following platforms:
+These demos run Rhino on **NodeJS 12+** on the following platforms:
 
 - Linux (x86_64)
 - macOS (x86_64)
@@ -26,26 +26,6 @@ These demos run Rhino on **NodeJS 10+** on the following platforms:
 ### Web Browsers
 
 These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue).
-
-## Prerequisites
-
-If you only wish to use the file-based demo, you may skip ahead to [installing the NPM package](#install-npm-package).
-
-### Microphone demo
-
-The microphone demo allows you try Rhino by speaking a phrase and seeing the resulting inference. Note: **the microphone demo requires you to install/setup software that is not included by npm**. For microphone access, the [node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) package is used. Please follow that documentation for troubleshooting.
-
-The [node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) library spawns a different microphone recording process depending on the OS used. The microphone program (SoX or Arecord) must be setup manually and is not included with yarn/npm.
-
-#### Setup SoX / Arecord
-
-##### macOS
-
-See [the documentation for node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16#dependencies) for instructions on installing [SoX](http://sox.sourceforge.net/).
-
-##### Raspberry Pi
-
-See [this quick start](https://picovoice.ai/quick-start/wake-word-raspberrypi/) for instructions on setting up the microphone / default device.
 
 ## Install NPM package
 
@@ -63,12 +43,31 @@ npm install -g @picovoice/picovoice-node-demo
 
 ### Run the mic demo
 
-Here is an example which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
+Here is an example using which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
 
-Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. Specify the Wake Word (.ppn) with `--keyword_file_path` and the Speech-to-Intent context (.rhn file) with `--context_file_path`.
+Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. 
+
+Use `pv-mic-demo` to run the mic demo. First select an input audio device to start recording audio:
+
+```console
+pv-mic-demo --show_audio_devices
+```
+
+This command prints a list of the available devices and its inputs:
+
+```console
+index: 0, device name: USB Audio Device
+index: 1, device name: MacBook Air Microphone
+```
+
+Specify the input audio device with `--audio_device_index` (this may be empty if you
+wish to use system default microphone). In this example we will use USB Audio Device.  
+
+Specify the Wake Word (.ppn) with `--keyword_file_path` and the Speech-to-Intent context (.rhn file) with `--context_file_path`.
 
 ```console
 pv-mic-demo \
+--audio_device_index 0 \
 --keyword bumblebee \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
 ```
@@ -77,6 +76,7 @@ You can use custom Wake Word files (.ppn) with `--keyword_file_path`:
 
 ```console
 pv-mic-demo \
+--audio_device_index 0 \
 --keyword_file_path ./hey_edison.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
 ```
@@ -84,6 +84,7 @@ pv-mic-demo \
 The Rhino context source in YAML format will be output to show you the grammar and options that the context supports. First, the demo will listen for the wake word (Porcupine engine). Upon the wake word detection, the demo will switch to follow-on command inference (Rhino engine). The demo will listen for a phrase that the context understands, and upon reaching a conclusion (or timeout), it will output the results.
 
 ```console
+Using device: sof-hda-dsp Digital Microphone...
 Context info:
 -------------
 context:
@@ -94,7 +95,6 @@ context:
       - (please) [change, set, switch] (the) $location:location lights (to) $color:color
       ... (etc.) ...
 
-Platform: 'mac'; attempting to use 'sox' to access microphone ...
 Listening for speech within the context of 'smart_lighting_mac'. Please speak your phrase into the microphone.
 
 # (say "bumblebee", or the custom Porcupine keyword you chose)
@@ -123,8 +123,6 @@ Now try again, but this time say something that the context is not designed to u
 pv-mic-demo --context_file_path ../../resources/contexts/mac/smart_lighting_mac.rhn
 
 ...
-
-Platform: 'mac'; attempting to use 'sox' to access microphone ...
 Listening for speech within the context of 'smart_lighting_mac'. Please speak your phrase into the microphone.
 
 # (say "bumblebee", or the custom Porcupine keyword you chose)
