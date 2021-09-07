@@ -10,3 +10,9 @@
 [submodule "demo/c/miniaudio"]
 	path = demo/c/miniaudio
 	url = ../../mackron/miniaudio.git
+[submodule "sdk/mcu/lib/psoc062s2"]
+	path = sdk/mcu/lib/psoc062s2
+	url = ../picovoice-lib-psoc6.git
+[submodule "demo/mcu/psoc062s2"]
+	path = demo/mcu/psoc062s2
+	url = ../picovoice-demo-psoc6.git
