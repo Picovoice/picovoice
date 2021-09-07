@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -16,20 +16,12 @@ const path = require("path");
 const { program } = require("commander");
 const Picovoice = require("@picovoice/picovoice-node");
 const { PvArgumentError } = require("@picovoice/picovoice-node/errors");
-const { getPlatform } = require("@picovoice/picovoice-node/platforms");
+const PvRecorder = require("@picovoice/pvrecorder-node");
 
 const {
   BUILTIN_KEYWORDS_STRINGS,
   BUILTIN_KEYWORDS_STRING_TO_ENUM,
 } = require("@picovoice/porcupine-node/builtin_keywords");
-
-const PLATFORM_RECORDER_MAP = new Map();
-PLATFORM_RECORDER_MAP.set("linux", "arecord");
-PLATFORM_RECORDER_MAP.set("mac", "sox");
-PLATFORM_RECORDER_MAP.set("raspberry-pi", "arecord");
-PLATFORM_RECORDER_MAP.set("windows", "sox");
-
-const recorder = require("node-record-lpcm16");
 
 program
   .option(
@@ -40,7 +32,7 @@ program
     "-b, --keyword <string>",
     `built in keyword(s) (${Array.from(BUILTIN_KEYWORDS_STRINGS)})`
   )
-  .requiredOption(
+  .option(
     "-c, --context_file_path <string>",
     `absolute path to rhino context (.rhn extension)`
   )
@@ -62,7 +54,16 @@ program
     "--rhino_library_file_path <string>",
     "absolute path to rhino dynamic library"
   )
-  .option("--rhino_model_file_path <string>", "absolute path to rhino model");
+  .option("--rhino_model_file_path <string>", "absolute path to rhino model")
+  .option(
+    "-i, --audio_device_index <number>",
+    "index of audio device to use to record audio",
+    Number,
+    -1
+  ).option(
+    "-a, --show_audio_devices",
+    "show the list of available devices"
+  );
 
 if (process.argv.length < 3) {
   program.help();
@@ -70,13 +71,9 @@ if (process.argv.length < 3) {
 
 program.parse(process.argv);
 
-function chunkArray(array, size) {
-  return Array.from({ length: Math.ceil(array.length / size) }, (v, index) =>
-    array.slice(index * size, index * size + size)
-  );
-}
+let isInterrupted = false;
 
-function micDemo() {
+async function micDemo() {
   let keywordFilePath = program["keyword_file_path"];
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
@@ -85,10 +82,21 @@ function micDemo() {
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
   let rhinoModelFilePath = program["rhino_model_file_path"];
+  let audioDeviceIndex = program["audio_device_index"];
+  let showAudioDevices = program["show_audio_devices"];
 
   let keywordPathsDefined = keywordFilePath !== undefined;
   let builtinKeywordsDefined = keyword !== undefined;
+  let showAudioDevicesDefined = showAudioDevices !== undefined;
   let friendlyKeywordName;
+
+  if (showAudioDevicesDefined) {
+    const devices = PvRecorder.getAudioDevices();
+    for (let i = 0; i < devices.length; i++) {
+        console.log(`index: ${i}, device name: ${devices[i]}`);
+    }
+    process.exit();
+}
 
   if (
     (keywordPathsDefined && builtinKeywordsDefined) ||
@@ -164,68 +172,35 @@ function micDemo() {
     rhinoLibraryFilePath
   );
 
-  console.log(`Porcupine version: ${handle.porcupineVersion}`);
-  console.log(`Rhino version: ${handle.rhinoVersion}`);
-  console.log();
+  const frameLength = handle.frameLength;
+
+  const recorder = new PvRecorder(audioDeviceIndex, frameLength);
+  recorder.start();
+
+  console.log(`Using device: ${recorder.getSelectedDevice()}...`);
   console.log("Context info:");
   console.log("-------------");
   console.log(handle.contextInfo);
+  console.log("Press ctrl+c to exit.")
 
-  let platform;
-  try {
-    platform = getPlatform();
-  } catch (error) {
-    console.error();
-    ("The Picovoice SDK for NodeJS does not support this platform. Supported platforms include macOS (x86_64), Windows (x86_64), Linux (x86_64), and Raspberry Pi (1-4)");
-    console.error(error);
+  while (!isInterrupted) {
+      const pcm = await recorder.read();
+      handle.process(pcm);
   }
 
-  let recorderType = PLATFORM_RECORDER_MAP.get(platform);
-  console.log(
-    `Platform: '${platform}'; attempting to use '${recorderType}' to access microphone ...`
-  );
-
-  const frameLength = handle.frameLength;
-  const sampleRate = handle.sampleRate;
-
-  const recording = recorder.record({
-    sampleRate: sampleRate,
-    channels: 1,
-    audioType: "raw",
-    recorder: recorderType,
-  });
-
-  var frameAccumulator = [];
-
-  recording.stream().on("error", (data) => {
-    console.log()
-    console.warn(error);
-  });
-
-  recording.stream().on("data", (data) => {
-    // Two bytes per Int16 from the data buffer
-    let newFrames16 = new Array(data.length / 2);
-    for (let i = 0; i < data.length; i += 2) {
-      newFrames16[i / 2] = data.readInt16LE(i);
-    }
-
-    // Split the incoming PCM integer data into arrays of size Picovoice.frameLength. If there's insufficient frames, or a remainder,
-    // store it in 'frameAccumulator' for the next iteration, so that we don't miss any audio data
-    frameAccumulator = frameAccumulator.concat(newFrames16);
-    let frames = chunkArray(frameAccumulator, frameLength);
-
-    if (frames[frames.length - 1].length !== frameLength) {
-      // store remainder from divisions of frameLength
-      frameAccumulator = frames.pop();
-    } else {
-      frameAccumulator = [];
-    }
-
-    for (let frame of frames) {
-      handle.process(frame);
-    }
-  });
-  console.log(`Listening for wake word '${friendlyKeywordName}'`);
+  console.log("Stopping...");
+  recorder.release();
 }
 
-micDemo();
+// setup interrupt
+process.on("SIGINT", function () {
+  isInterrupted = true;
+});
+
+(async function () {
+  try {
+    await micDemo();
+  } catch (e) {
+    console.error(e.toString());
+  }
+})();
