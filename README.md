@@ -333,7 +333,7 @@ For more information about the Java demos go to [demo/java](/demo/java/README.md
 
 ### Go Demos
 
-The Go microphone demo uses [malgo](https://github.com/gen2brain/malgo) for cross-platform audio capture. It requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
+The demo requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
 
 From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
