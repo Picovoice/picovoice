@@ -526,10 +526,6 @@ Open http://localhost:8080 in your browser to try the demo.
 
 ### Rust Demos
 
-The Rust microphone demo uses [miniaudio-rs](https://github.com/ExPixel/miniaudio-rs) for cross-platform audio capture.
-It uses `bindgen` and therefore requires `clang` to be installed and on the path.
-Use the [`Bindgen` docs](https://rust-lang.github.io/rust-bindgen/requirements.html) for instructions on how to install `clang` for various Operating Systems and distros.
-
 From [demo/rust/micdemo](demo/rust/micdemo) run the following command from the terminal to build and run the mic demo:
 ```console
 cargo run --release -- \
