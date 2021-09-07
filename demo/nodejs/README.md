@@ -43,7 +43,7 @@ npm install -g @picovoice/picovoice-node-demo
 
 ### Run the mic demo
 
-Here is an example using which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
+Here is an example which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
 
 Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. 
 
