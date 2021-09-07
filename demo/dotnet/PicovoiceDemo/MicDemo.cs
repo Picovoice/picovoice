@@ -12,11 +12,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 
-using OpenTK.Audio.OpenAL;
 using Pv;
 
 namespace PicovoiceDemo
@@ -39,12 +37,12 @@ namespace PicovoiceDemo
         /// <param name="porcupineSensitivity">Wake word detection sensitivity.</param>
         /// <param name="rhinoModelPath">Absolute path to the file containing Rhino's model parameters.</param>
         /// <param name="rhinoSensitivity">Inference sensitivity.</param>
-        /// <param name="audioDeviceIndex">Optional argument. If provided, audio is recorded from this input device. Otherwise, the default audio input device is used.</param>        
+        /// <param name="audioDeviceIndex">Audio is recorded from this input device.</param>        
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>                
         public static void RunDemo(string keywordPath, string contextPath,
                                    string porcupineModelPath, float porcupineSensitivity,
                                    string rhinoModelPath, float rhinoSensitivity,
-                                   int? audioDeviceIndex = null, string outputPath = null)
+                                   int audioDeviceIndex, string outputPath = null)
         {
             static void wakeWordCallback() => Console.WriteLine("[wake word]");
 
@@ -81,54 +79,31 @@ namespace PicovoiceDemo
                     WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
                 }
 
-                // choose audio device
-                string deviceName = null;
-                if(audioDeviceIndex != null) 
-                {
-                    List<string> captureDeviceList = ALC.GetStringList(GetEnumerationStringList.CaptureDeviceSpecifier).ToList();
-                    if (captureDeviceList != null && audioDeviceIndex.Value < captureDeviceList.Count)
-                    {
-                        deviceName = captureDeviceList[audioDeviceIndex.Value];
-                    }
-                    else
-                    {
-                        throw new ArgumentException("No input device found with the specified index. Use --show_audio_devices to show" +
-                                                    "available inputs", "--audio_device_index");
-                    }
-                }
+                using(PvRecorder recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength)) {
+                    recorder.Start();
 
-                Console.WriteLine("Listening...");
-                
-                // create and start recording
-                short[] recordingBuffer = new short[picovoice.FrameLength];
-                ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(deviceName, 16000, ALFormat.Mono16, picovoice.FrameLength * 2);
-                {
-                    ALC.CaptureStart(captureDevice);
+                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                    Console.WriteLine("Listening...");
+
                     while (!Console.KeyAvailable)
                     {
-                        int samplesAvailable = ALC.GetAvailableSamples(captureDevice);
-                        if (samplesAvailable > picovoice.FrameLength)
+                        short[] pcm = recorder.Read();
+
+                        picovoice.Process(pcm);                                                        
+                        
+                        if (outputFileWriter != null) 
                         {
-                            ALC.CaptureSamples(captureDevice, ref recordingBuffer[0], picovoice.FrameLength);
-                            picovoice.Process(recordingBuffer);                                                        
-                            
-                            if (outputFileWriter != null) 
+                            foreach (short sample in pcm) 
                             {
-                                foreach (short sample in recordingBuffer) 
-                                {
-                                    outputFileWriter.Write(sample);
-                                }
-                                totalSamplesWritten += recordingBuffer.Length;
+                                outputFileWriter.Write(sample);
                             }
+                            totalSamplesWritten += pcm.Length;
                         }
                         Thread.Yield();
                     }
 
-                    // stop and clean up resources
                     Console.WriteLine("Stopping...");
-                    ALC.CaptureStop(captureDevice);
-                    ALC.CaptureCloseDevice(captureDevice);
-                }                
+                }         
             }
             finally 
             {
@@ -176,11 +151,9 @@ namespace PicovoiceDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            Console.WriteLine("Available audio devices: \n");
-            List<string> captureDeviceList = ALC.GetStringList(GetEnumerationStringList.CaptureDeviceSpecifier).ToList();
-            for(int i=0; i<captureDeviceList.Count; i++)
-            {            
-                Console.WriteLine($"\tDevice {i}: {captureDeviceList[i]}");
+            string[] devices = PvRecorder.GetAudioDevices();
+            for (int i = 0; i < devices.Length; i++) {
+                Console.WriteLine($"index: {i}, device name: {devices[i]}");
             }
         }
 
@@ -201,7 +174,7 @@ namespace PicovoiceDemo
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
             string outputPath = null;
-            int? audioDeviceIndex = null;
+            int audioDeviceIndex = -1;
             bool showAudioDevices = false;
             bool showHelp = false;
 
