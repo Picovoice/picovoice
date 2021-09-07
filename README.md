@@ -228,9 +228,7 @@ For more information regarding Python demos refer to their [documentation](/demo
 
 ### NodeJS Demos
 
-Make sure there is a working microphone connected to your device. Refer to documentation within
-[node-record-lpm16](https://www.npmjs.com/package/node-record-lpcm16) to set up your microphone for access from NodeJS.
-Then install the demo package:
+Install the demo package:
 
 ```console
 npm install -g @picovoice/picovoice-node-demo
