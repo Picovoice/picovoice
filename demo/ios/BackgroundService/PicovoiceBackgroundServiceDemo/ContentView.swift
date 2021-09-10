@@ -9,6 +9,7 @@
 
 import SwiftUI
 import Picovoice
+import SwiftySound
 
 struct ContentView: View {
     
@@ -26,6 +27,7 @@ struct ContentView: View {
             
             Button(action: {
                 if self.buttonLabel == "START" {
+                    Sound.category = .playAndRecord
                     NotificationManager.shared.requestNotificationAuthorization()
                     
                     do {
@@ -33,6 +35,7 @@ struct ContentView: View {
                             keywordPath: self.keywordPath!,
                             porcupineSensitivity: 0.5,
                             onWakeWordDetection: {
+                                Sound.play(file: "beep.wav")
                                 NotificationManager.shared.sendNotification(message: "Wake Word Detected")
                             },
                             contextPath: self.contextPath!,
