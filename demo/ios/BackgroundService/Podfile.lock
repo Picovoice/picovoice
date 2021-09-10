@@ -8,9 +8,11 @@ PODS:
     - ios-voice-processor (~> 1.0.2)
   - Rhino-iOS (1.6.4):
     - ios-voice-processor (~> 1.0.2)
+  - SwiftySound (1.2.0)
 
 DEPENDENCIES:
   - Picovoice-iOS
+  - SwiftySound
 
 SPEC REPOS:
   trunk:
@@ -18,13 +20,15 @@ SPEC REPOS:
     - Picovoice-iOS
     - Porcupine-iOS
     - Rhino-iOS
+    - SwiftySound
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   Picovoice-iOS: 212daf10aa0f319880fa83f937d8b23bfc9f1496
   Porcupine-iOS: cf230daf574fd4bab07b3552445a51ed5154b472
   Rhino-iOS: d76e2e29c2d4a1e4a53584c6b049cdbbee9471f1
+  SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: 4b15c8f2fe739ac4188ab8fc9307a8eeb761f760
+PODFILE CHECKSUM: 2d643e56d9b09fbd97b6184f889109ddd49becf9
 
 COCOAPODS: 1.10.2

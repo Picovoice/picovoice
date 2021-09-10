@@ -13,6 +13,7 @@
 		1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF33253A175500395344 /* Preview Assets.xcassets */; };
 		1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF57253A442A00395344 /* smart_lighting_ios.rhn */; };
 		1E1A679426C42A4C00EDD6EC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A679326C42A4C00EDD6EC /* NotificationManager.swift */; };
+		1ECA2AA926EAD5A5000F22A4 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA2AA826EAD5A5000F22A4 /* beep.wav */; };
 		7D984E8175A65BCE7A77807D /* libPods-PicovoiceBackgroundServiceDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00161816136C821FDBF9F61B /* libPods-PicovoiceBackgroundServiceDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		1760DF35253A175500395344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1760DF57253A442A00395344 /* smart_lighting_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = smart_lighting_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn; sourceTree = "<group>"; };
 		1E1A679326C42A4C00EDD6EC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		1ECA2AA826EAD5A5000F22A4 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		E0114AAE0572E4E7AC6F7C95 /* Pods-PicovoiceBackgroundServiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceBackgroundServiceDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceBackgroundServiceDemo/Pods-PicovoiceBackgroundServiceDemo.release.xcconfig"; sourceTree = "<group>"; };
 		E429C1B8109916CD609F9FC0 /* libPods-PicovoiceDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBCDC9D5998EBD6B32303D16 /* Pods-PicovoiceBackgroundServiceDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceBackgroundServiceDemo.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceBackgroundServiceDemo/Pods-PicovoiceBackgroundServiceDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 		1760DF20253A175000395344 = {
 			isa = PBXGroup;
 			children = (
+				1ECA2AA726EAD59A000F22A4 /* Sound */,
 				1760DF2B253A175000395344 /* PicovoiceBackgroundServiceDemo */,
 				1760DF2A253A175000395344 /* Products */,
 				1760DF3D253A185500395344 /* Frameworks */,
@@ -103,6 +106,14 @@
 				00161816136C821FDBF9F61B /* libPods-PicovoiceBackgroundServiceDemo.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1ECA2AA726EAD59A000F22A4 /* Sound */ = {
+			isa = PBXGroup;
+			children = (
+				1ECA2AA826EAD5A5000F22A4 /* beep.wav */,
+			);
+			path = Sound;
 			sourceTree = "<group>";
 		};
 		81DF6A1A45C53858F171B57E /* Pods */ = {
@@ -177,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */,
+				1ECA2AA926EAD5A5000F22A4 /* beep.wav in Resources */,
 				1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */,
 				1760DF31253A175500395344 /* Assets.xcassets in Resources */,
 			);
