@@ -361,7 +361,7 @@ For more information about the Go demos go to [demo/go](/demo/go/README.md).
 
 ### Unity Demos
 
-To run the Picovoice Unity demo, import the [Picovoice Unity package](/sdk/unity/picovoice.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Picovoice Unity demo, import the [Picovoice Unity package](/sdk/unity/picovoice-1.1.1.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](/demo/unity).
 
@@ -971,7 +971,7 @@ picovoice.Delete()
 
 ### Unity
 
-Import the [Picovoice Unity Package](/sdk/unity/picovoice.unitypackage) into your Unity project.
+Import the [Picovoice Unity Package](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
