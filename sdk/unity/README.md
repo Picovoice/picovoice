@@ -28,7 +28,7 @@ This binding is for running Picovoice on **Unity 2017.4+** on the following plat
 
 ## Installation
 
-The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
