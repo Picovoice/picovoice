@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -19,8 +19,7 @@
 
 #ifdef __cplusplus
 
-extern "C"
-{
+extern "C" {
 
 #endif
 
@@ -60,6 +59,7 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
 /**
  * Constructor.
  *
+ * @param access_key AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
  * @param porcupine_model_path Absolute path to the file containing Porcupine model parameters.
  * @param keyword_path Absolute path to Porcupine's keyword model file.
  * @param porcupine_sensitivity Wake word detection sensitivity. It should be a number within [0, 1]. A higher
@@ -71,6 +71,7 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
  * (spoken commands), intents, and intent arguments (slots) within a domain of interest.
  * @param rhino_sensitivity Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
  * results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
+ * @param require_endpoint If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
  * @param inference_callback User-defined callback invoked upon completion of intent inference. The callback accepts a
  * single input argument of type `pv_inference_t` that exposes the following immutable fields:
  *         (1) `is_understood` is a flag indicating if the spoken command is understood.
@@ -79,11 +80,12 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
  *         (3) `num_slots` is the number of slots.
  *         (4) `slots` is a list of slot keys.
  *         (5) `values` is the corresponding slot values.
- * @param object Constructed instance of Porcupine.
+ * @param object Constructed instance of Picovoice.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_IO_ERROR', or 'PV_STATUS_OUT_OF_MEMORY' on
  * failure.
  */
 PV_API pv_status_t pv_picovoice_init(
+        const char *access_key,
         const char *porcupine_model_path,
         const char *keyword_path,
         float porcupine_sensitivity,
@@ -91,6 +93,7 @@ PV_API pv_status_t pv_picovoice_init(
         const char *rhino_model_path,
         const char *context_path,
         float rhino_sensitivity,
+        bool require_endpoint,
         void (*inference_callback)(pv_inference_t *),
         pv_picovoice_t **object);
 
