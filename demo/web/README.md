@@ -14,16 +14,9 @@ yarn start
 Open `localhost:5000` in your web browser, as hinted at in the output:
 
 ```console
-   ┌──────────────────────────────────────────────────┐
-   │                                                  │
-   │   Serving!                                       │
-   │                                                  │
-   │   - Local:            http://localhost:5000      │
-   │   - On Your Network:  http://192.168.1.69:5000   │
-   │                                                  │
-   │   Copied local address to clipboard!             │
-   │                                                  │
-   └──────────────────────────────────────────────────┘
+Available on:
+  http://localhost:5000
+Hit CTRL-C to stop the server
 ```
 
 Wait until Picovoice and the WebVoiceProcessor have initialized. Say "Picovoice", then say a command within the context "Pico Clock", e.g.:
