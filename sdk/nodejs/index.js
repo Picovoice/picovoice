@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -37,6 +37,7 @@ class Picovoice {
    * @param {string} rhinoLibraryPath,
    */
   constructor(
+    accessKey,
     keywordPath,
     wakeWordCallback,
     contextPath,
@@ -48,6 +49,12 @@ class Picovoice {
     rhinoModelPath,
     rhinoLibraryPath
   ) {
+    if(accessKey === null || accessKey === undefined || accessKey.length === 0) {
+      throw new PvArgumentError(
+          `No AccessKey provided to Picovoice`
+        );
+    }
+
     if (!(wakeWordCallback instanceof Function)) {
       throw new PvArgumentError(
         "Parameter 'wakeWordCallback' is not a function"
@@ -65,6 +72,7 @@ class Picovoice {
     this.inferenceCallback = inferenceCallback;
 
     this.porcupine = new Porcupine(
+      accessKey,
       [keywordPath],
       [porcupineSensitivity],
       porcupineModelPath,
@@ -72,6 +80,7 @@ class Picovoice {
     );
 
     this.rhino = new Rhino(
+      accessKey,
       contextPath,
       rhinoSensitivity,
       rhinoModelPath,
@@ -80,7 +89,7 @@ class Picovoice {
 
     this._frameLength = 512;
     this._sampleRate = 16000;
-    this._version = "1.1.0";
+    this._version = "2.0.0";
 
     this._porcupineVersion = this.porcupine.version;
     this._rhinoVersion = this.rhino.version;

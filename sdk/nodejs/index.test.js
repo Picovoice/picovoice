@@ -1,5 +1,5 @@
 //
-// Copyright 2020 Picovoice Inc.
+// Copyright 2020-2021 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -26,6 +26,8 @@ const WAV_PATH_PICOVOICE_COFFEE =
 const platform = getPlatform();
 
 const contextPathCoffeeMaker = `../../resources/rhino/resources/contexts/${platform}/coffee_maker_${platform}.rhn`;
+
+const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
 function processWaveFile(handle, waveFilePath) {
   const waveBuffer = fs.readFileSync(waveFilePath);
@@ -59,6 +61,7 @@ describe("intent detection (coffee maker)", () => {
     }
 
     let handle = new Picovoice(
+      ACCESS_KEY,
       PICOVOICE_PORCUPINE_KEYWORD,
       keywordCallback,
       contextPathCoffeeMaker,
@@ -75,6 +78,7 @@ describe("argument checking", () => {
   test("callbacks must be functions", () => {
     expect(() => {
       let handle = new Picovoice(
+        ACCESS_KEY,
         PICOVOICE_PORCUPINE_KEYWORD,
         123,
         contextPathCoffeeMaker,
@@ -86,6 +90,7 @@ describe("argument checking", () => {
   test("callbacks must be functions II", () => {
     expect(() => {
       let handle = new Picovoice(
+        ACCESS_KEY,
         PICOVOICE_PORCUPINE_KEYWORD,
         undefined,
         contextPathCoffeeMaker,
@@ -97,6 +102,7 @@ describe("argument checking", () => {
   test("missing keyword argument", () => {
     expect(() => {
       let handle = new Picovoice(
+        ACCESS_KEY,
         undefined,
         PICOVOICE_PORCUPINE_KEYWORD,
         () => {},
@@ -114,13 +120,14 @@ describe("argument checking", () => {
 
   test("one arguments", () => {
     expect(() => {
-      let handle = new Picovoice(PICOVOICE_PORCUPINE_KEYWORD);
+      let handle = new Picovoice(ACCESS_KEY, PICOVOICE_PORCUPINE_KEYWORD);
     }).toThrow(PvArgumentError);
   });
 
   test("three arguments", () => {
     expect(() => {
       let handle = new Picovoice(
+        ACCESS_KEY,
         PICOVOICE_PORCUPINE_KEYWORD,
         () => {},
         contextPathCoffeeMaker
@@ -132,6 +139,7 @@ describe("argument checking", () => {
 describe("state", () => {
   test("contextInfo from Rhino", () => {
     let handle = new Picovoice(
+      ACCESS_KEY,
       PICOVOICE_PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
@@ -147,6 +155,7 @@ describe("state", () => {
 describe("getter functions", () => {
   test("contextInfo from Rhino", () => {
     let handle = new Picovoice(
+      ACCESS_KEY,
       PICOVOICE_PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
@@ -167,15 +176,16 @@ describe("getter functions", () => {
 
   test("version strings", () => {
     let handle = new Picovoice(
+      ACCESS_KEY,
       PICOVOICE_PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
       () => {}
     );
 
-    expect(handle.porcupineVersion).toEqual("1.9.0");
-    expect(handle.rhinoVersion).toEqual("1.6.0");
-    expect(handle.version).toEqual("1.1.0");
+    expect(handle.porcupineVersion).toEqual("2.0.0");
+    expect(handle.rhinoVersion).toEqual("2.0.0");
+    expect(handle.version).toEqual("2.0.0");
 
     handle.release();
   });

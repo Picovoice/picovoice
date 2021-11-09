@@ -236,6 +236,7 @@ From the root of the repository run:
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -737,6 +738,8 @@ and command inference completion events, respectively:
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
 
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
 let keywordCallback = function (keyword) {
   console.log(`Wake word detected`);
 };
@@ -747,6 +750,7 @@ let inferenceCallback = function (inference) {
 };
 
 let handle = new Picovoice(
+  accessKey,
   keywordArgument,
   keywordCallback,
   contextPath,

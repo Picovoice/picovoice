@@ -17,13 +17,25 @@ See the [Picovoice Docs](https://picovoice.ai/docs/quick-start/picovoice-nodejs/
 
 This binding is for running Picovoice on **NodeJS 10+** on the following platforms:
 
+- Windows (x86_64)
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Raspberry Pi (2,3,4)
+- NVIDIA Jetson (Nano)
+- BeagleBone
 
 ### Web Browsers
 
 This binding is for NodeJS and **does not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue).
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Installation
 
@@ -46,6 +58,8 @@ The SDK provides the `Picovoice` class. Create an instance of this class using a
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
 
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
 const keywordCallback = function (keyword) {
   console.log(`Wake word detected`);
 };
@@ -56,6 +70,7 @@ const inferenceCallback = function (inference) {
 };
 
 const handle = new Picovoice(
+  accessKey,
   keywordArgument,
   keywordCallback,
   contextPath,
