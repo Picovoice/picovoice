@@ -13,12 +13,14 @@
 package ai.picovoice.picovoicedemoservice;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
@@ -26,13 +28,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 public class MainActivity extends AppCompatActivity {
+
+    private ServiceBroadcastReceiver receiver;
+
+    private ToggleButton recordButton;
+    private TextView errorTextView;
 
     private boolean hasRecordPermission() {
         return ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        ToggleButton recordButton = findViewById(R.id.startButton);
+        recordButton = findViewById(R.id.startButton);
 
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             recordButton.toggle();
@@ -71,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ToggleButton recordButton = findViewById(R.id.startButton);
+        receiver = new ServiceBroadcastReceiver();
+
+        recordButton = findViewById(R.id.startButton);
+        errorTextView = findViewById(R.id.errorView);
 
         recordButton.setOnClickListener(v -> {
             if (recordButton.isChecked()) {
@@ -84,5 +88,37 @@ public class MainActivity extends AppCompatActivity {
                 stopService();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter("PicovoiceError"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
+
+    private void onPicovoiceInitError(String errorMessage) {
+        runOnUiThread(() -> {
+            recordButton.setChecked(false);
+            recordButton.setEnabled(false);
+            recordButton.setBackground(ContextCompat.getDrawable(
+                    getApplicationContext(),
+                    R.drawable.button_disabled));
+
+            errorTextView.setText(errorMessage);
+            errorTextView.setVisibility(View.VISIBLE);
+        });
+    }
+
+    public class ServiceBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            onPicovoiceInitError(intent.getStringExtra("errorMessage"));
+        }
     }
 }

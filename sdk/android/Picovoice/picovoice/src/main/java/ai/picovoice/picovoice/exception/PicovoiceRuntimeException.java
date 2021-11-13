@@ -12,6 +12,12 @@
 
 package ai.picovoice.picovoice;
 
-public interface PicovoiceManagerErrorCallback {
-    void invoke(PicovoiceException e);
+public class PicovoiceRuntimeException extends PicovoiceException {
+    PicovoiceRuntimeException(Throwable cause) {
+        super(cause);
+    }
+
+    PicovoiceRuntimeException(String message) {
+        super(message);
+    }
 }

@@ -19,38 +19,94 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.Map;
 
-import ai.picovoice.picovoice.PicovoiceException;
-import ai.picovoice.picovoice.PicovoiceInferenceCallback;
-import ai.picovoice.picovoice.PicovoiceManager;
-import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
+import ai.picovoice.picovoice.*;
 import ai.picovoice.rhino.RhinoInference;
 
 public class MainActivity extends AppCompatActivity {
+    private final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
     private PicovoiceManager picovoiceManager;
     private TextView intentTextView;
+    private TextView errorTextView;
+    private Guideline errorGuideline;
+    private ToggleButton recordButton;
+    private Button cheatSheetButton;
 
-    private void displayError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
+    private final PicovoiceWakeWordCallback picovoiceWakeWordCallback = new PicovoiceWakeWordCallback() {
+        @Override
+        public void invoke() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    intentTextView.setText("\n    Wake Word Detected ...\n");
+                }
+            });
+        }
+    };
+
+    private final PicovoiceInferenceCallback picovoiceInferenceCallback = new PicovoiceInferenceCallback() {
+        @Override
+        public void invoke(final RhinoInference inference) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    intentTextView.setText("\n    {\n");
+                    intentTextView.append(String.format("        \"isUnderstood\" : \"%b\",\n", inference.getIsUnderstood()));
+                    if (inference.getIsUnderstood()) {
+                        intentTextView.append(String.format("        \"intent\" : \"%s\",\n", inference.getIntent()));
+                        final Map<String, String> slots = inference.getSlots();
+                        if (slots.size() > 0) {
+                            intentTextView.append("        \"slots\" : {\n");
+                            for (String key : slots.keySet()) {
+                                intentTextView.append(String.format("            \"%s\" : \"%s\",\n", key, slots.get(key)));
+                            }
+                            intentTextView.append("        }\n");
+                        }
+                    }
+                    intentTextView.append("    }\n");
+                }
+            });
+        }
+    };
+
+    private final PicovoiceManagerErrorCallback picovoiceManagerErrorCallback = new PicovoiceManagerErrorCallback() {
+        @Override
+        public void invoke(final PicovoiceException e) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    onPicovoiceError(e.getMessage());
+                }
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initPicovoice();
         intentTextView = findViewById(R.id.intentView);
+        errorTextView = findViewById(R.id.errorView);
+        errorGuideline = findViewById(R.id.errorGuideLine);
+        recordButton = findViewById(R.id.startButton);
+        cheatSheetButton = findViewById(R.id.cheatSheetButton);
+
+        initPicovoice();
     }
 
     private boolean hasRecordPermission() {
@@ -66,10 +122,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
             if (requestCode == 0) {
-                ToggleButton toggleButton = findViewById(R.id.startButton);
-                toggleButton.toggle();
+                recordButton.toggle();
             }
-            displayError("Permission denied.");
+            onPicovoiceError("Microphone permissions denied");
         } else {
             if (requestCode == 0) {
                 process(null);
@@ -82,45 +137,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initPicovoice() {
         picovoiceManager = new PicovoiceManager.Builder()
+                .setAccessKey(ACCESS_KEY)
                 .setKeywordPath("porcupine_android.ppn")
                 .setPorcupineSensitivity(0.75f)
-                .setWakeWordCallback(new PicovoiceWakeWordCallback() {
-                    @Override
-                    public void invoke() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                intentTextView.setText("\n    Wake Word Detected ...\n");
-                            }
-                        });
-                    }
-                })
+                .setWakeWordCallback(picovoiceWakeWordCallback)
                 .setContextPath("smart_lighting_android.rhn")
                 .setRhinoSensitivity(0.25f)
-                .setInferenceCallback(new PicovoiceInferenceCallback() {
-                    @Override
-                    public void invoke(final RhinoInference inference) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                intentTextView.setText("\n    {\n");
-                                intentTextView.append(String.format("        \"isUnderstood\" : \"%b\",\n", inference.getIsUnderstood()));
-                                if (inference.getIsUnderstood()) {
-                                    intentTextView.append(String.format("        \"intent\" : \"%s\",\n", inference.getIntent()));
-                                    final Map<String, String> slots = inference.getSlots();
-                                    if (slots.size() > 0) {
-                                        intentTextView.append("        \"slots\" : {\n");
-                                        for (String key : slots.keySet()) {
-                                            intentTextView.append(String.format("            \"%s\" : \"%s\",\n", key, slots.get(key)));
-                                        }
-                                        intentTextView.append("        }\n");
-                                    }
-                                }
-                                intentTextView.append("    }\n");
-                            }
-                        });
-                    }
-                })
+                .setInferenceCallback(picovoiceInferenceCallback)
+                .setErrorCallback(picovoiceManagerErrorCallback)
                 .build(getApplicationContext());
 
         Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
@@ -132,16 +156,30 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (recordButton.isChecked()) {
                 if (hasRecordPermission()) {
-                    intentTextView.setText("\n    Listening ...\n");
                     picovoiceManager.start();
+                    intentTextView.setText("\n    Listening ...\n");
                 } else {
                     requestRecordPermission(0);
                 }
             } else {
                 picovoiceManager.stop();
             }
+        } catch (PicovoiceInvalidArgumentException e) {
+            onPicovoiceError(
+                    String.format(
+                            "%s\nEnsure your AccessKey '%s' is a valid access key.",
+                            e.getLocalizedMessage(),
+                            ACCESS_KEY));
+        } catch (PicovoiceActivationException e) {
+            onPicovoiceError("AccessKey activation error");
+        } catch (PicovoiceActivationLimitException e) {
+            onPicovoiceError("AccessKey reached its device limit");
+        } catch (PicovoiceActivationRefusedException e) {
+            onPicovoiceError("AccessKey refused");
+        } catch (PicovoiceActivationThrottledException e) {
+            onPicovoiceError("AccessKey has been throttled");
         } catch (PicovoiceException e) {
-            displayError("Something went wrong");
+            onPicovoiceError("Failed to initialize Picovoice " + e.getMessage());
         }
     }
 
@@ -158,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                 contextInformation = picovoiceManager.getContextInformation();
                 picovoiceManager.stop();
             } catch (PicovoiceException e) {
-                displayError("Something went wrong");
+                onPicovoiceError(e.getMessage());
                 return;
             }
         }
@@ -173,5 +211,23 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void onPicovoiceError(String errorMessage) {
+        recordButton.setChecked(false);
+        recordButton.setEnabled(false);
+        recordButton.setBackground(ContextCompat.getDrawable(
+                getApplicationContext(),
+                R.drawable.button_disabled));
+
+        cheatSheetButton.setEnabled(false);
+
+        errorTextView.setText(errorMessage);
+        errorTextView.setVisibility(View.VISIBLE);
+
+        ConstraintLayout.LayoutParams intentParam = (ConstraintLayout.LayoutParams) intentTextView.getLayoutParams();
+        intentParam.bottomToTop = errorGuideline.getId();
+        intentTextView.requestLayout();
+        intentTextView.setText("");
     }
 }
