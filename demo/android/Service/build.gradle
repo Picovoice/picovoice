@@ -8,13 +8,13 @@ buildscript {
         google()
         mavenCentral()
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1081/'
         }
         maven {
             url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1073/'
         }
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1080/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1082/'
         }
     }
     dependencies {
@@ -27,13 +27,13 @@ allprojects {
         google()
         mavenCentral()
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1069/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1081/'
         }
         maven {
             url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1073/'
         }
         maven {
-            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1080/'
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1082/'
         }
     }
 }
