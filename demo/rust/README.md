@@ -11,6 +11,15 @@ picovoice/demo/rust/filedemo  # File Demo
 picovoice/demo/rust/micdemo  # Microphone Demo
 ```
 
+## AccessKey
+
+The Porcupine SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### File Demo
 
 The file demo allows testing Picovoice on a corpus of audio files. The demo is mainly useful for quantitative performance benchmarking.
@@ -19,7 +28,7 @@ The following processes a file looking for instances of the wake phrase defined 
 and then infers the follow-on spoken command using the context defined by the file passed to the `--context_path` argument:
 
 ```console
-cargo run --release -- \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --input_audio_path "path/to/input.wav" \
 --keyword_path "/path/to/keyword.ppn" \
 --context_path "/path/to/context.rhn"
@@ -38,7 +47,7 @@ and then infers the follow-on spoken command using the context defined by the fi
 Upon completion of the spoken command inference it resumes wake word detection:
 
 ```console
-cargo run --release -- \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --keyword_path "/path/to/keyword.ppn" \
 --context_path "/path/to/context.rhn"
 ```
@@ -66,7 +75,7 @@ You can use the device index to specify which microphone to use for the demo. Fo
 in the above example, you can invoke the demo application as below:
 
 ```console
-cargo run --release -- \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --keyword_path "/path/to/keyword.ppn" \
 --context_path "/path/to/context.rhn" \
 --audio_device_index 0
@@ -76,7 +85,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 This can be achieved with:
 
 ```console
-cargo run --release \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --context_path "/path/to/context.rhn" \
 --keyword_path "/path/to/keyword.ppn" \
 --audio_device_index 0 \
