@@ -31,6 +31,7 @@ class Picovoice {
    * @param {function} inferenceCallback,
    * @param {number} porcupineSensitivity = 0.5,
    * @param {number} rhinoSensitivity = 0.5,
+   * @param {boolean} requireEndpoint = true, If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
    * @param {string} porcupineModelPath,
    * @param {string} porcupineLibraryPath,
    * @param {string} rhinoModelPath,
@@ -44,6 +45,7 @@ class Picovoice {
     inferenceCallback,
     porcupineSensitivity = 0.5,
     rhinoSensitivity = 0.5,
+    requireEndpoint = true,
     porcupineModelPath,
     porcupineLibraryPath,
     rhinoModelPath,
@@ -83,6 +85,7 @@ class Picovoice {
       accessKey,
       contextPath,
       rhinoSensitivity,
+      requireEndpoint,
       rhinoModelPath,
       rhinoLibraryPath
     );

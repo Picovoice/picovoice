@@ -178,7 +178,7 @@ function getSystemLibraryPath() {
           return absoluteLibraryPath(
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_MAC}/${X86_64}`)
           );
-        } else if (arch == ARM_64) {
+        } else if (arch === ARM_64) {
           return absoluteLibraryPath(
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_MAC}/${ARM_64}`)
           );
@@ -203,7 +203,7 @@ function getSystemLibraryPath() {
         }
       }
       case SYSTEM_WINDOWS: {
-        if (arch == X86_64) {
+        if (arch === X86_64) {
           return absoluteLibraryPath(
             SYSTEM_TO_LIBRARY_PATH.get(`${SYSTEM_WINDOWS}/${X86_64}`)
           );
