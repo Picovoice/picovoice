@@ -24,6 +24,7 @@ fn picovoice_demo(
     rhino_model_path: Option<&str>,
     porcupine_sensitivity: Option<f32>,
     rhino_sensitivity: Option<f32>,
+    rhino_require_endpoint: Option<bool>,
 ) {
     let wake_word_callback = || println!("[wake word]");
     let inference_callback = |inference: RhinoInference| {
@@ -61,6 +62,9 @@ fn picovoice_demo(
     }
     if let Some(rhino_sensitivity) = rhino_sensitivity {
         picovoice_builder = picovoice_builder.rhino_sensitivity(rhino_sensitivity);
+    }
+    if let Some(rhino_require_endpoint) = rhino_require_endpoint {
+        picovoice_builder = picovoice_builder.rhino_require_endpoint(rhino_require_endpoint);
     }
 
     let mut picovoice = picovoice_builder
@@ -172,6 +176,14 @@ fn main() {
             .takes_value(true)
             .default_value("0.5")
         )
+        .arg(
+            Arg::with_name("rhino_require_endpoint")
+            .long("rhino_require_endpoint")
+            .value_name("BOOL")
+            .help("If set, Rhino requires an endpoint (chunk of silence) before finishing inference.")
+            .takes_value(true)
+            .possible_values(&["TRUE", "true", "FALSE", "false"])
+        )
         .get_matches();
 
     let input_audio_path = PathBuf::from(matches.value_of("input_audio_path").unwrap());
@@ -190,6 +202,14 @@ fn main() {
         .value_of("access_key")
         .expect("AccessKey is REQUIRED for Porcupine operation");
 
+    let rhino_require_endpoint = matches
+        .value_of("rhino_require_endpoint")
+        .map(|req| match req {
+            "TRUE" | "true" => true,
+            "FALSE" | "false" => false,
+            _ => unreachable!(),
+        });
+
     picovoice_demo(
         input_audio_path,
         access_key,
@@ -199,5 +219,6 @@ fn main() {
         rhino_model_path,
         porcupine_sensitivity,
         rhino_sensitivity,
+        rhino_require_endpoint,
     );
 }

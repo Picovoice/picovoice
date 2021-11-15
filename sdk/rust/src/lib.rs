@@ -30,7 +30,7 @@ where
     rhino_library_path: Option<PathBuf>,
     rhino_model_path: Option<PathBuf>,
     rhino_sensitivity: Option<f32>,
-    rhino_requires_endpoint: bool,
+    rhino_require_endpoint: bool,
 }
 
 impl<W, I> PicovoiceBuilder<W, I>
@@ -57,7 +57,7 @@ where
             rhino_library_path: None,
             rhino_model_path: None,
             rhino_sensitivity: None,
-            rhino_requires_endpoint: true,
+            rhino_require_endpoint: true,
         };
     }
 
@@ -91,8 +91,8 @@ where
         return self;
     }
 
-    pub fn rhino_requires_endpoint(mut self, rhino_requires_endpoint: bool) -> Self {
-        self.rhino_requires_endpoint = rhino_requires_endpoint;
+    pub fn rhino_require_endpoint(mut self, rhino_require_endpoint: bool) -> Self {
+        self.rhino_require_endpoint = rhino_require_endpoint;
         return self;
     }
 
@@ -109,7 +109,7 @@ where
             self.rhino_library_path,
             self.rhino_model_path,
             self.rhino_sensitivity,
-            self.rhino_requires_endpoint,
+            self.rhino_require_endpoint,
         );
     }
 }
@@ -174,7 +174,7 @@ where
         rhino_library_path: Option<P>,
         rhino_model_path: Option<P>,
         rhino_sensitivity: Option<f32>,
-        rhino_requires_endpoint: bool,
+        rhino_require_endpoint: bool,
     ) -> Result<Self, PicovoiceError> {
         let access_key = access_key.into();
 
@@ -205,7 +205,7 @@ where
         if let Some(rhino_sensitivity) = rhino_sensitivity {
             rhino_builder.sensitivity(rhino_sensitivity);
         }
-        rhino_builder.require_endpoint(rhino_requires_endpoint);
+        rhino_builder.require_endpoint(rhino_require_endpoint);
         let rhino = rhino_builder.init().map_err(PicovoiceError::from_rhino)?;
 
         if porcupine.sample_rate() != rhino.sample_rate() {
