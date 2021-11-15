@@ -16,7 +16,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 - Rust 1.54+
-- Runs on Linux (x86_64), macOS (x86_64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
+- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
 
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.
@@ -27,6 +27,15 @@ To add the picovoice library into your app, add `picovoice` to your app's `Cargo
 picovoice = "*"
 ```
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function.
@@ -35,6 +44,8 @@ You must then make a call to `init()`:
 
 ```rust
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
+
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 let wake_word_callback = || {
     // let user know wake word detected
@@ -50,6 +61,7 @@ let inference_callback = |inference: RhinoInference| {
 };
 
 let mut picovoice = PicovoiceBuilder::new(
+    access_key,
     keyword_path,
     wake_word_callback,
     context_path,
@@ -84,7 +96,10 @@ They are floating point numbers within [0, 1].
 A higher sensitivity value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate:
 
 ```rust
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 let mut picovoice = PicovoiceBuilder::new(
+    access_key,
     keyword_path,
     wake_word_callback,
     context_path,
@@ -98,7 +113,10 @@ let mut picovoice = PicovoiceBuilder::new(
 Non-standard model and library paths (For example, when using a non-english model) for both engines can be tuned in a similar manner:
 
 ```rust
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 let mut picovoice = PicovoiceBuilder::new(
+    access_key,
     keyword_path,
     wake_word_callback,
     context_path,
