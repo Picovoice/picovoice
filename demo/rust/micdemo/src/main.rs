@@ -141,10 +141,10 @@ fn main() {
         )
         .arg(
             Arg::with_name("access_key")
-                .long("access_key")
-                .value_name("ACCESS_KEY")
-                .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
-                .takes_value(true)
+            .long("access_key")
+            .value_name("ACCESS_KEY")
+            .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+            .takes_value(true)
         )
         .arg(
             Arg::with_name("keyword_path")
