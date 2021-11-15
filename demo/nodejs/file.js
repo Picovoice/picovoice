@@ -53,8 +53,10 @@ program
     "sensitivity value between 0 and 1",
     parseFloat,
     0.5
-  )
-  .option(
+  ).option(
+    "-e, --requires_endpoint", 
+    "If set, Rhino requires an endpoint (chunk of silence) before finishing inference"
+  ).option(
     "--porcupine_library_file_path <string>",
     "absolute path to porcupine dynamic library"
   )
@@ -80,6 +82,7 @@ function fileDemo() {
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
+  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false ;
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
@@ -156,6 +159,7 @@ function fileDemo() {
     inferenceCallback,
     sensitivity,
     sensitivity,
+    requiresEndpoint,
     porcupineModelFilePath,
     porcupineLibraryFilePath,
     rhinoModelFilePath,
