@@ -47,7 +47,7 @@ program
     0.5
   )
   .option(
-    "-e, --requires_endpoint", 
+    "-e, --requires_endpoint",
     "If set, Rhino requires an endpoint (chunk of silence) before finishing inference"
   )
   .option(
@@ -68,10 +68,8 @@ program
     "index of audio device to use to record audio",
     Number,
     -1
-  ).option(
-    "-d, --show_audio_devices",
-    "show the list of available devices"
-  );
+  )
+  .option("-d, --show_audio_devices", "show the list of available devices");
 
 if (process.argv.length < 3) {
   program.help();
@@ -87,7 +85,7 @@ async function micDemo() {
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
-  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false ;
+  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false;
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
@@ -103,10 +101,10 @@ async function micDemo() {
   if (showAudioDevicesDefined) {
     const devices = PvRecorder.getAudioDevices();
     for (let i = 0; i < devices.length; i++) {
-        console.log(`index: ${i}, device name: ${devices[i]}`);
+      console.log(`index: ${i}, device name: ${devices[i]}`);
     }
     process.exit();
-}
+  }
 
   if (
     (keywordPathsDefined && builtinKeywordsDefined) ||
@@ -151,7 +149,7 @@ async function micDemo() {
     );
   }
 
-  let contextFilename = path.basename(contextPath)
+  let contextFilename = path.basename(contextPath);
 
   let keywordCallback = function (keyword) {
     console.log(`Wake word '${friendlyKeywordName}' detected.`);
@@ -193,11 +191,11 @@ async function micDemo() {
   console.log("Context info:");
   console.log("-------------");
   console.log(handle.contextInfo);
-  console.log("Press ctrl+c to exit.")
+  console.log("Press ctrl+c to exit.");
 
   while (!isInterrupted) {
-      const pcm = await recorder.read();
-      handle.process(pcm);
+    const pcm = await recorder.read();
+    handle.process(pcm);
   }
 
   console.log("Stopping...");

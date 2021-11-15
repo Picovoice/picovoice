@@ -31,7 +31,7 @@ class Picovoice {
    * @param {function} inferenceCallback,
    * @param {number} porcupineSensitivity = 0.5,
    * @param {number} rhinoSensitivity = 0.5,
-   * @param {boolean} requireEndpoint = true, If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+   * @param {boolean} requireEndpoint = true,
    * @param {string} porcupineModelPath,
    * @param {string} porcupineLibraryPath,
    * @param {string} rhinoModelPath,
@@ -51,10 +51,12 @@ class Picovoice {
     rhinoModelPath,
     rhinoLibraryPath
   ) {
-    if(accessKey === null || accessKey === undefined || accessKey.length === 0) {
-      throw new PvArgumentError(
-          `No AccessKey provided to Picovoice`
-        );
+    if (
+      accessKey === null ||
+      accessKey === undefined ||
+      accessKey.length === 0
+    ) {
+      throw new PvArgumentError(`No AccessKey provided to Picovoice`);
     }
 
     if (!(wakeWordCallback instanceof Function)) {

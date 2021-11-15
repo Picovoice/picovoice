@@ -53,10 +53,12 @@ program
     "sensitivity value between 0 and 1",
     parseFloat,
     0.5
-  ).option(
-    "-e, --requires_endpoint", 
+  )
+  .option(
+    "-e, --requires_endpoint",
     "If set, Rhino requires an endpoint (chunk of silence) before finishing inference"
-  ).option(
+  )
+  .option(
     "--porcupine_library_file_path <string>",
     "absolute path to porcupine dynamic library"
   )
@@ -76,13 +78,13 @@ if (process.argv.length < 3) {
 program.parse(process.argv);
 
 function fileDemo() {
-  let accessKey = program["access_key"]
+  let accessKey = program["access_key"];
   let audioPath = program["input_audio_file_path"];
   let keywordFilePath = program["keyword_file_path"];
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
-  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false ;
+  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false;
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
@@ -137,9 +139,7 @@ function fileDemo() {
 
   let keywordCallback = function (keyword) {
     console.log(`Wake word '${friendlyKeywordName}' detected`);
-    console.log(
-      `Listening for speech within the context of '${contextName}'`
-    );
+    console.log(`Listening for speech within the context of '${contextName}'`);
   };
 
   let inferenceCallback = function (inference) {

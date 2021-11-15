@@ -123,7 +123,7 @@ function getLinuxPlatform() {
 
 function getLinuxMachine(arch) {
   let archInfo = "";
-  if (arch == ARM_64) {
+  if (arch === ARM_64) {
     archInfo = ARM_CPU_64;
   }
 
