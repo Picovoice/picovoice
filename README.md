@@ -526,7 +526,7 @@ Open http://localhost:8080 in your browser to try the demo.
 
 From [demo/rust/micdemo](demo/rust/micdemo) run the following command from the terminal to build and run the mic demo:
 ```console
-cargo run --release -- \
+cargo run --release -- --access_key ${ACCESS_KEY} \
 --keyword_path "../../../resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn" \
 --context_path "../../../resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn"
 ```
@@ -1780,6 +1780,8 @@ You must then make a call to `init()`:
 ```rust
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
 
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 let wake_word_callback = || {
     // let user know wake word detected
 };
@@ -1794,6 +1796,7 @@ let inference_callback = |inference: RhinoInference| {
 };
 
 let mut picovoice = PicovoiceBuilder::new(
+    access_key,
     keyword_path,
     wake_word_callback,
     context_path,
