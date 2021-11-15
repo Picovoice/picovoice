@@ -200,11 +200,14 @@ pv-file-demo --help
 
 ```console
 Options:
-  -a, --access_key <string>             AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)
+  -a, --access_key <string>               AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)
+  -i, --input_audio_file_path <string>    input audio wave file in 16-bit 16KHz linear PCM format (mono)
   -k, --keyword_file_path <string>        absolute path(s) to porcupine keyword files (.ppn extension)
-  -b, --keyword <string>                  built in keyword(s) (americano,blueberry,bumblebee,grapefruit,grasshopper,picovoice,porcupine,terminator)
-  -c, --context_file_path <string>             absolute path to rhino context (.rhn extension)
+  -b, --keyword <string>                  built in keyword(s) (alexa,americano,blueberry,bumblebee,computer,grapefruit,grasshopper,hey google,hey siri,jarvis,ok
+                                          google,picovoice,porcupine,terminator)
+  -c, --context_file_path <string>        absolute path to rhino context (.rhn extension)
   -s, --sensitivity <number>              sensitivity value between 0 and 1 (default: 0.5)
+  -e, --requires_endpoint                 If set, Rhino requires an endpoint (chunk of silence) before finishing inference
   --porcupine_library_file_path <string>  absolute path to porcupine dynamic library
   --porcupine_model_file_path <string>    absolute path to porcupine model
   --rhino_library_file_path <string>      absolute path to rhino dynamic library
