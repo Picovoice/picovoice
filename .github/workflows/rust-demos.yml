@@ -25,7 +25,15 @@ jobs:
         submodules: recursive
 
     - name: Rust dependencies
-      run: sudo apt install libasound2-dev
+      run: sudo apt update && sudo apt install -y libasound2-dev
+
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/rhino/binding/rust
 
     - name: Rust build micdemo
       run: cargo build --verbose
@@ -39,7 +47,15 @@ jobs:
         submodules: recursive
 
     - name: Rust dependencies
-      run: sudo apt install libasound2-dev
+      run: sudo apt update && sudo apt install -y libasound2-dev
+
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/rhino/binding/rust
 
     - name: Rust build filedemo
       run: cargo build --verbose
