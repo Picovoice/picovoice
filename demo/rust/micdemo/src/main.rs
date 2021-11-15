@@ -21,6 +21,7 @@ static LISTENING: AtomicBool = AtomicBool::new(false);
 
 fn picovoice_demo(
     audio_device_index: i32,
+    access_key: &str,
     keyword_path: &str,
     context_path: &str,
     porcupine_model_path: Option<&str>,
@@ -47,6 +48,7 @@ fn picovoice_demo(
     };
 
     let mut picovoice_builder = PicovoiceBuilder::new(
+        access_key,
         keyword_path,
         wake_word_callback,
         context_path,
@@ -130,11 +132,19 @@ fn main() {
     let matches = App::new("Picovoice Rust Mic Demo")
         .group(
             ArgGroup::with_name("commands_group")
+            .arg("access_key")
             .arg("context_path")
             .arg("keyword_path")
             .arg("show_audio_devices")
             .multiple(true)
             .required(true)
+        )
+        .arg(
+            Arg::with_name("access_key")
+                .long("access_key")
+                .value_name("ACCESS_KEY")
+                .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+                .takes_value(true)
         )
         .arg(
             Arg::with_name("keyword_path")
@@ -224,8 +234,13 @@ fn main() {
         .unwrap();
     let output_path = matches.value_of("output_path");
 
+    let access_key = matches
+        .value_of("access_key")
+        .expect("AccessKey is REQUIRED for Porcupine operation");
+
     picovoice_demo(
         audio_device_index,
+        access_key,
         keyword_path,
         context_path,
         porcupine_model_path,

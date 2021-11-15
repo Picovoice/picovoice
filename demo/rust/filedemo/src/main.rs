@@ -17,6 +17,7 @@ use std::path::PathBuf;
 
 fn picovoice_demo(
     input_audio_path: PathBuf,
+    access_key: &str,
     keyword_path: &str,
     context_path: &str,
     porcupine_model_path: Option<&str>,
@@ -42,6 +43,7 @@ fn picovoice_demo(
     };
 
     let mut picovoice_builder = PicovoiceBuilder::new(
+        access_key,
         keyword_path,
         wake_word_callback,
         context_path,
@@ -108,6 +110,14 @@ fn picovoice_demo(
 
 fn main() {
     let matches = App::new("Picovoice Rhino Rust File Demo")
+       .arg(
+            Arg::with_name("access_key")
+            .long("access_key")
+            .value_name("ACCESS_KEY")
+            .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+            .takes_value(true)
+            .required(true)
+        )
         .arg(
             Arg::with_name("input_audio_path")
             .long("input_audio_path")
@@ -176,8 +186,13 @@ fn main() {
         .value_of("rhino_sensitivity")
         .map(|s| s.parse().unwrap());
 
+    let access_key = matches
+        .value_of("access_key")
+        .expect("AccessKey is REQUIRED for Porcupine operation");
+
     picovoice_demo(
         input_audio_path,
+        access_key,
         keyword_path,
         context_path,
         porcupine_model_path,
