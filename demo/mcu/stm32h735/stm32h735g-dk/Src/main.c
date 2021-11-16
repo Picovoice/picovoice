@@ -26,6 +26,8 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
+static const char* ACCESS_KEY = "vKPB7maTTbYW2vaDUTxqjhOCY2+dKSp2wNves0Ev9hYcTgArFivjSA==";
+
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const float PORCUPINE_SENSITIVITY = 0.75f;
@@ -90,6 +92,7 @@ int main(void) {
     pv_picovoice_t *handle = NULL;
 
     status = pv_picovoice_init(
+            ACCESS_KEY,
             MEMORY_BUFFER_SIZE,
             memory_buffer,
             sizeof(KEYWORD_ARRAY),
@@ -100,6 +103,7 @@ int main(void) {
             CONTEXT_ARRAY,
             RHINO_SENSITIVITY,
             inference_callback,
+            true,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
         printf("Picovoice init failed with '%s'", pv_status_to_string(status));

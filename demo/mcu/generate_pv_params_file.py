@@ -50,7 +50,7 @@ def generate_pv_params(model_files, header_file_folders):
     repo_dir = os.path.join(script_dir, '../..')
 
     for header_file_path in header_file_folders:
-        header_file = os.path.join(header_file_path, 'pv_params.h')
+        header_file = os.path.join(os.path.dirname(__file__), header_file_path, 'pv_params.h')
         with open(header_file, 'w') as f_out:
             f_out.write(HEADER)
 
@@ -61,7 +61,7 @@ def generate_pv_params(model_files, header_file_folders):
                 else:
                     ppn_dir = os.path.join(repo_dir, f'resources/porcupine/resources/keyword_files_{language}/cortexm')
 
-                f_out.write(f'#if defined(__PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__)\n\n')
+                f_out.write(f'\n#if defined(__PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__)\n\n')
 
                 keyword_file_path = os.path.join(ppn_dir, ppn_rhn_models['wake_word'] + '_cortexm.ppn')
                 ppn_c_array = ppn_to_c_array(keyword_file_path)
@@ -77,7 +77,7 @@ def generate_pv_params(model_files, header_file_folders):
                 f_out.write('\n'.join(ppn_c_array))
                 f_out.write('};\n')
 
-                f_out.write(f'#endif // __PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__ \n\n')
+                f_out.write(f'\n#endif // __PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__\n')
 
             f_out.write(FOOTER)
 
@@ -109,9 +109,9 @@ def ppn_to_c_array(binary_file_path):
 if __name__ == '__main__':
     models = {
         'en': {'wake_word': 'picovoice', 'context': 'smart_lighting'},
-        'de': {'wake_word': 'picovoice', 'context': 'smart_lighting'},
-        'es': {'wake_word': 'picovoice', 'context': 'smart_lighting'},
-        'fr': {'wake_word': 'picovoice', 'context': 'smart_lighting'}
+        'de': {'wake_word': 'hey computer', 'context': 'beleuchtung'},
+        'es': {'wake_word': 'hola computadora', 'context': 'iluminación_inteligente'},
+        'fr': {'wake_word': 'salut ordinateur', 'context': 'éclairage_intelligent'}
     }
     include_folders = (
         'stm32h747/stm32h747i-disco/CM7/Inc/',
