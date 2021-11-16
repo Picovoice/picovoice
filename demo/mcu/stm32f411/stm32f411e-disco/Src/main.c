@@ -23,7 +23,7 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
-static const char* ACCESS_KEY = "vKPB7maTTbYW2vaDUTxqjhOCY2+dKSp2wNves0Ev9hYcTgArFivjSA==";
+static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
@@ -103,8 +103,8 @@ int main(void) {
             sizeof(CONTEXT_ARRAY),
             CONTEXT_ARRAY,
             RHINO_SENSITIVITY,
-            inference_callback,
             true,
+            inference_callback,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
         printf("Picovoice init failed with '%s'", pv_status_to_string(status));
