@@ -48,7 +48,7 @@ public class PicovoiceDemo : MonoBehaviour
         _errorMessage = gameObject.transform.Find("ErrorMessage").GetComponent<Text>();
         _locationStates = gameObject.GetComponentsInChildren<Image>();
 
-        _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, errorCallback: ErrorCallback);
+        _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, processErrorCallback: ErrorCallback);
     }
 
 
@@ -188,7 +188,7 @@ public class PicovoiceDemo : MonoBehaviour
                 }
                 catch (PicovoiceException ex)
                 {
-                    SetError("PicovoiceManager was unable to start: " + ex.Message + ex.GetType().Name);
+                    SetError("PicovoiceManager was unable to start: " + ex.Message);
                 }
             }
             else

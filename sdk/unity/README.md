@@ -95,7 +95,7 @@ private void OnInferenceResult(Inference inference)
 }
 ```
 
-You can override the default model files and sensitivities. You can set requireEndpoint parameter to false if you do not wish to wait for silence before Rhino infers context. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
+You can override the default model files and sensitivities. You can set `requireEndpoint` parameter to false if you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback` that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
 
 ```csharp
 string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
@@ -111,7 +111,7 @@ PicovoiceManager _picovoiceManager = new PicovoiceManager(
                                         rhinoModelPath: "/path/to/rhino/model.pv",
                                         rhinoSensitivity: 0.6f,
                                         requireEndpoint: false,
-                                        errorCallback: OnError);
+                                        processErrorCallback: OnError);
 
 void OnError(PicovoiceException ex){
     Debug.LogError(ex.ToString());

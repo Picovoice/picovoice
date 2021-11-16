@@ -21,7 +21,7 @@ namespace Pv.Unity
     {
         private VoiceProcessor _voiceProcessor;
         private Picovoice _picovoice;
-        private Action<PicovoiceException> _errorCallback;
+        private Action<PicovoiceException> _processErrorCallback;
 
         private readonly string _accessKey;
         private readonly string _keywordPath;
@@ -65,8 +65,7 @@ namespace Pv.Unity
         /// <param name="requireEndpoint">
         /// Boolean variable to indicate if Rhino should wait for a chunk of silence before finishing inference.
         /// </param>
-        /// <param name="errorCallback">Callback that triggers is the engine experiences a problem while processing audio.</param>
-        /// <returns>An instance of PicovoiceManager.</returns> 
+        /// <param name="processErrorCallback">Reports errors that are encountered while the engine is processing audio.</returns> 
         public static PicovoiceManager Create(
             string accessKey,
             string keywordPath,
@@ -78,7 +77,7 @@ namespace Pv.Unity
             string rhinoModelPath = null,
             float rhinoSensitivity = 0.5f,
             bool requireEndpoint = false,
-            Action<PicovoiceException> errorCallback = null)
+            Action<PicovoiceException> processErrorCallback = null)
         {
             return new PicovoiceManager(
                 accessKey: accessKey,
@@ -91,7 +90,7 @@ namespace Pv.Unity
                 rhinoModelPath: rhinoModelPath,
                 rhinoSensitivity: rhinoSensitivity,
                 requireEndpoint: requireEndpoint,
-                errorCallback: errorCallback);
+                processErrorCallback: processErrorCallback);
         }
 
 
@@ -109,7 +108,7 @@ namespace Pv.Unity
             string rhinoModelPath,
             float rhinoSensitivity,
             bool requireEndpoint,
-            Action<PicovoiceException> errorCallback)
+            Action<PicovoiceException> processErrorCallback)
         {
             _accessKey = accessKey;
             _keywordPath = keywordPath;
@@ -121,7 +120,7 @@ namespace Pv.Unity
             _rhinoModelPath = rhinoModelPath;
             _rhinoSensitivity = rhinoSensitivity;
             _requireEndpoint = requireEndpoint;
-            _errorCallback = errorCallback;
+            _processErrorCallback = processErrorCallback;
 
             _voiceProcessor = VoiceProcessor.Instance;
         }
@@ -138,8 +137,8 @@ namespace Pv.Unity
             }
             catch (PicovoiceException ex)
             {
-                if (_errorCallback != null)
-                    _errorCallback(ex);
+                if (_processErrorCallback != null)
+                    _processErrorCallback(ex);
                 else
                     Debug.LogError(ex.ToString());
             }
