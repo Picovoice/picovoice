@@ -1,9 +1,11 @@
 [submodule "resources/porcupine"]
 	path = resources/porcupine
 	url = ../porcupine.git
+	branch = v2.0
 [submodule "resources/rhino"]
 	path = resources/rhino
 	url = ../rhino.git
+	branch = v2.0
 [submodule "sdk/unity/Assets/Picovoice/VoiceProcessor"]
 	path = sdk/unity/Assets/Picovoice/VoiceProcessor
 	url = ../unity-voice-processor.git
