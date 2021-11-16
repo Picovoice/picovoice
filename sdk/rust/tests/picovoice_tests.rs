@@ -47,6 +47,7 @@ mod platform {
 mod tests {
     use std::collections::HashMap;
     use std::convert::TryInto;
+    use std::env;
     use std::fs::File;
     use std::io::BufReader;
     use std::io::Read;
@@ -103,6 +104,8 @@ mod tests {
 
     #[test]
     fn test_process() {
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
         let keyword_path = format!(
             "../../resources/porcupine/resources/keyword_files/{}/picovoice_{}.ppn",
             pv_platform(),
@@ -128,6 +131,7 @@ mod tests {
             }
         };
         let mut picovoice = PicovoiceBuilder::new(
+            access_key,
             keyword_path,
             wake_word_callback,
             context_path,

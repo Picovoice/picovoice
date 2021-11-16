@@ -1,20 +1,21 @@
 name: Rust
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
-      - 'resources/porcupine'
-      - 'resources/rhino'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
-      - 'resources/porcupine'
-      - 'resources/rhino'
+
+defaults:
+  run:
+    working-directory: sdk/rust
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,10 +31,16 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Rust dependencies pre-build
+      run: ./copy.sh
+      working-directory: resources/rhino/binding/rust
+
     - name: Rust build
       run: cargo build --verbose
-      working-directory: sdk/rust
 
     - name: Rust run tests
-      run: cargo test --verbose
-      working-directory: sdk/rust
+      run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose

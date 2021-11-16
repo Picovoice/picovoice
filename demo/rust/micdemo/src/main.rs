@@ -21,12 +21,14 @@ static LISTENING: AtomicBool = AtomicBool::new(false);
 
 fn picovoice_demo(
     audio_device_index: i32,
+    access_key: &str,
     keyword_path: &str,
     context_path: &str,
     porcupine_model_path: Option<&str>,
     rhino_model_path: Option<&str>,
     porcupine_sensitivity: Option<f32>,
     rhino_sensitivity: Option<f32>,
+    rhino_require_endpoint: Option<bool>,
     output_path: Option<&str>,
 ) {
     let wake_word_callback = || println!("[{}] [wake word]", Local::now().format("%F %T"));
@@ -47,6 +49,7 @@ fn picovoice_demo(
     };
 
     let mut picovoice_builder = PicovoiceBuilder::new(
+        access_key,
         keyword_path,
         wake_word_callback,
         context_path,
@@ -65,16 +68,19 @@ fn picovoice_demo(
     if let Some(rhino_sensitivity) = rhino_sensitivity {
         picovoice_builder = picovoice_builder.rhino_sensitivity(rhino_sensitivity);
     }
+    if let Some(rhino_require_endpoint) = rhino_require_endpoint {
+        picovoice_builder = picovoice_builder.rhino_require_endpoint(rhino_require_endpoint);
+    }
 
     let mut picovoice = picovoice_builder
         .init()
         .expect("Failed to create Picovoice");
 
     let recorder = RecorderBuilder::new()
-    .device_index(audio_device_index)
-    .frame_length(picovoice.frame_length() as i32)
-    .init()
-    .expect("Failed to initialize pvrecorder");
+        .device_index(audio_device_index)
+        .frame_length(picovoice.frame_length() as i32)
+        .init()
+        .expect("Failed to initialize pvrecorder");
     recorder.start().expect("Failed to start audio recording");
 
     LISTENING.store(true, Ordering::SeqCst);
@@ -84,7 +90,7 @@ fn picovoice_demo(
     .expect("Unable to setup signal handler");
 
     println!("Listening for commands...");
-    
+
     let mut audio_data = Vec::new();
     while LISTENING.load(Ordering::SeqCst) {
         let mut pcm = vec![0; recorder.frame_length()];
@@ -107,10 +113,11 @@ fn picovoice_demo(
             bits_per_sample: 16,
             sample_format: hound::SampleFormat::Int,
         };
-        let mut writer = hound::WavWriter::create(output_path, wavspec).expect("Failed to open output audio file");
+        let mut writer = hound::WavWriter::create(output_path, wavspec)
+            .expect("Failed to open output audio file");
         for sample in audio_data {
             writer.write_sample(sample).unwrap();
-        };
+        }
     }
 }
 
@@ -130,11 +137,19 @@ fn main() {
     let matches = App::new("Picovoice Rust Mic Demo")
         .group(
             ArgGroup::with_name("commands_group")
+            .arg("access_key")
             .arg("context_path")
             .arg("keyword_path")
             .arg("show_audio_devices")
             .multiple(true)
             .required(true)
+        )
+        .arg(
+            Arg::with_name("access_key")
+            .long("access_key")
+            .value_name("ACCESS_KEY")
+            .help("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)")
+            .takes_value(true)
         )
         .arg(
             Arg::with_name("keyword_path")
@@ -183,6 +198,14 @@ fn main() {
             .default_value("0.5")
         )
         .arg(
+            Arg::with_name("rhino_require_endpoint")
+            .long("rhino_require_endpoint")
+            .value_name("BOOL")
+            .help("If set, Rhino requires an endpoint (chunk of silence) before finishing inference.")
+            .takes_value(true)
+            .possible_values(&["TRUE", "true", "FALSE", "false"])
+        )
+        .arg(
             Arg::with_name("audio_device_index")
             .long("audio_device_index")
             .value_name("INDEX")
@@ -224,14 +247,28 @@ fn main() {
         .unwrap();
     let output_path = matches.value_of("output_path");
 
+    let access_key = matches
+        .value_of("access_key")
+        .expect("AccessKey is REQUIRED for Porcupine operation");
+
+    let rhino_require_endpoint = matches
+        .value_of("rhino_require_endpoint")
+        .map(|req| match req {
+            "TRUE" | "true" => true,
+            "FALSE" | "false" => false,
+            _ => unreachable!(),
+        });
+
     picovoice_demo(
         audio_device_index,
+        access_key,
         keyword_path,
         context_path,
         porcupine_model_path,
         rhino_model_path,
         porcupine_sensitivity,
         rhino_sensitivity,
+        rhino_require_endpoint,
         output_path,
     );
 }

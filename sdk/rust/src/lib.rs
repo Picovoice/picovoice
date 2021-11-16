@@ -9,7 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 pub use porcupine;
 pub use rhino;
@@ -19,6 +19,7 @@ where
     W: FnMut(),
     I: FnMut(rhino::RhinoInference),
 {
+    access_key: String,
     keyword_path: PathBuf,
     wake_word_callback: W,
     context_path: PathBuf,
@@ -29,6 +30,7 @@ where
     rhino_library_path: Option<PathBuf>,
     rhino_model_path: Option<PathBuf>,
     rhino_sensitivity: Option<f32>,
+    rhino_require_endpoint: bool,
 }
 
 impl<W, I> PicovoiceBuilder<W, I>
@@ -36,16 +38,18 @@ where
     W: FnMut(),
     I: FnMut(rhino::RhinoInference),
 {
-    pub fn new<P: AsRef<Path>>(
+    pub fn new<S: Into<String>, P: Into<PathBuf>>(
+        access_key: S,
         keyword_path: P,
         wake_word_callback: W,
         context_path: P,
         inference_callback: I,
     ) -> Self {
         return Self {
-            keyword_path: PathBuf::from(keyword_path.as_ref()),
+            access_key: access_key.into(),
+            keyword_path: keyword_path.into(),
             wake_word_callback,
-            context_path: PathBuf::from(context_path.as_ref()),
+            context_path: context_path.into(),
             inference_callback,
             porcupine_library_path: None,
             porcupine_model_path: None,
@@ -53,16 +57,17 @@ where
             rhino_library_path: None,
             rhino_model_path: None,
             rhino_sensitivity: None,
+            rhino_require_endpoint: true,
         };
     }
 
-    pub fn porcupine_library_path<P: AsRef<Path>>(mut self, porcupine_library_path: P) -> Self {
-        self.porcupine_library_path = Some(PathBuf::from(porcupine_library_path.as_ref()));
+    pub fn porcupine_library_path<P: Into<PathBuf>>(mut self, porcupine_library_path: P) -> Self {
+        self.porcupine_library_path = Some(porcupine_library_path.into());
         return self;
     }
 
-    pub fn porcupine_model_path<P: AsRef<Path>>(mut self, porcupine_model_path: P) -> Self {
-        self.porcupine_model_path = Some(PathBuf::from(porcupine_model_path.as_ref()));
+    pub fn porcupine_model_path<P: Into<PathBuf>>(mut self, porcupine_model_path: P) -> Self {
+        self.porcupine_model_path = Some(porcupine_model_path.into());
         return self;
     }
 
@@ -71,13 +76,13 @@ where
         return self;
     }
 
-    pub fn rhino_library_path<P: AsRef<Path>>(mut self, rhino_library_path: P) -> Self {
-        self.rhino_library_path = Some(PathBuf::from(rhino_library_path.as_ref()));
+    pub fn rhino_library_path<P: Into<PathBuf>>(mut self, rhino_library_path: P) -> Self {
+        self.rhino_library_path = Some(rhino_library_path.into());
         return self;
     }
 
-    pub fn rhino_model_path<P: AsRef<Path>>(mut self, rhino_model_path: P) -> Self {
-        self.rhino_model_path = Some(PathBuf::from(rhino_model_path.as_ref()));
+    pub fn rhino_model_path<P: Into<PathBuf>>(mut self, rhino_model_path: P) -> Self {
+        self.rhino_model_path = Some(rhino_model_path.into());
         return self;
     }
 
@@ -86,8 +91,14 @@ where
         return self;
     }
 
+    pub fn rhino_require_endpoint(mut self, rhino_require_endpoint: bool) -> Self {
+        self.rhino_require_endpoint = rhino_require_endpoint;
+        return self;
+    }
+
     pub fn init(self) -> Result<Picovoice<W, I>, PicovoiceError> {
         return Picovoice::new(
+            self.access_key,
             self.keyword_path,
             self.wake_word_callback,
             self.context_path,
@@ -98,6 +109,7 @@ where
             self.rhino_library_path,
             self.rhino_model_path,
             self.rhino_sensitivity,
+            self.rhino_require_endpoint,
         );
     }
 }
@@ -150,7 +162,8 @@ where
     W: FnMut(),
     I: FnMut(rhino::RhinoInference),
 {
-    pub fn new<P: AsRef<Path>>(
+    pub fn new<S: Into<String>, P: Into<PathBuf>>(
+        access_key: S,
         keyword_path: P,
         wake_word_callback: W,
         context_path: P,
@@ -161,9 +174,14 @@ where
         rhino_library_path: Option<P>,
         rhino_model_path: Option<P>,
         rhino_sensitivity: Option<f32>,
+        rhino_require_endpoint: bool,
     ) -> Result<Self, PicovoiceError> {
-        let mut porcupine_builder =
-            porcupine::PorcupineBuilder::new_with_keyword_paths(&[keyword_path.as_ref()]);
+        let access_key = access_key.into();
+
+        let mut porcupine_builder = porcupine::PorcupineBuilder::new_with_keyword_paths(
+            access_key.clone(),
+            &[keyword_path.into()],
+        );
         if let Some(porcupine_library_path) = porcupine_library_path {
             porcupine_builder.library_path(porcupine_library_path);
         }
@@ -177,7 +195,7 @@ where
             .init()
             .map_err(PicovoiceError::from_porcupine)?;
 
-        let mut rhino_builder = rhino::RhinoBuilder::new(context_path);
+        let mut rhino_builder = rhino::RhinoBuilder::new(access_key.clone(), context_path);
         if let Some(rhino_library_path) = rhino_library_path {
             rhino_builder.library_path(rhino_library_path);
         }
@@ -187,6 +205,7 @@ where
         if let Some(rhino_sensitivity) = rhino_sensitivity {
             rhino_builder.sensitivity(rhino_sensitivity);
         }
+        rhino_builder.require_endpoint(rhino_require_endpoint);
         let rhino = rhino_builder.init().map_err(PicovoiceError::from_rhino)?;
 
         if porcupine.sample_rate() != rhino.sample_rate() {
