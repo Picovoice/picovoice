@@ -1,85 +1,47 @@
-
-# Picovoice IMXRT1050-EVKB Demo
+# Picovoice IMXRT1050-EVKB Demo (Multiple languages)
 
 This package contains a demo project for the i.MX RT1050 Evaluation Kit using Picovoice platform.
+
+## Supported Languages
+
+1. English
+2. German
+3. French
+4. Spanish
 
 ## Installation
 
 For this demo, you need to download and install [MCUXpresso IDE](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE), which is an all-in-one multi-OS development tool for NXP MCUs based on Arm Cortex-M cores.
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
-In order to compile and run the demo project on a i.MX RT1050 Evaluation board, perform the following steps:
+In the demo project, there is a separate build configuration for each supported languages. In order to activate a specific configuration:
+
+1. Click `Project` > `Build Configuration` > `Set Active`
+2. Select the target configuration
+
+Then, to compile and run the demo project on an i.MX RT1050 Evaluation board, perform the following steps:
 
 1. Open `MCUXpresso IDE`
 2. From the main toolbar, select `Install MCUXpresso SDKs` and install `evkbimxrt1050` SDK
 3. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [imxrt1050-evkb](./imxrt1050-evkb) folder from this repository, and then press the `Finish` button.
-4. Click `Project` > `Build All`
-5. Connect the board to the computer, select the imported project inside `Project Explorer` window
-6. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
-7. In the debug view, press `Run` > `Resume`
+4. Replace `ACCESS_KEY` in `main.c` with your AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+5. Click `Project` > `Build Project`
+6. Connect the board to the computer, select the imported project inside `Project Explorer` window
+7. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
+8. In the debug view, press `Run` > `Resume`
 
-For this demo, the default wake word is `Picovoice` and the context is `Smart Lighting`. The engine can recognize commands such as
+The default wake word and context model for all supported languages are listed [here](../README.md)
 
-> Picovoice, turn off the lights.
-
-or
-
-> Picovoice, set the lights in the bedroom to blue.
-
-Picovoice's output can be seen on the IDE console.
-
-See below for the full context:
-
-```yaml
-context:
-  expressions:
-    changeColor:
-      - "[turn, make] (all, the) lights $color:color"
-      - "[change, set, switch] (all, the) lights to $color:color"
-      - "[turn, make] (the) $location:location (color, light, lights) $color:color"
-      - "[change, set, switch] (the) $location:location (color, light, lights) to $color:color"
-      - "[turn, make] (the) [color, light, lights] [at, in] (the) $location:location $color:color"
-      - "[change, set, switch] (the) [color, light, lights] [at, in] (the) $location:location to $color:color"
-      - "[turn, make] (the) [color, light, lights] $color:color [at, in] (the) $location:location"
-      - "[change, set, switch] (the) [color, light, lights] to $color:color [at, in] (the) $location:location"
-    changeLightState:
-      - "[switch, turn] $state:state (all, the) lights"
-      - "[switch, turn] (all, the) lights $state:state"
-      - "[switch, turn] $state:state (the) $location:location (light, lights)"
-      - "[switch, turn] (the) $location:location [light, lights] $state:state"
-      - "[switch, turn] $state:state (the) [light, lights] [at, in] (the) $location:location"
-      - "[switch, turn] (the) [light, lights] [in, at] the $location:location $state:state"
-    changeLightStateOff:
-      - "shut off (all, the) lights"
-      - "shut (all, the) lights off"
-      - "shut off (the) $location:location (light, lights)"
-      - "shut (the) $location:location (light, lights) off"
-      - "shut off (the) [light, lights] [at, in] (the) $location:location"
-      - "shut (the) [light, lights] off [at, in] (the) $location:location"
-      - "shut (the) [light, lights] [at, in] (the) $location:location off"
-  slots:
-    color:
-      - "blue"
-      - "green"
-      - "orange"
-      - "pink"
-      - "purple"
-      - "red"
-      - "white"
-      - "yellow"
-    state:
-      - "off"
-      - "on"
-    location:
-      - "bathroom"
-      - "bedroom"
-      - "closet"
-      - "hallway"
-      - "kitchen"
-      - "living room"
-      - "pantry"
-```
 ## Create Custom Models
 
 1. Copy the UUID of the board printed at the beginning of the session to the IDE console.
@@ -93,4 +55,4 @@ The model is now being trained. You will be able to download it within a few hou
 
 1. Download your custom voice model(s) from [Picovoice Console](https://console.picovoice.ai/).
 2. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent. Both zip archives also contain a `.h` header file containing the `C` array version of the binary model.
-3. Copy the contents of the arrays inside the `.h` header files and update the `keyword_array` and `context_array` values in [imxrt1050-evkb/inc/pv_params.h](./imxrt1050-evkb/inc/pv_params.h).
+3. Copy the contents of the arrays inside the `.h` header files and update the `keyword_array` and `context_array` values in [imxrt1050-evkb/inc/pv_params.h](./imxrt1050-evkb/inc/pv_params.h) in the language section for which the model is trained.
