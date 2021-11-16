@@ -30,6 +30,15 @@ This binding is for running Picovoice on **Unity 2017.4+** on the following plat
 
 The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
+## AccessKey
+
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Packaging
 To build the package from source, you have first have to clone the repo with submodules:
 ```console
@@ -54,7 +63,10 @@ The constructor will create an instance of the PicovoiceManager using the Porcup
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 PicovoiceManager _picovoiceManager = new PicovoiceManager(
+                                accessKey,
                                 "/path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "/path/to/context/file.rhn",
@@ -83,10 +95,13 @@ private void OnInferenceResult(Inference inference)
 }
 ```
 
-You can override the default model files and sensitivities. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
+You can override the default model files and sensitivities. You can set requireEndpoint parameter to false if you do not wish to wait for silence before Rhino infers context. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
 
 ```csharp
+string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 PicovoiceManager _picovoiceManager = new PicovoiceManager(
+                                        accessKeym
                                         "/path/to/keyword/file.ppn",
                                         OnWakeWordDetected,
                                         "/path/to/context/file.rhn",
@@ -95,9 +110,10 @@ PicovoiceManager _picovoiceManager = new PicovoiceManager(
                                         porcupineSensitivity: 0.75f,
                                         rhinoModelPath: "/path/to/rhino/model.pv",
                                         rhinoSensitivity: 0.6f,
+                                        requireEndpoint: false,
                                         errorCallback: OnError);
 
-void OnError(Exception ex){
+void OnError(PicovoiceException ex){
     Debug.LogError(ex.ToString());
 }
 ```
@@ -133,15 +149,18 @@ who want to incorporate it into a already existing audio processing pipeline.
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try
 {    
     Picovoice _picovoice = Picovoice.Create(
+                                accessKey,
                                 "path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "path/to/context/file.rhn",
                                 OnInferenceResult);
 } 
-catch (Exception ex) 
+catch (PicovoiceException ex) 
 {
     // handle Picovoice init error
 }
@@ -180,7 +199,7 @@ try
 {
     _picovoice.Process(buffer);
 }
-catch (Exception ex)
+catch (PicovoiceException ex)
 {
     Debug.LogError(ex.ToString());
 }  

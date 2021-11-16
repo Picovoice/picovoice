@@ -5,16 +5,19 @@ using System.IO;
 
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 
 using Pv.Unity;
 
 public class PicovoiceDemo : MonoBehaviour
 {
+    private static string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
     Text _activityText;
+    Text _errorMessage;
     Image[] _locationStates;
 
     PicovoiceManager _picovoiceManager;
+    bool isError;
 
     private static readonly string _platform;
     private static readonly string _keywordPath;
@@ -41,10 +44,11 @@ public class PicovoiceDemo : MonoBehaviour
 
     void Start()
     {
-        _activityText = gameObject.GetComponentInChildren<Text>();
+        _activityText = gameObject.transform.Find("ActivityText").GetComponent<Text>();
+        _errorMessage = gameObject.transform.Find("ErrorMessage").GetComponent<Text>();
         _locationStates = gameObject.GetComponentsInChildren<Image>();
 
-        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
+        _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, errorCallback: ErrorCallback);
     }
 
 
@@ -130,8 +134,30 @@ public class PicovoiceDemo : MonoBehaviour
         }
     }
 
+    private void ErrorCallback(PicovoiceException e)
+    {
+        SetError(e.Message);
+    }
+
+    private void SetError(string message)
+    {
+        _activityText.text = "";
+        _errorMessage.text = message;
+        isError = true;
+        if (_picovoiceManager != null)
+        {
+            _picovoiceManager.Stop();
+        }
+    }
+
+
     void Update()
     {
+        if (isError)
+        {
+            return;
+        }
+
         if (!_picovoiceManager.IsRecording)
         {
             if (_picovoiceManager.IsAudioDeviceAvailable())
@@ -140,13 +166,33 @@ public class PicovoiceDemo : MonoBehaviour
                 {
                     _picovoiceManager.Start();
                 }
-                catch (Exception ex)
+                catch (PicovoiceInvalidArgumentException ex)
                 {
-                    Debug.LogError(ex.ToString());
+                    SetError($"{ex.Message}\nMake sure your access key '{ACCESS_KEY}' is a valid access key.");
+                }
+                catch (PicovoiceActivationException)
+                {
+                    SetError("AccessKey activation error");
+                }
+                catch (PicovoiceActivationLimitException)
+                {
+                    SetError("AccessKey reached its device limit");
+                }
+                catch (PicovoiceActivationRefusedException)
+                {
+                    SetError("AccessKey refused");
+                }
+                catch (PicovoiceActivationThrottledException)
+                {
+                    SetError("AccessKey has been throttled");
+                }
+                catch (PicovoiceException ex)
+                {
+                    SetError("PicovoiceManager was unable to start: " + ex.Message + ex.GetType().Name);
                 }
             }
             else
-                Debug.LogError("No audio recording device available!");
+                SetError("No audio recording device available!");
         }
 
     }
@@ -181,61 +227,17 @@ public class PicovoiceDemo : MonoBehaviour
         }
     }
 
-
     public static string GetKeywordPath()
     {
         string fileName = string.Format("picovoice_{0}.ppn", _platform);
         string srcPath = Path.Combine(Application.streamingAssetsPath, string.Format("keyword_files/{0}/{1}", _platform, fileName));
-#if !UNITY_EDITOR && UNITY_ANDROID
-        string dstPath = Path.Combine(Application.persistentDataPath, string.Format("keyword_files/{0}", _platform));
-        if (!Directory.Exists(dstPath))
-        {
-            Directory.CreateDirectory(dstPath);
-        }
-        dstPath = Path.Combine(dstPath, fileName);
-
-        return ExtractResource(srcPath, dstPath);
-#else
         return srcPath;
-#endif
     }
 
     public static string GetContextPath()
     {
         string fileName = string.Format("smart_lighting_{0}.rhn", _platform);
         string srcPath = Path.Combine(Application.streamingAssetsPath, string.Format("contexts/{0}/{1}", _platform, fileName));
-#if !UNITY_EDITOR && UNITY_ANDROID
-        string dstPath = Path.Combine(Application.persistentDataPath, string.Format("contexts/{0}", _platform));
-        if (!Directory.Exists(dstPath))
-        {
-            Directory.CreateDirectory(dstPath);
-        }
-        dstPath = Path.Combine(dstPath, fileName);
-
-        return ExtractResource(srcPath, dstPath);
-#else
         return srcPath;
-#endif
     }
-
-#if !UNITY_EDITOR && UNITY_ANDROID
-    public static string ExtractResource(string srcPath, string dstPath)
-    {
-        var loadingRequest = UnityWebRequest.Get(srcPath);
-        loadingRequest.SendWebRequest();
-        while (!loadingRequest.isDone)
-        {
-            if (loadingRequest.isNetworkError || loadingRequest.isHttpError)
-            {
-                break;
-            }
-        }
-        if (!(loadingRequest.isNetworkError || loadingRequest.isHttpError))
-        {
-            File.WriteAllBytes(dstPath, loadingRequest.downloadHandler.data);
-        }
-
-        return dstPath;
-    }
-#endif
 }
