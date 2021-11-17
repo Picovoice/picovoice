@@ -89,42 +89,36 @@ context:
 context:
   expressions:
     changeColor:
-      - "[Mets, Mettez, Allume, Change, Changez] [les, la] [lumières, lumière]
-        (en) $color:color"
-      - "[Mets, Mettez, Allume, Change, Changez] [les, la] [lumières, lumière]
-        [du, de la, dans la, dans le] $location:location (en) $color:color"
-    changeLightStateOff:
-      - Éteint [les, la] [lumières, lumière]
-      - Éteint [les, la] [lumières, lumière] [du, de la] $location:location
-      - Éteint [les, la] [lumières, lumière] [dans la, dans le]
-        $location:location
-    changeLightStateOn:
-      - "[Allume, Allumer] [les, la] [lumières, lumière]"
-      - "[Allume, Allumer] [les, la] [lumières, lumière] [du, de la]
-        $location:location"
-      - "[Allume, Allumer] [les, la] [lumières, lumière] [dans la, dans le, dans
-        l'] $location:location"
+      - "[färbe, ändere, mache] (alle, die, das) [Licht, Lichter] (zu, in)
+        $color:color"
+      - "[färbe, ändere, mache] (alle, die, das) (Licht, Lichter) (im)
+        $location:location (Licht, Lichter) (zu, in) $color:color"
+    changeState:
+      - (Mache) (alle, die, das) [Licht, Lichter] $state:state
+      - (Mache) (alle, die, das) $location:location [Licht, Lichter] $state:state
+      - (Mache) (alle, die, das) [Licht, Lichter] im $location:location
+        $state:state
   slots:
     color:
-      - bleu
-      - vert
+      - blau
+      - grün
       - orange
-      - rose
-      - violet
-      - rouge
-      - blanc
-      - jaune
+      - pink
+      - lila
+      - rot
+      - weiß
+      - gelb
+    state:
+      - an
+      - aus
     location:
-      - salle de bain
-      - toilettes
-      - chambre
-      - chambre à coucher
-      - placard
-      - couloir
-      - cuisine
-      - salle de séjour
-      - salon
-      - garde manger
+      - Badezimmer
+      - Schlafzimmer
+      - Kinderzimmer
+      - Flur
+      - Küche
+      - Wohnzimmer
+      - Speisekammer
 ```
 
 ### Spanish context
