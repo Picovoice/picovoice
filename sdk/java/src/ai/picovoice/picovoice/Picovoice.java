@@ -80,15 +80,16 @@ public class Picovoice {
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
         try {
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(porcupineLibraryPath)
                     .setModelPath(porcupineModelPath)
                     .setSensitivity(porcupineSensitivity)
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("1.9.")) {
+            if (!porcupine.getVersion().startsWith("2.0.0")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '1.9.x' but received %s",
+                        "Expected Porcupine library with version '2.0.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -96,15 +97,17 @@ public class Picovoice {
             this.wakeWordCallback = wakeWordCallback;
 
             rhino = new Rhino.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(rhinoLibraryPath)
                     .setModelPath(rhinoModelPath)
                     .setContextPath(contextPath)
                     .setSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .build();
 
-            if (!rhino.getVersion().startsWith("1.6.")) {
+            if (!rhino.getVersion().startsWith("2.0.0")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '1.6.x' but received %s",
+                        "Expected Rhino library with version '2.0.x' but received %s",
                         rhino.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -157,7 +160,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "1.1.0";
+        return "2.0.0";
     }
 
     /**
@@ -201,6 +204,7 @@ public class Picovoice {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String porcupineLibraryPath = null;
         private String porcupineModelPath = null;
         private String keywordPath = null;
@@ -210,7 +214,13 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private boolean requireEndpoint = false;
         private PicovoiceInferenceCallback inferenceCallback = null;
+
+        public Picovoice.Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public Picovoice.Builder setPorcupineLibraryPath(String porcupineLibraryPath) {
             this.porcupineLibraryPath = porcupineLibraryPath;
@@ -262,6 +272,11 @@ public class Picovoice {
             return this;
         }
 
+        public Picovoice.Builder setRequireEndpoint(boolean requireEndpoint) {
+            this.requireEndpoint = requireEndpoint;
+            return this;
+        }
+
         /**
          * Validates properties and creates an instance of the Picovoice end-to-end platform.
          *
@@ -269,7 +284,9 @@ public class Picovoice {
          * @throws PicovoiceException if there is an error while initializing Picovoice.
          */
         public Picovoice build() throws PicovoiceException {
-            return new Picovoice(porcupineLibraryPath,
+            return new Picovoice(
+                    accessKey,
+                    porcupineLibraryPath,
                     porcupineModelPath,
                     keywordPath,
                     porcupineSensitivity,
@@ -278,6 +295,7 @@ public class Picovoice {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
+                    requireEndpoint,
                     inferenceCallback);
         }
     }
