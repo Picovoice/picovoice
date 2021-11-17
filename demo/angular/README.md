@@ -2,13 +2,22 @@
 
 This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our `VoiceWidget` subscribes to these event and displays the results.
 
-The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the ~4-6MB requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
+The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the `~4-6MB` requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
 
 If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
 
 The widget shows the various loading and error events, as well as mounting/unmounting the `VoiceWidget` with a toggle, demonstrating the complete lifecycle of Picovoice with in an Angular app.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
+
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Install and run
 
