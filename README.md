@@ -302,6 +302,7 @@ cd demo/java
 ./gradlew build
 cd build/libs
 java -jar picovoice-mic-demo.jar \
+a ${ACCESS_KEY} \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -849,6 +850,8 @@ The easiest way to create an instance of the engine is with the Picovoice Builde
 ```java
 import ai.picovoice.picovoice.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
@@ -865,6 +868,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
 
 try{
     Picovoice handle = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
