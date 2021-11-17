@@ -98,46 +98,32 @@ permitted for use in commercial settings, and have a path to graduate to commerc
 ## Table of Contents
 
 - [Picovoice](#picovoice)
-  - [Why Picovoice](#why-picovoice)
+  - [Why Picovoice?](#why-picovoice)
   - [Build with Picovoice](#build-with-picovoice)
   - [Platform Features](#platform-features)
-    - [Custom Wake Words](#custom-wake-words)
-    - [Intent Inference](#intent-inference)
-  - [License & Terms](#license--terms)
   - [Table of Contents](#table-of-contents)
   - [Language Support](#language-support)
   - [Performance](#performance)
   - [Picovoice Console](#picovoice-console)
   - [Demos](#demos)
-    - [Python Demos](#python-demos)
-    - [NodeJS Demos](#nodejs-demos)
-    - [.NET Demos](#net-demos)
-    - [Java Demos](#java-demos)
-    - [Go Demos](#go-demos)
-    - [Unity Demos](#unity-demos)
-    - [Flutter Demos](#flutter-demos)
-    - [React Native Demos](#react-native-demos)
-      - [Running On Android](#running-on-android)
-      - [Running On iOS](#running-on-ios)
-    - [Android Demos](#android-demos)
-    - [iOS Demos](#ios-demos)
-      - [BackgroundService Demo](#backgroundservice-demo)
-      - [ForegroundApp Demo](#foregroundapp-demo)
-      - [Wake Word Detection and Context Inference](#wake-word-detection-and-context-inference)
-    - [Web Demos](#web-demos)
+    - [Python](#python-demos)
+    - [NodeJS](#nodejs-demos)
+    - [.NET](#net-demos)
+    - [Java](#java-demos)
+    - [Go](#go-demos)
+    - [Unity](#unity-demos)
+    - [Flutter](#flutter-demos)
+    - [React Native](#react-native-demos)
+    - [Android](#android-demos)
+    - [iOS](#ios-demos)
+    - [Web](#web-demos)
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
-      - [Angular Demos](#angular-demos)
-      - [React Demos](#react-demos)
-      - [Vue Demos](#vue-demos)
-    - [Rust Demos](#rust-demos)
-    - [C Demos](#c-demos)
-      - [Microphone Demo](#microphone-demo)
-      - [Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone](#linux-x86_64-macos-x86_64-raspberry-pi-and-beaglebone)
-      - [Windows](#windows)
-      - [File Demo](#file-demo)
-      - [Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone](#linux-x86_64-macos-x86_64-raspberry-pi-and-beaglebone-1)
-      - [Windows](#windows-1)
-    - [Microcontroller Demos](#microcontroller-demos)
+      - [Angular](#angular-demos)
+      - [React](#react-demos)
+      - [Vue](#vue-demos)
+    - [Rust](#rust-demos)
+    - [C](#c-demos)
+    - [Microcontroller](#microcontroller-demos)
   - [SDKs](#sdks)
     - [Python](#python)
     - [NodeJS](#nodejs)
@@ -145,20 +131,10 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [Java](#java)
     - [Go](#go)
     - [Unity](#unity)
-      - [High-Level API](#high-level-api)
-      - [Low-Level API](#low-level-api)
     - [Flutter](#flutter)
-      - [High-Level API](#high-level-api-1)
-      - [Low-Level API](#low-level-api-1)
     - [React Native](#react-native)
-      - [High-Level API](#high-level-api-2)
-      - [Low-Level API](#low-level-api-2)
     - [Android](#android)
-      - [High-Level API](#high-level-api-3)
-      - [Low-Level API](#low-level-api-3)
     - [iOS](#ios)
-      - [High-Level API](#high-level-api-4)
-      - [Low-Level API](#low-level-api-4)
     - [Web](#web)
       - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
       - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
@@ -168,8 +144,6 @@ permitted for use in commercial settings, and have a path to graduate to commerc
     - [Rust](#rust)
     - [Microcontroller](#microcontroller)
   - [Releases](#releases)
-    - [v1.1.0 - December 2nd, 2020](#v110---december-2nd-2020)
-    - [v1.0.0 - October 22, 2020](#v100---october-22-2020)
   - [FAQ](#faq)
 
 ## Language Support
@@ -330,7 +304,7 @@ cd demo/java
 ./gradlew build
 cd build/libs
 java -jar picovoice-mic-demo.jar \
-
+-a ${ACCESS_KEY} \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -882,6 +856,8 @@ import ai.picovoice.picovoice.*;
 
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+        
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
 String contextPath = "/absolute/path/to/context.rhn"
@@ -896,6 +872,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
 
 try{
     Picovoice handle = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
