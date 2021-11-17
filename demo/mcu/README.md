@@ -17,9 +17,9 @@ For these demos, the default wake words and the context are:
 | Language | Wake word        | Context                 |
 |----------|------------------|-------------------------|
 | English  | Picovoice        | Smart lighting          |
-| German   | hey computer     | Beleuchtung             |
-| French   | Hola computadora | éclairage intelligent   |
-| Spanish  | Salut ordinateur | Iluminación inteligente |
+| German   | Hey computer     | Beleuchtung             |
+| Spanish  | Hola computadora | Iluminación inteligente |
+| French   | Salut ordinateur | éclairage intelligent   |
 
 In case of English version, after uploading the firmware to the microcontroller, the engine can recognize commands such as:
 
