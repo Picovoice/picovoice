@@ -1,4 +1,29 @@
-## Picovoice Android Demos
+# Picovoice Android Demos
+
+## AccessKey
+
+All demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+## Activity
+
+This demo is intended for applications that need to do voice recognition when in focus.
+
+Copy your AccessKey into the `ACCESS_KEY` variable in `MainActivity.java` before building the demo.
+
+## Service
+
+This demo is intended for applications that need to do voice recognition in the background.
+
+**NOTE:** If running the Porcupine as a service on Android < 10, you will need to stop the service before attempting to record audio in another application. This is a limitation of the Android OS that is documented [here](https://developer.android.com/guide/topics/media/sharing-audio-input).
+
+Copy your AccessKey into the `ACCESS_KEY` variable in `PicovoiceService.java` before building the demo.
+
+## Running the Demo
 
 The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start
 and the engine can recognize commands such as:

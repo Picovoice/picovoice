@@ -48,6 +48,7 @@ public class PicovoiceTest {
     Context appContext;
     AssetManager assetManager;
     String testResourcesPath;
+    String accessKey;
 
     boolean isWakeWordDetected = false;
     PicovoiceWakeWordCallback wakeWordCallback = new PicovoiceWakeWordCallback() {
@@ -79,6 +80,7 @@ public class PicovoiceTest {
         assetManager = testContext.getAssets();
         extractAssetsRecursively("test_resources");
         testResourcesPath = new File(appContext.getFilesDir(), "test_resources").getAbsolutePath();
+        accessKey = appContext.getString(R.string.pvTestingAccessKey);
     }
 
     @Test
@@ -86,6 +88,7 @@ public class PicovoiceTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setWakeWordCallback(wakeWordCallback)
@@ -107,6 +110,7 @@ public class PicovoiceTest {
         File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params.pv");
         File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params.pv");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
@@ -125,6 +129,7 @@ public class PicovoiceTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setPorcupineSensitivity(0.7f)
@@ -145,6 +150,7 @@ public class PicovoiceTest {
         File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_de.pv");
         File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_de.pv");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
@@ -165,6 +171,7 @@ public class PicovoiceTest {
         File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_es.pv");
         File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_es.pv");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
@@ -185,6 +192,7 @@ public class PicovoiceTest {
         File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_fr.pv");
         File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_fr.pv");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
@@ -205,6 +213,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
@@ -226,11 +235,12 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
              new Picovoice.Builder()
-                .setKeywordPath(keywordPath.getAbsolutePath())
-                .setContextPath(contextPath.getAbsolutePath())
-                .setWakeWordCallback(wakeWordCallback)
-                .setInferenceCallback(inferenceCallback)
-                .build(appContext);
+                     .setAccessKey(accessKey)
+                     .setKeywordPath(keywordPath.getAbsolutePath())
+                     .setContextPath(contextPath.getAbsolutePath())
+                     .setWakeWordCallback(wakeWordCallback)
+                     .setInferenceCallback(inferenceCallback)
+                     .build(appContext);
 
         } catch (PicovoiceException e) {
             didFail = true;
@@ -246,6 +256,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
@@ -266,6 +277,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
@@ -288,6 +300,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
@@ -311,6 +324,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setRhinoModelPath(rhinoModelPath.getAbsolutePath())
@@ -333,6 +347,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setPorcupineSensitivity(10)
@@ -355,6 +370,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setRhinoSensitivity(-1)
@@ -377,6 +393,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
@@ -398,6 +415,7 @@ public class PicovoiceTest {
         boolean didFail = false;
         try {
             new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
                     .setWakeWordCallback(wakeWordCallback)
@@ -417,6 +435,7 @@ public class PicovoiceTest {
         File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
         Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath.getAbsolutePath())
                 .setContextPath(contextPath.getAbsolutePath())
                 .setWakeWordCallback(wakeWordCallback)

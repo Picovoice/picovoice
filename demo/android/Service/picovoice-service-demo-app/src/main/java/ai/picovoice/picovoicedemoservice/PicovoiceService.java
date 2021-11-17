@@ -26,16 +26,50 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import java.io.File;
 import java.util.Map;
 
-import ai.picovoice.picovoice.PicovoiceException;
-import ai.picovoice.picovoice.PicovoiceManager;
+import ai.picovoice.picovoice.*;
 
 public class PicovoiceService extends Service {
+    private final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
     private static final String CHANNEL_ID = "PicovoiceServiceChannel";
 
     private PicovoiceManager picovoiceManager;
+
+    private final PicovoiceWakeWordCallback picovoiceWakeWordCallback = () -> {
+        Notification n = getNotification("Picovoice", "Wake Word Detected...");
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
+        notificationManager.notify(1234, n);
+    };
+
+    private final PicovoiceInferenceCallback picovoiceInferenceCallback = inference -> {
+        StringBuilder builder = new StringBuilder();
+
+        if (inference.getIsUnderstood()) {
+            builder.append(inference.getIntent()).append(" - ");
+            final Map<String, String> slots = inference.getSlots();
+            if (slots.size() > 0) {
+                for (String key : slots.keySet()) {
+                    builder.append(key).append(" : ").append(slots.get(key)).append(" ");
+                }
+            }
+        } else {
+            builder.append("Didn't understand the command.");
+        }
+
+        Notification n = getNotification("Picovoice", builder.toString());
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert notificationManager != null;
+        notificationManager.notify(1234, n);
+    };
+
+    private final PicovoiceManagerErrorCallback picovoiceManagerErrorCallback = error -> {
+        onPicovoiceError(error.getMessage());
+    };
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -53,90 +87,70 @@ public class PicovoiceService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
 
+        String keywordFilePath = intent.getStringExtra("keywordFileName");
+        String contextPath = intent.getStringExtra("contextFileName");
+
+        boolean started = false;
+
+        try {
+            picovoiceManager = new PicovoiceManager.Builder()
+                    .setAccessKey(ACCESS_KEY)
+                    .setKeywordPath(keywordFilePath)
+                    .setPorcupineSensitivity(0.7f)
+                    .setWakeWordCallback(picovoiceWakeWordCallback)
+                    .setContextPath(contextPath)
+                    .setRhinoSensitivity(0.25f)
+                    .setInferenceCallback(picovoiceInferenceCallback)
+                    .setProcessErrorCallback(picovoiceManagerErrorCallback)
+                    .build(getApplicationContext());
+            picovoiceManager.start();
+            started = true;
+        } catch (PicovoiceInvalidArgumentException e) {
+            onPicovoiceError(
+                    String.format(
+                            "%s\nEnsure your AccessKey '%s' is a valid access key.",
+                            e.getLocalizedMessage(),
+                            ACCESS_KEY));
+        } catch (PicovoiceActivationException e) {
+            onPicovoiceError("AccessKey activation error");
+        } catch (PicovoiceActivationLimitException e) {
+            onPicovoiceError("AccessKey reached its device limit");
+        } catch (PicovoiceActivationRefusedException e) {
+            onPicovoiceError("AccessKey refused");
+        } catch (PicovoiceActivationThrottledException e) {
+            onPicovoiceError("AccessKey has been throttled");
+        } catch (PicovoiceException e) {
+            onPicovoiceError("Failed to initialize Picovoice " + e.getMessage());
+        }
+
+        Notification notification = started ?
+                getNotification("Picovoice", "Listening...") :
+                getNotification("Picovoice init failed", "Service will shutdown");
+
+        startForeground(1234, notification);
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void onPicovoiceError(String message) {
+        Intent i = new Intent("PicovoiceError");
+        i.putExtra("errorMessage", message);
+        sendBroadcast(i);
+    }
+
+    private Notification getNotification(String title, String message) {
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
                 new Intent(this, MainActivity.class),
                 0);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Picovoice")
-                .setContentText("Listening ...")
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
                 .build();
-
-        startForeground(1234, notification);
-
-        String keywordFilePath = intent.getStringExtra("keywordFileName");
-        String contextPath = intent.getStringExtra("contextFileName");
-
-        try {
-            picovoiceManager = new PicovoiceManager.Builder()
-                    .setKeywordPath(keywordFilePath)
-                    .setPorcupineSensitivity(0.7f)
-                    .setWakeWordCallback(
-                    () -> {
-                        PendingIntent contentIntent = PendingIntent.getActivity(
-                                this,
-                                0,
-                                new Intent(this, MainActivity.class),
-                                0);
-
-                        Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setContentTitle("Picovoice")
-                                .setContentText("Wake Word Detected ...")
-                                .setSmallIcon(R.drawable.ic_launcher_background)
-                                .setContentIntent(contentIntent)
-                                .build();
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        assert notificationManager != null;
-                        notificationManager.notify(1234, n);
-                    })
-                    .setContextPath(contextPath)
-                    .setRhinoSensitivity(0.25f)
-                    .setInferenceCallback(
-                    (inference) -> {
-                        PendingIntent contentIntent = PendingIntent.getActivity(
-                                this,
-                                0,
-                                new Intent(this, MainActivity.class),
-                                0);
-
-
-                        StringBuilder builder = new StringBuilder();
-
-                        if (inference.getIsUnderstood()) {
-                            builder.append(inference.getIntent()).append(" - ");
-                            final Map<String, String> slots = inference.getSlots();
-                            if (slots.size() > 0) {
-                                for (String key : slots.keySet()) {
-                                    builder.append(key).append(" : ").append(slots.get(key)).append(" ");
-                                }
-                            }
-                        } else {
-                            builder.append("Didn't understand the command.");
-                        }
-
-
-                        Notification n = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setContentTitle("Picovoice")
-                                .setContentText(builder.toString())
-                                .setSmallIcon(R.drawable.ic_launcher_background)
-                                .setContentIntent(contentIntent)
-                                .build();
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        assert notificationManager != null;
-                        notificationManager.notify(1234, n);
-                    }).build(getApplicationContext());
-            picovoiceManager.start();
-        } catch (PicovoiceException e) {
-            Log.e("Picovoice", e.toString());
-        }
-
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable

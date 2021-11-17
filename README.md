@@ -1245,7 +1245,7 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:picovoice-android:1.1.0'
+    implementation 'ai.picovoice:picovoice-android:${LATEST_VERSION}'
 }
 ```
 
@@ -1261,7 +1261,10 @@ inference completion. The class can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
-PicovoiceManager manager = new PicovoiceManager(    
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+PicovoiceManager manager = new PicovoiceManager.Builder()
+    .setAccessKey(accessKey)    
     .setKeywordPath("path/to/keyword/file.ppn")    
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
@@ -1277,7 +1280,6 @@ PicovoiceManager manager = new PicovoiceManager(
         }
     })
     .build(appContext);
-);
 ```
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. 
@@ -1302,8 +1304,11 @@ low-level binding for Android. It can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try {
     Picovoice picovoice = new Picovoice.Builder()
+        .setAccessKey(accessKey)
         .setPorcupineModelPath("/path/to/porcupine/model.pv")
         .setKeywordPath("/path/to/keyword.ppn")
         .setPorcupineSensitivity(0.7f)
@@ -1322,6 +1327,7 @@ try {
                 // logic to execute upon completion of intent inference
             }
         })
+        .setRequireEndpoint(true)
         .build(appContext);
 } catch(PicovoiceException ex) { }
 ```

@@ -6,6 +6,114 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/startGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/textGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/endGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.97"/>
+
+    <TextView
+        android:id="@+id/wakeWordLabel"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/wake_word_label"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/topGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/textGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
+    <TextView
+        android:id="@+id/wakeWordName"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/wake_word_name"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@id/topGuideline"
+        app:layout_constraintStart_toEndOf="@id/textGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
+    <TextView
+        android:id="@+id/contextLabel"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/context_label"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/wakeWordName"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/textGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
+    <TextView
+        android:id="@+id/contextName"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/context_name"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@id/wakeWordName"
+        app:layout_constraintStart_toEndOf="@+id/textGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
+    <TextView
+        android:id="@+id/phraseLabel"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/phrase_label"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/contextName"
+        app:layout_constraintStart_toStartOf="@id/startGuideline"
+        app:layout_constraintEnd_toEndOf="@id/textGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
+    <TextView
+        android:id="@+id/phraseText"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/phrase_text"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/contextName"
+        app:layout_constraintStart_toEndOf="@+id/textGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintHorizontal_bias="0" />
+
     <ToggleButton
         android:id="@+id/startButton"
         android:layout_width="120dp"
@@ -20,4 +128,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/errorView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="@drawable/error_view"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="invisible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@id/bottomGuideline"
+        app:layout_constraintEnd_toEndOf="@id/endGuideline"
+        app:layout_constraintStart_toStartOf="@id/startGuideline" />
 </androidx.constraintlayout.widget.ConstraintLayout>
