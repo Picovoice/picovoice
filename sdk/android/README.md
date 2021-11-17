@@ -97,7 +97,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .setRhinoModelPath("assets_sub_folder/rhino_model.pv")
     .setRhinoSensitivity(0.35f)
     .setRequireEndpoint(true)
-    .setErrorCallback(new PicovoiceManangerErrorCallback() {
+    .setProcessErrorCallback(new PicovoiceManangerErrorCallback() {
         @Override
         public void invoke(final PicovoiceException e) {
             // error handling
@@ -169,7 +169,7 @@ try {
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
 
-RequireEndpoint is the parameter which indicates if Rhino should wait for a silence before infering context. Default is set to true.
+RequireEndpoint is the parameter which indicates if Rhino should wait for a moment of silence before infering context. Default is set to true.
 
 The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
