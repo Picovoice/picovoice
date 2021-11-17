@@ -84,10 +84,14 @@ namespace Pv
             bool requireEndpoint = true)
         {
             if (wakeWordCallback == null)
-                throw new PicovoiceInvalidArgumentException("wakeWordCallback is null");
+            {
+                throw new PicovoiceInvalidArgumentException("'wakeWordCallback' cannot be null");
+            }
 
             if (inferenceCallback == null)
-                throw new PicovoiceInvalidArgumentException("inferenceCallback is null");
+            {
+                throw new PicovoiceInvalidArgumentException("'inferenceCallback' cannot be null");
+            }
 
             try
             {
