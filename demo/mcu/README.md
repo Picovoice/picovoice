@@ -83,44 +83,6 @@ context:
       - "pantry"
 ```
 
-### German context
-
-```yaml
-context:
-  expressions:
-    changeColor:
-      - "[färbe, ändere, mache] (alle, die, das) [Licht, Lichter] (zu, in)
-        $color:color"
-      - "[färbe, ändere, mache] (alle, die, das) (Licht, Lichter) (im)
-        $location:location (Licht, Lichter) (zu, in) $color:color"
-    changeState:
-      - (Mache) (alle, die, das) [Licht, Lichter] $state:state
-      - (Mache) (alle, die, das) $location:location [Licht, Lichter] $state:state
-      - (Mache) (alle, die, das) [Licht, Lichter] im $location:location
-        $state:state
-  slots:
-    color:
-      - blau
-      - grün
-      - orange
-      - pink
-      - lila
-      - rot
-      - weiß
-      - gelb
-    state:
-      - an
-      - aus
-    location:
-      - Badezimmer
-      - Schlafzimmer
-      - Kinderzimmer
-      - Flur
-      - Küche
-      - Wohnzimmer
-      - Speisekammer
-```
-
 ### French context
 
 ```yaml
@@ -159,6 +121,44 @@ context:
       - salle de séjour
       - salon
       - garde manger
+```
+
+### German context
+
+```yaml
+context:
+  expressions:
+    changeColor:
+      - "[färbe, ändere, mache] (alle, die, das) [Licht, Lichter] (zu, in)
+        $color:color"
+      - "[färbe, ändere, mache] (alle, die, das) (Licht, Lichter) (im)
+        $location:location (Licht, Lichter) (zu, in) $color:color"
+    changeState:
+      - (Mache) (alle, die, das) [Licht, Lichter] $state:state
+      - (Mache) (alle, die, das) $location:location [Licht, Lichter] $state:state
+      - (Mache) (alle, die, das) [Licht, Lichter] im $location:location
+        $state:state
+  slots:
+    color:
+      - blau
+      - grün
+      - orange
+      - pink
+      - lila
+      - rot
+      - weiß
+      - gelb
+    state:
+      - an
+      - aus
+    location:
+      - Badezimmer
+      - Schlafzimmer
+      - Kinderzimmer
+      - Flur
+      - Küche
+      - Wohnzimmer
+      - Speisekammer
 ```
 
 ### Spanish context
