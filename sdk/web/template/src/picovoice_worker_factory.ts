@@ -73,9 +73,68 @@ export default class PicovoiceWorkerFactory {
             reject(event.data.error);
             break;
           }
+          case 'file-save':
+            try {
+              localStorage.setItem(event.data.path, event.data.content || '');
+              picovoiceWorker.postMessage({
+                command: 'file-save-succeeded',
+                message: `Saved ${event.data.path} successfully`,
+              });
+            } catch (error) {
+              picovoiceWorker.postMessage({
+                command: 'file-save-failed',
+                message: `${error}`,
+              });
+            }
+            break;
+          case 'file-load':
+            try {
+              const content = localStorage.getItem(event.data.path);
+              if (content === null) {
+                throw new Error('file does not exist.');
+              }
+              picovoiceWorker.postMessage({
+                command: 'file-load-succeeded',
+                content: content,
+              });
+            } catch (error) {
+              picovoiceWorker.postMessage({
+                command: 'file-load-failed',
+                message: `${error}`,
+              });
+            }
+            break;
+          case 'file-exists':
+            try {
+              const content = localStorage.getItem(event.data.path);
+              picovoiceWorker.postMessage({
+                command: 'file-exists-succeeded',
+                content: content,
+              });
+            } catch (error) {
+              picovoiceWorker.postMessage({
+                command: 'file-exists-failed',
+                message: `${error}`,
+              });
+            }
+            break;
+          case 'file-delete':
+            try {
+              localStorage.removeItem(event.data.path);
+              picovoiceWorker.postMessage({
+                command: 'file-delete-succeeded',
+                message: `Deleted ${event.data.path} successfully`,
+              });
+            } catch (error) {
+              picovoiceWorker.postMessage({
+                command: 'file-delete-failed',
+                message: `${error}`,
+              });
+            }
+            break;
           default: {
             // eslint-disable-next-line no-console
-            console.warn('Unhandled resonse from PicovoiceWorker: ' + event);
+            console.warn('Unhandled resonse from PicovoiceWorker: ' + event.data.command);
             return;
           }
         }
