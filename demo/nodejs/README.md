@@ -19,13 +19,25 @@ Picovoice is an end-to-end platform for building voice products on your terms. I
 
 These demos run Rhino on **NodeJS 12+** on the following platforms:
 
+- Windows (x86_64)
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Raspberry Pi (2,3,4)
+- NVIDIA Jetson (Nano)
+- BeagleBone
 
 ### Web Browsers
 
 These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web-en-worker), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-web-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-web-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-web-vue).
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Install NPM package
 
@@ -47,10 +59,10 @@ Here is an example which will understand commands from the "Smart Lighting" demo
 
 Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. 
 
-Use `pv-mic-demo` to run the mic demo. First select an input audio device to start recording audio:
+Use `pv-mic-demo` to run the mic demo. First select an input audio device to start recording audio and provide your Picovoice AccessKey with `--access_key`.
 
 ```console
-pv-mic-demo --show_audio_devices
+pv-mic-demo  --access_key ${ACCESS_KEY} --show_audio_devices
 ```
 
 This command prints a list of the available devices and its inputs:
@@ -67,6 +79,7 @@ Specify the Wake Word (.ppn) with `--keyword_file_path` and the Speech-to-Intent
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 --audio_device_index 0 \
 --keyword bumblebee \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
@@ -76,6 +89,7 @@ You can use custom Wake Word files (.ppn) with `--keyword_file_path`:
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 --audio_device_index 0 \
 --keyword_file_path ./hey_edison.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn
@@ -120,7 +134,7 @@ Inference result:
 Now try again, but this time say something that the context is not designed to understand, like "tell me a joke":
 
 ```console
-pv-mic-demo --context_file_path ../../resources/contexts/mac/smart_lighting_mac.rhn
+pv-mic-demo --access_key ${ACCESS_KEY} --context_file_path ../../resources/contexts/mac/smart_lighting_mac.rhn
 
 ...
 Listening for speech within the context of 'smart_lighting_mac'. Please speak your phrase into the microphone.
@@ -149,6 +163,7 @@ Run the file demo and the successful inference with the intent "orderDrink" alon
 
 ```console
 pv-file-demo \
+--access_key ${ACCESS_KEY} \
 --input_audio_file_path ../../resources/audio_samples/picovoice-coffee.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
@@ -185,10 +200,14 @@ pv-file-demo --help
 
 ```console
 Options:
+  -a, --access_key <string>               AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)
+  -i, --input_audio_file_path <string>    input audio wave file in 16-bit 16KHz linear PCM format (mono)
   -k, --keyword_file_path <string>        absolute path(s) to porcupine keyword files (.ppn extension)
-  -b, --keyword <string>                  built in keyword(s) (americano,blueberry,bumblebee,grapefruit,grasshopper,picovoice,porcupine,terminator)
-  -c, --context_file_path <string>             absolute path to rhino context (.rhn extension)
+  -b, --keyword <string>                  built in keyword(s) (alexa,americano,blueberry,bumblebee,computer,grapefruit,grasshopper,hey google,hey siri,jarvis,ok
+                                          google,picovoice,porcupine,terminator)
+  -c, --context_file_path <string>        absolute path to rhino context (.rhn extension)
   -s, --sensitivity <number>              sensitivity value between 0 and 1 (default: 0.5)
+  -e, --requires_endpoint                 If set, Rhino requires an endpoint (chunk of silence) before finishing inference
   --porcupine_library_file_path <string>  absolute path to porcupine dynamic library
   --porcupine_model_file_path <string>    absolute path to porcupine model
   --rhino_library_file_path <string>      absolute path to rhino dynamic library
@@ -202,6 +221,7 @@ The sensitivity is a floating point value in the range [0,1] which specifies the
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 --keyword GRASSHOPPER \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
 --sensitivity 0.65
@@ -221,6 +241,7 @@ e.g. for macOS (x86_64):
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
 --porcupine_library_file_path ../../resources/porcupine/lib/mac/x86_64/libpv_porcupine.dylib \
@@ -251,6 +272,7 @@ From the `demo/nodejs` folder, use `yarn mic` (or `npm run mic`) to run the mic 
 
 ```console
 yarn mic \
+--access_key ${ACCESS_KEY} \
 --keyword AMERICANO \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
 ```
@@ -258,7 +280,7 @@ yarn mic \
 (or)
 
 ```console
-npm run mic -- --keyword AMERICANO --context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
+npm run mic --  --access_key ${ACCESS_KEY} --keyword AMERICANO --context_file_path ../../resources/contexts/mac/coffee_maker_mac.rhn
 ```
 
 ### File demo
@@ -267,6 +289,7 @@ From the `demo/nodejs` folder, use `yarn file` or `npm run file`. For `npm run`,
 
 ```console
 yarn file \
+--access_key ${ACCESS_KEY} \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
@@ -276,6 +299,7 @@ yarn file \
 
 ```console
 npm run file -- \
+--access_key ${ACCESS_KEY} \
 --input_audio_file_path ../../resources/audio_samples/test_within_context.wav \
 --keyword_file_path ../../resources/porcupine/resources/keyword_files/mac/terminator_mac.ppn \
 --context_file_path ../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn
