@@ -9,14 +9,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
 using System;
-using System.Linq;
 
 using UnityEngine;
-using UnityEngine.UI;
 
 
 namespace Pv.Unity
@@ -26,20 +21,21 @@ namespace Pv.Unity
     {
         private VoiceProcessor _voiceProcessor;
         private Picovoice _picovoice;
-        private Action<Exception> _errorCallback;
-        
-        string _keywordPath;
-        Action _wakeWordCallback;
-        string _contextPath;
-        Action<Inference> _inferenceCallback;
-        string _porcupineModelPath;
-        float _porcupineSensitivity = 0.5f;
-        string _rhinoModelPath;
-        float _rhinoSensitivity = 0.5f;
+        private Action<PicovoiceException> _processErrorCallback;
 
-        /// <summary>
-        /// PicovoiceManager constructor
-        /// </summary>
+        private readonly string _accessKey;
+        private readonly string _keywordPath;
+        private readonly Action _wakeWordCallback;
+        private readonly string _contextPath;
+        private readonly Action<Inference> _inferenceCallback;
+        private readonly string _porcupineModelPath;
+        private readonly float _porcupineSensitivity = 0.5f;
+        private readonly string _rhinoModelPath;
+        private readonly float _rhinoSensitivity = 0.5f;
+        private readonly bool _requireEndpoint = true;
+
+
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to Porcupine's keyword model file.</param>
         /// <param name="wakeWordCallback">
         /// User-defined callback invoked upon detection of the wake phrase. 
@@ -66,14 +62,55 @@ namespace Pv.Unity
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </returns>
-        /// <param name="errorCallback">Callback that triggers is the engine experiences a problem while processing audio.</param>
-        /// <returns>An instance of PicovoiceManager.</returns>        
-        public PicovoiceManager(string keywordPath, Action wakeWordCallback,
-                                string contextPath, Action<Inference> inferenceCallback,
-                                string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
-                                string rhinoModelPath = null, float rhinoSensitivity = 0.5f,
-                                Action<Exception> errorCallback = null)
+        /// <param name="requireEndpoint">
+        /// Boolean variable to indicate if Rhino should wait for a chunk of silence before finishing inference.
+        /// </param>
+        /// <param name="processErrorCallback">Reports errors that are encountered while the engine is processing audio.</returns> 
+        public static PicovoiceManager Create(
+            string accessKey,
+            string keywordPath,
+            Action wakeWordCallback,
+            string contextPath,
+            Action<Inference> inferenceCallback,
+            string porcupineModelPath = null,
+            float porcupineSensitivity = 0.5f,
+            string rhinoModelPath = null,
+            float rhinoSensitivity = 0.5f,
+            bool requireEndpoint = false,
+            Action<PicovoiceException> processErrorCallback = null)
         {
+            return new PicovoiceManager(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                wakeWordCallback: wakeWordCallback,
+                contextPath: contextPath,
+                inferenceCallback: inferenceCallback,
+                porcupineModelPath: porcupineModelPath,
+                porcupineSensitivity: porcupineSensitivity,
+                rhinoModelPath: rhinoModelPath,
+                rhinoSensitivity: rhinoSensitivity,
+                requireEndpoint: requireEndpoint,
+                processErrorCallback: processErrorCallback);
+        }
+
+
+        /// <summary>
+        /// PicovoiceManager constructor
+        /// </summary>       
+        private PicovoiceManager(
+            string accessKey,
+            string keywordPath,
+            Action wakeWordCallback,
+            string contextPath,
+            Action<Inference> inferenceCallback,
+            string porcupineModelPath,
+            float porcupineSensitivity,
+            string rhinoModelPath,
+            float rhinoSensitivity,
+            bool requireEndpoint,
+            Action<PicovoiceException> processErrorCallback)
+        {
+            _accessKey = accessKey;
             _keywordPath = keywordPath;
             _wakeWordCallback = wakeWordCallback;
             _contextPath = contextPath;
@@ -82,7 +119,8 @@ namespace Pv.Unity
             _porcupineSensitivity = porcupineSensitivity;
             _rhinoModelPath = rhinoModelPath;
             _rhinoSensitivity = rhinoSensitivity;
-            _errorCallback = errorCallback;
+            _requireEndpoint = requireEndpoint;
+            _processErrorCallback = processErrorCallback;
 
             _voiceProcessor = VoiceProcessor.Instance;
         }
@@ -97,10 +135,10 @@ namespace Pv.Unity
             {
                 _picovoice.Process(pcm);
             }
-            catch (Exception ex)
+            catch (PicovoiceException ex)
             {
-                if (_errorCallback != null)
-                    _errorCallback(ex);
+                if (_processErrorCallback != null)
+                    _processErrorCallback(ex);
                 else
                     Debug.LogError(ex.ToString());
             }
@@ -130,10 +168,17 @@ namespace Pv.Unity
             if (_picovoice != null)
                 return;            
 
-            _picovoice = Picovoice.Create(_keywordPath, _wakeWordCallback,
-                                          _contextPath, _inferenceCallback,
-                                          _porcupineModelPath, _porcupineSensitivity,
-                                          _rhinoModelPath, _rhinoSensitivity);
+            _picovoice = Picovoice.Create(
+                _accessKey,
+                _keywordPath,
+                _wakeWordCallback,
+                _contextPath, 
+                _inferenceCallback,
+                _porcupineModelPath,
+                _porcupineSensitivity,
+                _rhinoModelPath,
+                _rhinoSensitivity,
+                _requireEndpoint);
 
             _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
             _voiceProcessor.StartRecording(_picovoice.SampleRate, _picovoice.FrameLength);
