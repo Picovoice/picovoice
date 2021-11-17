@@ -4,12 +4,24 @@ This document outlines how to use Picovoice platform on a microcontroller using 
 
 * Arm Cortex-M4 & M7
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage 
 
 Picovoice is implemented in ANSI C and therefore can be directly linked to embedded C projects. Its public header file contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
 ```c
 #define MEMORY_BUFFER_SIZE ...
+
+static const char* ACCESS_KEY = ... //AccessKey string obtained from [Picovoice Console](https://picovoice.ai/console/)
+
 static uint8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const uint8_t *keyword_array = ...
@@ -34,6 +46,7 @@ static void inference_callback(pv_inference_t *inference) {
 pv_picovoice_t *handle = NULL;
 
 const pv_status_t status = pv_picovoice_init(
+        ACCESS_KEY,
         MEMORY_BUFFER_SIZE,
         memory_buffer,
         sizeof(keyword_array),
@@ -43,6 +56,7 @@ const pv_status_t status = pv_picovoice_init(
         sizeof(context_array),
         context_array,
         rhino_sensitivity,
+        true,
         inference_callback,
         &handle);
 
