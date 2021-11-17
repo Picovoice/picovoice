@@ -236,6 +236,7 @@ From the root of the repository run:
 
 ```console
 pv-mic-demo \
+--access_key ${ACCESS_KEY} \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -526,7 +527,7 @@ Open http://localhost:8080 in your browser to try the demo.
 
 From [demo/rust/micdemo](demo/rust/micdemo) run the following command from the terminal to build and run the mic demo:
 ```console
-cargo run --release -- --access_key ${ACCESS_KEY} \
+cargo run --release -- \
 --keyword_path "../../../resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn" \
 --context_path "../../../resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn"
 ```
@@ -737,6 +738,8 @@ and command inference completion events, respectively:
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
 
+const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+
 let keywordCallback = function (keyword) {
   console.log(`Wake word detected`);
 };
@@ -747,6 +750,7 @@ let inferenceCallback = function (inference) {
 };
 
 let handle = new Picovoice(
+  accessKey,
   keywordArgument,
   keywordCallback,
   contextPath,
@@ -983,14 +987,11 @@ The constructor `PicovoiceManager.Create` will create an instance of the Picovoi
 ```csharp
 using Pv.Unity;
 
-string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
-
-PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
-                                accessKey
+PicovoiceManager _picovoiceManager = new PicovoiceManager(
                                 "/path/to/keyword/file.ppn",
-                                OnWakeWordDetected
+                                () => {},
                                 "/path/to/context/file.rhn",
-                                OnInferenceResult);
+                                (inference) => {};
 ```
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
@@ -999,7 +1000,7 @@ try
 {
     _picovoiceManager.Start();
 }
-catch(PicovoiceException ex)
+catch(Exception ex)
 {
     Debug.LogError(ex.ToString());
 }
@@ -1023,18 +1024,15 @@ who want to incorporate it into a already existing audio processing pipeline.
 ```csharp
 using Pv.Unity;
 
-string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
-
 try
 {    
     Picovoice _picovoice = Picovoice.Create(
-                                accessKey,
                                 "path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "path/to/context/file.rhn",
                                 OnInferenceResult);
 } 
-catch (PicovoiceException ex) 
+catch (Exception ex) 
 {
     // handle Picovoice init error
 }
@@ -1054,7 +1052,7 @@ try
 {
     _picovoice.Process(buffer);
 }
-catch (PicovoiceException ex)
+catch (Exception ex)
 {
     Debug.LogError(ex.ToString());
 }  
@@ -1245,7 +1243,7 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:picovoice-android:${LATEST_VERSION}'
+    implementation 'ai.picovoice:picovoice-android:1.1.0'
 }
 ```
 
@@ -1261,10 +1259,7 @@ inference completion. The class can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
-
-PicovoiceManager manager = new PicovoiceManager.Builder()
-    .setAccessKey(accessKey)    
+PicovoiceManager manager = new PicovoiceManager(    
     .setKeywordPath("path/to/keyword/file.ppn")    
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
@@ -1280,6 +1275,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
         }
     })
     .build(appContext);
+);
 ```
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. 
@@ -1304,11 +1300,8 @@ low-level binding for Android. It can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
-
 try {
     Picovoice picovoice = new Picovoice.Builder()
-        .setAccessKey(accessKey)
         .setPorcupineModelPath("/path/to/porcupine/model.pv")
         .setKeywordPath("/path/to/keyword.ppn")
         .setPorcupineSensitivity(0.7f)
@@ -1327,7 +1320,6 @@ try {
                 // logic to execute upon completion of intent inference
             }
         })
-        .setRequireEndpoint(true)
         .build(appContext);
 } catch(PicovoiceException ex) { }
 ```
@@ -1792,8 +1784,6 @@ You must then make a call to `init()`:
 ```rust
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
 
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
-
 let wake_word_callback = || {
     // let user know wake word detected
 };
@@ -1808,7 +1798,6 @@ let inference_callback = |inference: RhinoInference| {
 };
 
 let mut picovoice = PicovoiceBuilder::new(
-    access_key,
     keyword_path,
     wake_word_callback,
     context_path,
