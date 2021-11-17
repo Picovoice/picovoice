@@ -17,9 +17,9 @@ For these demos, the default wake words and the context are:
 | Language | Wake word        | Context                 |
 |----------|------------------|-------------------------|
 | English  | Picovoice        | Smart lighting          |
+| French   | Salut ordinateur | éclairage intelligent   |
 | German   | Hey computer     | Beleuchtung             |
 | Spanish  | Hola computadora | Iluminación inteligente |
-| French   | Salut ordinateur | éclairage intelligent   |
 
 In case of English version, after uploading the firmware to the microcontroller, the engine can recognize commands such as:
 
@@ -121,6 +121,46 @@ context:
       - Speisekammer
 ```
 
+### French context
+
+```yaml
+context:
+  expressions:
+    changeColor:
+      - "[Mets, Mettez, Allume, Allumez, Change, Changez] [les, la] [lumières, lumière] (en) $color:color"
+      - "[Mets, Mettez, Allume, Allumez, Change, Changez] [les, la] [lumières, lumière] [du, de la, dans la, dans le] $location:location (en) $color:color"
+    changeLightStateOff:
+      - "[Éteins, Éteignez] [les, la] [lumières, lumière]"
+      - "[Éteins, Éteignez] [les, la] [lumières, lumière] [du, de la] $location:location"
+      - "[Éteins, Éteignez] [les, la] [lumières, lumière] [dans la, dans le] $location:location"
+    changeLightStateOn:
+      - "[Allume, Allumez] [les, la] [lumières, lumière]"
+      - "[Allume, Allumez] [les, la] [lumières, lumière] [du, de la] $location:location"
+      - "[Allume, Allumez] [les, la] [lumières, lumière] [dans la, dans le, dans l'] $location:location"
+  slots:
+    color:
+      - bleu
+      - vert
+      - orange
+      - rose
+      - violet
+      - rouge
+      - blanc
+      - jaune
+    location:
+      - salle de bain
+      - toilettes
+      - chambre
+      - chambre à coucher
+      - penderie
+      - placard
+      - couloir
+      - cuisine
+      - salle de séjour
+      - salon
+      - garde manger
+```
+
 ### Spanish context
 
 ```yaml
@@ -162,44 +202,4 @@ context:
     action:
       - encienda
       - apaga
-```
-
-### French context
-
-```yaml
-context:
-  expressions:
-    changeColor:
-      - "[Mets, Mettez, Allume, Allumez, Change, Changez] [les, la] [lumières, lumière] (en) $color:color"
-      - "[Mets, Mettez, Allume, Allumez, Change, Changez] [les, la] [lumières, lumière] [du, de la, dans la, dans le] $location:location (en) $color:color"
-    changeLightStateOff:
-      - "[Éteins, Éteignez] [les, la] [lumières, lumière]"
-      - "[Éteins, Éteignez] [les, la] [lumières, lumière] [du, de la] $location:location"
-      - "[Éteins, Éteignez] [les, la] [lumières, lumière] [dans la, dans le] $location:location"
-    changeLightStateOn:
-      - "[Allume, Allumez] [les, la] [lumières, lumière]"
-      - "[Allume, Allumez] [les, la] [lumières, lumière] [du, de la] $location:location"
-      - "[Allume, Allumez] [les, la] [lumières, lumière] [dans la, dans le, dans l'] $location:location"
-  slots:
-    color:
-      - bleu
-      - vert
-      - orange
-      - rose
-      - violet
-      - rouge
-      - blanc
-      - jaune
-    location:
-      - salle de bain
-      - toilettes
-      - chambre
-      - chambre à coucher
-      - penderie
-      - placard
-      - couloir
-      - cuisine
-      - salle de séjour
-      - salon
-      - garde manger
 ```

@@ -6,8 +6,8 @@ This package contains a demo project for the STM32F769 Discovery kit using Picov
 ## Supported Languages
 
 1. English
-2. German
-3. French
+2. French
+3. German
 4. Spanish
 
 ## Installation
