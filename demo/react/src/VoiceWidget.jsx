@@ -83,10 +83,10 @@ export default function VoiceWidget() {
         </label>
       </h3>
       <h3>Dynamic Import Loaded: {JSON.stringify(isChunkLoaded)}</h3>
-      <h3>Loaded: {JSON.stringify(isLoaded)}</h3>
+      <h3>Picovoice Loaded: {JSON.stringify(isLoaded)}</h3>
       <h3>Listening: {JSON.stringify(isListening)}</h3>
       <h3>Error: {JSON.stringify(isError)}</h3>
-      {isError && (
+      {isError && accessKey && (
         <p className="error-message">{JSON.stringify(errorMessage)}</p>
       )}
       <h3>Engine: {JSON.stringify(engine)}</h3>

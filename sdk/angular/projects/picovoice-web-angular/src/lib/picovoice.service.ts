@@ -21,6 +21,7 @@ export class PicovoiceService implements OnDestroy {
   public inference$: Subject<RhinoInferenceFinalized> = new Subject<RhinoInferenceFinalized>();
   public isError$: Subject<boolean> = new Subject<boolean>();
   public listening$: Subject<boolean> = new Subject<boolean>();
+  public engine$: Subject<string> = new Subject<string>();
   public error$: Subject<Error | string | null> = new Subject<
     Error | string | null
   >();
@@ -78,12 +79,12 @@ export class PicovoiceService implements OnDestroy {
         switch (message.data.command) {
           case 'ppn-keyword': {
             this.keyword$.next(message.data.keywordLabel);
+            this.engine$.next('rhn');
             break;
           }
           case 'rhn-inference': {
-            this.inference$.next(
-              message.data.inference as RhinoInferenceFinalized
-            );
+            this.inference$.next(message.data.inference as RhinoInferenceFinalized);
+            this.engine$.next('ppn');
             break;
           }
           case 'rhn-info': {
