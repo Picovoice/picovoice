@@ -8,6 +8,15 @@ The widget shows the various loading and error states, as well as mounting/unmou
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Install and Run
 
 Use `yarn` or `npm` to install the demo packages and start a local server where you can try the demo:

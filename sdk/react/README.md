@@ -48,6 +48,15 @@ All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, includin
 
 Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Installation
 
 Use `npm` or `yarn` to install the Picovoice React package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
@@ -70,7 +79,7 @@ Make sure you handle the possibility of errors with the `isError` and `errorMess
 
 ### Static Import
 
-Using static imports for the `picovoice-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional ~2MB. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
+Using static imports for the `picovoice-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional `~2MB`. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
 
 ```javascript
 import React, { useState } from 'react';
@@ -78,6 +87,7 @@ import React, { useState } from 'react';
 import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
 import { usePicovoice } from '@picovoice/picovoice-web-react';
 
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
 const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
 
 export default function VoiceWidget() {
@@ -110,7 +120,7 @@ export default function VoiceWidget() {
       // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
       // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
       porcupineKeyword: "Picovoice",
-      rhinoContext: { base64: RHN_CONTEXT_CLOCK_64 },
+      rhinoContext: { accessKey: ACCESS_KEY, base64: RHN_CONTEXT_CLOCK_64 },
       start: true,
     },
     keywordEventHandler,
@@ -136,7 +146,7 @@ return (
 
 ### Dynamic Import / Code Splitting
 
-If you are shipping the Picovoice SDK for Web and wish to avoid adding its ~4-6MB to your application's initial bundle, you can use dynamic imports. These will split off the porcupine-web-xx-worker packages into separate bundles and load them asynchronously. This means we need additional logic.
+If you are shipping the Picovoice SDK for Web and wish to avoid adding its `~4-6MB` to your application's initial bundle, you can use dynamic imports. These will split off the porcupine-web-xx-worker packages into separate bundles and load them asynchronously. This means we need additional logic.
 
 We add a `useEffect` hook to kick off the dynamic import. We store the result of the dynamically loaded worker chunk into a `useState` hook. When `usePicovoice` receives a non-null/undefined value for the worker factory, it will start up Picovoice.
 
@@ -147,6 +157,7 @@ import { useState, useEffect } from "react";
 // Note we are not statically importing "@picovoice/picovoice-web-en-worker" here
 import { usePicovoice } from "@picovoice/picovoice-web-react";
 
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
 const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
 
 export default function VoiceWidget() {
@@ -195,6 +206,7 @@ export default function VoiceWidget() {
     { 
       picovoiceHookArgs: 
       {
+        accessKey: ACCESS_KEY
         porcupineKeyword: "Picovoice",
         rhinoContext: { base64: RHN_CONTEXT_CLOCK_64 },
       }

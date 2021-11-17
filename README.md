@@ -1687,6 +1687,7 @@ export default function VoiceWidget() {
   } = usePicovoice(
     PicovoiceWorkerFactory,
     {
+      accessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
       // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
       // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
       porcupineKeyword: "Picovoice",

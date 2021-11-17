@@ -1418,23 +1418,19 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/picovoice-web-en-worker@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-1.1.1.tgz#ceaff6f542cc5f8d1225e7c5dddcec1323d30568"
-  integrity sha512-mRCGgXvVKOukIKG0CUi2dqFv+d9bMmIGhzsgrbr2eFob7K6BryEIAZWLxy+tVTzh3UqGJVoXhp3e8PCagAKD0Q==
+"@picovoice/picovoice-web-en-worker@file:../../sdk/web/picovoice-web-en-worker":
+  version "1.1.2"
   dependencies:
-    "@picovoice/porcupine-web-en-factory" "1.9.2"
+    "@picovoice/porcupine-web-en-factory" "1.9.3"
     "@picovoice/rhino-web-en-factory" "1.6.1"
 
-"@picovoice/picovoice-web-react@^1.0.6":
+"@picovoice/picovoice-web-react@file:../../sdk/react":
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-1.0.6.tgz#16f8663a6cf26ae44479e7e94321bfaa0c7889b7"
-  integrity sha512-cv6pR+Z7S0jkNDktVyGTMDraP9NN+r9CLGi8uvy08z0kgf5QKH2xWb1xi43BBJpejAdLKGAq62YFpCGgNZHDfQ==
 
-"@picovoice/porcupine-web-en-factory@1.9.2":
-  version "1.9.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-1.9.2.tgz#f8ba33b8237ff0893946d6f7080897f91154095d"
-  integrity sha512-3kkX6/hHbMozUgJuXIO0dXCPPiaRSe5IyJYgi82cEmLWAqIororlYuYFoklKL7q2REIjl2ojBtaHHkJSfKGL5A==
+"@picovoice/porcupine-web-en-factory@1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-1.9.3.tgz#c29d39a7db7aaba67d77d1719cb9d704efbf5435"
+  integrity sha512-0L+pYcH3unPATVaURkI7eCM8wzszy0bmSubn1AGyR3sm87hagMBCI3haprdUYfGd1LZvTbTQK9TaSATnSKEBKQ==
 
 "@picovoice/rhino-web-en-factory@1.6.1":
   version "1.6.1"
