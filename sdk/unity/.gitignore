@@ -62,11 +62,12 @@ crashlytics-build.properties
 *.pv
 *.ppn
 *.rhn
-Rhino.cs
-Porcupine.cs
+.vsconfig
 Assets/Picovoice/Plugins/**/*.so
 Assets/Picovoice/Plugins/**/*.framework
 Assets/Picovoice/Plugins/**/*.dylib
 Assets/Picovoice/Plugins/**/*.dll
 Assets/Picovoice/VoiceProcessor/**
 Assets/Picovoice/Demo/**
+Assets/Picovoice/Porcupine*.cs
+Assets/Picovoice/Rhino*.cs

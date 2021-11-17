@@ -983,11 +983,14 @@ The constructor `PicovoiceManager.Create` will create an instance of the Picovoi
 ```csharp
 using Pv.Unity;
 
-PicovoiceManager _picovoiceManager = new PicovoiceManager(
+string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
+                                accessKey
                                 "/path/to/keyword/file.ppn",
-                                () => {},
+                                OnWakeWordDetected
                                 "/path/to/context/file.rhn",
-                                (inference) => {};
+                                OnInferenceResult);
 ```
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
@@ -996,7 +999,7 @@ try
 {
     _picovoiceManager.Start();
 }
-catch(Exception ex)
+catch(PicovoiceException ex)
 {
     Debug.LogError(ex.ToString());
 }
@@ -1020,15 +1023,18 @@ who want to incorporate it into a already existing audio processing pipeline.
 ```csharp
 using Pv.Unity;
 
+string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try
 {    
     Picovoice _picovoice = Picovoice.Create(
+                                accessKey,
                                 "path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "path/to/context/file.rhn",
                                 OnInferenceResult);
 } 
-catch (Exception ex) 
+catch (PicovoiceException ex) 
 {
     // handle Picovoice init error
 }
@@ -1048,7 +1054,7 @@ try
 {
     _picovoice.Process(buffer);
 }
-catch (Exception ex)
+catch (PicovoiceException ex)
 {
     Debug.LogError(ex.ToString());
 }  

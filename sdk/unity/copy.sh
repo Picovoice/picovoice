@@ -48,6 +48,8 @@ cp ../../resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn .
 
 echo "Copying unity scripts..."
 cp ../../resources/porcupine/binding/unity/Assets/Porcupine/Porcupine.cs ./Assets/Picovoice/Porcupine.cs
+cp ../../resources/porcupine/binding/unity/Assets/Porcupine/PorcupineException.cs ./Assets/Picovoice/PorcupineException.cs
 cp ../../resources/rhino/binding/unity/Assets/Rhino/Rhino.cs ./Assets/Picovoice/Rhino.cs
+cp ../../resources/rhino/binding/unity/Assets/Rhino/RhinoException.cs ./Assets/Picovoice/RhinoException.cs
 
 echo "Copy complete!"
