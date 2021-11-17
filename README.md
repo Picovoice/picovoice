@@ -1731,8 +1731,12 @@ npm install @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
 <template>
   <div class="voice-widget">
     <Picovoice
-      v-bind:picovoiceFactoryArgs="{ start: true, porcupineKeyword:
-    'Picovoice', rhinoContext: { base64: '... Base64 representation of a .rhn file ...'}"
+      v-bind:picovoiceFactoryArgs="{
+        accessKey: '${ACCESS_KEY}', <!-- AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) -->
+        start: true,
+        porcupineKeyword: 'Picovoice',
+        rhinoContext: { base64: '... Base64 representation of a .rhn file ...' },
+      }"
       v-bind:picovoiceFactory="factory"
       v-on:pv-init="pvInitFn"
       v-on:pv-ready="pvReadyFn"
@@ -1744,6 +1748,8 @@ npm install @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">{{ item }}</li>
     </ul>
+    <h3>Inference:</h3>
+    <pre v-if="inference !== null">{{ JSON.stringify(inference, null, 2) }}</pre>
   </div>
 </template>
 <script>

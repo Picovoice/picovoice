@@ -17,6 +17,47 @@ export default {
     return { webVp: null, pvWorker: null };
   },
   methods: {
+    async initEngine() {
+      this.$emit('pv-loading');
+
+      try {
+        const {
+          accessKey,
+          porcupineKeyword,
+          rhinoContext,
+          start: startWebVp = true,
+        } = this.picovoiceFactoryArgs;
+        this.pvWorker = await this.picovoiceFactory.create({
+          accessKey,
+          porcupineKeyword,
+          rhinoContext: JSON.parse(JSON.stringify(rhinoContext)),
+          start: true,
+        });
+        this.webVp = await WebVoiceProcessor.init({
+          engines: [this.pvWorker],
+          start: startWebVp,
+        });
+
+        this.pvWorker.onmessage = messageEvent => {
+          switch (messageEvent.data.command) {
+            case 'ppn-keyword':
+              this.$emit('ppn-keyword', messageEvent.data.keywordLabel);
+              break;
+            case 'rhn-inference':
+              this.$emit('rhn-inference', messageEvent.data.inference);
+              break;
+            case 'rhn-info':
+              this.$emit('rhn-info', messageEvent.data.info);
+              break;
+          }
+        };
+        this.pvWorker.postMessage({ command: 'info' });
+        this.$emit('pv-ready');
+
+      } catch (error) {
+        this.$emit('pv-error', error);
+      }
+    },
     start() {
       if (this.webVp !== null) {
         this.webVp.start();
@@ -31,53 +72,6 @@ export default {
       }
       return false;
     },
-    resume() {
-      if (this.webVp !== null) {
-        this.webVp.resume();
-        return true;
-      }
-      return false;
-    },
-  },
-  async created() {
-    this.$emit('pv-loading');
-
-    try {
-      this.pvWorker = await this.picovoiceFactory.create({
-        ...this.picovoiceFactoryArgs,
-        start: true,
-      });
-      let startWebVp;
-      if (this.picovoiceFactoryArgs.start === undefined) {
-        start = true;
-      } else {
-        startWebVp = this.picovoiceFactoryArgs.start;
-      }
-      this.webVp = await WebVoiceProcessor.init({
-        engines: [this.pvWorker],
-        start: startWebVp,
-      });
-
-      this.pvWorker.onmessage = messageEvent => {
-        switch (messageEvent.data.command) {
-          case 'ppn-keyword':
-            this.$emit('ppn-keyword', messageEvent.data.keywordLabel);
-            break;
-          case 'rhn-inference':
-            this.$emit('rhn-inference', messageEvent.data.inference);
-            break;
-          case 'rhn-info':
-            this.$emit('rhn-info', messageEvent.data.info);
-            break;
-        }
-      };
-
-      this.pvWorker.postMessage({ command: 'info' });
-    } catch (error) {
-      this.$emit('pv-error', error);
-    }
-
-    this.$emit('pv-ready');
   },
   beforeUnmount: function () {
     if (this.webVp !== null) {
