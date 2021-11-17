@@ -1618,17 +1618,20 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
         const pvFactoryEn = (await import('@picovoice/picovoice-web-en-worker')).PicovoiceWorkerFactory
         // Initialize Picovoice Service
         try {
-        await this.picovoiceService.init(pvFactoryEn,
+          await this.picovoiceService.init(pvFactoryEn,
             {
-            // Built-in wake word
-            porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
-            // Rhino context (Base64 representation of a `.rhn` file)
-            rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
-            start: true
-            })
+              // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+              accessKey: "${ACCESS_KEY}",
+              // Built-in wake word
+              porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
+              // Rhino context (Base64 representation of a `.rhn` file)
+              rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
+              start: true
+            }
+          )
         }
         catch (error) {
-        console.error(error)
+          console.error(error)
         }
     }
 

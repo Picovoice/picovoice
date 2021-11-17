@@ -1155,17 +1155,13 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/picovoice-web-angular@^1.0.2":
+"@picovoice/picovoice-web-angular@file:../../sdk/angular/dist/picovoice-web-angular":
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-angular/-/picovoice-web-angular-1.0.2.tgz#302be264ff588ef5c08112e79889ecf6f81990af"
-  integrity sha512-qhJUhBtx299x0/jgnLwCzCmJXhA/GxMu2G6c7UulgoyrvI8O7vwkFlCATbPp1x8N9ldTNeOsE9v2UKJnttRzaw==
   dependencies:
     tslib "^2.0.0"
 
-"@picovoice/picovoice-web-en-worker@1.1.2":
+"@picovoice/picovoice-web-en-worker@file:../../sdk/web/picovoice-web-en-worker":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-1.1.2.tgz#5d1e405c520dadb045cf12566216f44d0869a33f"
-  integrity sha512-5c9amWv9G9xqoMaAIfqyrpv4M4ukg3MJ9hNhufZ4urBjL1/37TKctGZKGNid5qZWhPqJ3R7t9QPet9HXd8GYlw==
   dependencies:
     "@picovoice/porcupine-web-en-factory" "1.9.3"
     "@picovoice/rhino-web-en-factory" "1.6.1"

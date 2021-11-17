@@ -46,15 +46,6 @@ export class PicovoiceService implements OnDestroy {
     return false;
   }
 
-  public resume(): boolean {
-    if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.resume();
-      this.listening$.next(true);
-      return true;
-    }
-    return false;
-  }
-
   public async release(): Promise<void> {
     if (this.picovoiceWorker !== null) {
       this.picovoiceWorker.postMessage({ command: 'release' });
