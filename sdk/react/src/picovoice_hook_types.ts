@@ -94,12 +94,14 @@ export interface PorcupineEngine {
 // Picovoice Types
 //
 export type PicovoiceWorkerArgs = {
+  accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
   start?: boolean;
 };
 
 export type PicovoiceEngineArgs = {
+  accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
   porcupineCallback: (keywordLabel: string) => void;
@@ -144,17 +146,47 @@ export type PicovoiceWorkerResponseReady = {
   command: 'pv-ready';
 };
 
+export type WorkerRequestFileOperation = {
+  command:
+    | 'file-save-succeeded'
+    | 'file-save-failed'
+    | 'file-load-succeeded'
+    | 'file-load-failed'
+    | 'file-exists-succeeded'
+    | 'file-exists-failed'
+    | 'file-delete-succeeded'
+    | 'file-delete-failed'
+  message?: string;
+  content?: string;
+};
+
+export type WorkerResponseFileOperation = {
+  command:
+    | 'file-save'
+    | 'file-load'
+    | 'file-exists'
+    | 'file-delete'
+    | 'file-save'
+    | 'file-load'
+    | 'file-exists'
+    | 'file-delete';
+  path: string;
+  content?: string;
+};
+
 export type PicovoiceWorkerRequest =
   | PicovoiceWorkerRequestInit
   | WorkerRequestVoid
-  | RhinoWorkerRequestInfo;
+  | RhinoWorkerRequestInfo
+  | WorkerRequestFileOperation;
 
 export type PicovoiceWorkerResponse =
   | PicovoiceWorkerResponseErrorInit
   | PicovoiceWorkerResponseReady
   | PorcupineWorkerResponseKeyword
   | RhinoWorkerResponseInference
-  | RhinoWorkerResponseInfo;
+  | RhinoWorkerResponseInfo
+  | WorkerResponseFileOperation;
 
 export interface PicovoiceWorker extends Omit<Worker, 'postMessage'> {
   postMessage(command: PicovoiceWorkerRequest): void;
@@ -167,6 +199,7 @@ export interface PicovoiceWorkerFactory {
 }
 
 export type PicovoiceHookArgs = {
+  accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
   start?: boolean;

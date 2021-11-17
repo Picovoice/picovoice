@@ -21,17 +21,16 @@ export function usePicovoice(
   contextInfo: string | null;
   isLoaded: boolean;
   isListening: boolean;
-  isError: boolean;
+  isError: boolean | null;
   errorMessage: string | null;
   engine: EngineControlType;
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
-  resume: () => void;
 } {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [contextInfo, setContextInfo] = useState<string | null>(null);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean | null>(false);
   const [isListening, setIsListening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [engine, setEngine] = useState<EngineControlType>('ppn');
@@ -59,15 +58,6 @@ export function usePicovoice(
     if (webVoiceProcessor !== null) {
       webVoiceProcessor.pause();
       setIsListening(false);
-      return true;
-    }
-    return false;
-  };
-
-  const resume = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.resume();
-      setIsListening(true);
       return true;
     }
     return false;
@@ -115,11 +105,17 @@ export function usePicovoice(
       };
     }
 
+    const { accessKey, start: startWebVp = true } = picovoiceHookArgs!;
+    if (accessKey === null || accessKey === '') {
+      return (): void => {
+        /* NOOP */
+      };
+    }
+
     async function startPicovoice(): Promise<{
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
     }> {
-      const { start: startWebVp = true } = picovoiceHookArgs!;
       // Argument checking; the engines will also do checking but we can get
       // clearer error messages from the hook
       if (picovoiceHookArgs!.porcupineKeyword === undefined) {
@@ -213,6 +209,5 @@ export function usePicovoice(
     webVoiceProcessor,
     start,
     pause,
-    resume,
   };
 }

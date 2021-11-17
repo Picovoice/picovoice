@@ -5,8 +5,8 @@
   "type": "module",
   "description": "Picovoice SDK React demo (made with Create React App)",
   "dependencies": {
-    "@picovoice/picovoice-web-en-worker": "^1.1.1",
-    "@picovoice/picovoice-web-react": "^1.0.6",
+    "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
+    "@picovoice/picovoice-web-react": "file:../../sdk/react",
     "@picovoice/web-voice-processor": "^2.0.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
