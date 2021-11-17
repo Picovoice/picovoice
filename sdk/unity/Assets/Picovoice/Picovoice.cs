@@ -88,6 +88,9 @@ namespace Pv.Unity
         /// <param name="rhinoSensitivity">
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
+        /// <param name="requireEndpoint">
+        /// Boolean variable to indicate if Rhino should wait for a chunk of silence before finishing inference.
+        /// </param>
         /// </returns>
         public static Picovoice Create(
             string accessKey,
