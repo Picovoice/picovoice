@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -27,10 +27,11 @@ import java.nio.ByteOrder;
 import java.util.Map;
 
 public class MicDemo {
-    public static void runDemo(String keywordPath, String contextPath,
-                               String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
-                               String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity,
-                               int audioDeviceIndex, String outputPath) {
+    public static void runDemo(
+            String accessKey, String keywordPath, String contextPath,
+            String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
+            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity,
+            int audioDeviceIndex, String outputPath, boolean requireEndpoint) {
 
         // for file output
         File outputFile = null;
@@ -71,6 +72,7 @@ public class MicDemo {
         Picovoice picovoice = null;
         try {
             picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
@@ -81,6 +83,7 @@ public class MicDemo {
                     .setRhinoLibraryPath(rhinoLibraryPath)
                     .setRhinoModelPath(rhinoModelPath)
                     .setRhinoSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .build();
 
             if (outputPath != null) {
@@ -220,6 +223,7 @@ public class MicDemo {
             return;
         }
 
+        String accessKey = cmd.getOptionValue("access_key");
         String keywordPath = cmd.getOptionValue("keyword_path");
         String contextPath = cmd.getOptionValue("context_path");
         String porcupineLibraryPath = cmd.getOptionValue("porcupine_library_path");
@@ -230,6 +234,11 @@ public class MicDemo {
         String rhinoSensitivityStr = cmd.getOptionValue("rhino_sensitivity");
         String audioDeviceIndexStr = cmd.getOptionValue("audio_device_index");
         String outputPath = cmd.getOptionValue("output_path");
+        boolean requireEndpoint = cmd.hasOption("require_endpoint");
+
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required for Porcupine.");
+        }
 
         // parse sensitivity
         float porcupineSensitivity = 0.5f;
@@ -290,14 +299,20 @@ public class MicDemo {
             }
         }
 
-        runDemo(keywordPath, contextPath,
+        runDemo(accessKey, keywordPath, contextPath,
                 porcupineLibraryPath, porcupineModelPath, porcupineSensitivity,
                 rhinoLibraryPath, rhinoModelPath, rhinoSensitivity,
-                audioDeviceIndex, outputPath);
+                audioDeviceIndex, outputPath, requireEndpoint);
     }
 
     private static Options BuildCommandLineOptions() {
         Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
+                .build());
 
         options.addOption(Option.builder("k")
                 .longOpt("keyword_path")
@@ -348,6 +363,9 @@ public class MicDemo {
                 .desc("Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value " +
                         "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
                 .build());
+
+        options.addOption(new Option("e", "require_endpoint", false, "If set, Rhino requires an endpoint " +
+                "(chunk of silence) before finishing inference."));
 
         options.addOption(Option.builder("o")
                 .longOpt("output_path")

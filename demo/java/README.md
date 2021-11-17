@@ -48,6 +48,15 @@ Navigate to the output directory to use the demos:
 cd picovoice/demo/java/build/libs
 ```
 
+## AccessKey
+
+The Rhino SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Rhino SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### File Demo
 
 The file demo uses Picovoice to scan for keywords and commands in an audio file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
@@ -57,6 +66,7 @@ and then infers the follow-on spoken command using the context defined by the fi
 
 ```console
 java -jar picovoice-file-demo.jar \
+-a ${ACCESS_KEY}
 -i ${PATH_TO_INPUT_AUDIO_FILE} \
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE}
@@ -72,6 +82,7 @@ detection.
 
 ```console
 java -jar picovoice-mic-demo.jar \
+-a ${ACCESS_KEY}
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE}
 ```
@@ -97,6 +108,7 @@ microphone in the above example, you can invoke the demo application as below:
 
 ```console
 java -jar picovoice-mic-demo.jar \
+-a ${ACCESS_KEY}
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE}
 -di 1
@@ -106,6 +118,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 
 ```console
 java -jar picovoice-mic-demo.jar \
+-a ${ACCESS_KEY}
 -k ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 -c ${PATH_TO_RHINO_CONTEXT_FILE)} \
 -di 1 \
