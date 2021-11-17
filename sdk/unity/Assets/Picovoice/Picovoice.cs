@@ -119,20 +119,19 @@ namespace Pv.Unity
             
                 if (porcupine.FrameLength != rhino.FrameLength)
                 {
-                    throw new PicovoiceInvalidArgumentException("Porcupine and Rhino frame lengths are different");
+                    throw new PicovoiceInvalidArgumentException($"Porcupine frame length ({porcupine.FrameLength}) and Rhino frame length ({rhino.FrameLength}) are different");
                 }
 
                 if (porcupine.SampleRate != rhino.SampleRate) 
                 {
-                    throw new PicovoiceInvalidArgumentException("Porcupine and Rhino sample rate are different");
+                    throw new PicovoiceInvalidArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
                 }
 
                 return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
             }
             catch (Exception ex)
             {
-                mapToPicovoiceException(ex);
-                return null;
+                throw mapToPicovoiceException(ex);
             }
         }
 
@@ -214,59 +213,59 @@ namespace Pv.Unity
         /// <summary>
         /// Maps Porcupine/Rhino Exception to Picovoice Exception
         /// </summary>
-        private static void mapToPicovoiceException(Exception ex)
+        private static PicovoiceException mapToPicovoiceException(Exception ex)
         {
             if (ex is PorcupineActivationException || ex is RhinoActivationException) 
             {
-                throw new PicovoiceActivationException(ex.Message);
+                return new PicovoiceActivationException(ex.Message);
             }
             else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException) 
             {
-                throw new PicovoiceActivationLimitException(ex.Message);
+                return new PicovoiceActivationLimitException(ex.Message);
             } 
             else if (ex is PorcupineActivationRefusedException || ex is RhinoActivationRefusedException)
             {
-                throw new PicovoiceActivationRefusedException(ex.Message);
+                return new PicovoiceActivationRefusedException(ex.Message);
             } 
             else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException) 
             {
-                throw new PicovoiceActivationThrottledException(ex.Message);
+                return new PicovoiceActivationThrottledException(ex.Message);
             } 
             else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException) 
             {
-                throw new PicovoiceInvalidArgumentException(ex.Message);
+                return new PicovoiceInvalidArgumentException(ex.Message);
             } 
             else if (ex is PorcupineInvalidStateException || ex is RhinoInvalidStateException)
             {
-                throw new PicovoiceInvalidStateException(ex.Message);
+                return new PicovoiceInvalidStateException(ex.Message);
             } 
             else if (ex is PorcupineIOException || ex is RhinoIOException)
             {
-                throw new PicovoiceIOException(ex.Message);
+                return new PicovoiceIOException(ex.Message);
             } 
             else if (ex is PorcupineKeyException || ex is RhinoKeyException)
             {
-                throw new PicovoiceKeyException(ex.Message);
+                return new PicovoiceKeyException(ex.Message);
             } 
             else if (ex is PorcupineMemoryException || ex is RhinoMemoryException) 
             {
-                throw new PicovoiceMemoryException(ex.Message);
+                return new PicovoiceMemoryException(ex.Message);
             } 
             else if (ex is PorcupineRuntimeException || ex is RhinoRuntimeException)
             {
-                throw new PicovoiceRuntimeException(ex.Message);
+                return new PicovoiceRuntimeException(ex.Message);
             } 
             else if (ex is PorcupineStopIterationException || ex is RhinoStopIterationException)
             {
-                throw new PicovoiceStopIterationException(ex.Message);
+                return new PicovoiceStopIterationException(ex.Message);
             } 
             else if (ex is PorcupineException || ex is RhinoException)
             {
-                throw new PicovoiceException(ex.Message);
+                return new PicovoiceException(ex.Message);
             } 
             else
             {
-                throw new PicovoiceException($"Unknown exception: '{ex.GetType().Name}', message: '{ex.Message}'");
+                return new PicovoiceException($"Unknown exception: '{ex.GetType().Name}', message: '{ex.Message}'");
             }
         }
 

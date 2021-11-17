@@ -65,7 +65,7 @@ using Pv.Unity;
 
 string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
-PicovoiceManager _picovoiceManager = new PicovoiceManager(
+PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
                                 accessKey,
                                 "/path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
@@ -100,7 +100,7 @@ You can override the default model files and sensitivities. You can set `require
 ```csharp
 string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
-PicovoiceManager _picovoiceManager = new PicovoiceManager(
+PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
                                         accessKey,
                                         "/path/to/keyword/file.ppn",
                                         OnWakeWordDetected,

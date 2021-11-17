@@ -988,9 +988,9 @@ string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console
 PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
                                 accessKey
                                 "/path/to/keyword/file.ppn",
-                                () => {}, // wakewordCallback
+                                OnWakeWordDetected
                                 "/path/to/context/file.rhn",
-                                (inference) => {}; //inferenceCa;;bacl
+                                OnInferenceResult
 ```
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
