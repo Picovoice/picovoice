@@ -28,6 +28,7 @@ export class VoiceWidget {
   detections: string[] = []
   inference: RhinoInferenceFinalized | null = null
   picovoiceServiceArgs: PicovoiceServiceArgs = {
+    accessKey: "",
     rhinoContext: {
       base64:
         CLOCK_EN_64
@@ -70,24 +71,7 @@ export class VoiceWidget {
       })
   }
 
-  async ngOnInit() {
-    // Dynamically load Picovoice worker chunk with specific language model (large ~4-6MB chunk)
-    const picovoiceFactoryEn = (await import('@picovoice/picovoice-web-en-worker')).PicovoiceWorkerFactory
-    this.isChunkLoaded = true
-    console.info("Picovoice EN is loaded.")
-    // Initialize Picovoice Service
-    try {
-      await this.picovoiceService.init(picovoiceFactoryEn, this.picovoiceServiceArgs)
-      console.info("Picovoice is ready!")
-      this.isLoaded = true;
-      this.contextInfo = this.picovoiceService.contextInfo
-    }
-    catch (error) {
-      console.error(error)
-      this.isError = true;
-      this.errorMessage = error.toString();
-    }
-  }
+  async ngOnInit() {}
 
   ngOnDestroy() {
     this.keywordDetection.unsubscribe()
@@ -102,11 +86,30 @@ export class VoiceWidget {
     this.picovoiceService.pause();
   }
 
-  public resume() {
-    this.picovoiceService.resume();
-  }
-
   public start() {
     this.picovoiceService.start();
+  }
+
+  public async initEngine(accessKey: string) {
+    if (accessKey.length === 56) {
+      this.picovoiceService.release();
+
+      // Dynamically load Picovoice worker chunk with specific language model (large ~4-6MB chunk)
+      const picovoiceFactoryEn = (await import('@picovoice/picovoice-web-en-worker')).PicovoiceWorkerFactory
+      this.isChunkLoaded = true
+      console.info("Picovoice EN is loaded.")
+      // Initialize Picovoice Service
+      try {
+        await this.picovoiceService.init(picovoiceFactoryEn, {...this.picovoiceServiceArgs, accessKey: accessKey})
+        console.info("Picovoice is ready!")
+        this.isLoaded = true;
+        this.contextInfo = this.picovoiceService.contextInfo
+      }
+      catch (error) {
+        console.error(error)
+        this.isError = true;
+        this.errorMessage = error.toString();
+      }
+    }
   }
 }
