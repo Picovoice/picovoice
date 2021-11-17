@@ -48,6 +48,15 @@ All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, includin
 
 Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Installation
 
 Install the package using `npm` or `yarn`. You will also need to add the `@picovoice/web-voice-processor` and one of the `@picovoice/picovoice-web-xx-worker` series of packages for the language-specific model:
@@ -66,7 +75,8 @@ Import the `Picovoice` component from the `@picovoice/picovoice-web-vue` package
 <Picovoice
   ref="picovoice"
   v-bind:picovoiceFactoryArgs="{
-      porcupineKeyword: {builtin: Picovoice, sensitivity: 0.6},
+      accessKey: '${ACCESS_KEY}', <!-- AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) -->
+      porcupineKeyword: { builtin: Picovoice, sensitivity: 0.6 },
       rhinoContext: {
         base64: RHINO_TRAINED_CONTEXT_BASE_64_STRING
       },

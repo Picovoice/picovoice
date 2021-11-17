@@ -2,15 +2,8 @@
   <div class="voice-widget">
     <Picovoice
       ref="picovoice"
-      v-bind:picovoiceFactoryArgs="{
-        start: true,
-        porcupineKeyword: 'Picovoice',
-        rhinoContext: {
-          base64: context64,
-        },
-      }"
+      v-bind:picovoiceFactoryArgs="factoryArgs"
       v-bind:picovoiceFactory="factory"
-      v-on:pv-init="pvInitFn"
       v-on:pv-ready="pvReadyFn"
       v-on:ppn-keyword="pvKeywordFn"
       v-on:rhn-inference="pvInferenceFn"
@@ -18,31 +11,42 @@
       v-on:pv-error="pvErrorFn"
     />
     <h2>VoiceWidget</h2>
-    <h3>Loaded: {{ isLoaded }}</h3>
+    <h3>
+      <label>
+        AccessKey obtained from
+        <a href="https://picovoice.ai/console/">Picovoice Console</a>:
+        <input
+          type="text"
+          name="accessKey"
+          v-on:change="initEngine"
+          :disabled="isLoaded"
+        />
+      </label>
+    </h3>
+    <h3>Picovoice Loaded: {{ isLoaded }}</h3>
     <h3>Listening: {{ isListening }}</h3>
-    <h3>Engine: {{ engine }}</h3>
     <h3>Error: {{ isError }}</h3>
     <p class="error-message" v-if="isError">
       {{ JSON.stringify(errorMessage) }}
     </p>
+    <h3>Engine: {{ engine }}</h3>
     <button v-on:click="start" :disabled="!isLoaded || isError || isListening">
       Start
     </button>
     <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
       Pause
     </button>
-    <button v-on:click="resume" :disabled="!isLoaded || isError || isListening">
-      Resume
-    </button>
     <h3>Keyword Detections (Listening for "Picovoice")</h3>
-    {{ detections }}
+    <ul v-if="detections.length > 0">
+      <li v-for="(item, index) in detections" :key="index">
+        {{ item }}
+      </li>
+    </ul>
     <h3>Inference: (Follow-on commands in "Clock" context)</h3>
-    <code v-if="inference !== null">
-      {{ inference }}
-    </code>
-    <br />
+    <pre v-if="inference !== null">{{ JSON.stringify(inference, null, 2) }}</pre>
+    <hr />
     <div>
-      <h2>Context Info</h2>
+      <h3>Context Info:</h3>
       <pre>{{ info }}</pre>
     </div>
   </div>
@@ -71,9 +75,24 @@ export default {
       info: null,
       engine: null,
       factory: PicovoiceWorkerFactoryEn,
+      factoryArgs: {
+        accessKey: "",
+        start: true,
+        porcupineKeyword: 'Picovoice',
+        rhinoContext: {
+          base64: CLOCK_EN_64,
+        },
+      },
     };
   },
   methods: {
+    initEngine: function (event) {
+      this.factoryArgs.accessKey = event.target.value;
+      this.isError = false;
+      this.isLoaded = false;
+      this.isListening = false;
+      this.$refs.picovoice.initEngine();
+    },
     start: function () {
       if (this.$refs.picovoice.start()) {
         this.isListening = !this.isListening;
@@ -84,15 +103,7 @@ export default {
         this.isListening = !this.isListening;
       }
     },
-    resume: function () {
-      if (this.$refs.picovoice.resume()) {
-        this.isListening = !this.isListening;
-      }
-    },
 
-    pvInitFn: function () {
-      this.isError = false;
-    },
     pvReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
