@@ -26,6 +26,8 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
+static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const float PORCUPINE_SENSITIVITY = 0.75f;
@@ -90,6 +92,7 @@ int main(void) {
     pv_picovoice_t *handle = NULL;
 
     status = pv_picovoice_init(
+            ACCESS_KEY,
             MEMORY_BUFFER_SIZE,
             memory_buffer,
             sizeof(KEYWORD_ARRAY),
@@ -99,6 +102,7 @@ int main(void) {
             sizeof(CONTEXT_ARRAY),
             CONTEXT_ARRAY,
             RHINO_SENSITIVITY,
+            true,
             inference_callback,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
