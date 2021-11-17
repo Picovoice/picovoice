@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -18,7 +18,7 @@ import ai.picovoice.rhino.Rhino;
 import ai.picovoice.rhino.RhinoException;
 
 /**
- * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
+ * Java binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
  * similar to Alexa but runs entirely on-device (offline).
  * <p>
  * Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of
@@ -42,6 +42,7 @@ public class Picovoice {
     /**
      * Constructor
      *
+     * @param accessKey            AccessKey obtained from Picovoice Console.
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -57,12 +58,15 @@ public class Picovoice {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
+     * @param requireEndpoint      If set to `true`, Rhino requires an endpoint (chunk of silence)
+     *                             before finishing inference.
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
-     * @throws PicovoiceException if there is an error while initializing.
+     * @throws PicovoiceException  if there is an error while initializing.
      */
     public Picovoice(
+            String accessKey,
             String porcupineLibraryPath,
             String porcupineModelPath,
             String keywordPath,
@@ -72,6 +76,7 @@ public class Picovoice {
             String rhinoModelPath,
             String contextPath,
             float rhinoSensitivity,
+            boolean requireEndpoint,
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
         try {
             porcupine = new Porcupine.Builder()
