@@ -189,33 +189,36 @@ public class Picovoice {
         return rhino != null ? rhino.getVersion() : "";
     }
 
-    private static void mapToPicovoiceException(Exception e) throws PicovoiceException {
+    /**
+     * Maps Porcupine/Rhino Exception to Picovoice Exception.
+     */
+    private static PicovoiceException mapToPicovoiceException(Exception e) {
         if (e instanceof PorcupineActivationException || e instanceof RhinoActivationException) {
-            throw new PicovoiceActivationException(e.getMessage());
+            return new PicovoiceActivationException(e.getMessage());
         } else if (e instanceof PorcupineActivationLimitException || e instanceof RhinoActivationLimitException) {
-            throw new PicovoiceActivationLimitException(e.getMessage());
+            return new PicovoiceActivationLimitException(e.getMessage());
         } else if (e instanceof PorcupineActivationRefusedException || e instanceof RhinoActivationRefusedException) {
-            throw new PicovoiceActivationRefusedException(e.getMessage());
+            return new PicovoiceActivationRefusedException(e.getMessage());
         } else if (e instanceof PorcupineActivationThrottledException || e instanceof RhinoActivationThrottledException) {
-            throw new PicovoiceActivationThrottledException(e.getMessage());
+            return new PicovoiceActivationThrottledException(e.getMessage());
         } else if (e instanceof PorcupineInvalidArgumentException || e instanceof RhinoInvalidArgumentException) {
-            throw new PicovoiceInvalidArgumentException(e.getMessage());
+            return new PicovoiceInvalidArgumentException(e.getMessage());
         } else if (e instanceof PorcupineInvalidStateException || e instanceof RhinoInvalidStateException) {
-            throw new PicovoiceInvalidStateException(e.getMessage());
+            return new PicovoiceInvalidStateException(e.getMessage());
         } else if (e instanceof PorcupineIOException || e instanceof RhinoIOException) {
-            throw new PicovoiceIOException(e.getMessage());
+            return new PicovoiceIOException(e.getMessage());
         } else if (e instanceof PorcupineKeyException || e instanceof RhinoKeyException) {
-            throw new PicovoiceKeyException(e.getMessage());
+            return new PicovoiceKeyException(e.getMessage());
         } else if (e instanceof PorcupineMemoryException || e instanceof RhinoMemoryException) {
-            throw new PicovoiceMemoryException(e.getMessage());
+            return new PicovoiceMemoryException(e.getMessage());
         } else if (e instanceof PorcupineRuntimeException || e instanceof RhinoRuntimeException) {
-            throw new PicovoiceRuntimeException(e.getMessage());
+            return new PicovoiceRuntimeException(e.getMessage());
         } else if (e instanceof PorcupineStopIterationException || e instanceof RhinoStopIterationException) {
-            throw new PicovoiceStopIterationException(e.getMessage());
+            return new PicovoiceStopIterationException(e.getMessage());
         } else if (e instanceof PorcupineException || e instanceof RhinoException) {
-            throw new PicovoiceException(e.getMessage());
+            return new PicovoiceException(e.getMessage());
         } else {
-            throw new PicovoiceException(
+            return new PicovoiceException(
                     String.format("Unknown exception: '%s', message: '%s'",
                             e.getClass().getSimpleName(),
                             e.getMessage()));
@@ -394,8 +397,7 @@ public class Picovoice {
                         rhino,
                         inferenceCallback);
             } catch (PorcupineException | RhinoException e) {
-                mapToPicovoiceException(e);
-                return null;
+                throw mapToPicovoiceException(e);
             }
         }
     }

@@ -101,7 +101,7 @@ public class PicovoiceService extends Service {
                     .setContextPath(contextPath)
                     .setRhinoSensitivity(0.25f)
                     .setInferenceCallback(picovoiceInferenceCallback)
-                    .setErrorCallback(picovoiceManagerErrorCallback)
+                    .setProcessErrorCallback(picovoiceManagerErrorCallback)
                     .build(getApplicationContext());
             picovoiceManager.start();
             started = true;

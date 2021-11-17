@@ -15,6 +15,7 @@ package ai.picovoice.picovoicedemo;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,12 +47,25 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton recordButton;
     private Button cheatSheetButton;
 
+    private final CountDownTimer countDownTimer = new CountDownTimer(2000, 1000) {
+        @Override
+        public void onTick(long l) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            intentTextView.setText("\n    Listening ...\n");
+        }
+    };
+
     private final PicovoiceWakeWordCallback picovoiceWakeWordCallback = new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    countDownTimer.cancel();
                     intentTextView.setText("\n    Wake Word Detected ...\n");
                 }
             });
@@ -78,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                     intentTextView.append("    }\n");
+                    countDownTimer.start();
                 }
             });
         }
@@ -144,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContextPath("smart_lighting_android.rhn")
                 .setRhinoSensitivity(0.25f)
                 .setInferenceCallback(picovoiceInferenceCallback)
-                .setErrorCallback(picovoiceManagerErrorCallback)
+                .setProcessErrorCallback(picovoiceManagerErrorCallback)
                 .build(getApplicationContext());
 
         Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
@@ -162,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
                     requestRecordPermission(0);
                 }
             } else {
+                countDownTimer.cancel();
                 picovoiceManager.stop();
+                intentTextView.setText("");
             }
         } catch (PicovoiceInvalidArgumentException e) {
             onPicovoiceError(

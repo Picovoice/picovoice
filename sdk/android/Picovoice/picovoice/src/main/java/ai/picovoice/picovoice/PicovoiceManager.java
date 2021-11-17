@@ -42,7 +42,7 @@ public class PicovoiceManager {
     private final float rhinoSensitivity;
     private final boolean requireEndpoint;
     private final PicovoiceInferenceCallback inferenceCallback;
-    private final PicovoiceManagerErrorCallback errorCallback;
+    private final PicovoiceManagerErrorCallback processErrorCallback;
     private final MicrophoneReader microphoneReader;
     private Picovoice picovoice = null;
 
@@ -71,7 +71,7 @@ public class PicovoiceManager {
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
-     * @param errorCallback        A callback that reports errors encountered while processing audio.
+     * @param processErrorCallback A callback that reports errors encountered while processing audio.
      */
     private PicovoiceManager(Context appContext,
                             String accessKey,
@@ -84,7 +84,7 @@ public class PicovoiceManager {
                             float rhinoSensitivity,
                             boolean requireEndpoint,
                             PicovoiceInferenceCallback inferenceCallback,
-                            PicovoiceManagerErrorCallback errorCallback) {
+                            PicovoiceManagerErrorCallback processErrorCallback) {
         this.appContext = appContext;
         this.accessKey = accessKey;
         this.porcupineModelPath = porcupineModelPath;
@@ -96,7 +96,7 @@ public class PicovoiceManager {
         this.rhinoSensitivity = rhinoSensitivity;
         this.requireEndpoint = requireEndpoint;
         this.inferenceCallback = inferenceCallback;
-        this.errorCallback = errorCallback;
+        this.processErrorCallback = processErrorCallback;
 
         microphoneReader = new MicrophoneReader();
     }
@@ -177,7 +177,7 @@ public class PicovoiceManager {
         private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
 
-        private PicovoiceManagerErrorCallback errorCallback = null;
+        private PicovoiceManagerErrorCallback processErrorCallback = null;
 
         /**
          * Setter for AccessKey
@@ -293,12 +293,12 @@ public class PicovoiceManager {
         /**
          * Setter for error callback
          *
-         * @param errorCallback User-defined callback invoked when an error is encountered while processing audio.
-         *                      #{@link PicovoiceManagerErrorCallback} defines the interface of the
-         *                      callback.
+         * @param processErrorCallback User-defined callback invoked when an error is encountered while processing audio.
+         *                             #{@link PicovoiceManagerErrorCallback} defines the interface of the
+         *                             callback.
          */
-        public PicovoiceManager.Builder setErrorCallback(PicovoiceManagerErrorCallback errorCallback) {
-            this.errorCallback = errorCallback;
+        public PicovoiceManager.Builder setProcessErrorCallback(PicovoiceManagerErrorCallback processErrorCallback) {
+            this.processErrorCallback = processErrorCallback;
             return this;
         }
 
@@ -321,7 +321,7 @@ public class PicovoiceManager {
                     rhinoSensitivity,
                     requireEndpoint,
                     inferenceCallback,
-                    errorCallback);
+                    processErrorCallback);
         }
     }
 
@@ -407,11 +407,11 @@ public class PicovoiceManager {
                 audioRecord.stop();
                 picovoice.delete();
             } catch (final Exception e) {
-                if (errorCallback != null) {
+                if (processErrorCallback != null) {
                     callbackHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            errorCallback.invoke(new PicovoiceException(e));
+                            processErrorCallback.invoke(new PicovoiceException(e));
                         }
                     });
                 } else {
