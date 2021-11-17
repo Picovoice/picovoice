@@ -24,6 +24,10 @@ const {
 } = require("@picovoice/porcupine-node/builtin_keywords");
 
 program
+  .requiredOption(
+    "-a, --access_key <string>",
+    "AccessKey obtain from the Picovoice Console (https://console.picovoice.ai/)"
+  )
   .option(
     "-k, --keyword_file_path <string>",
     "absolute path(s) to porcupine keyword files (.ppn extension)"
@@ -43,6 +47,10 @@ program
     0.5
   )
   .option(
+    "-e, --requires_endpoint",
+    "If set, Rhino requires an endpoint (chunk of silence) before finishing inference"
+  )
+  .option(
     "--porcupine_library_file_path <string>",
     "absolute path to porcupine dynamic library"
   )
@@ -60,10 +68,8 @@ program
     "index of audio device to use to record audio",
     Number,
     -1
-  ).option(
-    "-a, --show_audio_devices",
-    "show the list of available devices"
-  );
+  )
+  .option("-d, --show_audio_devices", "show the list of available devices");
 
 if (process.argv.length < 3) {
   program.help();
@@ -74,10 +80,12 @@ program.parse(process.argv);
 let isInterrupted = false;
 
 async function micDemo() {
+  let accessKey = program["access_key"];
   let keywordFilePath = program["keyword_file_path"];
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
+  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false;
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
@@ -93,10 +101,10 @@ async function micDemo() {
   if (showAudioDevicesDefined) {
     const devices = PvRecorder.getAudioDevices();
     for (let i = 0; i < devices.length; i++) {
-        console.log(`index: ${i}, device name: ${devices[i]}`);
+      console.log(`index: ${i}, device name: ${devices[i]}`);
     }
     process.exit();
-}
+  }
 
   if (
     (keywordPathsDefined && builtinKeywordsDefined) ||
@@ -141,7 +149,7 @@ async function micDemo() {
     );
   }
 
-  let contextFilename = path.basename(contextPath)
+  let contextFilename = path.basename(contextPath);
 
   let keywordCallback = function (keyword) {
     console.log(`Wake word '${friendlyKeywordName}' detected.`);
@@ -160,12 +168,14 @@ async function micDemo() {
   };
 
   let handle = new Picovoice(
+    accessKey,
     keywordArgument,
     keywordCallback,
     contextPath,
     inferenceCallback,
     sensitivity,
     sensitivity,
+    requiresEndpoint,
     porcupineModelFilePath,
     porcupineLibraryFilePath,
     rhinoModelFilePath,
@@ -181,11 +191,11 @@ async function micDemo() {
   console.log("Context info:");
   console.log("-------------");
   console.log(handle.contextInfo);
-  console.log("Press ctrl+c to exit.")
+  console.log("Press ctrl+c to exit.");
 
   while (!isInterrupted) {
-      const pcm = await recorder.read();
-      handle.process(pcm);
+    const pcm = await recorder.read();
+    handle.process(pcm);
   }
 
   console.log("Stopping...");
