@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Pv
 {
@@ -30,16 +29,17 @@ namespace Pv
     /// </summary>
     public class Picovoice : IDisposable
     {
-        private readonly Porcupine _porcupine;
-        private readonly Action _wakeWordCallback;        
-        private readonly Rhino _rhino;
-        private readonly Action<Inference> _inferenceCallback;
+        private Porcupine _porcupine;
+        private Action _wakeWordCallback;
+        private Rhino _rhino;
+        private Action<Inference> _inferenceCallback;
 
         private bool _isWakeWordDetected = false;
 
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to Porcupine's keyword model file.</param>
         /// <param name="wakeWordCallback">
         /// User-defined callback invoked upon detection of the wake phrase. The callback accepts
@@ -52,9 +52,9 @@ namespace Pv
         /// <param name="inferenceCallback">
         /// User-defined callback invoked upon completion of intent inference. The callback
         /// accepts a single input argument of type `Inference` that exposes the following immutable fields:
-        /// (1) `is_understood` is a flag indicating if the spoken command is understood.
-        /// (2) `intent` is the inferred intent from the voice command.If the command is not understood then it's set to `None`.
-        /// (3) `slots` is a dictionary mapping slot keys to their respective values.If the command is not understood then
+        /// (1) `IsUnderstood` is a flag indicating if the spoken command is understood.
+        /// (2) `Intent` is the inferred intent from the voice command.If the command is not understood then it's set to `None`.
+        /// (3) `Slots` is a dictionary mapping slot keys to their respective values. If the command is not understood then
         /// it's set to an empty dictionary.
         /// </param>
         /// <param name="porcupineModelPath">Absolute path to the file containing Porcupine's model parameters.</param>
@@ -67,65 +67,74 @@ namespace Pv
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </param>
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// </param>
         /// <returns>An instance of the Picovoice end-to-end platform.</returns>     
-        public Picovoice(string keywordPath, Action wakeWordCallback, 
-                         string contextPath, Action<Inference> inferenceCallback,
-                         string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
-                         string rhinoModelPath = null, float rhinoSensitivity = 0.5f)
+        public static Picovoice Create(
+            string accessKey,
+            string keywordPath,
+            Action wakeWordCallback,
+            string contextPath,
+            Action<Inference> inferenceCallback,
+            string porcupineModelPath = null,
+            float porcupineSensitivity = 0.5f,
+            string rhinoModelPath = null,
+            float rhinoSensitivity = 0.5f,
+            bool requireEndpoint = true)
         {
+            if (wakeWordCallback == null)
+                throw new PicovoiceInvalidArgumentException("wakeWordCallback is null");
 
-            if (!File.Exists(keywordPath))
+            if (inferenceCallback == null)
+                throw new PicovoiceInvalidArgumentException("inferenceCallback is null");
+
+            try
             {
-                throw new ArgumentException($"Couldn't find Porcupine's keyword file at '{keywordPath}'.");
+                Porcupine porcupine = Porcupine.FromKeywordPaths(
+                    accessKey,
+                    new List<string> { keywordPath },
+                    modelPath: porcupineModelPath,
+                    sensitivities: new List<float> { porcupineSensitivity });
+
+                Rhino rhino = Rhino.Create(
+                    accessKey,
+                    contextPath,
+                    modelPath: rhinoModelPath,
+                    sensitivity: rhinoSensitivity,
+                    requireEndpoint: requireEndpoint);
+
+                if (porcupine.FrameLength != rhino.FrameLength)
+                {
+                    throw new PicovoiceInvalidArgumentException($"Porcupine frame length ({porcupine.FrameLength}) and Rhino frame length ({rhino.FrameLength}) are different");
+                }
+
+                if (porcupine.SampleRate != rhino.SampleRate)
+                {
+                    throw new PicovoiceInvalidArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
+                }
+
+                return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
             }
-            
-            if (!File.Exists(contextPath)) 
+            catch (Exception ex)
             {
-                throw new ArgumentException($"Couldn't find Rhino's context file at '{contextPath}'.");
-            }            
-
-            if (porcupineModelPath != null && !File.Exists(porcupineModelPath)) 
-            {
-                throw new ArgumentException($"Couldn't find Porcupine's model file at '{porcupineModelPath}'.");
+                throw mapToPicovoiceException(ex);
             }
+        }
 
-            if (porcupineSensitivity < 0 || porcupineSensitivity > 1) 
-            {
-                throw new ArgumentException("Porcupine's sensitivity should be within [0, 1].");
-            }
+        // private constructor
+        private Picovoice(Porcupine porcupine, Action wakeWordCallback, Rhino rhino, Action<Inference> inferenceCallback)
+        {
+            _porcupine = porcupine;
+            _wakeWordCallback = wakeWordCallback;
+            _rhino = rhino;
+            _inferenceCallback = inferenceCallback;
 
-            if (rhinoModelPath != null && !File.Exists(rhinoModelPath))
-            {
-                throw new ArgumentException($"Couldn't find Rhino's model file at '{rhinoModelPath}'.");
-            }
-
-            if (rhinoSensitivity < 0 || rhinoSensitivity > 1)
-            {
-                throw new ArgumentException("Rhino's sensitivity should be within [0, 1].");
-            }
-
-            _wakeWordCallback = wakeWordCallback ?? throw new ArgumentNullException("wakeWordCallback");
-            _inferenceCallback = inferenceCallback ?? throw new ArgumentNullException("inferenceCallback");
-
-            _porcupine = Porcupine.Create(modelPath: porcupineModelPath,
-                                          keywordPaths: new List<string> { keywordPath },
-                                          sensitivities: new List<float> { porcupineSensitivity });
-            
-            _rhino = Rhino.Create(contextPath: contextPath,
-                                  modelPath: rhinoModelPath,
-                                  sensitivity: rhinoSensitivity);
-            
-            if (_porcupine.SampleRate != _rhino.SampleRate) 
-            {
-                throw new ArgumentException("Porcupine and Rhino sample rates are different.");
-            }
-            SampleRate = _porcupine.SampleRate;
-
-            if (_porcupine.FrameLength != _rhino.FrameLength)
-            {
-                throw new ArgumentException("Porcupine and Rhino frame lengths are different.");
-            }
-            FrameLength = _porcupine.FrameLength;
+            FrameLength = porcupine.FrameLength;
+            SampleRate = porcupine.SampleRate;
+            PorcupineVersion = porcupine.Version;
+            RhinoVersion = rhino.Version;
+            ContextInfo = rhino.ContextInfo;
         }
 
         /// <summary>
@@ -133,8 +142,17 @@ namespace Pv
         /// </summary>
         public void Dispose()
         {
-            _porcupine?.Dispose();
-            _rhino?.Dispose();
+            if (_porcupine != null)
+            {
+                _porcupine.Dispose();
+                _porcupine = null;
+            }
+
+            if (_rhino != null)
+            {
+                _rhino.Dispose();
+                _rhino = null;
+            }
 
             // ensures finalizer doesn't trigger if already manually disposed
             GC.SuppressFinalize(this);
@@ -154,11 +172,21 @@ namespace Pv
         /// `.FrameLength`. The incoming audio needs to have a sample rate equal to `.SampleRate` and be 16-bit
         /// linearly-encoded. Picovoice operates on single-channel audio.
         /// </param>
-        public void Process(short[] pcm) 
+        public void Process(short[] pcm)
         {
-            if (pcm.Length != FrameLength) 
+            if (pcm == null)
             {
-                throw new ArgumentException($"Invalid frame length. expected {FrameLength} but received {pcm.Length}");
+                throw new PicovoiceInvalidArgumentException($"Null audo frame passed to Picovoice");
+            }
+
+            if (pcm.Length != FrameLength)
+            {
+                throw new PicovoiceInvalidArgumentException($"Invalid frame length - expected {FrameLength}, received {pcm.Length}");
+            }
+
+            if (_porcupine == null || _rhino == null)
+            {
+                throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             }
 
             if (!_isWakeWordDetected)
@@ -170,7 +198,7 @@ namespace Pv
             else
             {
                 bool isFinalized = _rhino.Process(pcm);
-                if (isFinalized) 
+                if (isFinalized)
                 {
                     _isWakeWordDetected = false;
                     Inference inference = _rhino.GetInference();
@@ -180,23 +208,94 @@ namespace Pv
         }
 
         /// <summary>
-        /// Audio sample rate accepted by Picovoice.
+        /// Gets the required number of audio samples per frame.
         /// </summary>
-        public int SampleRate { get; }
+        /// <returns>Required frame length.</returns>
+        public int FrameLength { get; private set; }
 
         /// <summary>
-        /// Number of audio samples per frame.
+        /// Get the audio sample rate required by Picovoice
         /// </summary>
-        public int FrameLength { get; }
+        /// <returns>Required sample rate.</returns>
+        public int SampleRate { get; private set; }
 
         /// <summary>
-        /// Version
+        /// Gets the version number of the Picovoice platform
         /// </summary>
-        public string Version => "1.1.1";
+        /// <returns>Version of Picovoice</returns>
+        public string Version => "2.0.0";
 
-        public override string ToString()
+        /// <summary>
+        /// Get the version of the Porcupine library
+        /// </summary>
+        /// <returns>Porcupine library version</returns>
+        public string PorcupineVersion { get; private set; }
+
+        /// <summary>
+        /// Get the version of the Rhino library
+        /// </summary>
+        /// <returns>Rhino library version</returns>
+        public string RhinoVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the current Rhino context information.
+        /// </summary>
+        /// <returns>Context information</returns>
+        public string ContextInfo { get; private set; }
+
+        /// <summary>
+        /// Maps Porcupine/Rhino Exception to Picovoice Exception
+        /// </summary>
+        private static PicovoiceException mapToPicovoiceException(Exception ex)
         {
-            return $"Picovoice {Version} {{Porcupine {_porcupine?.Version}, Rhino {_rhino.Version}}}";
-        }        
+            if (ex is PorcupineActivationException || ex is RhinoActivationException)
+            {
+                return new PicovoiceActivationException(ex.Message);
+            }
+            else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException)
+            {
+                return new PicovoiceActivationLimitException(ex.Message);
+            }
+            else if (ex is PorcupineActivationRefusedException || ex is RhinoActivationRefusedException)
+            {
+                return new PicovoiceActivationRefusedException(ex.Message);
+            }
+            else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException)
+            {
+                return new PicovoiceActivationThrottledException(ex.Message);
+            }
+            else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException)
+            {
+                return new PicovoiceInvalidArgumentException(ex.Message);
+            }
+            else if (ex is PorcupineInvalidStateException || ex is RhinoInvalidStateException)
+            {
+                return new PicovoiceInvalidStateException(ex.Message);
+            }
+            else if (ex is PorcupineIOException || ex is RhinoIOException)
+            {
+                return new PicovoiceIOException(ex.Message);
+            }
+            else if (ex is PorcupineKeyException || ex is RhinoKeyException)
+            {
+                return new PicovoiceKeyException(ex.Message);
+            }
+            else if (ex is PorcupineMemoryException || ex is RhinoMemoryException)
+            {
+                return new PicovoiceMemoryException(ex.Message);
+            }
+            else if (ex is PorcupineRuntimeException || ex is RhinoRuntimeException)
+            {
+                return new PicovoiceRuntimeException(ex.Message);
+            }
+            else if (ex is PorcupineStopIterationException || ex is RhinoStopIterationException)
+            {
+                return new PicovoiceStopIterationException(ex.Message);
+            }
+            else
+            {
+                return new PicovoiceException(ex.Message);
+            }
+        }
     }
 }
