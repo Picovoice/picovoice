@@ -32,7 +32,7 @@ The easiest way to install the Picovoice Unity SDK is to import [picovoice.unity
 
 ## AccessKey
 
-All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
 You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 
 To obtain your `AccessKey`:
@@ -101,7 +101,7 @@ You can override the default model files and sensitivities. You can set `require
 string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 PicovoiceManager _picovoiceManager = new PicovoiceManager(
-                                        accessKeym
+                                        accessKey,
                                         "/path/to/keyword/file.ppn",
                                         OnWakeWordDetected,
                                         "/path/to/context/file.rhn",
@@ -124,7 +124,7 @@ try
 {
     _picovoiceManager.Start();
 }
-catch(Exception ex)
+catch(PicovoiceException ex)
 {
     Debug.LogError(ex.ToString());
 }
