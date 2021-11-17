@@ -105,17 +105,12 @@ export function usePicovoice(
       };
     }
 
-    const { accessKey, start: startWebVp = true } = picovoiceHookArgs!;
-    if (accessKey === null || accessKey === '') {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
     async function startPicovoice(): Promise<{
       webVp: WebVoiceProcessor;
       pvWorker: PicovoiceWorker;
     }> {
+      const { start: startWebVp = true } = picovoiceHookArgs!;
+
       // Argument checking; the engines will also do checking but we can get
       // clearer error messages from the hook
       if (picovoiceHookArgs!.porcupineKeyword === undefined) {

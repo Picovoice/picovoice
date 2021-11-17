@@ -14,6 +14,7 @@ export class VoiceWidget {
   private keywordDetection: Subscription
   private inferenceDetection: Subscription
   private listeningDetection: Subscription
+  private engineDetection: Subscription
   private errorDetection: Subscription
   private isErrorDetection: Subscription
 
@@ -23,7 +24,7 @@ export class VoiceWidget {
   isError: boolean = false
   error: Error | string | null = null
   isListening: boolean | null = null
-  isTalking: boolean = false
+  engine: string = 'ppn'
   errorMessage: string
   detections: string[] = []
   inference: RhinoInferenceFinalized | null = null
@@ -61,6 +62,10 @@ export class VoiceWidget {
       listening => {
         this.isListening = listening
       })
+    this.engineDetection = picovoiceService.engine$.subscribe(
+      engine => {
+        this.engine = engine
+      })
     this.errorDetection = picovoiceService.error$.subscribe(
       error => {
         this.error = error
@@ -91,7 +96,7 @@ export class VoiceWidget {
   }
 
   public async initEngine(accessKey: string) {
-    if (accessKey.length === 56) {
+    if (accessKey.length >= 0) {
       this.picovoiceService.release();
 
       // Dynamically load Picovoice worker chunk with specific language model (large ~4-6MB chunk)
@@ -102,6 +107,7 @@ export class VoiceWidget {
       try {
         await this.picovoiceService.init(picovoiceFactoryEn, {...this.picovoiceServiceArgs, accessKey: accessKey})
         console.info("Picovoice is ready!")
+        this.isError = false;
         this.isLoaded = true;
         this.contextInfo = this.picovoiceService.contextInfo
       }
