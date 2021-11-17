@@ -29,7 +29,7 @@ dependencies {
 
 ## AccessKey
 
-All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Porcupine SDKs.
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
 You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 
 To obtain your `AccessKey`:
@@ -209,12 +209,12 @@ final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice C
 // '/assets/picovoice_files/keyword.ppn'
 // '/assets/picovoice_files/context.rhn' 
 try {    
-    Rhino rhino = new Rhino.Builder()
+    Picovoice picovoice = new Picovoice.Builder()
                         .setAccessKey(accessKey)
                         .setKeywordPath("picovoice_files/keyword.ppn")
                         .setContextPath("picovoice_files/context.rhn")                    
                         .build(appContext);
-} catch (RhinoException e) { }
+} catch (PicovoiceException e) { }
 ```
 
 ## Non-English Models
