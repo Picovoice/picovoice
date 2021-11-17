@@ -18,7 +18,7 @@
   <h3>Listening: {{ isListening }}</h3>
   <h3>Error: {{ isError }}</h3>
   <p class="error-message" *ngIf="isError">{{ errorMessage }}</p>
-  <h3>Talking: {{ isTalking }}</h3>
+  <h3>Engine: {{ engine }}</h3>
 
   <br />
   <button (click)="start()" [disabled]="isError || isListening || !isLoaded">Start</button>

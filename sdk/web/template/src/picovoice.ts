@@ -41,7 +41,7 @@ export class Picovoice implements PicovoiceEngine {
     porcupineEngine: PorcupineEngine,
     rhinoEngine: RhinoEngine,
     porcupineCallback: (keyword: string) => void,
-    rhinoCallback: (inference: RhinoInference) => void
+    rhinoCallback: (inference: RhinoInference) => void,
   ) {
     this._porcupineEngine = porcupineEngine;
     this._rhinoEngine = rhinoEngine;
@@ -73,11 +73,12 @@ export class Picovoice implements PicovoiceEngine {
       porcupineCallback,
       rhinoContext,
       rhinoCallback,
+      requireEndpoint,
     } = picovoiceArgs;
 
     // We need to assert PorcupineKeyword here because we don't know the language-specific keywords
     const porcupineEngine = await Porcupine.create(accessKey, porcupineKeyword as PorcupineKeyword);
-    const rhinoEngine = await Rhino.create(accessKey, rhinoContext);
+    const rhinoEngine = await Rhino.create(accessKey, rhinoContext, requireEndpoint);
 
     if (
       typeof porcupineCallback !== 'function' ||

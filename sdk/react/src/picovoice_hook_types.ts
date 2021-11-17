@@ -97,6 +97,7 @@ export type PicovoiceWorkerArgs = {
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
+  requireEndpoint?: boolean
   start?: boolean;
 };
 
@@ -106,6 +107,7 @@ export type PicovoiceEngineArgs = {
   rhinoContext: RhinoContext;
   porcupineCallback: (keywordLabel: string) => void;
   rhinoCallback: (inference: RhinoInference) => void;
+  requireEndpoint?: boolean
 };
 
 export interface PicovoiceEngine {
@@ -202,5 +204,6 @@ export type PicovoiceHookArgs = {
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
+  requireEndpoint?: boolean
   start?: boolean;
 };

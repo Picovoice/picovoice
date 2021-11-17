@@ -25,12 +25,14 @@ export default {
           accessKey,
           porcupineKeyword,
           rhinoContext,
+          requireEndpoint,
           start: startWebVp = true,
         } = this.picovoiceFactoryArgs;
         this.pvWorker = await this.picovoiceFactory.create({
           accessKey,
           porcupineKeyword,
           rhinoContext: JSON.parse(JSON.stringify(rhinoContext)),
+          requireEndpoint,
           start: true,
         });
         this.webVp = await WebVoiceProcessor.init({
