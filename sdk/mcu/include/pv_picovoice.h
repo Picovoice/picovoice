@@ -19,8 +19,7 @@
 
 #ifdef __cplusplus
 
-extern "C"
-{
+extern "C" {
 
 #endif
 
@@ -60,6 +59,7 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
 /**
  * Constructor.
  *
+ * @param access_key AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
  * @param memory_size Memory needs to be 8-byte aligned.
  * @param memory_buffer Memory size in bytes.
  * @param keyword_model_size Size of keyword model in bytes.
@@ -73,6 +73,7 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
  * intent arguments (slots) within a domain of interest.
  * @param rhino_sensitivity Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
  * results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
+ * @param require_endpoint If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
  * @param inference_callback User-defined callback invoked upon completion of intent inference. The callback accepts a
  * single input argument of type `pv_inference_t` that exposes the following immutable fields:
  *         (1) `is_understood` is a flag indicating if the spoken command is understood.
@@ -81,11 +82,12 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
  *         (3) `num_slots` is the number of slots.
  *         (4) `slots` is a list of slot keys.
  *         (5) `values` is the corresponding slot values.
- * @param object Constructed instance of Porcupine.
+ * @param object Constructed instance of Picovoice.
  * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_IO_ERROR', or 'PV_STATUS_OUT_OF_MEMORY' on
  * failure.
  */
 PV_API pv_status_t pv_picovoice_init(
+        const char *access_key,
         int32_t memory_size,
         void *memory_buffer,
         int32_t keyword_model_size,
@@ -95,6 +97,7 @@ PV_API pv_status_t pv_picovoice_init(
         int32_t context_model_size,
         const void *context_model,
         float rhino_sensitivity,
+        bool require_endpoint,
         void (*inference_callback)(pv_inference_t *),
         pv_picovoice_t **object);
 
@@ -117,6 +120,31 @@ PV_API void pv_picovoice_delete(pv_picovoice_t *object);
  * on failure.
  */
 PV_API pv_status_t pv_picovoice_process(pv_picovoice_t *object, const int16_t *pcm);
+
+/**
+ * Computes the minimum required memory buffer size, in bytes, for the given keyword and context model.
+ * A relatively large value for 'preliminary_memory_buffer' is suggested (e.g., 70 kilobytes).
+ * Then, 'pv_picovoice_init' can be called optimally passing a memory buffer with the size of 'min_memory_buffer_size'.
+ *
+ * @param preliminary_memory_size Memory size in bytes.
+ * @param preliminary_memory_buffer Memory needs to be 8-byte aligned.
+ * @param keyword_model_size Size of keyword model in bytes.
+ * @param keyword_model Keyword model.
+ * @param context_model_size Size of the context in bytes.
+ * @param context_model Context parameters.
+ * @param[out] min_memory_buffer_size minimum required memory buffer size in bytes.
+ * @return Status code. Returns 'PV_STATUS_INVALID_ARGUMENT', 'PV_STATUS_INVALID_STATE', or 'PV_STATUS_OUT_OF_MEMORY'
+ * on failure.
+ * */
+
+PV_API pv_status_t pv_picovoice_get_min_memory_buffer_size(
+        int32_t preliminary_memory_size,
+        void *preliminary_memory_buffer,
+        int32_t keyword_model_size,
+        const void *keyword_model,
+        int32_t context_model_size,
+        const void *context_model,
+        int32_t *min_memory_buffer_size);
 
 /**
  * Getter for version.
@@ -142,7 +170,6 @@ PV_API int32_t pv_picovoice_frame_length(void);
 PV_API pv_status_t pv_picovoice_context_info(const pv_picovoice_t *object, const char **context);
 
 #ifdef __cplusplus
-
 }
 
 #endif

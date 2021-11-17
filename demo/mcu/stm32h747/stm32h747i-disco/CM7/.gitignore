@@ -1,4 +1,4 @@
 .settings/
 *.launch
-Release/
+Release*
 .idea/
