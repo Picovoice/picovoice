@@ -96,12 +96,12 @@ public class Picovoice {
         }
 
         if (pcm == null) {
-            throw new PicovoiceInvalidArgumentException("Passed null frame to Porcupine process.");
+            throw new PicovoiceInvalidArgumentException("Passed null frame to Picovoice process.");
         }
 
         if (pcm.length != getFrameLength()) {
             throw new PicovoiceInvalidArgumentException(
-                String.format("Porcupine process requires frames of length %d. " +
+                String.format("Picovoice process requires frames of length %d. " +
                         "Received frame of size %d.", getFrameLength(), pcm.length));
         }
 
