@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -18,7 +18,7 @@ import ai.picovoice.rhino.Rhino;
 import ai.picovoice.rhino.RhinoException;
 
 /**
- * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
+ * Java binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
  * similar to Alexa but runs entirely on-device (offline).
  * <p>
  * Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of
@@ -42,6 +42,7 @@ public class Picovoice {
     /**
      * Constructor
      *
+     * @param accessKey            AccessKey obtained from Picovoice Console.
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -57,12 +58,15 @@ public class Picovoice {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
+     * @param requireEndpoint      If set to `true`, Rhino requires an endpoint (chunk of silence)
+     *                             before finishing inference.
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
-     * @throws PicovoiceException if there is an error while initializing.
+     * @throws PicovoiceException  if there is an error while initializing.
      */
     public Picovoice(
+            String accessKey,
             String porcupineLibraryPath,
             String porcupineModelPath,
             String keywordPath,
@@ -72,18 +76,20 @@ public class Picovoice {
             String rhinoModelPath,
             String contextPath,
             float rhinoSensitivity,
+            boolean requireEndpoint,
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
         try {
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(porcupineLibraryPath)
                     .setModelPath(porcupineModelPath)
                     .setSensitivity(porcupineSensitivity)
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("1.9.")) {
+            if (!porcupine.getVersion().startsWith("2.0.0")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '1.9.x' but received %s",
+                        "Expected Porcupine library with version '2.0.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -91,15 +97,17 @@ public class Picovoice {
             this.wakeWordCallback = wakeWordCallback;
 
             rhino = new Rhino.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(rhinoLibraryPath)
                     .setModelPath(rhinoModelPath)
                     .setContextPath(contextPath)
                     .setSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .build();
 
-            if (!rhino.getVersion().startsWith("1.6.")) {
+            if (!rhino.getVersion().startsWith("2.0.0")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '1.6.x' but received %s",
+                        "Expected Rhino library with version '2.0.x' but received %s",
                         rhino.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -152,7 +160,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "1.1.0";
+        return "2.0.0";
     }
 
     /**
@@ -196,6 +204,7 @@ public class Picovoice {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String porcupineLibraryPath = null;
         private String porcupineModelPath = null;
         private String keywordPath = null;
@@ -205,7 +214,13 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private boolean requireEndpoint = false;
         private PicovoiceInferenceCallback inferenceCallback = null;
+
+        public Picovoice.Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public Picovoice.Builder setPorcupineLibraryPath(String porcupineLibraryPath) {
             this.porcupineLibraryPath = porcupineLibraryPath;
@@ -257,6 +272,11 @@ public class Picovoice {
             return this;
         }
 
+        public Picovoice.Builder setRequireEndpoint(boolean requireEndpoint) {
+            this.requireEndpoint = requireEndpoint;
+            return this;
+        }
+
         /**
          * Validates properties and creates an instance of the Picovoice end-to-end platform.
          *
@@ -264,7 +284,9 @@ public class Picovoice {
          * @throws PicovoiceException if there is an error while initializing Picovoice.
          */
         public Picovoice build() throws PicovoiceException {
-            return new Picovoice(porcupineLibraryPath,
+            return new Picovoice(
+                    accessKey,
+                    porcupineLibraryPath,
                     porcupineModelPath,
                     keywordPath,
                     porcupineSensitivity,
@@ -273,6 +295,7 @@ public class Picovoice {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
+                    requireEndpoint,
                     inferenceCallback);
         }
     }
