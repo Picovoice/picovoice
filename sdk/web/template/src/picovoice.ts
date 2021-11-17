@@ -13,6 +13,8 @@ import { Porcupine } from '@picovoice/porcupine-web-$lang$-factory';
 import { Rhino } from '@picovoice/rhino-web-$lang$-factory';
 import { PorcupineKeyword } from '@picovoice/porcupine-web-$lang$-factory/dist/types/porcupine_types';
 
+export { Porcupine, Rhino }
+
 import {
   PicovoiceEngine,
   PicovoiceEngineArgs,
@@ -33,7 +35,7 @@ export class Picovoice implements PicovoiceEngine {
   private _rhinoCallback: (inference: RhinoInference) => void
   private _rhinoEngine: RhinoEngine
   private _sampleRate: number = 16000;
-  private _version: string = '1.0.0';
+  private _version: string = '2.0.0';
 
   private constructor(
     porcupineEngine: PorcupineEngine,
@@ -66,6 +68,7 @@ export class Picovoice implements PicovoiceEngine {
     picovoiceArgs: PicovoiceEngineArgs
   ): Promise<Picovoice> {
     const {
+      accessKey,
       porcupineKeyword,
       porcupineCallback,
       rhinoContext,
@@ -73,10 +76,8 @@ export class Picovoice implements PicovoiceEngine {
     } = picovoiceArgs;
 
     // We need to assert PorcupineKeyword here because we don't know the language-specific keywords
-    const porcupineEngine = await Porcupine.create(
-      porcupineKeyword as PorcupineKeyword
-    );
-    const rhinoEngine = await Rhino.create(rhinoContext);
+    const porcupineEngine = await Porcupine.create(accessKey, porcupineKeyword as PorcupineKeyword);
+    const rhinoEngine = await Rhino.create(accessKey, rhinoContext);
 
     if (
       typeof porcupineCallback !== 'function' ||
@@ -95,11 +96,11 @@ export class Picovoice implements PicovoiceEngine {
     );
   }
 
-  public process(inputFrame: Int16Array): void {
+  public async process(inputFrame: Int16Array): Promise<void> {
     if (!this._paused) {
       switch (this._engineControl) {
         case 'ppn': {
-          const keywordIndex = this._porcupineEngine.process(inputFrame);
+          const keywordIndex = await this._porcupineEngine.process(inputFrame);
           if (keywordIndex !== -1) {
             this._engineControl = 'rhn';
             this._porcupineCallback(
@@ -109,7 +110,7 @@ export class Picovoice implements PicovoiceEngine {
           break;
         }
         case 'rhn': {
-          const inference = this._rhinoEngine.process(inputFrame);
+          const inference = await this._rhinoEngine.process(inputFrame);
           if (inference.isFinalized) {
             this._engineControl = 'ppn';
             this._rhinoCallback(inference);

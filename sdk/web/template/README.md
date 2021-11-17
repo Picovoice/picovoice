@@ -56,6 +56,15 @@ If you are using this library with the [@picovoice/web-voice-processor](https://
 
 The Picovoice SDK for Web is split into multiple packages due to each language including the entire Voice AI model which is of nontrivial size. There are separate worker and factory packages as well, due to the complexities with bundling an "all-in-one" web workers without bloating bundle sizes. Import each as required.
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ### Workers
 
 - @picovoice/picovoice-web-de-worker
@@ -92,20 +101,22 @@ yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
 
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
 const RHINO_CONTEXT_BASE64 = /* Base64 string of the .rhn file for wasm platform, omitted for brevity */
 
-async startPicovoice()
+async startPicovoice() {
   // Create a Picovoice Worker (English language) to listen for the built-in wake-word "Blueberry"
   // and commands in the context (a `.rhn` file encoded as base64, omitted for brevity). 
   //
   // Note: you receive a Worker object, _not_ an individual Picovoice engine instance
   // Workers are communicated with via message passing/receiving functions postMessage/onmessage.
   // See https://developer.mozilla.org/en-US/docs/Web/API/Worker for more details.
-  const pvWorker = await PicovoiceWorkerFactory.create(
+  const pvWorker = await PicovoiceWorkerFactory.create({
+    accessKey: ACCESS_KEY,
     porcupineKeyword: {builtin: "Blueberry"},
-    rhinoContext: { base64: RHINO_CONTEXT_BASE64},
-    start: false }
-  );
+    rhinoContext: {base64: RHINO_CONTEXT_BASE64},
+    start: false
+  });
 
   // The worker will send a message with data.command = "rhn-inference" upon inference event
   // or data.command = "ppn-keyword" on wake word events
@@ -135,10 +146,8 @@ async startPicovoice()
     engines: [pvWorker],
     start: true,
   });
-  }
-
-
 }
+
 startPicovoice()
 
 ...
@@ -167,14 +176,15 @@ E.g.:
 ```javascript
 import { Picovoice } from '@picovoice/picovoice-web-en-factory';
 
-const RHINO_CONTEXT_BASE64 =
-  /* Base64 string of the .rhn file for wasm platform */
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+const RHINO_CONTEXT_BASE64 = /* Base64 string of the .rhn file for wasm platform */
 
   async function startPicovoice() {
     const handle = await Picovoice.create({
+      accessKey: ACCESS_KEY,
       porcupineKeyword: { builtin: "Blueberry" },
       rhinoContext: RHINO_CONTEXT_BASE64,
-      porcupineCallback: (keyword) => {console.log("Wake word detected: " + keyword)}.
+      porcupineCallback: (keyword) => {console.log("Wake word detected: " + keyword)},
       rhinoCallback: (inference) => {console.log("Inference: " + inference)}
     });
 

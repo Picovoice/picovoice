@@ -9,7 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-import { Picovoice } from './picovoice';
+import { Picovoice, Porcupine, Rhino } from './picovoice';
 import {
   PicovoiceEngineArgs,
   PicovoiceWorkerArgs,
@@ -65,7 +65,7 @@ async function init(pvWorkerArgs: PicovoiceWorkerArgs): Promise<void> {
   } catch (error) {
     const pvInitErrorMessage: PicovoiceWorkerResponseErrorInit = {
       command: 'pv-error-init',
-      error: error,
+      error: error.toString(),
     };
     postMessage(pvInitErrorMessage, undefined);
     return;
@@ -90,8 +90,58 @@ function release(): void {
   close();
 }
 
+var count = 0
+
 onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
   switch (event.data.command) {
+    case 'file-save-succeeded':
+      Porcupine.resolveFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.resolveFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-save-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.rejectFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-load-succeeded':
+      Porcupine.resolveFilePromise(event.data.content);
+      Porcupine.clearFilePromises();
+      Rhino.resolveFilePromise(event.data.content);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-load-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.rejectFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-exists-succeeded':
+      Porcupine.resolveFilePromise(event.data.content);
+      Porcupine.clearFilePromises();
+      Rhino.resolveFilePromise(event.data.content);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-exists-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.rejectFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-delete-succeeded':
+      Porcupine.resolveFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.resolveFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
+    case 'file-delete-failed':
+      Porcupine.rejectFilePromise(event.data.message);
+      Porcupine.clearFilePromises();
+      Rhino.rejectFilePromise(event.data.message);
+      Rhino.clearFilePromises();
+      break;
     case 'init':
       init(event.data.picovoiceArgs);
       break;
@@ -112,8 +162,6 @@ onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
       break;
     default:
       // eslint-disable-next-line no-console
-      console.warn(
-        'Unhandled command in picovoice_worker: ' + event.data.command
-      );
+      console.warn('Unhandled command in picovoice_worker: ' + event.data.command);
   }
 };
