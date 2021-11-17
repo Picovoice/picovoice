@@ -116,6 +116,16 @@ namespace Pv.Unity
                     modelPath: rhinoModelPath,
                     sensitivity: rhinoSensitivity,
                     requireEndpoint: requireEndpoint);
+
+                if (wakeWordCallback == null)
+                {
+                    throw new PicovoiceInvalidArgumentException("'wakeWordCallback' must be set.");
+                }
+
+                if (inferenceCallback == null)
+                {
+                    throw new PicovoiceInvalidArgumentException("'inferenceCallback' must be set.");
+                }
             
                 if (porcupine.FrameLength != rhino.FrameLength)
                 {
