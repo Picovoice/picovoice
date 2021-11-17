@@ -24,13 +24,30 @@ namespace PicovoiceTest
     [TestClass]
     public class MainTest
     {
-        private readonly static string _cwd;
-        private readonly static string _env;
-        private readonly static Architecture _arch;
-        private readonly static string _contextPath;
+        private static string _cwd;
+        private static string _env;
+        private static Architecture _arch;
+        private static string _contextPath;
 
-        static MainTest()
+        private static string ACCESS_KEY;
+
+        private static bool _isWakeWordDetected;
+        private static void _wakeWordCallback() => _isWakeWordDetected = true;
+
+        private static Inference _inference;
+        private static void _inferenceCallback(Inference inference) => _inference = inference;
+
+        private static Picovoice _pv;
+
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
         {
+            if (testContext.Properties.Contains("pvTestAccessKey"))
+            {
+                ACCESS_KEY = testContext.Properties["pvTestAccessKey"].ToString();
+            }
+
             _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             _arch = RuntimeInformation.ProcessArchitecture;
             _env = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
@@ -39,30 +56,24 @@ namespace PicovoiceTest
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
                                                         (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? "raspberry-pi" : "";
             _contextPath = Path.Combine(_cwd, $"resources/rhino/resources/contexts/{_env}/coffee_maker_{_env}.rhn");
+
+            _pv = Picovoice.Create(
+                ACCESS_KEY,
+                Porcupine.BUILT_IN_KEYWORD_PATHS[BuiltInKeyword.PICOVOICE],
+                _wakeWordCallback,
+                _contextPath,
+                _inferenceCallback);
         }
-
-        private bool _isWakeWordDetected;
-        private void _wakeWordCallback() => _isWakeWordDetected = true;
-
-        private Inference _inference;
-        private void _inferenceCallback(Inference inference) => _inference = inference;
-
-        private Picovoice _pv;
 
         [TestInitialize]
         public void TestInit()
         {
-            _pv = new Picovoice(Porcupine.KEYWORD_PATHS["picovoice"], 
-                                        _wakeWordCallback,
-                                        _contextPath, 
-                                        _inferenceCallback);
-            
             _isWakeWordDetected = false;
             _inference = null;
         }
 
         [TestMethod]
-        public void TestProcess() 
+        public void TestProcess()
         {
             string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/picovoice-coffee.wav");
             List<short> data = GetPcmFromFile(testAudioPath, _pv.SampleRate);
@@ -75,7 +86,7 @@ namespace PicovoiceTest
                 int count = _pv.FrameLength;
                 List<short> frame = data.GetRange(start, count);
 
-                _pv.Process(frame.ToArray());                                
+                _pv.Process(frame.ToArray());
             }
 
             Assert.IsTrue(_isWakeWordDetected);
@@ -96,10 +107,9 @@ namespace PicovoiceTest
             TestProcess();
         }
 
-        [TestCleanup]
-        public void TestCleanup()
+        ~MainTest()
         {
-            _pv.Dispose();
+            _pv?.Dispose();
         }
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
