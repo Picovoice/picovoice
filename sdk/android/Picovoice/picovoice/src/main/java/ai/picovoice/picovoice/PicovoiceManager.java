@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class PicovoiceManager {
     private final Context appContext;
+    private final String accessKey;
     private final String porcupineModelPath;
     private final String keywordPath;
     private final float porcupineSensitivity;
@@ -39,8 +40,9 @@ public class PicovoiceManager {
     private final String rhinoModelPath;
     private final String contextPath;
     private final float rhinoSensitivity;
+    private final boolean requireEndpoint;
     private final PicovoiceInferenceCallback inferenceCallback;
-    private final PicovoiceManagerErrorCallback errorCallback;
+    private final PicovoiceManagerErrorCallback processErrorCallback;
     private final MicrophoneReader microphoneReader;
     private Picovoice picovoice = null;
 
@@ -48,6 +50,7 @@ public class PicovoiceManager {
      * Private constructor.
      *
      * @param appContext           Android app context
+     * @param accessKey            AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -63,12 +66,15 @@ public class PicovoiceManager {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
+     * @param requireEndpoint      Boolean variable to indicate if Rhino should wait for a chunk of
+     *                             silence before finishing inference.
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
-     * @param errorCallback        A callback that reports errors encountered while processing audio.
+     * @param processErrorCallback A callback that reports errors encountered while processing audio.
      */
-    public PicovoiceManager(Context appContext,
+    private PicovoiceManager(Context appContext,
+                            String accessKey,
                             String porcupineModelPath,
                             String keywordPath,
                             float porcupineSensitivity,
@@ -76,9 +82,11 @@ public class PicovoiceManager {
                             String rhinoModelPath,
                             String contextPath,
                             float rhinoSensitivity,
+                            boolean requireEndpoint,
                             PicovoiceInferenceCallback inferenceCallback,
-                            PicovoiceManagerErrorCallback errorCallback) {
+                            PicovoiceManagerErrorCallback processErrorCallback) {
         this.appContext = appContext;
+        this.accessKey = accessKey;
         this.porcupineModelPath = porcupineModelPath;
         this.keywordPath = keywordPath;
         this.porcupineSensitivity = porcupineSensitivity;
@@ -86,8 +94,9 @@ public class PicovoiceManager {
         this.rhinoModelPath = rhinoModelPath;
         this.contextPath = contextPath;
         this.rhinoSensitivity = rhinoSensitivity;
+        this.requireEndpoint = requireEndpoint;
         this.inferenceCallback = inferenceCallback;
-        this.errorCallback = errorCallback;
+        this.processErrorCallback = processErrorCallback;
 
         microphoneReader = new MicrophoneReader();
     }
@@ -130,7 +139,7 @@ public class PicovoiceManager {
      * @return Version.
      */
     public String getVersion() {
-        return "1.1.0";
+        return "2.0.0";
     }
 
     /**
@@ -155,6 +164,7 @@ public class PicovoiceManager {
      * Builder for creating an instance of PicovoiceManager with a mixture of default arguments
      */
     public static class Builder {
+        private String accessKey = null;
 
         private String porcupineModelPath = null;
         private String keywordPath = null;
@@ -164,9 +174,20 @@ public class PicovoiceManager {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
 
-        private PicovoiceManagerErrorCallback errorCallback = null;
+        private PicovoiceManagerErrorCallback processErrorCallback = null;
+
+        /**
+         * Setter for AccessKey
+         *
+         * @param accessKey AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+         */
+        public PicovoiceManager.Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         /**
          * Setter for path to Porcupine model file
@@ -247,6 +268,17 @@ public class PicovoiceManager {
         }
 
         /**
+         * Setter for requireEndpoint
+         *
+         * @param requireEndpoint Boolean variable to indicate if Rhino should wait for a chunk of
+         *                        silence before finishing inference.
+         */
+        public PicovoiceManager.Builder setRequireEndpoint(boolean requireEndpoint) {
+            this.requireEndpoint = requireEndpoint;
+            return this;
+        }
+
+        /**
          * Setter for intent inference callback
          *
          * @param inferenceCallback User-defined callback invoked upon completion of intent inference.
@@ -261,12 +293,12 @@ public class PicovoiceManager {
         /**
          * Setter for error callback
          *
-         * @param errorCallback User-defined callback invoked when an error is encountered while processing audio.
-         *                      #{@link PicovoiceManagerErrorCallback} defines the interface of the
-         *                      callback.
+         * @param processErrorCallback User-defined callback invoked when an error is encountered while processing audio.
+         *                             #{@link PicovoiceManagerErrorCallback} defines the interface of the
+         *                             callback.
          */
-        public PicovoiceManager.Builder setErrorCallback(PicovoiceManagerErrorCallback errorCallback) {
-            this.errorCallback = errorCallback;
+        public PicovoiceManager.Builder setProcessErrorCallback(PicovoiceManagerErrorCallback processErrorCallback) {
+            this.processErrorCallback = processErrorCallback;
             return this;
         }
 
@@ -279,6 +311,7 @@ public class PicovoiceManager {
         public PicovoiceManager build(Context appContext) {
             return new PicovoiceManager(
                     appContext,
+                    accessKey,
                     porcupineModelPath,
                     keywordPath,
                     porcupineSensitivity,
@@ -286,8 +319,9 @@ public class PicovoiceManager {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
+                    requireEndpoint,
                     inferenceCallback,
-                    errorCallback);
+                    processErrorCallback);
         }
     }
 
@@ -306,6 +340,7 @@ public class PicovoiceManager {
             started.set(true);
 
             picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setPorcupineModelPath(porcupineModelPath)
                     .setKeywordPath(keywordPath)
                     .setPorcupineSensitivity(porcupineSensitivity)
@@ -313,6 +348,7 @@ public class PicovoiceManager {
                     .setRhinoModelPath(rhinoModelPath)
                     .setContextPath(contextPath)
                     .setRhinoSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
@@ -371,11 +407,11 @@ public class PicovoiceManager {
                 audioRecord.stop();
                 picovoice.delete();
             } catch (final Exception e) {
-                if (errorCallback != null) {
+                if (processErrorCallback != null) {
                     callbackHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            errorCallback.invoke(new PicovoiceException(e));
+                            processErrorCallback.invoke(new PicovoiceException(e));
                         }
                     });
                 } else {

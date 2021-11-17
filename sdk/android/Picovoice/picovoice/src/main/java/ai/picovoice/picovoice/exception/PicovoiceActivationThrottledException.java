@@ -12,6 +12,12 @@
 
 package ai.picovoice.picovoice;
 
-public interface PicovoiceManagerErrorCallback {
-    void invoke(PicovoiceException e);
+public class PicovoiceActivationThrottledException extends PicovoiceException  {
+    PicovoiceActivationThrottledException(Throwable cause) {
+        super(cause);
+    }
+
+    PicovoiceActivationThrottledException(String message) {
+        super(message);
+    }
 }

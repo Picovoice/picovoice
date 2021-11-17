@@ -26,11 +26,22 @@ dependencies {
     implementation 'ai.picovoice:picovoice-android:1.1.*'
 }
 ```
+
+## AccessKey
+
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Permissions
 
 To enable recording with your Android device's microphone you must add the following line to your `AndroidManifest.xml` file:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ## Usage
@@ -47,7 +58,10 @@ inference completion. The class can be initialized using the PicovoiceManager Bu
 ```java
 import ai.picovoice.picovoice.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 PicovoiceManager manager = new PicovoiceManager.Builder()    
+    .setAccessKey(accessKey)
     .setKeywordPath("assets_sub_folder/keyword.ppn")    
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
@@ -70,7 +84,10 @@ The keyword (.ppn) and context (.rhn) file are obtained from the [Picovoice Cons
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
 
 ```java
-PicovoiceManager manager = new PicovoiceManager(    
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+PicovoiceManager manager = new PicovoiceManager.Builder()
+    .setAccessKey(accessKey)
     .setKeywordPath("assets_sub_folder/keyword.ppn")
     .setWakeWordCallback(wakeWordCallback)    
     .setContextPath("assets_sub_folder/context.rhn")
@@ -79,14 +96,14 @@ PicovoiceManager manager = new PicovoiceManager(
     .setPorcupineSensitivity(0.7f)
     .setRhinoModelPath("assets_sub_folder/rhino_model.pv")
     .setRhinoSensitivity(0.35f)
-    .setErrorCallback(new PicovoiceManangerErrorCallback() {
+    .setRequireEndpoint(true)
+    .setProcessErrorCallback(new PicovoiceManangerErrorCallback() {
         @Override
         public void invoke(final PicovoiceException e) {
             // error handling
         }
     })
     .build(appContext);
-);
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
@@ -114,15 +131,19 @@ low-level binding for Android. It can be initialized using the Picovoice Builder
 ```java
 import ai.picovoice.picovoice.*;
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 final String porcupineModelPath = ...
 final String keywordPath = ...
 final float porcupineSensitivity = 0.5f;
 final String rhinoModelPath = ...
 final String contextPath = ...
 final float rhinoSensitivity = 0.5f;
+final boolean requireEndpoint = true;
 
 try {
     Picovoice picovoice = new Picovoice.Builder()
+        .setAccessKey(accessKey)
         .setPorcupineModelPath(porcupineModelPath)
         .setKeywordPath(keywordPath)
         .setPorcupineSensitivity(porcupineSensitivity)
@@ -135,6 +156,7 @@ try {
         .setRhinoModelPath(rhinoModelPath)
         .setContextPath(contextPath)
         .setRhinoSensitivity(rhinoSensitivity)
+        .setRequireEndpoint(true)
         .setInferenceCallback(new PicovoiceInferenceCallback() {
             @Override
             public void invoke(final RhinoInference inference) {
@@ -146,6 +168,8 @@ try {
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+
+RequireEndpoint is the parameter which indicates if Rhino should wait for a moment of silence before infering context. Default is set to true.
 
 The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
@@ -179,15 +203,18 @@ To add a custom context or model file to your application, add the files to your
 
 
 ```java
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 // in this example our files are located at 
 // '/assets/picovoice_files/keyword.ppn'
 // '/assets/picovoice_files/context.rhn' 
 try {    
-    Rhino rhino = new Rhino.Builder()
+    Picovoice picovoice = new Picovoice.Builder()
+                        .setAccessKey(accessKey)
                         .setKeywordPath("picovoice_files/keyword.ppn")
                         .setContextPath("picovoice_files/context.rhn")                    
                         .build(appContext);
-} catch (RhinoException e) { }
+} catch (PicovoiceException e) { }
 ```
 
 ## Non-English Models
