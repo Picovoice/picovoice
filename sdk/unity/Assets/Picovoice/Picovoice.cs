@@ -11,12 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace Pv.Unity
 {    
@@ -45,7 +39,7 @@ namespace Pv.Unity
         /// Gets the version number of the Picovoice platform
         /// </summary>
         /// <returns>Version of Picovoice</returns>
-        public string Version => "1.1.0";
+        public string Version => "2.0.0";
 
         /// <summary>
         /// Get the version of the Porcupine library
@@ -68,6 +62,7 @@ namespace Pv.Unity
         /// <summary>
         /// Picovoice constructor
         /// </summary>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to Porcupine's keyword model file.</param>
         /// <param name="wakeWordCallback">
         /// User-defined callback invoked upon detection of the wake phrase. 
@@ -93,31 +88,51 @@ namespace Pv.Unity
         /// <param name="rhinoSensitivity">
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
+        /// <param name="requireEndpoint">
+        /// Boolean variable to indicate if Rhino should wait for a chunk of silence before finishing inference.
+        /// </param>
         /// </returns>
-        public static Picovoice Create(string keywordPath, Action wakeWordCallback,
-                                       string contextPath, Action<Inference> inferenceCallback,
-                                       string porcupineModelPath = null, float porcupineSensitivity = 0.5f,
-                                       string rhinoModelPath = null, float rhinoSensitivity = 0.5f)
+        public static Picovoice Create(
+            string accessKey,
+            string keywordPath,
+            Action wakeWordCallback,
+            string contextPath,
+            Action<Inference> inferenceCallback,
+            string porcupineModelPath = null,
+            float porcupineSensitivity = 0.5f,
+            string rhinoModelPath = null,
+            float rhinoSensitivity = 0.5f,
+            bool requireEndpoint = true)
         {
-            Porcupine porcupine = Porcupine.Create(keywordPaths: new List<string> { keywordPath },
-                                                   modelPath: porcupineModelPath,
-                                                   sensitivities: new List<float> { porcupineSensitivity });
-
-            Rhino rhino = Rhino.Create(contextPath: contextPath,
-                                       modelPath: rhinoModelPath,
-                                       sensitivity: rhinoSensitivity);
-
-            if (porcupine.FrameLength != rhino.FrameLength)
+            try
             {
-                throw new ArgumentException("Porcupine and Rhino frame lengths are different");
-            }
+                Porcupine porcupine = Porcupine.FromKeywordPaths(accessKey,
+                    keywordPaths: new List<string> { keywordPath },
+                    modelPath: porcupineModelPath,
+                    sensitivities: new List<float> { porcupineSensitivity });
 
-            if (porcupine.SampleRate != rhino.SampleRate) 
+                Rhino rhino = Rhino.Create(accessKey,
+                    contextPath: contextPath,
+                    modelPath: rhinoModelPath,
+                    sensitivity: rhinoSensitivity,
+                    requireEndpoint: requireEndpoint);
+            
+                if (porcupine.FrameLength != rhino.FrameLength)
+                {
+                    throw new PicovoiceInvalidArgumentException($"Porcupine frame length ({porcupine.FrameLength}) and Rhino frame length ({rhino.FrameLength}) are different");
+                }
+
+                if (porcupine.SampleRate != rhino.SampleRate) 
+                {
+                    throw new PicovoiceInvalidArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
+                }
+
+                return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
+            }
+            catch (Exception ex)
             {
-                throw new ArgumentException("Porcupine and Rhino sample rate are different");
+                throw mapToPicovoiceException(ex);
             }
-
-            return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
         }
 
         // private constructor
@@ -148,13 +163,13 @@ namespace Pv.Unity
         {
             if (pcm.Length != FrameLength)
             {
-                throw new ArgumentException(string.Format("Input audio frame size ({0}) was not the size specified by Picovoice engine ({1}). ", pcm.Length, FrameLength) +
+                throw new PicovoiceInvalidArgumentException(string.Format("Input audio frame size ({0}) was not the size specified by Picovoice engine ({1}). ", pcm.Length, FrameLength) +
                     "Use picovoice.FrameLength to get the correct size.");
             }
 
             if (_porcupine == null || _rhino == null) 
             {
-                throw new ObjectDisposedException("picovoice", "Cannot process frame - resources have been released.");
+                throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             }
 
             if (!_isWakeWordDetected)
@@ -192,6 +207,65 @@ namespace Pv.Unity
             {
                 _rhino.Dispose();
                 _rhino = null;
+            }
+        }
+
+        /// <summary>
+        /// Maps Porcupine/Rhino Exception to Picovoice Exception
+        /// </summary>
+        private static PicovoiceException mapToPicovoiceException(Exception ex)
+        {
+            if (ex is PorcupineActivationException || ex is RhinoActivationException) 
+            {
+                return new PicovoiceActivationException(ex.Message);
+            }
+            else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException) 
+            {
+                return new PicovoiceActivationLimitException(ex.Message);
+            } 
+            else if (ex is PorcupineActivationRefusedException || ex is RhinoActivationRefusedException)
+            {
+                return new PicovoiceActivationRefusedException(ex.Message);
+            } 
+            else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException) 
+            {
+                return new PicovoiceActivationThrottledException(ex.Message);
+            } 
+            else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException) 
+            {
+                return new PicovoiceInvalidArgumentException(ex.Message);
+            } 
+            else if (ex is PorcupineInvalidStateException || ex is RhinoInvalidStateException)
+            {
+                return new PicovoiceInvalidStateException(ex.Message);
+            } 
+            else if (ex is PorcupineIOException || ex is RhinoIOException)
+            {
+                return new PicovoiceIOException(ex.Message);
+            } 
+            else if (ex is PorcupineKeyException || ex is RhinoKeyException)
+            {
+                return new PicovoiceKeyException(ex.Message);
+            } 
+            else if (ex is PorcupineMemoryException || ex is RhinoMemoryException) 
+            {
+                return new PicovoiceMemoryException(ex.Message);
+            } 
+            else if (ex is PorcupineRuntimeException || ex is RhinoRuntimeException)
+            {
+                return new PicovoiceRuntimeException(ex.Message);
+            } 
+            else if (ex is PorcupineStopIterationException || ex is RhinoStopIterationException)
+            {
+                return new PicovoiceStopIterationException(ex.Message);
+            } 
+            else if (ex is PorcupineException || ex is RhinoException)
+            {
+                return new PicovoiceException(ex.Message);
+            } 
+            else
+            {
+                return new PicovoiceException($"Unknown exception: '{ex.GetType().Name}', message: '{ex.Message}'");
             }
         }
 
