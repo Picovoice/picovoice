@@ -990,7 +990,7 @@ PicovoiceManager _picovoiceManager = new PicovoiceManager.Create(
                                 "/path/to/keyword/file.ppn",
                                 OnWakeWordDetected
                                 "/path/to/context/file.rhn",
-                                OnInferenceResult
+                                OnInferenceResult);
 ```
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
