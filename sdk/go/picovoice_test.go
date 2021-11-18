@@ -12,6 +12,7 @@ package picovoice
 
 import (
 	"encoding/binary"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -32,15 +33,24 @@ var (
 	p                  Picovoice
 	isWakeWordDetected = false
 	inference          rhn.RhinoInference
+	pvTestAccessKey    string
 )
 
 func TestMain(m *testing.M) {
+
+	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
+	flag.Parse()
 
 	keywordPath, _ := filepath.Abs(fmt.Sprintf("../../resources/porcupine/resources/keyword_files/%s/picovoice_%s.ppn", osName, osName))
 	contextPath, _ := filepath.Abs(fmt.Sprintf("../../resources/rhino/resources/contexts/%s/coffee_maker_%s.rhn", osName, osName))
 	wakeWordCallback := func() { isWakeWordDetected = true }
 	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
-	p = NewPicovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback)
+	p = NewPicovoice(
+		pvTestAccessKey,
+		keywordPath,
+		wakeWordCallback,
+		contextPath,
+		inferenceCallback)
 	err := p.Init()
 	if err != nil {
 		log.Fatalf("%v", err)
@@ -135,26 +145,23 @@ func getLinuxDetails() string {
 	for _, line := range strings.Split(string(cpuInfo), "\n") {
 		if strings.Contains(line, "CPU part") {
 			split := strings.Split(line, " ")
-			cpuPart = strings.ToLower(split[len(split) - 1])
+			cpuPart = strings.ToLower(split[len(split)-1])
 			break
 		}
 	}
 
 	switch cpuPart {
 	case "0xb76":
-		return "raspberry-pi"
 	case "0xc07":
-		return "raspberry-pi"
 	case "0xd03":
+	case "0xd08":
 		return "raspberry-pi"
 	case "0xd07":
 		return "jetson"
-	case "0xd08":
-		return "raspberry-pi"
 	case "0xc08":
 		return "beaglebone"
 	default:
-		log.Printf(`WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice.\n`, cpuPart)
-		return "linux"
+		log.Fatalf(`This device (CPU part = %s) is not supported by Picovoice.`, cpuPart)
 	}
+	return ""
 }

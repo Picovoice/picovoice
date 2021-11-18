@@ -25,7 +25,6 @@ package picovoice
 
 import (
 	"fmt"
-	"os"
 
 	ppn "github.com/Picovoice/porcupine/binding/go"
 	rhn "github.com/Picovoice/rhino/binding/go"
@@ -35,14 +34,33 @@ import (
 type PvStatus int
 
 const (
-	SUCCESS          PvStatus = 0
-	OUT_OF_MEMORY    PvStatus = 1
-	IO_ERROR         PvStatus = 2
-	INVALID_ARGUMENT PvStatus = 3
-	STOP_ITERATION   PvStatus = 4
-	KEY_ERROR        PvStatus = 5
-	INVALID_STATE    PvStatus = 6
+	SUCCESS                  PvStatus = 0
+	OUT_OF_MEMORY            PvStatus = 1
+	IO_ERROR                 PvStatus = 2
+	INVALID_ARGUMENT         PvStatus = 3
+	STOP_ITERATION           PvStatus = 4
+	KEY_ERROR                PvStatus = 5
+	INVALID_STATE            PvStatus = 6
+	RUNTIME_ERROR            PvStatus = 7
+	ACTIVATION_ERROR         PvStatus = 8
+	ACTIVATION_LIMIT_REACHED PvStatus = 9
+	ACTIVATION_THROTTLED     PvStatus = 10
+	ACTIVATION_REFUSED       PvStatus = 11
 )
+
+type PicovoiceError struct {
+	StatusCode PvStatus
+	Message    string
+	InnerError error
+}
+
+func (e *PicovoiceError) Error() string {
+	if e.InnerError != nil {
+		return e.InnerError.Error()
+	} else {
+		return fmt.Sprintf("%s: %s", pvStatusToString(e.StatusCode), e.Message)
+	}
+}
 
 func pvStatusToString(status PvStatus) string {
 	switch status {
@@ -60,6 +78,16 @@ func pvStatusToString(status PvStatus) string {
 		return "KEY_ERROR"
 	case INVALID_STATE:
 		return "INVALID_STATE"
+	case RUNTIME_ERROR:
+		return "RUNTIME_ERROR"
+	case ACTIVATION_ERROR:
+		return "ACTIVATION_ERROR"
+	case ACTIVATION_LIMIT_REACHED:
+		return "ACTIVATION_LIMIT_REACHED"
+	case ACTIVATION_THROTTLED:
+		return "ACTIVATION_THROTTLED"
+	case ACTIVATION_REFUSED:
+		return "ACTIVATION_REFUSED"
 	default:
 		return fmt.Sprintf("Unknown error code: %d", status)
 	}
@@ -84,6 +112,9 @@ type Picovoice struct {
 
 	// true after Porcupine detected wake word
 	wakeWordDetected bool
+
+	// AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
+	AccessKey string
 
 	// Path to Porcupine keyword file (.ppn)
 	KeywordPath string
@@ -112,17 +143,23 @@ type Picovoice struct {
 	// Sensitivity should be a floating-point number within 0 and 1.
 	RhinoSensitivity float32
 
+	// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+	RequireEndpoint bool
+
 	// Once initialized, stores the source of the Rhino context in YAML format. Shows the list of intents,
 	// which expressions map to those intents, as well as slots and their possible values.
 	ContextInfo string
 }
 
-// Returns a Picovoice stuct with default parameters
-func NewPicovoice(keywordPath string,
+// Returns a Picovoice struct with default parameters
+func NewPicovoice(
+	accessKey string,
+	keywordPath string,
 	wakewordCallback WakeWordCallbackType,
 	contextPath string,
 	inferenceCallback InferenceCallbackType) Picovoice {
 	return Picovoice{
+		AccessKey:         accessKey,
 		KeywordPath:       keywordPath,
 		WakeWordCallback:  wakewordCallback,
 		ContextPath:       contextPath,
@@ -130,6 +167,7 @@ func NewPicovoice(keywordPath string,
 
 		PorcupineSensitivity: 0.5,
 		RhinoSensitivity:     0.5,
+		RequireEndpoint:      true,
 	}
 }
 
@@ -147,65 +185,73 @@ var (
 	RhinoVersion = rhn.Version
 
 	// Picovoice version
-	Version = fmt.Sprintf("1.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
+	Version = fmt.Sprintf("2.0.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
 )
 
 // Init function for Picovoice. Must be called before attempting process.
 func (picovoice *Picovoice) Init() error {
 
-	if picovoice.KeywordPath == "" {
-		return fmt.Errorf("%s: No valid keyword was provided", pvStatusToString(INVALID_ARGUMENT))
-	}
-
-	if _, err := os.Stat(picovoice.KeywordPath); os.IsNotExist(err) {
-		return fmt.Errorf("%s: Keyword file file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), picovoice.KeywordPath)
-	}
-
-	if picovoice.ContextPath == "" {
-		return fmt.Errorf("%s: No valid context was provided", pvStatusToString(INVALID_ARGUMENT))
-	}
-
-	if _, err := os.Stat(picovoice.ContextPath); os.IsNotExist(err) {
-		return fmt.Errorf("%s: Context file could not be found at %s", pvStatusToString(INVALID_ARGUMENT), picovoice.ContextPath)
+	if picovoice.WakeWordCallback == nil {
+		return &PicovoiceError{
+			StatusCode: INVALID_ARGUMENT,
+			Message:    "No WakeWordCallback was provided",
+		}
 	}
 
 	if picovoice.InferenceCallback == nil {
-		return fmt.Errorf("%s: No InferenceCallback was provided", pvStatusToString(INVALID_ARGUMENT))
+		return &PicovoiceError{
+			StatusCode: INVALID_ARGUMENT,
+			Message:    "No InferenceCallback was provided",
+		}
 	}
 
 	if ppn.SampleRate != rhn.SampleRate {
-		return fmt.Errorf("%s: Pocupine sample rate (%d) was differenct than Rhino sample rate (%d)",
-			pvStatusToString(INVALID_ARGUMENT),
-			ppn.SampleRate,
-			rhn.SampleRate)
+		return &PicovoiceError{
+			StatusCode: INVALID_ARGUMENT,
+			Message: fmt.Sprintf(
+				"Pocupine sample rate (%d) was different than Rhino sample rate (%d)",
+				ppn.SampleRate,
+				rhn.SampleRate),
+		}
 	}
 
 	if ppn.FrameLength != rhn.FrameLength {
-		return fmt.Errorf("%s: Pocupine frame length (%d) was differenct than Rhino frame length (%d)",
-			pvStatusToString(INVALID_ARGUMENT),
-			ppn.FrameLength,
-			rhn.FrameLength)
+		return &PicovoiceError{
+			StatusCode: INVALID_ARGUMENT,
+			Message: fmt.Sprintf(
+				"Pocupine frame length (%d) was different than Rhino frame length (%d)",
+				ppn.FrameLength,
+				rhn.FrameLength),
+		}
 	}
 
 	picovoice.porcupine = ppn.Porcupine{
+		AccessKey:     picovoice.AccessKey,
 		ModelPath:     picovoice.PorcupineModelPath,
 		KeywordPaths:  []string{picovoice.KeywordPath},
-		Sensitivities: []float32{0.5},
+		Sensitivities: []float32{picovoice.PorcupineSensitivity},
 	}
 	err := picovoice.porcupine.Init()
 	if err != nil {
-		return err
+		return &PicovoiceError{
+			InnerError: err,
+		}
 	}
 
 	picovoice.rhino = rhn.Rhino{
-		ModelPath:   picovoice.RhinoModelPath,
-		ContextPath: picovoice.ContextPath,
-		Sensitivity: picovoice.RhinoSensitivity,
+		AccessKey:       picovoice.AccessKey,
+		ModelPath:       picovoice.RhinoModelPath,
+		ContextPath:     picovoice.ContextPath,
+		Sensitivity:     picovoice.RhinoSensitivity,
+		RequireEndpoint: picovoice.RequireEndpoint,
 	}
 	err = picovoice.rhino.Init()
 	if err != nil {
-		return err
+		return &PicovoiceError{
+			InnerError: err,
+		}
 	}
+
 	picovoice.ContextInfo = picovoice.rhino.ContextInfo
 	picovoice.initialized = true
 	return nil
@@ -213,14 +259,19 @@ func (picovoice *Picovoice) Init() error {
 
 // Releases resouces aquired by Picovoice
 func (picovoice *Picovoice) Delete() error {
+
 	porcupineErr := picovoice.porcupine.Delete()
 	rhinoErr := picovoice.rhino.Delete()
 
 	if porcupineErr != nil {
-		return porcupineErr
+		return &PicovoiceError{
+			InnerError: porcupineErr,
+		}
 	}
 	if rhinoErr != nil {
-		return rhinoErr
+		return &PicovoiceError{
+			InnerError: rhinoErr,
+		}
 	}
 
 	picovoice.initialized = false
@@ -231,35 +282,48 @@ func (picovoice *Picovoice) Delete() error {
 // Invokes user-defined callbacks upon detection of wake word and completion of follow-on command inference
 func (picovoice *Picovoice) Process(pcm []int16) error {
 	if !picovoice.initialized {
-		return fmt.Errorf("Picovoice could not process because it has either not been initialized or has been deleted")
+		return &PicovoiceError{
+			StatusCode: INVALID_STATE,
+			Message:    "Picovoice could not process because it has either not been initialized or has been deleted",
+		}
 	}
 
 	if len(pcm) != FrameLength {
-		return fmt.Errorf("input data frame size (%d) does not match required size of %d", len(pcm), FrameLength)
+		return &PicovoiceError{
+			StatusCode: INVALID_STATE,
+			Message: fmt.Sprintf(
+				"Input data frame size (%d) does not match required size of %d",
+				len(pcm),
+				FrameLength),
+		}
 	}
 
 	if !picovoice.wakeWordDetected {
 		keywordIndex, err := picovoice.porcupine.Process(pcm)
 		if err != nil {
-			return err
+			return &PicovoiceError{
+				InnerError: err,
+			}
 		}
 
 		if keywordIndex == 0 {
 			picovoice.wakeWordDetected = true
-			if picovoice.WakeWordCallback != nil {
-				picovoice.WakeWordCallback()
-			}
+			picovoice.WakeWordCallback()
 		}
 	} else {
 		isFinalized, err := picovoice.rhino.Process(pcm)
 		if err != nil {
-			return err
+			return &PicovoiceError{
+				InnerError: err,
+			}
 		}
 		if isFinalized {
 			picovoice.wakeWordDetected = false
 			inference, err := picovoice.rhino.GetInference()
 			if err != nil {
-				return err
+				return &PicovoiceError{
+					InnerError: err,
+				}
 			}
 
 			picovoice.InferenceCallback(inference)
