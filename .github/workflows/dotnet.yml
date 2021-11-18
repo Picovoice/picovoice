@@ -47,10 +47,10 @@ jobs:
       working-directory: resources/rhino/binding/dotnet
     
     - name: Add Porcupine binding to SDK
-      run: dotnet nuget add source ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release -n Porcupine
+      run: dotnet nuget add source resources/porcupine/binding/dotnet/Porcupine/bin/Release -n Porcupine
 
     - name: Add Rhino binding to SDK
-      run: dotnet nuget add source ../../resources/rhino/binding/dotnet/Rhino/bin/Release -n Rhino
+      run: dotnet nuget add source resources/rhino/binding/dotnet/Rhino/bin/Release -n Rhino
             
     - name: Build
       run: dotnet build
