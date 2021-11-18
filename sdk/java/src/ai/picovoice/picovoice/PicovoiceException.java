@@ -13,6 +13,10 @@
 package ai.picovoice.picovoice;
 
 public class PicovoiceException extends Exception {
+    PicovoiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     PicovoiceException(Throwable cause) {
         super(cause);
     }

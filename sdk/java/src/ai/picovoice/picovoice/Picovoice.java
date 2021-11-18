@@ -114,7 +114,7 @@ public class Picovoice {
 
             this.inferenceCallback = inferenceCallback;
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
+            throw new PicovoiceException(e.getMessage(), e.getCause());
         }
     }
 
@@ -150,7 +150,7 @@ public class Picovoice {
                 }
             }
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
+            throw new PicovoiceException(e.getMessage(), e.getCause());
         }
     }
 
