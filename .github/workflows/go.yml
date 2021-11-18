@@ -3,12 +3,12 @@ name: Go
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        go: [ '1.16' ]
+        go: [ '1.16', '1.17' ]
 
     steps:
     - uses: actions/checkout@v2
