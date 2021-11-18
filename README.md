@@ -269,6 +269,7 @@ From the root of the repository run the following in the terminal:
 
 ```console
 dotnet run -p demo/dotnet/PicovoiceDemo/PicovoiceDemo.csproj -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 --context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -789,12 +790,11 @@ To create an instance of Picovoice, do the following:
 ```csharp
 using Pv;
 
+const string accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://console.picovoice.ai/)
+
 string keywordPath = "/absolute/path/to/keyword.ppn";
-
 void wakeWordCallback() => {..}
-
 string contextPath = "/absolute/path/to/context.rhn";
-
 void inferenceCallback(Inference inference)
 {
     // `inference` exposes three immutable properties:
@@ -804,16 +804,16 @@ void inferenceCallback(Inference inference)
     // ..
 }
 
-Picovoice handle = new Picovoice(keywordPath,
-                                 wakeWordCallback,
+Picovoice handle = Picovoice.Create(accessKey,
+                                 keywordPath, 
+                                 wakeWordCallback, 
                                  contextPath,
-                                 inferenceCallback);
-
+                                 inferenceCallback); 
 ```
 
 `handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
 `keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+the context defined by the file located at `contextPath`. `accessKey` is your Picovoice `AccessKey`. `keywordPath` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` extension).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
 (with `.rhn` extension). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
@@ -835,11 +835,10 @@ while(true)
 }
 ```
 
-Porcupine will have its resources freed by the garbage collector, but to have resources freed
-immediately after use, wrap it in a `using` statement:
+Picovoice will have its resources freed by the garbage collector, but to have resources freed immediately after use, wrap it in a `using` statement:
 
 ```csharp
-using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback))
+using(Picovoice handle = Picovoice.Create(accessKey, keywordPath, wakeWordCallback, contextPath, inferenceCallback))
 {
     // .. Picovoice usage here
 }
