@@ -35,6 +35,14 @@ jobs:
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
 
+    - name: Java dependencies pre-build
+      run: ./gradlew assemble
+      working-directory: resources/porcupine/binding/java
+
+    - name: Java dependencies pre-build
+      run: ./gradlew assemble
+      working-directory: resources/rhino/binding/java
+
     - name: Build
       run: ./gradlew assemble
 
