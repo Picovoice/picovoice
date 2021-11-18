@@ -20,4 +20,8 @@ public class PicovoiceInvalidArgumentException extends PicovoiceException {
     PicovoiceInvalidArgumentException(String message) {
         super(message);
     }
+
+    PicovoiceInvalidArgumentException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

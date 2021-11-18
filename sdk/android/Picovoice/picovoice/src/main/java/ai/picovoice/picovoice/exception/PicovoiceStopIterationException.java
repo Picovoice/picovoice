@@ -20,4 +20,8 @@ public class PicovoiceStopIterationException extends PicovoiceException {
     PicovoiceStopIterationException(String message) {
         super(message);
     }
+
+    PicovoiceStopIterationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

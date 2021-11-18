@@ -20,4 +20,8 @@ public class PicovoiceInvalidStateException extends PicovoiceException {
     PicovoiceInvalidStateException(String message) {
         super(message);
     }
+
+    PicovoiceInvalidStateException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
