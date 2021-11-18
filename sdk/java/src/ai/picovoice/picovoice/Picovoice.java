@@ -122,11 +122,9 @@ public class Picovoice {
     public void delete() {
         if (porcupine != null) {
             porcupine.delete();
-            porcupine = null;
         }
         if (rhino != null) {
             rhino.delete();
-            rhino = null;
         }
     }
 
