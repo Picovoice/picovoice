@@ -31,10 +31,10 @@ import ai.picovoice.rhino.*;
  * engine for intent inference.
  */
 public class Picovoice {
-    final private Porcupine porcupine;
+    private Porcupine porcupine;
     final private PicovoiceWakeWordCallback wakeWordCallback;
     private boolean isWakeWordDetected = false;
-    final private Rhino rhino;
+    private Rhino rhino;
     final private PicovoiceInferenceCallback inferenceCallback;
 
     /**
@@ -122,9 +122,11 @@ public class Picovoice {
     public void delete() {
         if (porcupine != null) {
             porcupine.delete();
+            porcupine = null;
         }
         if (rhino != null) {
             rhino.delete();
+            rhino = null;
         }
     }
 
