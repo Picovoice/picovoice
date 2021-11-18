@@ -330,11 +330,12 @@ For more information about the Java demos go to [demo/java](/demo/java/README.md
 
 ### Go Demos
 
-The demo requires `cgo`, which on Windows may mean that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
+The demos require `cgo`, which means that a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) is required.
 
 From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
 go run micdemo/picovoice_mic_demo.go \
+-access_key ${ACCESS_KEY} \
 -keyword_path "../../resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn" \
 -context_path "../../resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn"
 ```
@@ -920,6 +921,8 @@ To create an instance of the engine with default parameters, use the `NewPicovoi
 . "github.com/Picovoice/picovoice/sdk/go"
 rhn "github.com/Picovoice/rhino/binding/go"
 
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+
 keywordPath := "/path/to/keyword/file.ppn"
 wakeWordCallback := func(){
     // let user know wake word detected
@@ -936,7 +939,9 @@ inferenceCallback := func(inference rhn.RhinoInference){
     }
 }
 
-picovoice := NewPicovoice(keywordPath, 
+picovoice := NewPicovoice(
+    accessKey,
+    keywordPath, 
     wakeWordCallback, 
     contextPath, 
     inferenceCallback)
@@ -948,7 +953,7 @@ if err != nil {
 ```
 
 Upon detection of wake word defined by `keywordPath` it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+the context defined by the file located at `contextPath`. `accessKey` is your Picovoice `AccessKey`. `keywordPath` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
 (with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
