@@ -4,6 +4,17 @@ A voice-controlled smart lighting panel using Java Swing and the Picovoice platf
 
 Before running the demo, run the `copy.sh` script to copy wake word and context files from elsewhere in the repo.
 
+## AccessKey
+
+The Rhino SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Rhino SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+## Usage
+
 Build the app with Gradle:
 ```console
 cd picovoice/demo/java-swing
@@ -13,8 +24,8 @@ cd picovoice/demo/java-swing
 Then launch the app:
 
 ```console
-cd picovoice/demo/java-swing/build/libs
-java -jar JavaSwingDemo.jar
+cd picovoice/demo/java-swing
+java -jar build/libs/JavaSwingDemo.jar -a ${ACCESS_KEY}
 ```
 
 For this demo, the wake word is `Javis` and the context is `Smart Lighting`. You can say things like:

@@ -152,7 +152,7 @@ public class FileDemo {
         String rhinoLibraryPath = cmd.getOptionValue("rhino_library_path");
         String rhinoModelPath = cmd.getOptionValue("rhino_model_path");
         String rhinoSensitivityStr = cmd.getOptionValue("rhino_sensitivity");
-        boolean requireEndpoint = cmd.hasOption("require_endpoint");
+        String requireEndpointValue = cmd.getOptionValue("require_endpoint");
 
         if (accessKey == null || accessKey.length() == 0) {
             throw new IllegalArgumentException("AccessKey is required for Porcupine.");
@@ -209,6 +209,11 @@ public class FileDemo {
         File contextFile = new File(contextPath);
         if (!contextFile.exists()) {
             throw new IllegalArgumentException(String.format("Context file at path '%s' does not exist", contextPath));
+        }
+
+        boolean requireEndpoint = true;
+        if (requireEndpointValue != null && requireEndpointValue.toLowerCase().equals("false")) {
+            requireEndpoint = false;
         }
 
         runDemo(accessKey, inputAudioFile, keywordPath, contextPath,
@@ -281,8 +286,12 @@ public class FileDemo {
                         "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
                 .build());
 
-        options.addOption(new Option("e", "require_endpoint", false, "If set, Rhino requires an endpoint " +
-                "(chunk of silence) before finishing inference."));
+        options.addOption(Option.builder("e")
+                .longOpt("require_endpoint")
+                .hasArg(true)
+                .desc("If set to `false`, Rhino does not require an endpoint (chunk of silence) before " +
+                        "finishing inference.")
+                .build());
 
         options.addOption(new Option("h", "help", false, ""));
 

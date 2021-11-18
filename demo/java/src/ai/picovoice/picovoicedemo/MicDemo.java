@@ -234,7 +234,7 @@ public class MicDemo {
         String rhinoSensitivityStr = cmd.getOptionValue("rhino_sensitivity");
         String audioDeviceIndexStr = cmd.getOptionValue("audio_device_index");
         String outputPath = cmd.getOptionValue("output_path");
-        boolean requireEndpoint = cmd.hasOption("require_endpoint");
+        String requireEndpointValue = cmd.getOptionValue("require_endpoint");
 
         if (accessKey == null || accessKey.length() == 0) {
             throw new IllegalArgumentException("AccessKey is required for Porcupine.");
@@ -297,6 +297,11 @@ public class MicDemo {
                 throw new IllegalArgumentException(String.format("Audio device index '%s' is not a " +
                         "valid positive integer.", audioDeviceIndexStr));
             }
+        }
+
+        boolean requireEndpoint = true;
+        if (requireEndpointValue != null && requireEndpointValue.toLowerCase().equals("false")) {
+            requireEndpoint = false;
         }
 
         runDemo(accessKey, keywordPath, contextPath,
@@ -364,8 +369,12 @@ public class MicDemo {
                         "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
                 .build());
 
-        options.addOption(new Option("e", "require_endpoint", false, "If set, Rhino requires an endpoint " +
-                "(chunk of silence) before finishing inference."));
+        options.addOption(Option.builder("e")
+                .longOpt("require_endpoint")
+                .hasArg(true)
+                .desc("If set to `false`, Rhino does not require an endpoint (chunk of silence) before " +
+                        "finishing inference.")
+                .build());
 
         options.addOption(Option.builder("o")
                 .longOpt("output_path")
