@@ -45,13 +45,10 @@ jobs:
     - name: Pack Rhino binding for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
+                
+    - name: Add Rhino and Porcupine
+      run: dotnet restore Picovoice/Picovoice.csproj -s ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release -s ../../resources/rhino/binding/dotnet/Rhino/bin/Release
     
-    - name: Add Porcupine binding to SDK
-      run: dotnet nuget add source resources/porcupine/binding/dotnet/Porcupine/bin/Release -n Porcupine
-
-    - name: Add Rhino binding to SDK
-      run: dotnet nuget add source resources/rhino/binding/dotnet/Rhino/bin/Release -n Rhino
-            
     - name: Build
       run: dotnet build
       
