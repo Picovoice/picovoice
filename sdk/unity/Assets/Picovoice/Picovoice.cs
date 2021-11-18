@@ -13,14 +13,14 @@ using System;
 using System.Collections.Generic;
 
 namespace Pv.Unity
-{    
+{
     public class Picovoice : IDisposable
-    {        
+    {
         private Porcupine _porcupine;
         private Rhino _rhino;
         private Action _wakeWordCallback;
         private Action<Inference> _inferenceCallback;
-        
+
         private bool _isWakeWordDetected;
 
         /// <summary>
@@ -126,13 +126,13 @@ namespace Pv.Unity
                 {
                     throw new PicovoiceInvalidArgumentException("'inferenceCallback' must be set.");
                 }
-            
+
                 if (porcupine.FrameLength != rhino.FrameLength)
                 {
                     throw new PicovoiceInvalidArgumentException($"Porcupine frame length ({porcupine.FrameLength}) and Rhino frame length ({rhino.FrameLength}) are different");
                 }
 
-                if (porcupine.SampleRate != rhino.SampleRate) 
+                if (porcupine.SampleRate != rhino.SampleRate)
                 {
                     throw new PicovoiceInvalidArgumentException($"Porcupine sample rate ({porcupine.SampleRate}) and Rhino sample rate ({rhino.SampleRate}) are different");
                 }
@@ -177,7 +177,7 @@ namespace Pv.Unity
                     "Use picovoice.FrameLength to get the correct size.");
             }
 
-            if (_porcupine == null || _rhino == null) 
+            if (_porcupine == null || _rhino == null)
             {
                 throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             }
@@ -191,10 +191,10 @@ namespace Pv.Unity
                     _wakeWordCallback.Invoke();
                 }
             }
-            else 
+            else
             {
                 bool isFinalized = _rhino.Process(pcm);
-                if (isFinalized) 
+                if (isFinalized)
                 {
                     _isWakeWordDetected = false;
                     _inferenceCallback.Invoke(_rhino.GetInference());
@@ -207,13 +207,13 @@ namespace Pv.Unity
         /// </summary>
         public void Dispose()
         {
-            if (_porcupine != null) 
+            if (_porcupine != null)
             {
                 _porcupine.Dispose();
                 _porcupine = null;
             }
 
-            if (_rhino != null) 
+            if (_rhino != null)
             {
                 _rhino.Dispose();
                 _rhino = null;
@@ -225,50 +225,50 @@ namespace Pv.Unity
         /// </summary>
         private static PicovoiceException MapToPicovoiceException(Exception ex)
         {
-            if (ex is PorcupineActivationException || ex is RhinoActivationException) 
+            if (ex is PorcupineActivationException || ex is RhinoActivationException)
             {
                 return new PicovoiceActivationException(ex.Message, ex);
             }
-            else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException) 
+            else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException)
             {
                 return new PicovoiceActivationLimitException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineActivationRefusedException || ex is RhinoActivationRefusedException)
             {
                 return new PicovoiceActivationRefusedException(ex.Message, ex);
-            } 
-            else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException) 
+            }
+            else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException)
             {
                 return new PicovoiceActivationThrottledException(ex.Message, ex);
-            } 
-            else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException) 
+            }
+            else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException)
             {
                 return new PicovoiceInvalidArgumentException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineInvalidStateException || ex is RhinoInvalidStateException)
             {
                 return new PicovoiceInvalidStateException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineIOException || ex is RhinoIOException)
             {
                 return new PicovoiceIOException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineKeyException || ex is RhinoKeyException)
             {
                 return new PicovoiceKeyException(ex.Message, ex);
-            } 
-            else if (ex is PorcupineMemoryException || ex is RhinoMemoryException) 
+            }
+            else if (ex is PorcupineMemoryException || ex is RhinoMemoryException)
             {
                 return new PicovoiceMemoryException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineRuntimeException || ex is RhinoRuntimeException)
             {
                 return new PicovoiceRuntimeException(ex.Message, ex);
-            } 
+            }
             else if (ex is PorcupineStopIterationException || ex is RhinoStopIterationException)
             {
                 return new PicovoiceStopIterationException(ex.Message, ex);
-            } 
+            }
             else
             {
                 return new PicovoiceException(ex.Message, ex);

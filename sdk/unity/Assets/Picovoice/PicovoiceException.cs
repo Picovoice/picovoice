@@ -2,7 +2,7 @@
 
 namespace Pv.Unity
 {
-     public class PicovoiceException : Exception
+    public class PicovoiceException : Exception
     {
         public PicovoiceException() { }
 
