@@ -1,4 +1,6 @@
-# Picovoice
+# Picovoice SDK for .NET
+
+## Picovoice
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -45,6 +47,15 @@ You can install the latest version of Picovoice by adding the latest [Picovoice 
 dotnet add package Picovoice
 ```
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 Create an instance of the engine
@@ -52,12 +63,11 @@ Create an instance of the engine
 ```csharp
 using Pv;
 
+const string accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://console.picovoice.ai/)
+
 string keywordPath = "/absolute/path/to/keyword.ppn";
-
 void wakeWordCallback() => {..}
-
 string contextPath = "/absolute/path/to/context.rhn";
-
 void inferenceCallback(Inference inference)
 {
     // `inference` exposes three immutable properties:
@@ -67,16 +77,16 @@ void inferenceCallback(Inference inference)
     // ..
 }
 
-Picovoice handle = new Picovoice(keywordPath, 
+Picovoice handle = Picovoice.Create(accessKey,
+                                 keywordPath, 
                                  wakeWordCallback, 
                                  contextPath,
                                  inferenceCallback); 
 
 ```
 
-`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
-`keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at `keywordPath`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
+the context defined by the file located at `contextPath`. `accessKey` is your Picovoice `AccessKey`. `keywordPath` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
 (with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
@@ -102,7 +112,7 @@ Picovoice will have its resources freed by the garbage collector, but to have re
 immediately after use, wrap it in a using statement: 
 
 ```csharp
-using(Picovoice handle = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback))
+using(Picovoice handle = Picovoice.Create(accessKey, keywordPath, wakeWordCallback, contextPath, inferenceCallback))
 {
     // .. Picovoice usage here
 }
@@ -114,5 +124,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-The [Picovoice dotnet demo](/demo/dotnet) is a .NET Core command line application that allows for 
-processing real-time audio (i.e. microphone) and files using Picovoice.
+The [Picovoice dotnet demo](/demo/dotnet) is a .NET Core command line application that allows for processing real-time audio (i.e. microphone) and files using Picovoice.
