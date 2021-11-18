@@ -7,6 +7,8 @@ namespace Pv
         public PicovoiceException() { }
 
         public PicovoiceException(string message) : base(message) { }
+
+        public PicovoiceException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceMemoryException : PicovoiceException
@@ -14,6 +16,8 @@ namespace Pv
         public PicovoiceMemoryException() { }
 
         public PicovoiceMemoryException(string message) : base(message) { }
+
+        public PicovoiceMemoryException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceIOException : PicovoiceException
@@ -21,6 +25,8 @@ namespace Pv
         public PicovoiceIOException() { }
 
         public PicovoiceIOException(string message) : base(message) { }
+
+        public PicovoiceIOException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceInvalidArgumentException : PicovoiceException
@@ -28,6 +34,8 @@ namespace Pv
         public PicovoiceInvalidArgumentException() { }
 
         public PicovoiceInvalidArgumentException(string message) : base(message) { }
+
+        public PicovoiceInvalidArgumentException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceStopIterationException : PicovoiceException
@@ -35,6 +43,8 @@ namespace Pv
         public PicovoiceStopIterationException() { }
 
         public PicovoiceStopIterationException(string message) : base(message) { }
+
+        public PicovoiceStopIterationException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceKeyException : PicovoiceException
@@ -42,6 +52,8 @@ namespace Pv
         public PicovoiceKeyException() { }
 
         public PicovoiceKeyException(string message) : base(message) { }
+
+        public PicovoiceKeyException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceInvalidStateException : PicovoiceException
@@ -49,6 +61,8 @@ namespace Pv
         public PicovoiceInvalidStateException() { }
 
         public PicovoiceInvalidStateException(string message) : base(message) { }
+
+        public PicovoiceInvalidStateException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceRuntimeException : PicovoiceException
@@ -56,6 +70,8 @@ namespace Pv
         public PicovoiceRuntimeException() { }
 
         public PicovoiceRuntimeException(string message) : base(message) { }
+
+        public PicovoiceRuntimeException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceActivationException : PicovoiceException
@@ -63,6 +79,8 @@ namespace Pv
         public PicovoiceActivationException() { }
 
         public PicovoiceActivationException(string message) : base(message) { }
+
+        public PicovoiceActivationException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceActivationLimitException : PicovoiceException
@@ -70,6 +88,8 @@ namespace Pv
         public PicovoiceActivationLimitException() { }
 
         public PicovoiceActivationLimitException(string message) : base(message) { }
+
+        public PicovoiceActivationLimitException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceActivationThrottledException : PicovoiceException
@@ -77,6 +97,8 @@ namespace Pv
         public PicovoiceActivationThrottledException() { }
 
         public PicovoiceActivationThrottledException(string message) : base(message) { }
+
+        public PicovoiceActivationThrottledException(string message, Exception innerException) : base(message, innerException) { }
     }
 
     public class PicovoiceActivationRefusedException : PicovoiceException
@@ -84,5 +106,7 @@ namespace Pv
         public PicovoiceActivationRefusedException() { }
 
         public PicovoiceActivationRefusedException(string message) : base(message) { }
+
+        public PicovoiceActivationRefusedException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
