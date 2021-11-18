@@ -3,12 +3,12 @@ name: .NET Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
@@ -31,13 +31,33 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
 
-    - name: Dotnet restore dependencies
-      run: dotnet restore
+    - name: mkdir NuGet directory 
+      run: mkdir local-nuget
+    
+    - name: Pack Porcupine for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/porcupine/binding/dotnet
+    
+    - name: Copy Porcupine Nuget
+      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg local-nuget
 
-
+    - name: Pack Rhino for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/rhino/binding/dotnet
+                
+    - name: Copy Rhino Nuget
+      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg local-nuget
+    
+    - name: Pack Picovoice for local ref
+      run: dotnet pack ../../../sdk/dotnet/Picovoice/Picovoice.csproj -c Release --source local-nuget
+                
+    - name: Copy Picovoice Nuget
+      run: cp ../../../sdk/dotnet/Picovoice/bin/Release/*.nupkg local-nuget
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
 
@@ -54,11 +74,33 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
-    - name: Dotnet dependencies
-      run: sudo apt install libopenal-dev
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    
+    - name: mkdir NuGet directory 
+      run: mkdir local-nuget
+    
+    - name: Pack Porcupine for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/porcupine/binding/dotnet
+    
+    - name: Copy Porcupine Nuget
+      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg local-nuget
 
-    - name: Dotnet restore dependencies
-      run: dotnet restore
-
+    - name: Pack Rhino for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/rhino/binding/dotnet
+                
+    - name: Copy Rhino Nuget
+      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg local-nuget
+    
+    - name: Pack Picovoice for local ref
+      run: dotnet pack ../../../sdk/dotnet/Picovoice/Picovoice.csproj -c Release --source local-nuget
+                
+    - name: Copy Picovoice Nuget
+      run: cp ../../../sdk/dotnet/Picovoice/bin/Release/*.nupkg local-nuget
+    
     - name: Dotnet build filedemo
-      run: dotnet build -c FileDemo.Release
+      run: dotnet build -c FileDemo.Release --source local-nuget
