@@ -107,7 +107,7 @@ export type PicovoiceWorkerArgs = {
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
-  requireEndpoint?: boolean
+  requireEndpoint?: boolean;
   start?: boolean;
 };
 
@@ -117,7 +117,7 @@ export type PicovoiceEngineArgs = {
   rhinoContext: RhinoContext;
   porcupineCallback: (keywordLabel: string) => void;
   rhinoCallback: (inference: RhinoInference) => void;
-  requireEndpoint?: boolean
+  requireEndpoint?: boolean;
 };
 
 export interface PicovoiceEngine {
@@ -160,7 +160,7 @@ export type WorkerRequestFileOperation = {
     | 'file-exists-succeeded'
     | 'file-exists-failed'
     | 'file-delete-succeeded'
-    | 'file-delete-failed'
+    | 'file-delete-failed';
   message?: string;
   content?: string;
 };
@@ -207,6 +207,6 @@ export type PicovoiceServiceArgs = {
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
-  requireEndpoint?: boolean
+  requireEndpoint?: boolean;
   start?: boolean;
 };
