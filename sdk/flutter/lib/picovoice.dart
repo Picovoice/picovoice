@@ -10,42 +10,43 @@
 //
 
 import 'picovoice_error.dart';
-import 'package:porcupine/porcupine.dart';
-import 'package:porcupine/porcupine_error.dart' as porcupineErr;
-import 'package:rhino/rhino.dart';
-import 'package:rhino/rhino_error.dart' as rhinoErr;
+import 'package:porcupine_flutter/porcupine.dart';
+import 'package:porcupine_flutter/porcupine_error.dart';
+import 'package:rhino_flutter/rhino.dart';
+import 'package:rhino_flutter/rhino_error.dart';
 
-typedef WakeWordCallback();
-typedef InferenceCallback(Map<String, dynamic> inference);
-typedef ErrorCallback(PvError error);
+typedef WakeWordCallback = Function();
+typedef InferenceCallback = Function(RhinoInference inference);
 
 class Picovoice {
   Porcupine? _porcupine;
-  WakeWordCallback _wakeWordCallback;
+  final WakeWordCallback _wakeWordCallback;
   Rhino? _rhino;
-  InferenceCallback _inferenceCallback;
+  final InferenceCallback _inferenceCallback;
   bool _isWakeWordDetected = false;
 
   /// The required number of audio samples per frame
-  static int get frameLength => Porcupine.frameLength;
+  int? get frameLength => _porcupine?.frameLength;
 
   /// The required audio sample rate
-  static int get sampleRate => Porcupine.sampleRate;
+  int? get sampleRate => _porcupine?.sampleRate;
 
   /// Version of Picovoice
-  static String get version => "1.1.0";
+  String get version => "2.0.0";
 
   /// Version of Porcupine
-  static String get porcupineVersion => Porcupine.version;
+  String? get porcupineVersion => _porcupine?.version;
 
   /// Version of Rhino
-  static String get rhinoVersion => Rhino.version;
+  String? get rhinoVersion => _rhino?.version;
 
   /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
   /// which expressions map to those intents, as well as slots and their possible values.
   String? get contextInfo => _rhino?.contextInfo;
 
-  /// Picovoice constructor
+  /// Static creator for initializing Picovoice
+  ///
+  /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
   ///
   /// [keywordPath] Absolute path to Porcupine's keyword model file.
   ///
@@ -56,7 +57,7 @@ class Picovoice {
   /// expressions(spoken commands), intents, and intent arguments(slots) within a domain of interest.
   ///
   /// [inferenceCallback] User-defined callback invoked upon completion of intent inference. The callback
-  /// accepts a single input argument of type `Map<String, dynamic>` that is populated with the following items:
+  /// accepts a single input argument of type `RhinoInference` that is populated with the following items:
   /// (1) `isUnderstood`: whether Rhino understood what it heard based on the context
   /// (2) `intent`: if isUnderstood, name of intent that were inferred
   /// (3) `slots`: if isUnderstood, dictionary of slot keys and values that were inferred
@@ -71,41 +72,50 @@ class Picovoice {
   /// [rhinoSensitivity] Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
   /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
   ///
+  /// [requireEndpoint] Boolean variable to indicate if Rhino should wait
+  /// for a chunk of silence before finishing inference.
+  ///
   /// returns an instance of the Picovoice end-to-end platform.
-  static create(String keywordPath, WakeWordCallback wakeWordCallback,
-      String contextPath, InferenceCallback inferenceCallback,
+  static create(
+      String accessKey,
+      String keywordPath,
+      WakeWordCallback wakeWordCallback,
+      String contextPath,
+      InferenceCallback inferenceCallback,
       {double porcupineSensitivity = 0.5,
       double rhinoSensitivity = 0.5,
       String? porcupineModelPath,
-      String? rhinoModelPath}) async {
+      String? rhinoModelPath,
+      bool requireEndpoint = true}) async {
     Porcupine porcupine;
     try {
-      porcupine = await Porcupine.fromKeywordPaths([keywordPath],
+      porcupine = await Porcupine.fromKeywordPaths(accessKey, [keywordPath],
           modelPath: porcupineModelPath, sensitivities: [porcupineSensitivity]);
-    } on porcupineErr.PvError catch (ex) {
-      throw new PvError("${ex.runtimeType}: ${ex.message}");
+    } on PorcupineException catch (ex) {
+      throw mapToPicovoiceException(ex, ex.message);
     }
 
     Rhino rhino;
     try {
-      rhino = await Rhino.create(contextPath,
-          modelPath: rhinoModelPath, sensitivity: rhinoSensitivity);
-    } on rhinoErr.PvError catch (ex) {
-      throw new PvError("${ex.runtimeType}: ${ex.message}");
+      rhino = await Rhino.create(accessKey, contextPath,
+          modelPath: rhinoModelPath,
+          sensitivity: rhinoSensitivity,
+          requireEndpoint: requireEndpoint);
+    } on RhinoException catch (ex) {
+      throw mapToPicovoiceException(ex, ex.message);
     }
 
-    if (Porcupine.frameLength != Rhino.frameLength) {
-      throw new PvArgumentError(
-          "Porcupine and Rhino frame lengths are different.");
+    if (porcupine.frameLength != rhino.frameLength) {
+      throw PicovoiceInvalidArgumentException(
+          "Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.");
     }
 
-    if (Porcupine.sampleRate != Rhino.sampleRate) {
-      throw new PvArgumentError(
-          "Porcupine and Rhino sample rates are different.");
+    if (porcupine.sampleRate != rhino.sampleRate) {
+      throw PicovoiceInvalidArgumentException(
+          "Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.");
     }
 
-    return new Picovoice._(
-        porcupine, wakeWordCallback, rhino, inferenceCallback);
+    return Picovoice._(porcupine, wakeWordCallback, rhino, inferenceCallback);
   }
 
   // private constructor
@@ -119,25 +129,28 @@ class Picovoice {
   /// [frame] A frame of audio samples. The number of samples per frame can be attained by calling
   /// `.frameLength`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit linearly-encoded.
   /// Picovoice operates on single-channel audio.
-  void process(List<int> frame) {
+  void process(List<int> frame) async {
     if (_porcupine == null || _rhino == null) {
-      throw new PvStateError(
+      throw PicovoiceInvalidStateException(
           "Cannot process frame - resources have been released.");
     }
 
+    if (frame.length != frameLength) {
+        throw PicovoiceInvalidArgumentException(
+            "Picovoice process requires frames of length $frameLength. Received frame of size ${frame.length}.");
+    }
+
     if (!_isWakeWordDetected) {
-      final int keywordIndex = _porcupine!.process(frame);
+      final int keywordIndex = await _porcupine!.process(frame);
       if (keywordIndex >= 0) {
         _isWakeWordDetected = true;
         _wakeWordCallback();
       }
     } else {
-      Map<String, dynamic> rhinoResult = _rhino!.process(frame);
-      if (rhinoResult['isFinalized']) {
+      RhinoInference inference = await _rhino!.process(frame);
+      if (inference.isFinalized) {
         _isWakeWordDetected = false;
-        rhinoResult.remove('isFinalized');
-
-        _inferenceCallback(rhinoResult);
+        _inferenceCallback(inference);
       }
     }
   }

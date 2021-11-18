@@ -13,8 +13,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'package:picovoice/picovoice_manager.dart';
-import 'package:picovoice/picovoice_error.dart';
+import 'package:rhino_flutter/rhino.dart';
+import 'package:picovoice_flutter/picovoice_manager.dart';
+import 'package:picovoice_flutter/picovoice_error.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,19 +27,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final String accessKey =
+      '{YOUR_ACCESS_KEY_HERE}'; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  bool isError = false;
+  String errorMessage = "";
 
   bool isButtonDisabled = false;
   bool isProcessing = false;
   bool wakeWordDetected = false;
   String rhinoText = "";
-  String errorText = "";
   PicovoiceManager? _picovoiceManager;
 
   @override
   void initState() {
     super.initState();
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
       rhinoText = "";
     });
@@ -51,35 +57,30 @@ class _MyAppState extends State<MyApp> {
         ? "android"
         : Platform.isIOS
             ? "ios"
-            : throw new PvError("This demo supports iOS and Android only.");
+            : throw PicovoiceRuntimeException(
+                "This demo supports iOS and Android only.");
     String keywordPath =
         "assets/keyword_files/$platform/picovoice_$platform.ppn";
     String contextPath =
         "assets/contexts/$platform/smart_lighting_$platform.rhn";
 
-    try {
-      _picovoiceManager = PicovoiceManager.create(
-          keywordPath, wakeWordCallback, contextPath, inferenceCallback,
-          errorCallback: errorCallback);
-      this.setState(() {
-        isButtonDisabled = false;
-      });
-    } on PvError catch (ex) {
-      this.setState(() {
-        errorText = "Failed to initialize Picovoice: ${ex.message}";
-      });
-    }
+    _picovoiceManager = PicovoiceManager.create(accessKey, keywordPath,
+        wakeWordCallback, contextPath, inferenceCallback,
+        processErrorCallback: errorCallback);
+    setState(() {
+      isButtonDisabled = false;
+    });
   }
 
   void wakeWordCallback() {
-    this.setState(() {
+    setState(() {
       wakeWordDetected = true;
       rhinoText = "Wake word detected!\nListening for intent...";
     });
   }
 
-  void inferenceCallback(Map<String, dynamic> inference) {
-    this.setState(() {
+  void inferenceCallback(RhinoInference inference) {
+    setState(() {
       rhinoText = prettyPrintInference(inference);
       wakeWordDetected = false;
     });
@@ -89,34 +90,36 @@ class _MyAppState extends State<MyApp> {
         if (wakeWordDetected) {
           rhinoText = "Wake word detected!\nListening for intent...";
         } else {
-          this.setState(() {
+          setState(() {
             rhinoText = "Listening for wake word...";
           });
         }
       } else {
-        this.setState(() {
+        setState(() {
           rhinoText = "";
         });
       }
     });
   }
 
-  void errorCallback(PvError error) {
+  void errorCallback(PicovoiceException error) {
     if (error.message != null) {
-      this.setState(() {
-        errorText = error.message!;
+      setState(() {
+        isError = true;
+        errorMessage = error.message!;
+        isProcessing = false;
       });
     }
   }
 
-  String prettyPrintInference(Map<String, dynamic> inference) {
+  String prettyPrintInference(RhinoInference inference) {
     String printText =
-        "{\n    \"isUnderstood\" : \"${inference['isUnderstood']}\",\n";
-    if (inference['isUnderstood']) {
-      printText += "    \"intent\" : \"${inference['intent']}\",\n";
-      if (inference['slots'].length > 0) {
+        "{\n    \"isUnderstood\" : \"${inference.isUnderstood}\",\n";
+    if (inference.isUnderstood!) {
+      printText += "    \"intent\" : \"${inference.intent}\",\n";
+      if (inference.slots!.isNotEmpty) {
         printText += '    "slots" : {\n';
-        Map<String, String> slots = inference['slots'];
+        Map<String, String> slots = inference.slots!;
         for (String key in slots.keys) {
           printText += "        \"$key\" : \"${slots[key]}\",\n";
         }
@@ -132,24 +135,37 @@ class _MyAppState extends State<MyApp> {
       return;
     }
 
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
     });
 
     try {
       if (_picovoiceManager == null) {
-        throw PvAudioException("_picovoiceManager not initialized.");
+        throw PicovoiceInvalidStateException(
+            "_picovoiceManager not initialized.");
       }
       await _picovoiceManager!.start();
-      this.setState(() {
+      setState(() {
         isProcessing = true;
         rhinoText = "Listening for wake word...";
         isButtonDisabled = false;
       });
-    } on PvAudioException catch (ex) {
-      this.setState(() {
-        errorText = "Failed to start audio capture: ${ex.message}";
-      });
+    } on PicovoiceInvalidArgumentException catch (ex) {
+      errorCallback(PicovoiceInvalidArgumentException(
+          "${ex.message}\nEnsure your accessKey '$accessKey' is a valid access key."));
+    } on PicovoiceActivationException {
+      errorCallback(
+          PicovoiceActivationException("AccessKey activation error."));
+    } on PicovoiceActivationLimitException {
+      errorCallback(PicovoiceActivationLimitException(
+          "AccessKey reached its device limit."));
+    } on PicovoiceActivationRefusedException {
+      errorCallback(PicovoiceActivationRefusedException("AccessKey refused."));
+    } on PicovoiceActivationThrottledException {
+      errorCallback(PicovoiceActivationThrottledException(
+          "AccessKey has been throttled."));
+    } on PicovoiceException catch (ex) {
+      errorCallback(ex);
     }
   }
 
@@ -158,25 +174,20 @@ class _MyAppState extends State<MyApp> {
       return;
     }
 
-    this.setState(() {
+    setState(() {
       isButtonDisabled = true;
     });
 
-    try {
-      if (_picovoiceManager == null) {
-        throw PvAudioException("_picovoiceManager not initialized.");
-      }
-      await _picovoiceManager!.stop();
-      this.setState(() {
-        isProcessing = false;
-        rhinoText = "";
-        isButtonDisabled = false;
-      });
-    } on PvAudioException catch (ex) {
-      this.setState(() {
-        errorText = "Failed to stop audio capture: ${ex.message}";
-      });
+    if (_picovoiceManager == null) {
+      throw PicovoiceInvalidStateException(
+          "_picovoiceManager not initialized.");
     }
+    await _picovoiceManager!.stop();
+    setState(() {
+      isProcessing = false;
+      rhinoText = "";
+      isButtonDisabled = false;
+    });
   }
 
   Color picoBlue = Color.fromRGBO(55, 125, 255, 1);
@@ -193,7 +204,7 @@ class _MyAppState extends State<MyApp> {
           children: [
             buildStartButton(context),
             buildRhinoTextArea(context),
-            buildErrorTextSpot(context),
+            buildErrorMessage(context),
             footer
           ],
         ),
@@ -207,7 +218,7 @@ class _MyAppState extends State<MyApp> {
         shape: CircleBorder(),
         textStyle: TextStyle(color: Colors.white));
 
-    return new Expanded(
+    return Expanded(
       flex: 4,
       child: Container(
           child: SizedBox(
@@ -215,7 +226,7 @@ class _MyAppState extends State<MyApp> {
               height: 130,
               child: ElevatedButton(
                 style: buttonStyle,
-                onPressed: isButtonDisabled
+                onPressed: (isButtonDisabled || isError)
                     ? null
                     : isProcessing
                         ? _stopProcessing
@@ -227,7 +238,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   buildRhinoTextArea(BuildContext context) {
-    return new Expanded(
+    return Expanded(
         flex: 8,
         child: Container(
             alignment: Alignment.center,
@@ -240,16 +251,23 @@ class _MyAppState extends State<MyApp> {
             )));
   }
 
-  buildErrorTextSpot(BuildContext context) {
-    return new Expanded(
-        flex: 1,
+  buildErrorMessage(BuildContext context) {
+    return Expanded(
+        flex: isError ? 4 : 0,
         child: Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: Text(
-              errorText,
-              style: TextStyle(color: Colors.red),
-            )));
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            padding: EdgeInsets.all(5),
+            decoration: !isError
+                ? null
+                : BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
+            child: !isError
+                ? null
+                : Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  )));
   }
 
   Widget footer = Expanded(
