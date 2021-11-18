@@ -37,7 +37,7 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: mkdir NuGet directory 
-      run: mkdir ~/.nuget/NuGet/local-nuget
+      run: mkdir -p ~/.nuget/NuGet/local-nuget
     
     - name: Add local NuGet source
       run: dotnet nuget add source local-nuget
@@ -84,7 +84,7 @@ jobs:
         dotnet-version: 5.0.x
     
     - name: mkdir NuGet directory 
-      run: mkdir ~/.nuget/NuGet/local-nuget
+      run: mkdir -p ~/.nuget/NuGet/local-nuget
     
     - name: Add local NuGet source
       run: dotnet nuget add source local-nuget
