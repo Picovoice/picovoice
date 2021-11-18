@@ -16,7 +16,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 
 	. "github.com/Picovoice/picovoice/sdk/go"
 	rhn "github.com/Picovoice/rhino/binding/go"
@@ -26,18 +25,21 @@ import (
 
 func main() {
 	inputAudioPathArg := flag.String("input_audio_path", "", "Path to input audio file (mono, WAV, 16-bit, 16kHz)")
+	accessKeyArg := flag.String("access_key", "", "AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)")
 	keywordPathArg := flag.String("keyword_path", "", "Path to Porcupine keyword file (.ppn)")
 	contextPathArg := flag.String("context_path", "", "Path to Rhino context file (.rhn)")
 	porcupineModelPathArg := flag.String("porcupine_model_path", "", "(optional) Path to Porcupine's model file (.pv)")
-	porcupineSensitivityArg := flag.String("porcupine_sensitivity", "", "(optional) Sensitivity for detecting wake word. "+
+	porcupineSensitivityArg := flag.Float64("porcupine_sensitivity", 0.5, "(optional) Sensitivity for detecting wake word. "+
 		"Each value should be a number within [0, 1]. A higher "+
 		"sensitivity results in fewer misses at the cost of increasing the false alarm rate. "+
 		"If not set, 0.5 will be used.")
 	rhinoModelPathArg := flag.String("rhino_model_path", "", "(optional) Path to Rhino's model file (.pv)")
-	rhinoSensitivityArg := flag.String("rhino_sensitivity", "", "(optional) Inference sensitivity. "+
+	rhinoSensitivityArg := flag.Float64("rhino_sensitivity", 0.5, "(optional) Inference sensitivity. "+
 		"The value should be a number within [0, 1]. A higher sensitivity value results in "+
 		"fewer misses at the cost of (potentially) increasing the erroneous inference rate. "+
 		"If not set, 0.5 will be used.")
+	requireEndpointArg := flag.Bool("require_endpoint", false,
+		"If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.")
 	flag.Parse()
 
 	// validate input audio
@@ -56,7 +58,14 @@ func main() {
 		log.Fatal("Invalid WAV file. File must contain mono, 16-bit, 16kHz linearly encoded PCM.")
 	}
 
-	p := Picovoice{}
+	p := Picovoice{
+		RequireEndpoint: *requireEndpointArg,
+	}
+
+	if *accessKeyArg == "" {
+		log.Fatalf("AccessKey is required.")
+	}
+	p.AccessKey = *accessKeyArg
 
 	// validate keyword
 	if *keywordPathArg != "" {
@@ -99,28 +108,18 @@ func main() {
 	}
 
 	// validate Porcupine sensitivity
-	if *porcupineSensitivityArg == "" {
-		p.PorcupineSensitivity = 0.5
-
-	} else {
-		sensitivityFloat, err := strconv.ParseFloat(*porcupineSensitivityArg, 32)
-		if err != nil || sensitivityFloat < 0 || sensitivityFloat > 1 {
-			log.Fatalf("Porcupine sensitivity value of '%s' is invalid. Must be a float32 between [0, 1].", *porcupineSensitivityArg)
-		}
-		p.PorcupineSensitivity = float32(sensitivityFloat)
+	ppnSensitivityFloat := float32(*porcupineSensitivityArg)
+	if ppnSensitivityFloat < 0 || ppnSensitivityFloat > 1 {
+		log.Fatalf("Sensitivity value of '%f' is invalid. Must be between [0, 1].", ppnSensitivityFloat)
 	}
+	p.PorcupineSensitivity = ppnSensitivityFloat
 
 	// validate Rhino sensitivity
-	if *rhinoSensitivityArg == "" {
-		p.RhinoSensitivity = 0.5
-
-	} else {
-		sensitivityFloat, err := strconv.ParseFloat(*rhinoSensitivityArg, 32)
-		if err != nil || sensitivityFloat < 0 || sensitivityFloat > 1 {
-			log.Fatalf("Rhino sensitivity value of '%s' is invalid. Must be a float32 between [0, 1].", *rhinoSensitivityArg)
-		}
-		p.RhinoSensitivity = float32(sensitivityFloat)
+	rhnSensitivityFloat := float32(*rhinoSensitivityArg)
+	if rhnSensitivityFloat < 0 || rhnSensitivityFloat > 1 {
+		log.Fatalf("Sensitivity value of '%f' is invalid. Must be between [0, 1].", rhnSensitivityFloat)
 	}
+	p.RhinoSensitivity = rhnSensitivityFloat
 
 	p.WakeWordCallback = func() { fmt.Println("[wake word]") }
 	p.InferenceCallback = func(inferenceResult rhn.RhinoInference) {
