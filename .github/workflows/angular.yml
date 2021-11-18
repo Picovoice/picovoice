@@ -3,15 +3,17 @@ name: Angular
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
+      - 'lib/wasm/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
+      - 'lib/wasm/**'
 
 defaults:
   run:
@@ -37,6 +39,10 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn --force
+
+    - name: Local package dependencies
+      run: .github/workflows/web_action_helper.sh || exit 1
+      working-directory: .
 
     - name: Install dependencies
       run: yarn install
