@@ -58,8 +58,9 @@ jobs:
                 
     - name: Copy Picovoice Nuget
       run: cp ../../../sdk/dotnet/Picovoice/bin/Release/*.nupkg local-nuget
+      
     - name: Dotnet build micdemo
-      run: dotnet build -c MicDemo.Release
+      run: dotnet build -c MicDemo.Release --source local-nuget
 
   build-filedemo:
     runs-on: ubuntu-latest
