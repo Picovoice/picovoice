@@ -38,19 +38,25 @@ jobs:
       with:
         dotnet-version: 5.0.x
 
+    - name: mkdir NuGet directory 
+      run: mkdir local-nuget
+    
     - name: Pack Porcupine binding for local ref
       run: dotnet pack -c Release
       working-directory: resources/porcupine/binding/dotnet
-        
+    
+    - name: Copy Porcupine Nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg local-nuget
+
     - name: Pack Rhino binding for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
                 
-    - name: Add Rhino and Porcupine
-      run: dotnet restore Picovoice/Picovoice.csproj -s ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release -s ../../resources/rhino/binding/dotnet/Rhino/bin/Release
+    - name: Copy Rhino Nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg local-nuget
     
     - name: Build
-      run: dotnet build
+      run: dotnet build --source local-nuget
       
     - name: Test
       run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
