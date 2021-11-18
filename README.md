@@ -1085,8 +1085,11 @@ The static constructor `PicovoiceManager.create` will create an instance of a Pi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 void createPicovoiceManager() {  
   _picovoiceManager = PicovoiceManager.create(
+      accessKey,
       "/path/to/keyword/file.ppn",
       _wakeWordCallback,
       "/path/to/context/file.rhn",
@@ -1095,6 +1098,11 @@ void createPicovoiceManager() {
 ```
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
+
+The `inferenceCallback` callback function takes a parameter of `RhinoInference` instance with the following variables:
+- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understood context
+- intent - **null** if `isUnderstood` is not true, otherwise name of intent that were inferred
+- slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
 
@@ -1112,17 +1120,20 @@ Flutter plugin handles audio capture and passes frames to Picovoice for you.
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into a already existing audio processing pipeline.
 
-`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files and requireEndpoint are optional.
 
 ```dart
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
+
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
     try{
         _picovoice = await Picovoice.create(
+            accessKey,
             "/path/to/keyword/file.ppn",
             wakeWordCallback,
             "/path/to/context/file.rhn",
@@ -1130,8 +1141,9 @@ void createPicovoice() async {
             porcupineSensitivity,
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv");
-    } on PvError catch (err) {
+            "/path/to/rhino/model.pv",
+            requireEndpoint);
+    } on PicovoiceException catch (err) {
         // handle picovoice init error
     }
 }
@@ -1144,7 +1156,7 @@ List<int> buffer = getAudioFrame();
 
 try {
     _picovoice.process(buffer);
-} on PvError catch (error) {
+} on PicovoiceException catch (error) {
     // handle error
 }
 

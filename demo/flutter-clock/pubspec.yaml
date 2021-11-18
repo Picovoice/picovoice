@@ -12,7 +12,8 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   path_provider: ^2.0.1
-  picovoice: ^1.1.8
+  picovoice_flutter:
+    path: ../../sdk/flutter
   flutter_ringtone_player: ^3.0.0  
   fluttertoast: ^8.0.7
 
@@ -20,6 +21,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1
 
 flutter:
   uses-material-design: true

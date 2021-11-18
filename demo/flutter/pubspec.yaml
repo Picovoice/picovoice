@@ -11,7 +11,8 @@ dependencies:
     sdk: flutter
   
   path_provider: ^2.0.1
-  picovoice: 1.1.9
+  picovoice_flutter:
+    path: ../../sdk/flutter
 
 flutter:
   assets:
@@ -20,3 +21,5 @@ flutter:
     - assets/keyword_files/android/picovoice_android.ppn
     - assets/keyword_files/ios/picovoice_ios.ppn
   uses-material-design: true
+dev_dependencies: 
+  lints: ^1.0.1

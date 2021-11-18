@@ -11,27 +11,34 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_voice_processor/flutter_voice_processor.dart';
-import 'package:picovoice/picovoice.dart';
-import 'package:picovoice/picovoice_error.dart';
+import 'package:picovoice_flutter/picovoice.dart';
+import 'package:picovoice_flutter/picovoice_error.dart';
+
+typedef ProcessErrorCallback = Function(PicovoiceException error);
 
 class PicovoiceManager {
   Picovoice? _picovoice;
   VoiceProcessor? _voiceProcessor;
   RemoveListener? _removeVoiceProcessorListener;
   RemoveListener? _removeErrorListener;
-  ErrorCallback? _errorCallback;
+  final ProcessErrorCallback? _processErrorCallback;
 
-  String? _porcupineModelPath;
-  String _keywordPath;
-  double _porcupineSensitivity = 0.5;
-  WakeWordCallback _wakeWordCallback;
+  final String _accessKey;
 
-  String? _rhinoModelPath;
-  String _contextPath;
-  double _rhinoSensitivity = 0.5;
-  InferenceCallback _inferenceCallback;
+  final String? _porcupineModelPath;
+  final String _keywordPath;
+  final double _porcupineSensitivity;
+  final WakeWordCallback _wakeWordCallback;
+
+  final String? _rhinoModelPath;
+  final String _contextPath;
+  final double _rhinoSensitivity;
+  final InferenceCallback _inferenceCallback;
+  final bool _requireEndpoint;
 
   /// Picovoice constructor
+  ///
+  /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
   ///
   /// [keywordPath] Absolute path to Porcupine's keyword model file.
   ///
@@ -57,15 +64,27 @@ class PicovoiceManager {
   /// [rhinoSensitivity] Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
   /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
   ///
+  /// [requireEndpoint] Boolean variable to indicate if Rhino should wait
+  /// for a chunk of silence before finishing inference.
+  /// 
+  /// [processErrorCallback] Reports errors that are encountered while 
+  /// the engine is processing audio.
+  ///
   /// returns an instance of the Picovoice end-to-end platform.
-  static create(String keywordPath, WakeWordCallback wakeWordCallback,
-      String contextPath, InferenceCallback inferenceCallback,
+  static create(
+      String accessKey,
+      String keywordPath,
+      WakeWordCallback wakeWordCallback,
+      String contextPath,
+      InferenceCallback inferenceCallback,
       {double porcupineSensitivity = 0.5,
       double rhinoSensitivity = 0.5,
       String? porcupineModelPath,
       String? rhinoModelPath,
-      ErrorCallback? errorCallback}) {
-    return new PicovoiceManager._(
+      bool requireEndpoint = true,
+      ProcessErrorCallback? processErrorCallback}) {
+    return PicovoiceManager._(
+        accessKey,
         keywordPath,
         wakeWordCallback,
         contextPath,
@@ -74,11 +93,13 @@ class PicovoiceManager {
         rhinoSensitivity,
         porcupineModelPath,
         rhinoModelPath,
-        errorCallback);
+        requireEndpoint,
+        processErrorCallback);
   }
 
   // private constructor
   PicovoiceManager._(
+      this._accessKey,
       this._keywordPath,
       this._wakeWordCallback,
       this._contextPath,
@@ -87,9 +108,8 @@ class PicovoiceManager {
       this._rhinoSensitivity,
       this._porcupineModelPath,
       this._rhinoModelPath,
-      this._errorCallback)
-      : _voiceProcessor = VoiceProcessor.getVoiceProcessor(
-            Picovoice.frameLength, Picovoice.sampleRate);
+      this._requireEndpoint,
+      this._processErrorCallback);
 
   /// Opens audio input stream and sends audio frames to Picovoice.
   /// Throws a `PvAudioException` if there was a problem starting the audio engine.
@@ -99,15 +119,19 @@ class PicovoiceManager {
       return;
     }
 
-    _picovoice = await Picovoice.create(
-        _keywordPath, _wakeWordCallback, _contextPath, _inferenceCallback,
+    _picovoice = await Picovoice.create(_accessKey, _keywordPath,
+        _wakeWordCallback, _contextPath, _inferenceCallback,
         porcupineSensitivity: _porcupineSensitivity,
         rhinoSensitivity: _rhinoSensitivity,
         porcupineModelPath: _porcupineModelPath,
-        rhinoModelPath: _rhinoModelPath);
+        rhinoModelPath: _rhinoModelPath,
+        requireEndpoint: _requireEndpoint);
+
+    _voiceProcessor ??= VoiceProcessor.getVoiceProcessor(
+          _picovoice!.frameLength!, _picovoice!.sampleRate!);
 
     if (_voiceProcessor == null) {
-      throw new PvError("flutter_voice_processor not available.");
+      throw PicovoiceRuntimeException("flutter_voice_processor not available.");
     }
     _removeVoiceProcessorListener =
         _voiceProcessor!.addListener((buffer) async {
@@ -116,27 +140,27 @@ class PicovoiceManager {
       try {
         picovoiceFrame = (buffer as List<dynamic>).cast<int>();
       } on Error {
-        PvError castError = new PvError(
+        PicovoiceException castError = PicovoiceException(
             "flutter_voice_processor sent an unexpected data type.");
-        _errorCallback == null
+        _processErrorCallback == null
             ? print(castError.message)
-            : _errorCallback!(castError);
+            : _processErrorCallback!(castError);
         return;
       }
 
       // process frame with Picovoice
       try {
         _picovoice?.process(picovoiceFrame);
-      } on PvError catch (error) {
-        _errorCallback == null ? print(error.message) : _errorCallback!(error);
+      } on PicovoiceException catch (error) {
+        _processErrorCallback == null ? print(error.message) : _processErrorCallback!(error);
       }
     });
 
     _removeErrorListener = _voiceProcessor!.addErrorListener((errorMsg) {
-      PvError nativeError = new PvError(errorMsg as String);
-      _errorCallback == null
+      PicovoiceException nativeError = PicovoiceException(errorMsg as String);
+      _processErrorCallback == null
           ? print(nativeError.message)
-          : _errorCallback!(nativeError);
+          : _processErrorCallback!(nativeError);
     });
 
     if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
@@ -144,11 +168,11 @@ class PicovoiceManager {
         // create picovoice
         await _voiceProcessor!.start();
       } on PlatformException {
-        throw new PvAudioException(
+        throw PicovoiceRuntimeException(
             "Audio engine failed to start. Hardware may not be supported.");
       }
     } else {
-      throw new PvAudioException(
+      throw PicovoiceInvalidStateException(
           "User did not give permission to record audio.");
     }
   }
