@@ -120,8 +120,14 @@ public class Picovoice {
      * Releases resources acquired.
      */
     public void delete() {
-        porcupine.delete();
-        rhino.delete();
+        if (porcupine != null) {
+            porcupine.delete();
+            porcupine = null;
+        }
+        if (rhino != null) {
+            rhino.delete();
+            rhino = null;
+        }
     }
 
     /**
@@ -135,15 +141,31 @@ public class Picovoice {
      * @throws PicovoiceException if there is an error while processing the audio frame.
      */
     public void process(short[] pcm) throws PicovoiceException {
+        if (porcupine == null || rhino == null) {
+            throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released");
+        }
+
+        if (pcm == null) {
+            throw new PicovoiceInvalidArgumentException("Passed null frame to Picovoice process.");
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PicovoiceInvalidArgumentException(
+                    String.format("Picovoice process requires frames of length %d. " +
+                            "Received frame of size %d.", getFrameLength(), pcm.length));
+        }
+
         try {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
-                if (isWakeWordDetected) {
+                if (isWakeWordDetected && wakeWordCallback != null) {
                     wakeWordCallback.invoke();
                 }
             } else {
                 if (rhino.process(pcm)) {
-                    inferenceCallback.invoke(rhino.getInference());
+                    if (inferenceCallback != null) {
+                        inferenceCallback.invoke(rhino.getInference());
+                    }
                     isWakeWordDetected = false;
                 }
             }
@@ -167,7 +189,7 @@ public class Picovoice {
      * @return Porcupine version.
      */
     public String getPorcupineVersion() {
-        return porcupine.getVersion();
+        return porcupine != null ? porcupine.getVersion() : "";
     }
 
     /**
@@ -176,7 +198,7 @@ public class Picovoice {
      * @return Rhino version.
      */
     public String getRhinoVersion() {
-        return rhino.getVersion();
+        return rhino != null ? rhino.getVersion() : "";
     }
 
     /**
@@ -185,7 +207,7 @@ public class Picovoice {
      * @return Number of audio samples per frame.
      */
     public int getFrameLength() {
-        return rhino.getFrameLength();
+        return porcupine != null ? porcupine.getFrameLength() : 0;
     }
 
     /**
@@ -194,7 +216,16 @@ public class Picovoice {
      * @return Audio sample rate accepted by Picovoice.
      */
     public int getSampleRate() {
-        return porcupine.getSampleRate();
+        return porcupine != null ? porcupine.getSampleRate() : 0;
+    }
+
+    /**
+     * Getter for the Rhino context
+     *
+     * @return Rhino context
+     */
+    public String getContextInformation() {
+        return rhino != null ? rhino.getContextInformation() : "";
     }
 
     /**
