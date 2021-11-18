@@ -122,7 +122,7 @@ namespace Pv
             }
             catch (Exception ex)
             {
-                throw mapToPicovoiceException(ex);
+                throw MapToPicovoiceException(ex);
             }
         }
 
@@ -250,55 +250,55 @@ namespace Pv
         /// <summary>
         /// Maps Porcupine/Rhino Exception to Picovoice Exception
         /// </summary>
-        private static PicovoiceException mapToPicovoiceException(Exception ex)
+        private static PicovoiceException MapToPicovoiceException(Exception ex)
         {
             if (ex is PorcupineActivationException || ex is RhinoActivationException)
             {
-                return new PicovoiceActivationException(ex.Message);
+                return new PicovoiceActivationException(ex.Message, ex);
             }
             else if (ex is PorcupineActivationLimitException || ex is RhinoActivationLimitException)
             {
-                return new PicovoiceActivationLimitException(ex.Message);
+                return new PicovoiceActivationLimitException(ex.Message, ex);
             }
             else if (ex is PorcupineActivationRefusedException || ex is RhinoActivationRefusedException)
             {
-                return new PicovoiceActivationRefusedException(ex.Message);
+                return new PicovoiceActivationRefusedException(ex.Message, ex);
             }
             else if (ex is PorcupineActivationThrottledException || ex is RhinoActivationThrottledException)
             {
-                return new PicovoiceActivationThrottledException(ex.Message);
+                return new PicovoiceActivationThrottledException(ex.Message, ex);
             }
             else if (ex is PorcupineInvalidArgumentException || ex is RhinoInvalidArgumentException)
             {
-                return new PicovoiceInvalidArgumentException(ex.Message);
+                return new PicovoiceInvalidArgumentException(ex.Message, ex);
             }
             else if (ex is PorcupineInvalidStateException || ex is RhinoInvalidStateException)
             {
-                return new PicovoiceInvalidStateException(ex.Message);
+                return new PicovoiceInvalidStateException(ex.Message, ex);
             }
             else if (ex is PorcupineIOException || ex is RhinoIOException)
             {
-                return new PicovoiceIOException(ex.Message);
+                return new PicovoiceIOException(ex.Message, ex);
             }
             else if (ex is PorcupineKeyException || ex is RhinoKeyException)
             {
-                return new PicovoiceKeyException(ex.Message);
+                return new PicovoiceKeyException(ex.Message, ex);
             }
             else if (ex is PorcupineMemoryException || ex is RhinoMemoryException)
             {
-                return new PicovoiceMemoryException(ex.Message);
+                return new PicovoiceMemoryException(ex.Message, ex);
             }
             else if (ex is PorcupineRuntimeException || ex is RhinoRuntimeException)
             {
-                return new PicovoiceRuntimeException(ex.Message);
+                return new PicovoiceRuntimeException(ex.Message, ex);
             }
             else if (ex is PorcupineStopIterationException || ex is RhinoStopIterationException)
             {
-                return new PicovoiceStopIterationException(ex.Message);
+                return new PicovoiceStopIterationException(ex.Message, ex);
             }
             else
             {
-                return new PicovoiceException(ex.Message);
+                return new PicovoiceException(ex.Message, ex);
             }
         }
     }
