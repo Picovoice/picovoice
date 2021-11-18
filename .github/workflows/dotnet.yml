@@ -53,7 +53,7 @@ jobs:
       run: dotnet add Picovoice/Picovoice.csproj package -s ../../resources/rhino/binding/dotnet/Rhino/bin/Release -v 2.0.0 -n Rhino
             
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build
       
     - name: Test
       run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
