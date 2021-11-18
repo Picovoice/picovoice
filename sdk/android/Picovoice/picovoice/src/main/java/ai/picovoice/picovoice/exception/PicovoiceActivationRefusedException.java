@@ -20,4 +20,8 @@ public class PicovoiceActivationRefusedException extends PicovoiceException {
     PicovoiceActivationRefusedException(String message) {
         super(message);
     }
+
+    PicovoiceActivationRefusedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
