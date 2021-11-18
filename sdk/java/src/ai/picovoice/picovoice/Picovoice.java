@@ -12,10 +12,8 @@
 
 package ai.picovoice.picovoice;
 
-import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineException;
-import ai.picovoice.rhino.Rhino;
-import ai.picovoice.rhino.RhinoException;
+import ai.picovoice.porcupine.*;
+import ai.picovoice.rhino.*;
 
 /**
  * Java binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
@@ -42,7 +40,7 @@ public class Picovoice {
     /**
      * Constructor
      *
-     * @param accessKey            AccessKey obtained from Picovoice Console.
+     * @param accessKey            AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -114,7 +112,7 @@ public class Picovoice {
 
             this.inferenceCallback = inferenceCallback;
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e.getMessage(), e.getCause());
+            throw mapToPicovoiceException(e);
         }
     }
 
@@ -150,7 +148,7 @@ public class Picovoice {
                 }
             }
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e.getMessage(), e.getCause());
+            throw mapToPicovoiceException(e);
         }
     }
 
@@ -197,6 +195,42 @@ public class Picovoice {
      */
     public int getSampleRate() {
         return porcupine.getSampleRate();
+    }
+
+    /**
+     * Maps Porcupine/Rhino Exception to Picovoice Exception.
+     */
+    private static PicovoiceException mapToPicovoiceException(Exception e) {
+        if (e instanceof PorcupineActivationException || e instanceof RhinoActivationException) {
+            return new PicovoiceActivationException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationLimitException || e instanceof RhinoActivationLimitException) {
+            return new PicovoiceActivationLimitException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationRefusedException || e instanceof RhinoActivationRefusedException) {
+            return new PicovoiceActivationRefusedException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationThrottledException || e instanceof RhinoActivationThrottledException) {
+            return new PicovoiceActivationThrottledException(e.getMessage(), e);
+        } else if (e instanceof PorcupineInvalidArgumentException || e instanceof RhinoInvalidArgumentException) {
+            return new PicovoiceInvalidArgumentException(e.getMessage(), e);
+        } else if (e instanceof PorcupineInvalidStateException || e instanceof RhinoInvalidStateException) {
+            return new PicovoiceInvalidStateException(e.getMessage(), e);
+        } else if (e instanceof PorcupineIOException || e instanceof RhinoIOException) {
+            return new PicovoiceIOException(e.getMessage(), e);
+        } else if (e instanceof PorcupineKeyException || e instanceof RhinoKeyException) {
+            return new PicovoiceKeyException(e.getMessage(), e);
+        } else if (e instanceof PorcupineMemoryException || e instanceof RhinoMemoryException) {
+            return new PicovoiceMemoryException(e.getMessage(), e);
+        } else if (e instanceof PorcupineRuntimeException || e instanceof RhinoRuntimeException) {
+            return new PicovoiceRuntimeException(e.getMessage(), e);
+        } else if (e instanceof PorcupineStopIterationException || e instanceof RhinoStopIterationException) {
+            return new PicovoiceStopIterationException(e.getMessage(), e);
+        } else if (e instanceof PorcupineException || e instanceof RhinoException) {
+            return new PicovoiceException(e.getMessage(), e);
+        } else {
+            return new PicovoiceException(
+                    String.format("Unknown exception: '%s', message: '%s'",
+                            e.getClass().getSimpleName(),
+                            e.getMessage()), e);
+        }
     }
 
     /**

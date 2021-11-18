@@ -55,13 +55,13 @@ public class Main {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            formatter.printHelp("rhinofiledemo", options);
+            formatter.printHelp("JavaSwingDemo", options);
             System.exit(1);
             return;
         }
 
         if (cmd.hasOption("help")) {
-            formatter.printHelp("rhinofiledemo", options);
+            formatter.printHelp("JavaSwingDemo", options);
             return;
         }
 

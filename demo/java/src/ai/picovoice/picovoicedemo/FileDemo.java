@@ -155,7 +155,7 @@ public class FileDemo {
         String requireEndpointValue = cmd.getOptionValue("require_endpoint");
 
         if (accessKey == null || accessKey.length() == 0) {
-            throw new IllegalArgumentException("AccessKey is required for Porcupine.");
+            throw new IllegalArgumentException("AccessKey is required for Picovoice.");
         }
 
         // parse sensitivity
