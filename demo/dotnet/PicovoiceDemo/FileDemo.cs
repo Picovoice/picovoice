@@ -30,55 +30,74 @@ namespace PicovoiceDemo
         /// inference in the given context.
         /// </summary>
         /// <param name="inputAudioPath">Absolute path to input audio file.</param>
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to a Porcupine keyword model file.</param>
         /// <param name="contextPath">Absolute path to file containing Rhino context parameters.</param>
         /// <param name="porcupineModelPath">Absolute path to the file containing Porcupine's model parameters.</param>
         /// <param name="porcupineSensitivity">Wake word detection sensitivity.</param>
         /// <param name="rhinoModelPath">Absolute path to the file containing Rhino's model parameters.</param>
         /// <param name="rhinoSensitivity">Inference sensitivity.</param>
-        public static void RunDemo(string inputAudioPath, string keywordPath, string contextPath,
-                                   string porcupineModelPath, float porcupineSensitivity,
-                                   string rhinoModelPath, float rhinoSensitivity)
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// </param>
+        public static void RunDemo(
+            string inputAudioPath,
+            string accessKey,
+            string keywordPath,
+            string contextPath,
+            string porcupineModelPath,
+            float porcupineSensitivity,
+            string rhinoModelPath,
+            float rhinoSensitivity,
+            bool requireEndpoint)
         {
             static void wakeWordCallback() => Console.WriteLine("[wake word]");
 
             static void inferenceCallback(Inference inference)
             {
-                if (inference.IsUnderstood) 
+                if (inference.IsUnderstood)
                 {
                     Console.WriteLine("{");
                     Console.WriteLine($"  intent : '{inference.Intent}'");
                     Console.WriteLine("  slots : {");
-                    foreach (KeyValuePair<string, string> slot in inference.Slots)                     
-                        Console.WriteLine($"    {slot.Key} : '{slot.Value}'"); 
+                    foreach (KeyValuePair<string, string> slot in inference.Slots)
+                        Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
                     Console.WriteLine("  }");
                     Console.WriteLine("}\n");
                 }
                 else
                 {
-                    Console.WriteLine("Didn't understand the command");
+                    Console.WriteLine("Didn't understand the command\n");
                 }
             }
-                        
+
             // init picovoice platform
-            using Picovoice picovoice = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback, 
-                                                        porcupineModelPath, porcupineSensitivity, 
-                                                        rhinoModelPath, rhinoSensitivity);
+            using Picovoice picovoice = Picovoice.Create(
+                accessKey,
+                keywordPath,
+                wakeWordCallback,
+                contextPath,
+                inferenceCallback,
+                porcupineModelPath,
+                porcupineSensitivity,
+                rhinoModelPath,
+                rhinoSensitivity,
+                requireEndpoint);
 
             // open and validate wav
             using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
             ValidateWavFile(reader, picovoice.SampleRate, 16, out short numChannels);
 
             // read audio and send frames to picovoice
-            short[] porcupineFrame = new short[picovoice.FrameLength];
+            short[] picovoiceFrame = new short[picovoice.FrameLength];
             int frameIndex = 0;
             while (reader.BaseStream.Position != reader.BaseStream.Length)
             {
-                porcupineFrame[frameIndex++] = reader.ReadInt16();
+                picovoiceFrame[frameIndex++] = reader.ReadInt16();
 
-                if (frameIndex == porcupineFrame.Length)
+                if (frameIndex == picovoiceFrame.Length)
                 {
-                    picovoice.Process(porcupineFrame);
+                    picovoice.Process(picovoiceFrame);
                     frameIndex = 0;
                 }
 
@@ -98,8 +117,8 @@ namespace PicovoiceDemo
         /// <param name="requiredSampleRate">Required sample rate in Hz</param>     
         /// <param name="requiredBitDepth">Required number of bits per sample</param>             
         /// <param name="numChannels">Number of channels can be returned by function</param>
-        public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels) 
-        {                        
+        public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels)
+        {
             byte[] riffHeader = reader?.ReadBytes(44);
 
             int riff = BitConverter.ToInt32(riffHeader, 0);
@@ -127,20 +146,22 @@ namespace PicovoiceDemo
         public static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            if (args.Length == 0) 
+            if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
             string inputAudioPath = null;
+            string accessKey = null;
             string keywordPath = null;
             string contextPath = null;
             string porcupineModelPath = null;
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
-            float rhinoSensitivity = 0.5f;                  
+            float rhinoSensitivity = 0.5f;
+            bool requireEndpoint = false;
             bool showHelp = false;
 
             // parse command line arguments
@@ -152,6 +173,13 @@ namespace PicovoiceDemo
                     if (++argIndex < args.Length)
                     {
                         inputAudioPath = args[argIndex++];
+                    }
+                }
+                else if (args[argIndex] == "--access_key")
+                {
+                    if (++argIndex < args.Length)
+                    {
+                        accessKey = args[argIndex++];
                     }
                 }
                 else if (args[argIndex] == "--keyword_path")
@@ -176,11 +204,11 @@ namespace PicovoiceDemo
                     }
                 }
                 else if (args[argIndex] == "--porcupine_sensitivity")
-                {                    
+                {
                     if (++argIndex < args.Length && float.TryParse(args[argIndex], out porcupineSensitivity))
                     {
                         argIndex++;
-                    }                                        
+                    }
                 }
                 else if (args[argIndex] == "--rhino_model_path")
                 {
@@ -195,6 +223,11 @@ namespace PicovoiceDemo
                     {
                         argIndex++;
                     }
+                }
+                else if (args[argIndex] == "--require_endpoint")
+                {
+                    requireEndpoint = true;
+                    argIndex++;
                 }
                 else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
@@ -211,7 +244,7 @@ namespace PicovoiceDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
@@ -220,63 +253,42 @@ namespace PicovoiceDemo
             {
                 throw new ArgumentNullException("input_audio_path");
             }
-            if (!File.Exists(inputAudioPath)) 
+            if (!File.Exists(inputAudioPath))
             {
                 throw new ArgumentException($"Audio file at path {inputAudioPath} does not exist");
             }
 
-            if (string.IsNullOrEmpty(keywordPath))
-            {
-                throw new ArgumentNullException("keyword_path");
-            }
-            if (!File.Exists(keywordPath))
-            {
-                throw new ArgumentException($"Porcupine keyword file at path {keywordPath} does not exist");
-            }
-
-            if (string.IsNullOrEmpty(contextPath))
-            {
-                throw new ArgumentNullException("context_path");
-            }
-            if (!File.Exists(contextPath))
-            {
-                throw new ArgumentException($"Rhino context file at path {contextPath} does not exist");
-            }
-
-            porcupineModelPath ??= Porcupine.MODEL_PATH;
-            if (porcupineSensitivity < 0 || porcupineSensitivity > 1) 
-            {
-                throw new ArgumentException($"Porcupine sensitivity value of '{porcupineSensitivity}' is not valid. Value must be with [0, 1].");
-            }
-
-            rhinoModelPath ??= Rhino.MODEL_PATH;
-            if (rhinoSensitivity < 0 || rhinoSensitivity > 1)
-            {
-                throw new ArgumentException($"Rhino sensitivity value of '{rhinoSensitivity}' is not valid. Value must be with [0, 1].");
-            }            
-
             // run demo with validated arguments
-            RunDemo(inputAudioPath, keywordPath, contextPath, 
-                    porcupineModelPath, porcupineSensitivity, 
-                    rhinoModelPath, rhinoSensitivity);
+            RunDemo(                
+                inputAudioPath,
+                accessKey,
+                keywordPath,
+                contextPath,
+                porcupineModelPath,
+                porcupineSensitivity,
+                rhinoModelPath,
+                rhinoSensitivity,
+                requireEndpoint);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Console.WriteLine(e.ExceptionObject.ToString());
-            Console.ReadKey();
+            Console.Read();
             Environment.Exit(-1);
         }
 
         private static readonly string HELP_STR = "Available options: \n " +
-            $"\t--input_audio_path (required): Absolute path to input audio file.\n" +
-            $"\t--keyword_path (required): Absolute path to a Porcupine keyword file.\n" +
-            $"\t--context_path (required): Absolute path to a Rhino context file.\n" +
-            $"\t--porcupine_model_path: Absolute path to Porcupine's model file.\n" +
-            $"\t--porcupine_sensitivity: Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher " +
-            $"sensitivity results in fewer misses at the cost of increasing the false alarm rate.\n" +
-            $"\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
-            $"\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity " +
-            $"value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n";
+            "\t--input_audio_path (required): Absolute path to input audio file.\n" +
+            "\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
+            "\t--keyword_path (required): Absolute path to a Porcupine keyword file.\n" +
+            "\t--context_path (required): Absolute path to a Rhino context file.\n" +
+            "\t--porcupine_model_path: Absolute path to Porcupine's model file.\n" +
+            "\t--porcupine_sensitivity: Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher " +
+            "sensitivity results in fewer misses at the cost of increasing the false alarm rate.\n" +
+            "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
+            "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity " +
+            "value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
+            "\t--require_endpoint: If set, Rhino requires an endpoint (chunk of silence) before finishing inference.\n";
     }
 }

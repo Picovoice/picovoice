@@ -20,9 +20,8 @@ using Pv;
 namespace PicovoiceDemo
 {
     /// <summary>
-    /// Microphone Demo for Porcupine wake word engine. It creates an input audio stream from a microphone, monitors it, and
-    /// upon detecting the specified wake word(s) prints the detection time and wake word on console. It optionally saves
-    /// the recorded audio into a file for further debugging.
+    /// Microphone Demo for Picovoice end-to-end platform. It creates an input audio stream from a microphone, monitors it, and
+    /// prints when it detects a keyword or makes an inference. It optionally saves the recorded audio into a file for further debugging.
     /// </summary>                
     public class MicDemo
     {
@@ -30,19 +29,30 @@ namespace PicovoiceDemo
         /// <summary>
         /// Reads through input audio file and prints to the console when it encounters the specified keyword or makes an
         /// inference in the given context.
-        /// </summary>        
+        /// </summary>      
+        /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to a Porcupine keyword model file.</param>
         /// <param name="contextPath">Absolute path to file containing Rhino context parameters.</param>
         /// <param name="porcupineModelPath">Absolute path to the file containing Porcupine's model parameters.</param>
         /// <param name="porcupineSensitivity">Wake word detection sensitivity.</param>
         /// <param name="rhinoModelPath">Absolute path to the file containing Rhino's model parameters.</param>
         /// <param name="rhinoSensitivity">Inference sensitivity.</param>
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// </param>
         /// <param name="audioDeviceIndex">Audio is recorded from this input device.</param>        
         /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>                
-        public static void RunDemo(string keywordPath, string contextPath,
-                                   string porcupineModelPath, float porcupineSensitivity,
-                                   string rhinoModelPath, float rhinoSensitivity,
-                                   int audioDeviceIndex, string outputPath = null)
+        public static void RunDemo(
+            string accessKey,
+            string keywordPath,
+            string contextPath,
+            string porcupineModelPath,
+            float porcupineSensitivity,
+            string rhinoModelPath,
+            float rhinoSensitivity,
+            bool requireEndpoint,
+            int audioDeviceIndex,
+            string outputPath = null)
         {
             static void wakeWordCallback() => Console.WriteLine("[wake word]");
 
@@ -60,53 +70,37 @@ namespace PicovoiceDemo
                 }
                 else
                 {
-                    Console.WriteLine("Didn't understand the command");
+                    Console.WriteLine("Didn't understand the command\n");
                 }
             }
 
             // init picovoice platform
-            using Picovoice picovoice = new Picovoice(keywordPath, wakeWordCallback, contextPath, inferenceCallback,
-                                                        porcupineModelPath, porcupineSensitivity,
-                                                        rhinoModelPath, rhinoSensitivity);
+            using Picovoice picovoice = Picovoice.Create(
+                accessKey,
+                keywordPath,
+                wakeWordCallback,
+                contextPath,
+                inferenceCallback,
+                porcupineModelPath,
+                porcupineSensitivity,
+                rhinoModelPath,
+                rhinoSensitivity,
+                requireEndpoint);
+
             BinaryWriter outputFileWriter = null;
             int totalSamplesWritten = 0;
-            try
-            {                
-                // open stream to output file
-                if (!string.IsNullOrWhiteSpace(outputPath))
-                {
-                    outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
-                    WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
-                }
 
-                using(PvRecorder recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength)) {
-                    recorder.Start();
-
-                    Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                    Console.WriteLine("Listening...");
-
-                    while (!Console.KeyAvailable)
-                    {
-                        short[] pcm = recorder.Read();
-
-                        picovoice.Process(pcm);                                                        
-                        
-                        if (outputFileWriter != null) 
-                        {
-                            foreach (short sample in pcm) 
-                            {
-                                outputFileWriter.Write(sample);
-                            }
-                            totalSamplesWritten += pcm.Length;
-                        }
-                        Thread.Yield();
-                    }
-
-                    Console.WriteLine("Stopping...");
-                }         
-            }
-            finally 
+            // open stream to output file
+            if (!string.IsNullOrWhiteSpace(outputPath))
             {
+                outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
+                WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
+            }
+
+            Console.CancelKeyPress += (s, o) =>
+            {
+                Console.WriteLine("Stopping...");
+
                 if (outputFileWriter != null)
                 {
                     // write size to header and clean up
@@ -114,7 +108,33 @@ namespace PicovoiceDemo
                     outputFileWriter.Flush();
                     outputFileWriter.Dispose();
                 }
-            }            
+            };
+
+            using (PvRecorder recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength))
+            {
+                recorder.Start();
+
+                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+                Console.WriteLine("Listening...");
+
+                while (true)
+                {
+                    short[] pcm = recorder.Read();
+
+                    picovoice.Process(pcm);
+
+                    if (outputFileWriter != null)
+                    {
+                        foreach (short sample in pcm)
+                        {
+                            outputFileWriter.Write(sample);
+                        }
+                        totalSamplesWritten += pcm.Length;
+                    }
+                    Thread.Yield();
+                }
+            }
+
         }
 
         /// <summary>
@@ -130,12 +150,12 @@ namespace PicovoiceDemo
             if (writer == null)
                 return;
 
-            writer.Seek(0, SeekOrigin.Begin);         
+            writer.Seek(0, SeekOrigin.Begin);
             writer.Write(Encoding.ASCII.GetBytes("RIFF"));
             writer.Write((bitDepth / 8 * totalSampleCount) + 36);
-            writer.Write(Encoding.ASCII.GetBytes("WAVE")); 
+            writer.Write(Encoding.ASCII.GetBytes("WAVE"));
             writer.Write(Encoding.ASCII.GetBytes("fmt "));
-            writer.Write(16); 
+            writer.Write(16);
             writer.Write((ushort)1);
             writer.Write(channelCount);
             writer.Write(sampleRate);
@@ -143,7 +163,7 @@ namespace PicovoiceDemo
             writer.Write((ushort)(channelCount * bitDepth / 8));
             writer.Write(bitDepth);
             writer.Write(Encoding.ASCII.GetBytes("data"));
-            writer.Write(bitDepth / 8 * totalSampleCount);            
+            writer.Write(bitDepth / 8 * totalSampleCount);
         }
 
         /// <summary>
@@ -152,7 +172,8 @@ namespace PicovoiceDemo
         public static void ShowAudioDevices()
         {
             string[] devices = PvRecorder.GetAudioDevices();
-            for (int i = 0; i < devices.Length; i++) {
+            for (int i = 0; i < devices.Length; i++)
+            {
                 Console.WriteLine($"index: {i}, device name: {devices[i]}");
             }
         }
@@ -163,16 +184,18 @@ namespace PicovoiceDemo
             if (args.Length == 0)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
-            
+
+            string accessKey = null;
             string keywordPath = null;
             string contextPath = null;
             string porcupineModelPath = null;
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
+            bool requireEndpoint = false;
             string outputPath = null;
             int audioDeviceIndex = -1;
             bool showAudioDevices = false;
@@ -182,7 +205,14 @@ namespace PicovoiceDemo
             int argIndex = 0;
             while (argIndex < args.Length)
             {
-                if (args[argIndex] == "--keyword_path")
+                if (args[argIndex] == "--access_key")
+                {
+                    if (++argIndex < args.Length)
+                    {
+                        accessKey = args[argIndex++];
+                    }
+                }
+                else if (args[argIndex] == "--keyword_path")
                 {
                     if (++argIndex < args.Length)
                     {
@@ -224,6 +254,11 @@ namespace PicovoiceDemo
                         argIndex++;
                     }
                 }
+                else if (args[argIndex] == "--require_endpoint")
+                {
+                    requireEndpoint = true;
+                    argIndex++;
+                }
                 else if (args[argIndex] == "--show_audio_devices")
                 {
                     showAudioDevices = true;
@@ -259,7 +294,7 @@ namespace PicovoiceDemo
             if (showHelp)
             {
                 Console.WriteLine(HELP_STR);
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
@@ -267,56 +302,33 @@ namespace PicovoiceDemo
             if (showAudioDevices)
             {
                 ShowAudioDevices();
-                Console.ReadKey();
+                Console.Read();
                 return;
             }
 
-            // argument validation            
-            if (string.IsNullOrEmpty(keywordPath))
-            {
-                throw new ArgumentNullException("keyword_path");
-            }
-            if (!File.Exists(keywordPath))
-            {
-                throw new ArgumentException($"Porcupine keyword file at path {keywordPath} does not exist");
-            }
-
-            if (string.IsNullOrEmpty(contextPath))
-            {
-                throw new ArgumentNullException("context_path");
-            }
-            if (!File.Exists(contextPath))
-            {
-                throw new ArgumentException($"Rhino context file at path {contextPath} does not exist");
-            }
-
-            porcupineModelPath ??= Porcupine.MODEL_PATH;
-            if (porcupineSensitivity < 0 || porcupineSensitivity > 1)
-            {
-                throw new ArgumentException($"Porcupine sensitivity value of '{porcupineSensitivity}' is not valid. Value must be with [0, 1].");
-            }
-
-            rhinoModelPath ??= Rhino.MODEL_PATH;
-            if (rhinoSensitivity < 0 || rhinoSensitivity > 1)
-            {
-                throw new ArgumentException($"Rhino sensitivity value of '{rhinoSensitivity}' is not valid. Value must be with [0, 1].");
-            }
-
             // run demo with validated arguments
-            RunDemo(keywordPath, contextPath,
-                    porcupineModelPath, porcupineSensitivity,
-                    rhinoModelPath, rhinoSensitivity, 
-                    audioDeviceIndex, outputPath);
+            RunDemo(
+                accessKey,
+                keywordPath,
+                contextPath,
+                porcupineModelPath,
+                porcupineSensitivity,
+                rhinoModelPath,
+                rhinoSensitivity,
+                requireEndpoint,
+                audioDeviceIndex,
+                outputPath);
         }
 
         private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Console.WriteLine(e.ExceptionObject.ToString());
-            Console.ReadKey();
-            Environment.Exit(-1);
+            Console.Read();
+            Environment.Exit(1);
         }
 
-        private static readonly string HELP_STR = "Available options: \n " +            
+        private static readonly string HELP_STR = "Available options: \n " +
+            "\t--access_key (required): AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)\n" +
             "\t--keyword_path (required): Absolute path to a Porcupine keyword file.\n" +
             "\t--context_path (required): Absolute path to a Rhino context file.\n" +
             "\t--porcupine_model_path: Absolute path to Porcupine's model file.\n" +
@@ -325,6 +337,7 @@ namespace PicovoiceDemo
             "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
             "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity \n" +
             "\t\tvalue results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
+            "\t--require_endpoint: If set, Rhino requires an endpoint (chunk of silence) before finishing inference.\n" +
             "\t--audio_device_index: Index of input audio device.\n" +
             "\t--output_path: Absolute path to recorded audio for debugging.\n" +
             "\t--show_audio_devices: Print available recording devices.\n";
