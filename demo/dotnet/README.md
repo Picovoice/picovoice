@@ -1,11 +1,11 @@
-# Picovoice Demos
-
-Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
+# Picovoice Demos for .NET
 
 This package contains demos and commandline utilities for processing real-time audio (i.e. microphone) and audio files
 using Picovoice platform.
 
 ## Picovoice
+
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
@@ -42,6 +42,15 @@ dotnet build -c MicDemo.Release
 dotnet build -c FileDemo.Release
 ```
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 NOTE: the working directory for all dotnet commands is:
@@ -60,6 +69,7 @@ using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}
 ```console
 dotnet run -c FileDemo.Release -- \
 --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
+--access_key ${ACCESS_KEY}
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
@@ -73,6 +83,7 @@ located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
 ```console
 dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
@@ -96,6 +107,7 @@ in the above example, you can invoke the demo application as below:
 
 ```console
 dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
 --audio_device_index 0
@@ -105,6 +117,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 
 ```console
 dotnet run -c MicDemo.Release -- \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
 --audio_device_index 0
