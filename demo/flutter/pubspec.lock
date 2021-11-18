@@ -121,11 +121,9 @@ packages:
   porcupine_flutter:
     dependency: transitive
     description:
-      path: "binding/flutter"
-      ref: "v2.0"
-      resolved-ref: b4dfd75f4ea6c5394346d9b45846d97df5923ccc
-      url: "git://github.com/Picovoice/porcupine.git"
-    source: git
+      path: "../../resources/porcupine/binding/flutter"
+      relative: true
+    source: path
     version: "2.0.0"
   process:
     dependency: transitive
@@ -137,11 +135,9 @@ packages:
   rhino_flutter:
     dependency: transitive
     description:
-      path: "binding/flutter"
-      ref: "v2.0"
-      resolved-ref: "6f7632f45a944a01bb6d9acfcc9e23497a607f45"
-      url: "git://github.com/Picovoice/rhino.git"
-    source: git
+      path: "../../resources/rhino/binding/flutter"
+      relative: true
+    source: path
     version: "2.0.0"
   sky_engine:
     dependency: transitive

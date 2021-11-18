@@ -16,32 +16,7 @@ import 'package:rhino_flutter/rhino.dart';
 import 'package:rhino_flutter/rhino_error.dart';
 
 typedef WakeWordCallback = Function();
-typedef InferenceCallback = Function(PicovoiceInference inference);
-
-class PicovoiceInference {
-  final bool _isUnderstood;
-  final String? _intent;
-  final Map<String, String>? _slots;
-
-  /// constructor + basic checks
-  PicovoiceInference(this._isUnderstood, this._intent, this._slots) {
-    if (_isUnderstood) {
-      if (_intent == null || _slots == null) {
-        throw PicovoiceInvalidStateException(
-            "fields 'intent' and 'slots' must be present if inference was understood");
-      }
-    }
-  }
-
-  /// if isFinalized, whether Rhino understood what it heard based on the context
-  bool get isUnderstood => _isUnderstood;
-
-  /// if isUnderstood, name of intent that was inferred
-  String? get intent => _intent;
-
-  /// if isUnderstood, dictionary of slot keys and values that were inferred
-  Map<String, String>? get slots => _slots;
-}
+typedef InferenceCallback = Function(RhinoInference inference);
 
 class Picovoice {
   Porcupine? _porcupine;
@@ -82,7 +57,7 @@ class Picovoice {
   /// expressions(spoken commands), intents, and intent arguments(slots) within a domain of interest.
   ///
   /// [inferenceCallback] User-defined callback invoked upon completion of intent inference. The callback
-  /// accepts a single input argument of type `Map<String, dynamic>` that is populated with the following items:
+  /// accepts a single input argument of type `RhinoInference` that is populated with the following items:
   /// (1) `isUnderstood`: whether Rhino understood what it heard based on the context
   /// (2) `intent`: if isUnderstood, name of intent that were inferred
   /// (3) `slots`: if isUnderstood, dictionary of slot keys and values that were inferred
@@ -160,6 +135,11 @@ class Picovoice {
           "Cannot process frame - resources have been released.");
     }
 
+    if (frame.length != frameLength) {
+        throw PicovoiceInvalidArgumentException(
+            "Picovoice process requires frames of length $frameLength. Received frame of size ${frame.length}.");
+    }
+
     if (!_isWakeWordDetected) {
       final int keywordIndex = await _porcupine!.process(frame);
       if (keywordIndex >= 0) {
@@ -170,8 +150,7 @@ class Picovoice {
       RhinoInference inference = await _rhino!.process(frame);
       if (inference.isFinalized) {
         _isWakeWordDetected = false;
-        _inferenceCallback(PicovoiceInference(
-            inference.isUnderstood!, inference.intent, inference.slots));
+        _inferenceCallback(inference);
       }
     }
   }

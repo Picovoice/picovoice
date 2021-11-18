@@ -1101,7 +1101,7 @@ void createPicovoiceManager() {
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
-The `inferenceCallback` callback function takes a parameter of `PicovoiceInference` instance with the following variables:
+The `inferenceCallback` callback function takes a parameter of `RhinoInference` instance with the following variables:
 - isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understood context
 - intent - **null** if `isUnderstood` is not true, otherwise name of intent that were inferred
 - slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred

@@ -13,7 +13,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'package:picovoice_flutter/picovoice.dart';
+import 'package:rhino_flutter/rhino.dart';
 import 'package:picovoice_flutter/picovoice_manager.dart';
 import 'package:picovoice_flutter/picovoice_error.dart';
 
@@ -79,7 +79,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void inferenceCallback(PicovoiceInference inference) {
+  void inferenceCallback(RhinoInference inference) {
     setState(() {
       rhinoText = prettyPrintInference(inference);
       wakeWordDetected = false;
@@ -112,10 +112,10 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  String prettyPrintInference(PicovoiceInference inference) {
+  String prettyPrintInference(RhinoInference inference) {
     String printText =
         "{\n    \"isUnderstood\" : \"${inference.isUnderstood}\",\n";
-    if (inference.isUnderstood) {
+    if (inference.isUnderstood!) {
       printText += "    \"intent\" : \"${inference.intent}\",\n";
       if (inference.slots!.isNotEmpty) {
         printText += '    "slots" : {\n';
