@@ -3,15 +3,19 @@ name: .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
+
+defaults:
+  run:
+    working-directory: sdk/dotnet
 
 jobs:
   build:
@@ -23,16 +27,33 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: recursive
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    - name: Restore dependencies
-      run: dotnet restore
-      working-directory: sdk/dotnet/Picovoice
+    
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Pack Porcupine binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/porcupine/binding/dotnet
+    
+    - name: Add Porcupine binding to SDK
+      run: dotnet add Picovoice/Picovoice.csproj package -s ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release -v 2.0.0 Porcupine
+
+    - name: Pack Rhino binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/rhino/binding/dotnet
+    
+    - name: Add Rhino binding to SDK
+      run: dotnet add Picovoice/Picovoice.csproj package -s ../../resources/rhino/binding/dotnet/Rhino/bin/Release -v 2.0.0 Rhino
+            
     - name: Build
       run: dotnet build --no-restore
-      working-directory: sdk/dotnet/Picovoice
+      
     - name: Test
-      run: dotnet test
-      working-directory: sdk/dotnet/PicovoiceTest
+      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
