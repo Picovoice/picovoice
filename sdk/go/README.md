@@ -1,6 +1,7 @@
 # Picovoice SDK for Go
 
 ## Picovoice
+
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
@@ -16,7 +17,16 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 - Go 1.16+
-- Runs on Linux (x86_64), macOS (x86_64) and Windows (x86_64)
+- Runs on Linux (x86_64), macOS (x86_64, arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano) and BeagleBone
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Installation
 
@@ -34,6 +44,8 @@ To create an instance of the engine with default parameters, use the `NewPicovoi
 . "github.com/Picovoice/picovoice/sdk/go"
 rhn "github.com/Picovoice/rhino/binding/go"
 
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+
 keywordPath := "/path/to/keyword/file.ppn"
 wakeWordCallback := func(){
     // let user know wake word detected
@@ -50,7 +62,9 @@ inferenceCallback := func(inference rhn.RhinoInference){
     }
 }
 
-picovoice := NewPicovoice(keywordPath, 
+picovoice := NewPicovoice(
+    accessKey,
+    keywordPath, 
     wakeWordCallback, 
     contextPath, 
     inferenceCallback)
@@ -62,7 +76,7 @@ if err != nil {
 ```
 
 Upon detection of wake word defined by `keywordPath` it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `contextPath`. `keywordPath` is the absolute path to
+the context defined by the file located at `contextPath`. `accessKey` is your Picovoice `AccessKey`. `keywordPath` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
 `contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
 (with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is

@@ -5,12 +5,12 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 ## Requirements
 
 - go 1.16+
-- **Windows**: The demo requires `cgo`, which means that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) to build it properly. 
+- **Windows**: The demos require `cgo`, which means that a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) is required. 
 
 ## Compatibility
 
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Windows (x86_64)
 - Raspberry Pi:
   - Zero
@@ -19,6 +19,15 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
   - 4 (32 and 64 bit)
 - NVIDIA Jetson Nano
 - BeagleBone
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Usage
 
@@ -37,13 +46,14 @@ using the context defined by the file passed to the `-context_path` argument:
 ```console
 go run filedemo/picovoice_file_demo.go \
 -input_audio_path "path/to/input.wav" \
+-access_key ${ACCESS_KEY} \
 -keyword_path "/path/to/keyword.ppn" \
 -context_path "/path/to/context.rhn"
 ```
 
 To see all available arguments, use the `-h` flag:
 ```console
-go run filedemo/picovoice_file_demo.go
+go run filedemo/picovoice_file_demo.go -h
 ```
 
 ### Microphone Demo
@@ -55,13 +65,14 @@ detection.
 
 ```console
 go run micdemo/picovoice_mic_demo.go \
+-access_key ${ACCESS_KEY} \
 -keyword_path "/path/to/keyword.ppn" \
 -context_path "/path/to/context.rhn"
 ```
 
 To see all available arguments, use the `-h` flag:
 ```console
-go run micdemo/picovoice_mic_demo.go
+go run micdemo/picovoice_mic_demo.go -h
 ```
 
 It is possible that the default audio input device is not the one you wish to use. There are a couple
@@ -82,6 +93,7 @@ in the above example, you can invoke the demo application as below:
 
 ```console
 go run micdemo/picovoice_mic_demo.go \
+-access_key ${ACCESS_KEY} \
 -keyword_path "/path/to/keyword.ppn" \
 -context_path "/path/to/context.rhn" \
 -audio_device_index 0
@@ -91,6 +103,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 
 ```console
 go run micdemo/picovoice_mic_demo.go \
+-access_key ${ACCESS_KEY} \
 -context_path "/path/to/context.rhn" \
 -keyword_path "/path/to/keyword.ppn" \
 -audio_device_index 0 \
