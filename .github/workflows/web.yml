@@ -38,21 +38,16 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Local package dependencies
-      run: |
-        pushd porcupine/binding/web
-        yarn && yarn build
-        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
-        popd
-        pushd rhino/binding/web
-        yarn && yarn build
-        for i in porcupine-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
-      working-directory: resources
+    # - name: Install dependencies
+    #   run: yarn install
 
-    - name: Install dependencies
-      run: yarn install
+    # - name: Build
+    #   run: |
+    #     yarn build
+    #     for i in picovoice-web*; do pushd $i; yarn && yarn build || exit 1; popd; done
 
-    - name: Build
-      run: |
-        yarn build
-        for i in picovoice-web*; do cd $i; yarn && yarn build || exit 1; cd ..; done
+    # TODO: Revert to above once packages are published
+    - name: Web Binding Build
+      run: .github/workflows/web_action_helper.sh || exit 1
+      working-directory: .
+
