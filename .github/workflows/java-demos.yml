@@ -37,7 +37,7 @@ jobs:
 
     - name: Build Binding Dependency
       run: ./gradlew assemble
-      working-directory: binding/java
+      working-directory: sdk/java
 
     - name: Build
       run: ./gradlew build
