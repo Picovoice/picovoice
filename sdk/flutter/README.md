@@ -42,6 +42,15 @@ dependencies:
 
 **NOTE:** When archiving for release on iOS, you may have to change the build settings of your project in order to prevent stripping of the Picovoice library. To do this open the Runner project in XCode and change build setting Deployment -> Strip Style to 'Non-Global Symbols'.
 
+## AccessKey
+
+All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Permissions
 
 To enable recording with the hardware's microphone, you must first ensure that you have enabled the proper permission on both iOS and Android.
@@ -55,6 +64,7 @@ On iOS, open your Info.plist and add the following line:
 On Android, open your AndroidManifest.xml and add the following line:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 ## Usage
@@ -70,7 +80,10 @@ The constructor `PicovoiceManager.create` will create an instance of the Picovoi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 _picovoiceManager = PicovoiceManager.create(
+    accessKey,
     "/path/to/keyword/file.ppn",
     _wakeWordCallback,
     "/path/to/context/file.rhn",
@@ -79,15 +92,20 @@ _picovoiceManager = PicovoiceManager.create(
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
+The `inferenceCallback` callback function takes a parameter of `PicovoiceInference` instance with the following variables:
+- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understood context
+- intent - **null** if `isUnderstood` is not true, otherwise name of intent that were inferred
+- slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
+
 ```dart
 void _wakeWordCallback(){    
     // wake word detected    
 }
 
-void _infererenceCallback(Map<String, dynamic> inference){
-    if(inference['isUnderstood']){
-        String intent = inference['intent']
-        Map<String, String> slots = inference['slots']
+void _infererenceCallback(PicovoiceInference inference){
+    if(inference.isUnderstood){
+        String intent = inference.intent!
+        Map<String, String> slots = inference.slots!
         // add code to take action based on inferred intent and slot values
     }
     else{
@@ -96,12 +114,18 @@ void _infererenceCallback(Map<String, dynamic> inference){
 }
 ```
 
-You can override the default model files and sensitivities. There is also an optional errorCallback that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
+You can override the default model files and sensitivities.You can set `requireEndpoint` parameter to false if 
+you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback` 
+that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
+
 ```dart
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 void createPicovoiceManager() {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
     _picovoiceManager = PicovoiceManager.create(
+        accessKey,
         "/path/to/keyword/file.ppn",
         wakeWordCallback,
         "/path/to/context/file.rhn",
@@ -110,10 +134,11 @@ void createPicovoiceManager() {
         rhinoSensitivity: rhinoSensitivity,
         porcupineModelPath: "/path/to/porcupine/model.pv",
         rhinoModelPath: "/path/to/rhino/model.pv",
+        requireEndpoint: false,
         errorCallback: _errorCallback);    
 }
 
-void _errorCallback(PvError error){
+void _errorCallback(PicovoiceException error){
     // handle error
 }
 ```
@@ -123,9 +148,7 @@ Once you have instantiated a PicovoiceManager, you can start audio capture and p
 ```dart
 try{
     await _picovoiceManager.start();
-} on PvAudioException catch (ex) {
-    // deal with audio exception     
-} on PvError catch(ex){
+} on PicovoiceException catch(ex){
     // deal with Picovoice init error
 }
 ```
@@ -145,17 +168,20 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into a already existing audio processing pipeline.
 
-`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, and requireEndpoint are optional.
 
 ```dart
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
+
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
     try{
         _picovoice = await Picovoice.create(
+            accessKey,
             "/path/to/keyword/file.ppn",
             wakeWordCallback,
             "/path/to/context/file.rhn",
@@ -163,20 +189,21 @@ void createPicovoice() async {
             porcupineSensitivity,
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv");
-    } on PvError catch (err) {
+            "/path/to/rhino/model.pv",
+            requireEndpoint);
+    } on PicovoiceException catch (err) {
         // handle picovoice init error
     }
 }
 
-void wakeWordCallback(){    
+void wakeWordCallback() {    
     // wake word detected
 }
 
-void infererenceCallback(Map<String, dynamic> inference){
-    if(inference['isUnderstood']){
-        String intent = inference['intent']
-        Map<String, String> slots = inference['slots']
+void inferenceCallback(PicovoiceInference inference) {
+    if(inference.isUnderstood){
+        String intent = inference.intent!
+        Map<String, String> slots = inference.slots!
         // add code to take action based on inferred intent and slot values
     }
     else{
@@ -192,7 +219,7 @@ List<int> buffer = getAudioFrame();
 
 try {
     _picovoice.process(buffer);
-} on PvError catch (error) {
+} on PicovoiceException catch (error) {
     // handle error
 }
 ```
@@ -220,13 +247,17 @@ In your Flutter app code, you can then pass the assets directly to Picovoice's `
 ```dart
 String keywordAsset = "assets/keyword.ppn"
 String contextAsset = "assets/context.rhn"
+
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
 try{
     _picovoice = await Picovoice.create(
+        accessKey,
         keywordAsset,
         wakeWordCallback,
         contextAsset,
         inferenceCallback);
-} on PvError catch (err) {
+} on PicovoiceException catch (err) {
     // handle picovoice init error
 }
 ```
