@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/services.dart' show rootBundle;
 
-import 'package:path_provider/path_provider.dart';
-import 'package:picovoice/picovoice_manager.dart';
-import 'package:picovoice/picovoice_error.dart';
+import 'package:rhino_flutter/rhino.dart';
+import 'package:picovoice_flutter/picovoice_manager.dart';
+import 'package:picovoice_flutter/picovoice_error.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -55,6 +53,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final String accessKey =
+      "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
+  bool _isError = false;
+  String _errorMessage = "";
+
   int _selectedIndex = 0;
   bool _listeningForCommand = false;
   bool _timerTextInvisible = false;
@@ -62,11 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _alarmSounding = false;
   DateTime _clockTime = DateTime.now();
   DateTime? _alarmTime;
-  Stopwatch _stopwatch = Stopwatch();
-  Stopwatch _timerStopwatch = Stopwatch();
+  final Stopwatch _stopwatch = Stopwatch();
+  final Stopwatch _timerStopwatch = Stopwatch();
   Duration _timerDuration = Duration();
   PicovoiceManager? _picovoiceManager;
   Timer? _updateTimer;
+
   @override
   void initState() {
     super.initState();
@@ -85,17 +90,32 @@ class _MyHomePageState extends State<MyHomePage> {
         ? "android"
         : Platform.isIOS
             ? "ios"
-            : throw new PvError("This demo supports iOS and Android only.");
+            : throw PicovoiceRuntimeException(
+                "This demo supports iOS and Android only.");
     String keywordAsset = "assets/$platform/pico clock_$platform.ppn";
     String contextAsset = "assets/$platform/clock_$platform.rhn";
 
     try {
-      _picovoiceManager = await PicovoiceManager.create(
-          keywordAsset, _wakeWordCallback, contextAsset, _inferenceCallback,
-          errorCallback: _errorCallback);
-      _picovoiceManager?.start();
-    } on PvError catch (ex) {
-      print(ex);
+      _picovoiceManager = await PicovoiceManager.create(accessKey, keywordAsset,
+          _wakeWordCallback, contextAsset, _inferenceCallback,
+          processErrorCallback: _errorCallback);
+      await _picovoiceManager?.start();
+    } on PicovoiceInvalidArgumentException catch (ex) {
+      _errorCallback(PicovoiceInvalidArgumentException(
+          "${ex.message}\nEnsure your accessKey '$accessKey' is a valid access key."));
+    } on PicovoiceActivationException {
+      _errorCallback(
+          PicovoiceActivationException("AccessKey activation error."));
+    } on PicovoiceActivationLimitException {
+      _errorCallback(PicovoiceActivationLimitException(
+          "AccessKey reached its device limit."));
+    } on PicovoiceActivationRefusedException {
+      _errorCallback(PicovoiceActivationRefusedException("AccessKey refused."));
+    } on PicovoiceActivationThrottledException {
+      _errorCallback(PicovoiceActivationThrottledException(
+          "AccessKey has been throttled."));
+    } on PicovoiceException catch (ex) {
+      _errorCallback(ex);
     }
   }
 
@@ -105,25 +125,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _inferenceCallback(Map<String, dynamic> inference) {
+  void _inferenceCallback(RhinoInference inference) {
     print(inference);
-    if (inference['isUnderstood']) {
-      Map<String, String> slots = inference['slots'];
-      if (inference['intent'] == 'clock') {
+    if (inference.isUnderstood!) {
+      Map<String, String> slots = inference.slots!;
+      if (inference.intent == 'clock') {
         setState(() {
           _selectedIndex = 0;
         });
-      } else if (inference['intent'] == 'timer') {
+      } else if (inference.intent! == 'timer') {
         _performTimerCommand(slots);
-      } else if (inference['intent'] == 'setTimer') {
+      } else if (inference.intent! == 'setTimer') {
         _setTimer(slots);
-      } else if (inference['intent'] == 'alarm') {
+      } else if (inference.intent! == 'alarm') {
         _performAlarmCommand(slots);
-      } else if (inference['intent'] == 'setAlarm') {
+      } else if (inference.intent! == 'setAlarm') {
         _setAlarm(slots);
-      } else if (inference['intent'] == 'stopwatch') {
+      } else if (inference.intent! == 'stopwatch') {
         _performStopwatchCommand(slots);
-      } else if (inference['intent'] == 'availableCommands') {
+      } else if (inference.intent! == 'availableCommands') {
         Fluttertoast.showToast(
             msg: "Try saying: \n" +
                 " - 'set timer for 5 minutes'\n" +
@@ -153,8 +173,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _errorCallback(PvError error) {
-    print(error);
+  void _errorCallback(PicovoiceException error) {
+    setState(() {
+      _isError = true;
+      _errorMessage = error.message!;
+    });
   }
 
   void _performAlarmCommand(Map<String, String> slots) {
@@ -218,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
     DateTime now = DateTime.now();
     int dayOfMonth = now.day + alarmWeekday - now.weekday;
     DateTime alarmTime =
-        new DateTime(now.year, now.month, dayOfMonth, hour, minute);
+        DateTime(now.year, now.month, dayOfMonth, hour, minute);
     if (alarmTime.isBefore(now)) {
       Fluttertoast.showToast(
           msg: DateFormat.MMMEd().add_jm().format(alarmTime) +
@@ -332,7 +355,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // play alarm and flash text
     FlutterRingtonePlayer.playAlarm();
-    new Timer.periodic(Duration(milliseconds: 500), (timer) {
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
       _timerTextInvisible = !_timerTextInvisible;
 
       // clear timer alarm
@@ -353,7 +376,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // play alarm and flash text
     FlutterRingtonePlayer.playAlarm();
-    new Timer.periodic(Duration(milliseconds: 500), (timer) {
+    Timer.periodic(Duration(milliseconds: 500), (timer) {
       _alarmTextInvisible = !_alarmTextInvisible;
 
       // clear alarm
@@ -380,9 +403,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final int minutes = duration.inMinutes.remainder(60);
     final int seconds = duration.inSeconds.remainder(60);
     String formatStr = "";
-    if (hours > 0)
+    if (hours > 0) {
       formatStr = "$hours:${pad(minutes)}:${pad(seconds)}";
-    else if (minutes > 0) {
+    } else if (minutes > 0) {
       formatStr = "$minutes:${pad(seconds)}";
     } else {
       formatStr = "$seconds";
@@ -463,6 +486,25 @@ class _MyHomePageState extends State<MyHomePage> {
     ]);
   }
 
+  buildErrorMessage(BuildContext context) {
+    return Expanded(
+        flex: 2,
+        child: Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            padding: EdgeInsets.all(5),
+            decoration: !_isError
+                ? null
+                : BoxDecoration(
+                    color: Colors.red, borderRadius: BorderRadius.circular(5)),
+            child: !_isError
+                ? null
+                : Text(
+                    _errorMessage,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  )));
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> _clockWidgets = <Widget>[
@@ -479,22 +521,24 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Flexible(
-                flex: 4,
+                flex: 6,
                 child: Container(
                     margin: EdgeInsets.only(top: 40),
                     child: _clockWidgets.elementAt(_selectedIndex))),
+            _isError ? buildErrorMessage(context) :
             Column(
               children: [
                 Container(
-                    child: _listeningForCommand
-                        ? Icon(Icons.mic,
-                            size: 100, color: Theme.of(context).focusColor)
-                        : Icon(Icons.mic_none,
-                            size: 100, color: Theme.of(context).primaryColor)),
-                Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: Text("Say 'PicoClock'!",
-                        style: Theme.of(context).textTheme.bodyText1))
+                  child: _listeningForCommand
+                      ? Icon(Icons.mic,
+                          size: 100, color: Theme.of(context).focusColor)
+                      : Icon(Icons.mic_none,
+                          size: 100,
+                          color: Theme.of(context).primaryColor)),
+                Container( 
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: Text("Say 'PicoClock'!",
+                      style: Theme.of(context).textTheme.bodyText1))
               ],
             )
           ]),
@@ -515,7 +559,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).focusColor,
-        onTap: _onItemTapped,
+        onTap: _isError ? null : _onItemTapped,
       ),
     );
   }
