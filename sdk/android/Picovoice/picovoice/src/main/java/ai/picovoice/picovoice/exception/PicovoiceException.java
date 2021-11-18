@@ -20,4 +20,8 @@ public class PicovoiceException extends Exception {
     PicovoiceException(String message) {
         super(message);
     }
+
+    PicovoiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -20,4 +20,8 @@ public class PicovoiceActivationThrottledException extends PicovoiceException  {
     PicovoiceActivationThrottledException(String message) {
         super(message);
     }
+
+    PicovoiceActivationThrottledException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -194,34 +194,34 @@ public class Picovoice {
      */
     private static PicovoiceException mapToPicovoiceException(Exception e) {
         if (e instanceof PorcupineActivationException || e instanceof RhinoActivationException) {
-            return new PicovoiceActivationException(e.getMessage());
+            return new PicovoiceActivationException(e.getMessage(), e);
         } else if (e instanceof PorcupineActivationLimitException || e instanceof RhinoActivationLimitException) {
-            return new PicovoiceActivationLimitException(e.getMessage());
+            return new PicovoiceActivationLimitException(e.getMessage(), e);
         } else if (e instanceof PorcupineActivationRefusedException || e instanceof RhinoActivationRefusedException) {
-            return new PicovoiceActivationRefusedException(e.getMessage());
+            return new PicovoiceActivationRefusedException(e.getMessage(), e);
         } else if (e instanceof PorcupineActivationThrottledException || e instanceof RhinoActivationThrottledException) {
-            return new PicovoiceActivationThrottledException(e.getMessage());
+            return new PicovoiceActivationThrottledException(e.getMessage(), e);
         } else if (e instanceof PorcupineInvalidArgumentException || e instanceof RhinoInvalidArgumentException) {
-            return new PicovoiceInvalidArgumentException(e.getMessage());
+            return new PicovoiceInvalidArgumentException(e.getMessage(), e);
         } else if (e instanceof PorcupineInvalidStateException || e instanceof RhinoInvalidStateException) {
-            return new PicovoiceInvalidStateException(e.getMessage());
+            return new PicovoiceInvalidStateException(e.getMessage(), e);
         } else if (e instanceof PorcupineIOException || e instanceof RhinoIOException) {
-            return new PicovoiceIOException(e.getMessage());
+            return new PicovoiceIOException(e.getMessage(), e);
         } else if (e instanceof PorcupineKeyException || e instanceof RhinoKeyException) {
-            return new PicovoiceKeyException(e.getMessage());
+            return new PicovoiceKeyException(e.getMessage(), e);
         } else if (e instanceof PorcupineMemoryException || e instanceof RhinoMemoryException) {
-            return new PicovoiceMemoryException(e.getMessage());
+            return new PicovoiceMemoryException(e.getMessage(), e);
         } else if (e instanceof PorcupineRuntimeException || e instanceof RhinoRuntimeException) {
-            return new PicovoiceRuntimeException(e.getMessage());
+            return new PicovoiceRuntimeException(e.getMessage(), e);
         } else if (e instanceof PorcupineStopIterationException || e instanceof RhinoStopIterationException) {
-            return new PicovoiceStopIterationException(e.getMessage());
+            return new PicovoiceStopIterationException(e.getMessage(), e);
         } else if (e instanceof PorcupineException || e instanceof RhinoException) {
-            return new PicovoiceException(e.getMessage());
+            return new PicovoiceException(e.getMessage(), e);
         } else {
             return new PicovoiceException(
                     String.format("Unknown exception: '%s', message: '%s'",
                             e.getClass().getSimpleName(),
-                            e.getMessage()));
+                            e.getMessage()), e);
         }
     }
 
