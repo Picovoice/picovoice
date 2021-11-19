@@ -123,10 +123,9 @@ public class Picovoice {
 
             if (rhino.getFrameLength() != porcupine.getFrameLength()) {
                 final String message = String.format(
-                        "Incompatible frame lengths for Porcupine and Rhino engines: '%d' and '%d' samples"
+                        "Incompatible frame lengths for Porcupine and Rhino engines: '%d' and '%d' samples",
                         porcupine.getFrameLength(),
-                        rhino.getFrameLength()
-                        );
+                        rhino.getFrameLength());
                 throw new PicovoiceException(message);
             }
 
@@ -134,8 +133,7 @@ public class Picovoice {
                 final String message = String.format(
                         "Incompatible sample rates for Porcupine and Rhino engines: '%d' and '%d' Hz",
                         porcupine.getSampleRate(),
-                        rhino.getSampleRate()
-                        );
+                        rhino.getSampleRate());
                 throw new PicovoiceException(message);
             }
 
