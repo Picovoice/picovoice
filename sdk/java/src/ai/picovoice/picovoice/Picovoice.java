@@ -76,6 +76,17 @@ public class Picovoice {
             float rhinoSensitivity,
             boolean requireEndpoint,
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
+
+        if (wakeWordCallback == null) {
+            final String message = String.format("Wake word callback is required");
+            throw new PicovoiceException(message);
+        }
+
+        if (inferenceCallback == null) {
+            final String message = String.format("Inference callback is required");
+            throw new PicovoiceException(message);
+        }
+
         try {
             porcupine = new Porcupine.Builder()
                     .setAccessKey(accessKey)
@@ -107,6 +118,24 @@ public class Picovoice {
                 final String message = String.format(
                         "Expected Rhino library with version '2.0.x' but received %s",
                         rhino.getVersion());
+                throw new PicovoiceException(message);
+            }
+
+            if (rhino.getFrameLength() != porcupine.getFrameLength()) {
+                final String message = String.format(
+                        "Incompatible frame lengths for Porcupine and Rhino engines: '%d' and '%d' samples"
+                        porcupine.getFrameLength(),
+                        rhino.getFrameLength()
+                        );
+                throw new PicovoiceException(message);
+            }
+
+            if (rhino.getSampleRate() != porcupine.getSampleRate()) {
+                final String message = String.format(
+                        "Incompatible sample rates for Porcupine and Rhino engines: '%d' and '%d' Hz",
+                        porcupine.getSampleRate(),
+                        rhino.getSampleRate()
+                        );
                 throw new PicovoiceException(message);
             }
 
