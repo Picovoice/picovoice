@@ -79,12 +79,12 @@ public class Picovoice {
 
         if (wakeWordCallback == null) {
             final String message = String.format("Wake word callback is required");
-            throw new PicovoiceException(message);
+            throw new PicovoiceInvalidArgumentException(message);
         }
 
         if (inferenceCallback == null) {
             final String message = String.format("Inference callback is required");
-            throw new PicovoiceException(message);
+            throw new PicovoiceInvalidArgumentException(message);
         }
 
         try {
