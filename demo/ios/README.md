@@ -2,6 +2,16 @@
 
 The minimum iOS version required to run the demo is iOS 14.0 or higher.
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+
 ## BackgroundService Demo
 
 This demo runs microphone recording in the background and detects the wake word and context inference while the application is **not** in focus. The demo will continue to run as long as the application remains running in the background.
@@ -12,7 +22,7 @@ To run the background service demo, go to [BackgroundService](./BackgroundServic
 pod install
 ```
 
-Open `PicovoiceBackgroundServiceDemo.xcworkspace` and run the demo.
+Open `PicovoiceBackgroundServiceDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Then, build and run the demo through XCode.
 
 ## ForegroundApp Demo
 
@@ -24,7 +34,7 @@ To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) d
 pod install
 ```
 
-Open the `PicovoiceForegroundAppDemo.xcworkspace` and run the demo.
+Open the `PicovoiceForegroundAppDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Then, build and run the demo through XCode.
 
 ## Wake Word Detection and Context Inference
 
