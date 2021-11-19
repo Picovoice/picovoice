@@ -1,5 +1,5 @@
 {
-  "name": "ReactNativeClock",
+  "name": "react-native-clock",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -12,15 +12,14 @@
     "ios-run": "react-native run-ios"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "1.1.10",
-    "@picovoice/porcupine-react-native": "^1.9.9",
+    "@picovoice/picovoice-react-native": "../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.0.0.tgz",
+    "@picovoice/porcupine-react-native": "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "^1.6.9",
+    "@picovoice/rhino-react-native": "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-moment": "^1.1.1",
     "react-native": "0.63.4",
-    "react-native-fs": "^2.16.6",
     "react-native-material-bottom-navigation": "^1.0.5",
     "react-native-notification-sounds": "^0.5.3",
     "react-native-vector-icons": "^8.1.0"
@@ -28,6 +27,8 @@
   "devDependencies": {
     "@babel/core": "^7.13.8",
     "@babel/runtime": "^7.13.9",
+    "@types/react": "^17.0.35",
+    "@types/react-native": "^0.66.5",
     "babel-jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.65.2",
     "react-test-renderer": "16.13.1"

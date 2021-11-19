@@ -1,20 +1,24 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceManager} from '@picovoice/picovoice-react-native';
-
-const RNFS = require('react-native-fs');
+import {PicovoiceManager, PicovoiceExceptions} from '@picovoice/picovoice-react-native';
+import {Rhino, RhinoInference} from '@picovoice/rhino-react-native';
 
 type Props = {};
 type State = {
   buttonText: string;
   buttonDisabled: boolean;
-  rhinoText: string;
+  picovoiceText: string;
   isListening: boolean;
+  isError: boolean;
+  errorMessage: string;
 };
 
 export default class App extends Component<Props, State> {
+  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+
   _picovoiceManager: PicovoiceManager | undefined;
+  _timeoutRef = null;
 
   constructor(props: Props) {
     super(props);
@@ -23,60 +27,24 @@ export default class App extends Component<Props, State> {
       buttonDisabled: false,
       picovoiceText: '',
       isListening: false,
+      isError: false,
+      errorMessage: '',
     };
   }
 
   async componentDidMount() {
-    let wakeWordName = 'porcupine';
-    let wakeWordFilename = wakeWordName;
-    let wakeWordPath = '';
-    let contextName = 'smart_lighting';
-    let contextFilename = contextName;
-    let contextPath = '';
-
-    // get platform filesystem path to resources
-    if (Platform.OS == 'android') {
-      // for Android, extract resources
-      wakeWordFilename += '_android.ppn';
-      wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename}`;
-      await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
-
-      contextFilename += '_android.rhn';
-      contextPath = `${RNFS.DocumentDirectoryPath}/${contextFilename}`;
-      await RNFS.copyFileRes(contextFilename, contextPath);
-    } else if (Platform.OS == 'ios') {
-      wakeWordFilename += '_ios.ppn';
-      wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
-
-      contextFilename += '_ios.rhn';
-      contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
-    }
+    let wakeWordPath = `porcupine_${Platform.OS}.ppn`;
+    let contextPath = `smart_lighting_${Platform.OS}.rhn`;
     
     this._picovoiceManager = PicovoiceManager.create(
+      this._accessKey,
       wakeWordPath,
-      () => {         
-        this.setState({
-          picovoiceText: 'Wake word detected! Listening for intent...',
-        });        
-      },
+      this._wakeWordCallback.bind(this),
       contextPath,
-      (inference: object) => {
-        this.setState({
-          picovoiceText: this._prettyPrintInference(inference),
-        });
-
-        setTimeout(() => {
-          if (this.state.isListening) {
-            this.setState({
-              picovoiceText: 'Listening for wake word...',
-            });
-          } else {
-            this.setState({
-              picovoiceText: '',
-            });
-          }
-        }, 2000);
-      },
+      this._inferenceCallback.bind(this),
+      (error: PicovoiceExceptions.PicovoiceException) => {
+        this._errorCallback(error.message);
+      }
     );    
   }
 
@@ -86,13 +54,36 @@ export default class App extends Component<Props, State> {
     }
   }
 
-  _prettyPrintInference(inference: object) {
-    let printText = `{\n    \"isUnderstood\" : \"${inference['isUnderstood']}\",\n`;
-    if (inference['isUnderstood']) {
-      printText += `    \"intent\" : \"${inference['intent']}\",\n`;
-      if (Object.keys(inference['slots']).length > 0) {
+  _wakeWordCallback() {
+    if (this._timeoutRef != null) {
+      clearTimeout(this._timeoutRef);
+      this._timeoutRef = null;
+    }
+    this.setState({
+      picovoiceText: 'Wake word detected! Listening for intent...',
+    });  
+  }
+
+  _inferenceCallback(inference: RhinoInference) {
+    this.setState({
+      picovoiceText: this._prettyPrintInference(inference),
+    });
+
+    this._timeoutRef = setTimeout(() => {
+      this.setState({
+        picovoiceText: 'Listening for wake word...',
+      });
+      this._timeoutRef = null;
+    }, 2000);
+  }
+
+  _prettyPrintInference(inference: RhinoInference) {
+    let printText = `{\n    \"isUnderstood\" : \"${inference.isUnderstood}\",\n`;
+    if (inference.isUnderstood) {
+      printText += `    \"intent\" : \"${inference.intent}\",\n`;
+      if (Object.keys(inference.slots).length > 0) {
         printText += '    "slots" : {\n';
-        let slots = inference['slots'];
+        let slots = inference.slots;
         for (const key in slots) {
           printText += `        \"${key}\" : \"${slots[key]}\",\n`;
         }
@@ -101,6 +92,14 @@ export default class App extends Component<Props, State> {
     }
     printText += '}';
     return printText;
+  }
+
+  _errorCallback(error: string) {
+    this._picovoiceManager?.stop();
+    this.setState({
+      isError: true,
+      errorMessage: error
+    });
   }
 
   async _startProcessing() {
@@ -118,16 +117,16 @@ export default class App extends Component<Props, State> {
       });
     }
 
-    recordAudioRequest.then((hasPermission) => {
+    recordAudioRequest.then(async (hasPermission) => {
       if (!hasPermission) {
-        console.error('Required microphone permission was not granted.');
+        this._errorCallback('Required microphone permission was not granted.');
         this.setState({
           buttonDisabled: false,
         });
         return;
       }      
       try{
-      this._picovoiceManager?.start().then((didStart) => {
+        const didStart = await this._picovoiceManager?.start();
         if (didStart) {
           this.setState({
             buttonText: 'Stop',
@@ -136,9 +135,22 @@ export default class App extends Component<Props, State> {
             isListening: true,
           });
         }
-      });}
-      catch(err){
-        console.error(err);
+      } catch(err){
+        let errorMessage = '';
+        if (err instanceof PicovoiceExceptions.PicovoiceInvalidArgumentException) {
+          errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
+        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationException) {
+          errorMessage = "AccessKey activation error";
+        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationLimitException) {
+          errorMessage = "AccessKey reached its device limit";
+        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationRefusedException) {
+          errorMessage = "AccessKey refused";
+        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationThrottledException) {
+          errorMessage = "AccessKey has been throttled";
+        } else {
+          errorMessage = err.toString();
+        }
+        this._errorCallback(errorMessage);
       }
     });
   }
@@ -150,6 +162,10 @@ export default class App extends Component<Props, State> {
 
     this._picovoiceManager?.stop().then((didStop) => {
       if (didStop) {
+        if (this._timeoutRef != null) {
+          clearTimeout(this._timeoutRef);
+          this._timeoutRef = null;
+        }
         this.setState({
           buttonText: 'Start',
           picovoiceText: '',
@@ -180,7 +196,7 @@ export default class App extends Component<Props, State> {
       );
       return granted === PermissionsAndroid.RESULTS.GRANTED;
     } catch (err) {
-      console.error(err);
+      this._errorCallback(err);
       return false;
     }
   }
@@ -190,7 +206,6 @@ export default class App extends Component<Props, State> {
       <View
         style={[
           styles.container,
-          {backgroundColor: this.state.backgroundColour},
         ]}>
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Picovoice</Text>
@@ -208,11 +223,11 @@ export default class App extends Component<Props, State> {
               height: '50%',
               alignSelf: 'center',
               justifyContent: 'center',
-              backgroundColor: '#377DFF',
+              backgroundColor: this.state.isError ? '#cccccc' : '#377DFF',
               borderRadius: 100,
             }}
             onPress={() => this._toggleListening()}
-            disabled={this.state.buttonDisabled}>
+            disabled={this.state.buttonDisabled || this.state.isError}>
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
@@ -228,6 +243,16 @@ export default class App extends Component<Props, State> {
             <Text style={styles.picovoiceText}>{this.state.picovoiceText}</Text>
           </View>
         </View>
+        {this.state.isError &&
+          <View style={styles.errorBox}>
+            <Text style={{
+              color: 'white',
+              fontSize: 16
+            }}>
+              {this.state.errorMessage}
+            </Text>
+          </View>
+        }
         <View
           style={{flex: 0.08, justifyContent: 'flex-end', paddingBottom: 25}}>
           <Text style={styles.instructions}>
@@ -287,5 +312,12 @@ const styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#666666',
+  },
+  errorBox: {
+    backgroundColor: 'red',
+    borderRadius: 5,
+    margin: 20,
+    padding: 20,
+    textAlign: 'center'
   },
 });

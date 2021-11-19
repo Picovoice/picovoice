@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		02688BF826129974003F4703 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02688BF726129974003F4703 /* File.swift */; };
-		02688CC026129FB6003F4703 /* clock_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02688CBE26129FB6003F4703 /* clock_ios.rhn */; };
-		02688CC126129FB6003F4703 /* pico_clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02688CBF26129FB6003F4703 /* pico_clock_ios.ppn */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1E754A5F2748390B001ABA81 /* clock_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E754A5D2748390A001ABA81 /* clock_ios.rhn */; };
+		1E754A602748390B001ABA81 /* pico_clock_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E754A5E2748390B001ABA81 /* pico_clock_ios.ppn */; };
 		6BD8678741E796DA5AC955A0 /* libPods-ReactNativeClock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAA5750ECC08895723BDA853 /* libPods-ReactNativeClock.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -21,14 +21,14 @@
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		02688BF626129974003F4703 /* ReactNativeClock-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativeClock-Bridging-Header.h"; sourceTree = "<group>"; };
 		02688BF726129974003F4703 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		02688CBE26129FB6003F4703 /* clock_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = clock_ios.rhn; sourceTree = "<group>"; };
-		02688CBF26129FB6003F4703 /* pico_clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = pico_clock_ios.ppn; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ReactNativeClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNativeClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ReactNativeClock/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ReactNativeClock/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ReactNativeClock/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNativeClock/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNativeClock/main.m; sourceTree = "<group>"; };
+		1E754A5D2748390A001ABA81 /* clock_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = clock_ios.rhn; sourceTree = "<group>"; };
+		1E754A5E2748390B001ABA81 /* pico_clock_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = pico_clock_ios.ppn; sourceTree = "<group>"; };
 		24BE40386EC84AE8931CCC22 /* Pods-ReactNativeClock.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeClock.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeClock/Pods-ReactNativeClock.release.xcconfig"; sourceTree = "<group>"; };
 		471E4D24F9DA48B2B55C0612 /* Pods-ReactNativeClock-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeClock-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeClock-tvOSTests/Pods-ReactNativeClock-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		5FD24F3BE166D9C43E071D5B /* libPods-ReactNativeClock-ReactNativeClockTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeClock-ReactNativeClockTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,15 +58,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02688CBD26129FB6003F4703 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				02688CBE26129FB6003F4703 /* clock_ios.rhn */,
-				02688CBF26129FB6003F4703 /* pico_clock_ios.ppn */,
-			);
-			path = resources;
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* ReactNativeClock */ = {
 			isa = PBXGroup;
 			children = (
@@ -104,8 +95,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1E754A5D2748390A001ABA81 /* clock_ios.rhn */,
+				1E754A5E2748390B001ABA81 /* pico_clock_ios.ppn */,
 				02688BF726129974003F4703 /* File.swift */,
-				02688CBD26129FB6003F4703 /* resources */,
 				13B07FAE1A68108700A75B9A /* ReactNativeClock */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -203,9 +195,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E754A5F2748390B001ABA81 /* clock_ios.rhn in Resources */,
+				1E754A602748390B001ABA81 /* pico_clock_ios.ppn in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				02688CC026129FB6003F4703 /* clock_ios.rhn in Resources */,
-				02688CC126129FB6003F4703 /* pico_clock_ios.ppn in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +217,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		3C59C9B4F49697B9AFE4E63E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -251,6 +243,7 @@
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
 				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/Rhino-iOS/lib/common/rhino_params.pv",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/alexa_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/americano_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/blueberry_ios.ppn",
@@ -258,6 +251,7 @@
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/computer_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grapefruit_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/grasshopper_ios.ppn",
+				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey barista_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey google_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/hey siri_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/jarvis_ios.ppn",
@@ -267,7 +261,6 @@
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/porcupine_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/keyword_files/terminator_ios.ppn",
 				"${PODS_ROOT}/../../node_modules/@picovoice/porcupine-react-native/ios/resources/porcupine_params.pv",
-				"${PODS_ROOT}/../../node_modules/@picovoice/rhino-react-native/ios/resources/rhino_params.pv",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -288,6 +281,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/rhino_params.pv",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
@@ -295,6 +289,7 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey barista_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
@@ -304,7 +299,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/rhino_params.pv",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -340,13 +334,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeClock/Pods-ReactNativeClock-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvRhino/PvRhino.framework/PvRhino",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Rhino-iOS/PvRhino.framework/PvRhino",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/porcupine-react-native/PvPorcupine.framework/PvPorcupine",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvRhino.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
