@@ -23,7 +23,7 @@ class PicovoiceDemoUITests: XCTestCase {
     }
 
     func wakeWordCallback() {
-        self.isWakeWordDetected = true
+        self.isWakeWordDetected = true	
     }
     
     func inferenceCallback(inference:Inference) {
