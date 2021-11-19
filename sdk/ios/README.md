@@ -32,6 +32,15 @@ To enable recording with your iOS device's microphone you must add the following
 <string>[Permission explanation]</string>
 ```
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 There are two possibilities for integrating Picovoice into an iOS application.
@@ -40,12 +49,15 @@ There are two possibilities for integrating Picovoice into an iOS application.
 
 [PicovoiceManager](/sdk/ios/PicovoiceManager.swift) provides
 a high-level API for integrating Picovoice into iOS applications. It manages all activities related to creating an input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
-inference completion. To construct a PicovoiceManager you'll need to provide a Porcupine keyword file (.ppn) and a Rhino context file (.rhn).
+inference completion. To construct a PicovoiceManager you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn) and a Rhino context file (.rhn).
 
 ```swift
 import Picovoice
 
-PicovoiceManager manager = PicovoiceManager(
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
+let manager = PicovoiceManager(
+    accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     onWakeWordDetection: { 
         // logic to execute upon deletection of wake word
@@ -59,7 +71,10 @@ PicovoiceManager manager = PicovoiceManager(
 The constructor also allows you to override the default model files and/or the sensitivities of Porcupine and Rhino:
 
 ```swift
-PicovoiceManager manager = PicovoiceManager(
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
+let manager = PicovoiceManager(
+    accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     porcupineSensitivity: 0.4,
     porcupineModelPath: "/path/to/porcupine/model.pv"
@@ -91,13 +106,16 @@ manager.stop();
 
 [Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
 
-To constuct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
+To constuct an instance, you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
 ```swift
 import Picovoice
 
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 do {
-    Picovoice picovoice = try Picovoice(
+    let picovoice = try Picovoice(
+        accessKey: accessKey,
         keywordPath: "/path/to/keyword.ppn",
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv"
