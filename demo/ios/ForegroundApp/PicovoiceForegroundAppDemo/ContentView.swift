@@ -45,6 +45,7 @@ struct ContentView: View {
                 
                 Text("Press the Start button and say \"Picovoice, turn off the lights\".")
                     .padding()
+                    .foregroundColor(Color.black)
                     .multilineTextAlignment(.center)
                 
                 Button(action: {

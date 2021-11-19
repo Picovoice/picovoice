@@ -1,34 +1,52 @@
 PODS:
   - ios-voice-processor (1.0.3)
-  - Picovoice-iOS (1.1.3):
+  - Picovoice-iOS (2.0.0):
     - ios-voice-processor (~> 1.0.2)
-    - Porcupine-iOS (~> 1.9.4)
-    - Rhino-iOS (~> 1.6.4)
-  - Porcupine-iOS (1.9.4):
+    - Porcupine-iOS (~> 2.0.0)
+    - Rhino-iOS (~> 2.0.0)
+  - Porcupine-iOS (2.0.0):
     - ios-voice-processor (~> 1.0.2)
-  - Rhino-iOS (1.6.4):
+  - Rhino-iOS (2.0.0):
     - ios-voice-processor (~> 1.0.2)
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS
+  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v2.0-ios/sdk/ios/Picovoice-iOS.podspec`)
+  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.0/binding/ios/Porcupine-iOS.podspec`)
+  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v2.0/binding/ios/Rhino-iOS.podspec`)
   - SwiftySound
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-    - Picovoice-iOS
-    - Porcupine-iOS
-    - Rhino-iOS
     - SwiftySound
+
+EXTERNAL SOURCES:
+  Picovoice-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v2.0-ios/sdk/ios/Picovoice-iOS.podspec
+  Porcupine-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.0/binding/ios/Porcupine-iOS.podspec
+  Rhino-iOS:
+    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/v2.0/binding/ios/Rhino-iOS.podspec
+
+CHECKOUT OPTIONS:
+  Picovoice-iOS:
+    :commit: 8f6f6b1808cbd7c45f10cb57e6fcfe8450217994
+    :git: https://github.com/Picovoice/picovoice.git
+  Porcupine-iOS:
+    :commit: 190bdd3fd0c3de6738ccf7682dee157d6b1c9c97
+    :git: https://github.com/Picovoice/porcupine.git
+  Rhino-iOS:
+    :commit: 79f39a1536a56c699e890159163ebe8e6ecdb85e
+    :git: https://github.com/Picovoice/rhino.git
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Picovoice-iOS: 212daf10aa0f319880fa83f937d8b23bfc9f1496
-  Porcupine-iOS: cf230daf574fd4bab07b3552445a51ed5154b472
-  Rhino-iOS: d76e2e29c2d4a1e4a53584c6b049cdbbee9471f1
+  Picovoice-iOS: 589ca819b189eead845e6c5502b1892d352a747c
+  Porcupine-iOS: fb5c644bdce95f4e32f9e547c31ba05e76ccb6db
+  Rhino-iOS: 36cec1f457365e4918c97d2b68d8a08cee6d8662
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: 2d643e56d9b09fbd97b6184f889109ddd49becf9
+PODFILE CHECKSUM: a4f562112f279de574c070faccfaab38081a1c4c
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.10.1
