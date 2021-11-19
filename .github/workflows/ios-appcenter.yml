@@ -3,11 +3,11 @@ name: iOS AppCenter Tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'demo/ios/ForegroundApp/Podfile.lock'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths: 
       - 'demo/ios/ForegroundApp/Podfile.lock'
       
@@ -25,16 +25,26 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
+
       - name: Install Cocoapods
         run: gem install cocoapods
+
       - name: Install AppCenter CLI
         run: npm install -g appcenter-cli
+
       - name: Make build dir
         run: mkdir ddp
+
       - name: Run Cocoapods
         run: pod install
+      
+      - name: Inject AppID
+        run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
+          PicovoiceForegroundAppDemoUITests/PicovoiceForegroundAppDemoUITests.swift
+
       - name: XCode Build
         run: xcrun xcodebuild build-for-testing 
           -configuration Debug 
@@ -43,6 +53,7 @@ jobs:
           -scheme PicovoiceForegroundAppDemo 
           -derivedDataPath ddp 
           CODE_SIGNING_ALLOWED=NO
+          
       - name: Run Tests on AppCenter
         run: appcenter test run xcuitest 
           --token ${{secrets.APPCENTERAPITOKEN}}
