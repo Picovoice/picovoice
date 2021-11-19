@@ -12,18 +12,18 @@ import Porcupine
 import Rhino
 
 public enum PicovoiceError: Error {
-    case objectDisposed
-    case porcupineError(Error)
-    case rhinoError(Error)
-    
-    // wraps Porcupine and Rhino errors
-    init(_ error: Error) {
-        if let error = error as? PorcupineError {
-            self = .porcupineError(error)
-        } else {
-          self = .rhinoError(error)
-        }
-    }
+    case PicovoiceError(_ message:String)
+    case PicovoiceMemoryError(_ message:String)
+    case PicovoiceIOError(_ message:String)
+    case PicovoiceInvalidArgumentError(_ message:String)
+    case PicovoiceStopIterationError(_ message:String)
+    case PicovoiceKeyError(_ message:String)
+    case PicovoiceInvalidStateError(_ message:String)
+    case PicovoiceRuntimeError(_ message:String)
+    case PicovoiceActivationError(_ message:String)
+    case PicovoiceActivationLimitError(_ message:String)
+    case PicovoiceActivationThrottledError(_ message:String)
+    case PicovoiceActivationRefusedError(_ message:String)
 }
 
 /// Low-level iOS binding for Picovoice end-to-end platform.
@@ -32,14 +32,14 @@ public class Picovoice {
     private var porcupine: Porcupine?
     private var rhino: Rhino?
 
-    private var onWakeWordDetection: (() -> Void)?
-    private var onInference: ((Inference) -> Void)?
+    private var onWakeWordDetection: (() -> Void)
+    private var onInference: ((Inference) -> Void)
 
     public static let frameLength = Porcupine.frameLength
     public static let sampleRate = Porcupine.sampleRate
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
-    public static let picovoiceVersion = "1.1.0"
+    public static let picovoiceVersion = "2.0.0"
     public var contextInfo:String? = ""
     
     private var isWakeWordDetected: Bool = false
@@ -47,53 +47,54 @@ public class Picovoice {
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to keyword model file.
     ///   - onWakeWordDetection: A callback that is invoked upon detection of the keyword.
-    ///   - porcupineModelPath: Absolute path to file containing model parameters.
-    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
-    ///   the cost of increasing the false alarm rate.
     ///   - contextPath: Absolute path to file containing context parameters. A context represents the set of expressions (spoken commands), intents, and
     ///   intent arguments (slots) within a domain of interest.
     ///   - onInference: A callback that is invoked upon completion of intent inference.
+    ///   - porcupineModelPath: Absolute path to file containing model parameters.
+    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
     ///   - rhinoModelPath: Absolute path to file containing model parameters.
     ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially)
     ///   increasing the erroneous inference rate.
+    ///   - requireEndpoint: If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
     /// - Throws: PicovoiceError
     public init (
+        accessKey: String,
         keywordPath: String,
-        onWakeWordDetection: (() -> Void)?,
+        onWakeWordDetection: @escaping (() -> Void),
+        contextPath: String,
+        onInference: @escaping ((Inference) -> Void),
         porcupineModelPath: String? = nil,
         porcupineSensitivity: Float32 = 0.5,
-        contextPath: String,
-        onInference: ((Inference) -> Void)?,
         rhinoModelPath: String? = nil,
-        rhinoSensitivity: Float32 = 0.5) throws {
+        rhinoSensitivity: Float32 = 0.5,
+        requireEndpoint: Bool = true) throws {
         
-        do{
+        self.onWakeWordDetection = onWakeWordDetection
+        self.onInference = onInference
+        
+        do {
             try porcupine = Porcupine(
+                accessKey: accessKey,
                 keywordPath: keywordPath,
                 modelPath: porcupineModelPath,
                 sensitivity: porcupineSensitivity)
-            
-        }
-        catch {
-            throw PicovoiceError(error)
-        }
 
-        do{
             try rhino = Rhino(
+                accessKey: accessKey,
                 contextPath: contextPath,
                 modelPath: rhinoModelPath,
-                sensitivity: rhinoSensitivity)
+                sensitivity: rhinoSensitivity,
+                requireEndpoint: requireEndpoint)
                 
             contextInfo = rhino?.contextInfo
         }
         catch {
-            throw PicovoiceError(error)
+            throw mapToPicovoiceError(error)
         }
-        
-        self.onWakeWordDetection = onWakeWordDetection
-        self.onInference = onInference
     }
 
     deinit {
@@ -119,25 +120,60 @@ public class Picovoice {
     ///   - pcm: An array of 16-bit pcm samples
     /// - Throws: PicovoiceError
     public func process(pcm:[Int16]) throws {
+        if pcm.count != Picovoice.frameLength {
+            throw PicovoiceError.PicovoiceInvalidArgumentError("Invalid frame length - expected \(Picovoice.frameLength), received \(pcm.count)")
+        }
+        
         if porcupine == nil || rhino == nil {
-            throw PicovoiceError.objectDisposed
+            throw PicovoiceError.PicovoiceInvalidStateError("Cannot process frame - resources have been released.")
         }
 
         do {
             if !isWakeWordDetected {
                 isWakeWordDetected = try porcupine!.process(pcm:pcm) == 0
                 if isWakeWordDetected {
-                    self.onWakeWordDetection?()
+                    self.onWakeWordDetection()
                 }
             }
             else{
                 if try rhino!.process(pcm:pcm) {
-                    self.onInference?(try rhino!.getInference())
+                    self.onInference(try rhino!.getInference())
                     isWakeWordDetected = false
                 }
             }
         } catch {
-            throw PicovoiceError(error)
+            throw mapToPicovoiceError(error)
+        }
+    }
+    
+    private func mapToPicovoiceError(_ error: Error) -> PicovoiceError {
+        switch error {
+        case PorcupineError.PorcupineOutOfMemoryError(let message), RhinoError.RhinoMemoryError(let message):
+            return PicovoiceError.PicovoiceMemoryError(message)
+        case PorcupineError.PorcupineIOError(let message), RhinoError.RhinoIOError(let message):
+            return PicovoiceError.PicovoiceIOError(message)
+        case PorcupineError.PorcupineInvalidArgumentError(let message), RhinoError.RhinoInvalidArgumentError(let message):
+            return PicovoiceError.PicovoiceInvalidArgumentError(message)
+        case PorcupineError.PorcupineStopIterationError(let message), RhinoError.RhinoStopIterationError(let message):
+            return PicovoiceError.PicovoiceStopIterationError(message)
+        case PorcupineError.PorcupineKeyError(let message), RhinoError.RhinoKeyError(let message):
+            return PicovoiceError.PicovoiceKeyError(message)
+        case PorcupineError.PorcupineInvalidStateError(let message), RhinoError.RhinoInvalidStateError(let message):
+            return PicovoiceError.PicovoiceInvalidStateError(message)
+        case PorcupineError.PorcupineRuntimeError(let message), RhinoError.RhinoRuntimeError(let message):
+            return PicovoiceError.PicovoiceRuntimeError(message)
+        case PorcupineError.PorcupineActivationError(let message), RhinoError.RhinoActivationError(let message):
+            return PicovoiceError.PicovoiceActivationError(message)
+        case PorcupineError.PorcupineActivationLimitError(let message), RhinoError.RhinoActivationLimitError(let message):
+            return PicovoiceError.PicovoiceActivationLimitError(message)
+        case PorcupineError.PorcupineActivationThrottledError(let message), RhinoError.RhinoActivationThrottledError(let message):
+            return PicovoiceError.PicovoiceActivationThrottledError(message)
+        case PorcupineError.PorcupineActivationRefusedError(let message), RhinoError.RhinoActivationRefusedError(let message):
+            return PicovoiceError.PicovoiceActivationRefusedError(message)
+        case PorcupineError.PorcupineInternalError(let message), RhinoError.RhinoError(let message):
+            return PicovoiceError.PicovoiceError(message)
+        default:
+            return PicovoiceError.PicovoiceError("\(error)")
         }
     }
 }
