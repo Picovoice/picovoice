@@ -5,8 +5,8 @@
 "@picovoice/picovoice-node@file:../../sdk/nodejs":
   version "2.0.0"
   dependencies:
-    "@picovoice/porcupine-node" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-ecbc0b3b-93b0-4ec0-b59d-bce2c734c96b-1636994319619/node_modules/resources/porcupine/binding/nodejs"
-    "@picovoice/rhino-node" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-ecbc0b3b-93b0-4ec0-b59d-bce2c734c96b-1636994319619/node_modules/resources/rhino/binding/nodejs"
+    "@picovoice/porcupine-node" "file:../../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-0bcb4b35-7093-4860-beaa-eef0d3de2372-1637364391983/node_modules/resources/porcupine/binding/nodejs"
+    "@picovoice/rhino-node" "file:../../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-0bcb4b35-7093-4860-beaa-eef0d3de2372-1637364391983/node_modules/resources/rhino/binding/nodejs"
 
 "@picovoice/porcupine-node@file:../../resources/porcupine/binding/nodejs":
   version "2.0.0"
