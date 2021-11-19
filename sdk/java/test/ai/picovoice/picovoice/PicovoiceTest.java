@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PicovoiceTest {
 
     private Picovoice picovoice;
-    private String accessKey = System.getProperty("pvTestingAccessKey");
+    final private String accessKey = System.getProperty("pvTestingAccessKey");
     private final String environmentName = getEnvironmentName();
     private final String keywordPath = String.format("../../resources/porcupine/resources/keyword_files" +
             "/%s/picovoice_%s.ppn", environmentName, environmentName);

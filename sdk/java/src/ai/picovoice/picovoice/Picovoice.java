@@ -56,7 +56,7 @@ public class Picovoice {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
-     * @param requireEndpoint      If set to `true`, Rhino requires an endpoint (chunk of silence)
+     * @param requireEndpoint      If set to `False`, Rhino does not require an endpoint (chunk of silence)
      *                             before finishing inference.
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
@@ -96,7 +96,7 @@ public class Picovoice {
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("2.0.0")) {
+            if (!porcupine.getVersion().startsWith("2.0.")) {
                 final String message = String.format(
                         "Expected Porcupine library with version '2.0.x' but received %s",
                         porcupine.getVersion());
@@ -114,7 +114,7 @@ public class Picovoice {
                     .setRequireEndpoint(requireEndpoint)
                     .build();
 
-            if (!rhino.getVersion().startsWith("2.0.0")) {
+            if (!rhino.getVersion().startsWith("2.0.")) {
                 final String message = String.format(
                         "Expected Rhino library with version '2.0.x' but received %s",
                         rhino.getVersion());
@@ -185,14 +185,12 @@ public class Picovoice {
         try {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
-                if (isWakeWordDetected && wakeWordCallback != null) {
+                if (isWakeWordDetected) {
                     wakeWordCallback.invoke();
                 }
             } else {
                 if (rhino.process(pcm)) {
-                    if (inferenceCallback != null) {
-                        inferenceCallback.invoke(rhino.getInference());
-                    }
+                    inferenceCallback.invoke(rhino.getInference());
                     isWakeWordDetected = false;
                 }
             }
@@ -306,7 +304,7 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
-        private boolean requireEndpoint = false;
+        private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
 
         public Picovoice.Builder setAccessKey(String accessKey) {
