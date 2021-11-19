@@ -11,62 +11,69 @@ import ios_voice_processor
 import Rhino
 import Porcupine
 
-public enum PicovoiceManagerError: Error {   
-    case recordingDenied
-}
 
 /// High-level iOS binding for Picovoice end-to-end platform. It handles recording audio from microphone, processes it in real-time using Picovoice, and notifies the
 /// client upon detection of the wake word or completion of in voice command inference.
 public class PicovoiceManager {
     private var picovoice:Picovoice?
 
-    private var porcupineModelPath: String?
+    private var accessKey: String
     private var keywordPath: String
-    private var porcupineSensitivity: Float32
-    private var onWakeWordDetection: (() -> Void)?
-    private var rhinoModelPath: String?
+    private var onWakeWordDetection: (() -> Void)
     private var contextPath: String
+    private var onInference: ((Inference) -> Void)
+    
+    private var porcupineModelPath: String?
+    private var porcupineSensitivity: Float32
+    private var rhinoModelPath: String?
     private var rhinoSensitivity: Float32
-    private var onInference: ((Inference) -> Void)?
-    private var errorCallback: ((Error) -> Void)?
+    private var requireEndpoint: Bool
+    
+    private var processErrorCallback: ((Error) -> Void)?
 
     /// Constructor.
     ///
     /// - Parameters:
+    ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to keyword model file.
     ///   - onWakeWordDetection: A callback that is invoked upon detection of the keyword.
-    ///   - porcupineModelPath: Absolute path to file containing model parameters.
-    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
-    ///   the cost of increasing the false alarm rate.
     ///   - contextPath: Absolute path to file containing context parameters. A context represents the set of expressions (spoken commands), intents, and
     ///   intent arguments (slots) within a domain of interest.
     ///   - onInference: A callback that is invoked upon completion of intent inference.
+    ///   - porcupineModelPath: Absolute path to file containing model parameters.
+    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
+    ///   the cost of increasing the false alarm rate.
     ///   - rhinoModelPath: Absolute path to file containing model parameters.
     ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially)
     ///   increasing the erroneous inference rate.
-    ///   - errorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
+    ///   - requireEndpoint: If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+    ///   - processErrorCallback: Invoked if an error occurs while processing frames. If missing, error will be printed to console.
     /// - Throws: PicovoiceError
     public init(
+        accessKey: String,
         keywordPath: String,
+        onWakeWordDetection: @escaping (() -> Void),
+        contextPath: String,
+        onInference: @escaping ((Inference) -> Void),
         porcupineModelPath: String? = nil,
         porcupineSensitivity: Float32 = 0.5,
-        onWakeWordDetection: (() -> Void)?,
-        contextPath: String,
         rhinoModelPath: String? = nil,
         rhinoSensitivity: Float32 = 0.5,
-        onInference: ((Inference) -> Void)?,
-        errorCallback: ((Error) -> Void)? = nil) {
+        requireEndpoint: Bool = true,
+        processErrorCallback: ((Error) -> Void)? = nil) {
         
+        self.accessKey = accessKey
         self.keywordPath = keywordPath
+        self.contextPath = contextPath
+        self.onWakeWordDetection = onWakeWordDetection
+        self.onInference = onInference
+        
         self.porcupineModelPath = porcupineModelPath
         self.porcupineSensitivity = porcupineSensitivity
-        self.onWakeWordDetection = onWakeWordDetection
-
-        self.contextPath = contextPath
         self.rhinoModelPath = rhinoModelPath
-        self.rhinoSensitivity  = rhinoSensitivity
-        self.onInference = onInference
-        self.errorCallback = errorCallback
+        self.rhinoSensitivity = rhinoSensitivity
+        self.requireEndpoint = requireEndpoint
+        self.processErrorCallback = processErrorCallback
     }
     
     deinit {
@@ -86,18 +93,20 @@ public class PicovoiceManager {
         }
         
         guard try VoiceProcessor.shared.hasPermissions() else {
-            throw PicovoiceManagerError.recordingDenied
+            throw PicovoiceError.PicovoiceRuntimeError("PicovoiceManager requires microphone permissions.")
         }
         
         picovoice = try Picovoice(
+            accessKey: self.accessKey,
             keywordPath: self.keywordPath,
             onWakeWordDetection: self.onWakeWordDetection,
-            porcupineModelPath: self.porcupineModelPath,
-            porcupineSensitivity: self.porcupineSensitivity,                
             contextPath: self.contextPath,
             onInference: self.onInference,
+            porcupineModelPath: self.porcupineModelPath,
+            porcupineSensitivity: self.porcupineSensitivity,
             rhinoModelPath: self.rhinoModelPath,
-            rhinoSensitivity: self.rhinoSensitivity)
+            rhinoSensitivity: self.rhinoSensitivity,
+            requireEndpoint: self.requireEndpoint)
         
         try VoiceProcessor.shared.start(
             frameLength: Picovoice.frameLength,
@@ -122,8 +131,8 @@ public class PicovoiceManager {
         do {
            try self.picovoice!.process(pcm: pcm)
         } catch {
-            if self.errorCallback != nil {
-                self.errorCallback!(error)
+            if self.processErrorCallback != nil {
+                self.processErrorCallback!(error)
             } else {
                 print("\(error)")
             }
