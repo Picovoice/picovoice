@@ -13,10 +13,12 @@
 import os
 import platform
 import subprocess
+import sys
 import unittest
 
 import pvporcupine
 import soundfile
+
 from picovoice import Picovoice
 
 
@@ -33,25 +35,31 @@ class PicovoiceTestCase(unittest.TestCase):
                     os.path.dirname(__file__),
                     '../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn')
             else:
-                cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
-                hardware_info = [x for x in cpu_info.split('\n') if 'Hardware' in x][0]
+                cpu_info = ''
+                try:
+                    cpu_info = subprocess.check_output(['cat', '/proc/cpuinfo']).decode()
+                    cpu_part_list = [x for x in cpu_info.split('\n') if 'CPU part' in x]
+                    cpu_part = cpu_part_list[0].split(' ')[-1].lower()
+                except Exception as error:
+                    raise RuntimeError("Failed to identify the CPU with '%s'\nCPU info: %s" % (error, cpu_info))
 
-                if 'BCM' in hardware_info:
+                if '0xb76' == cpu_part or '0xc07' == cpu_part or '0xd03' == cpu_part or '0xd08' == cpu_part:
                     return os.path.join(
                         os.path.dirname(__file__),
                         '../../resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn')
-                elif 'AM33' in hardware_info:
+                elif '0xd07' == cpu_part:
+                    return os.path.join(os.path.dirname(__file__),
+                                        '../../resources/rhino/resources/contexts/jetson/coffee_maker_jetson.rhn')
+                elif '0xc08' == cpu_part:
                     return os.path.join(
                         os.path.dirname(__file__),
                         '../../resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn')
                 else:
-                    raise NotImplementedError('Unsupported CPU:\n%s' % cpu_info)
+                    raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
         elif platform.system() == 'Windows':
-            return os.path.join(
-                os.path.dirname(__file__),
-                '../../resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn')
+            return os.path.join(os.path.dirname(__file__), '../../resources/contexts/windows/coffee_maker_windows.rhn')
         else:
-            raise NotImplementedError('Unsupported platform')
+            raise ValueError("Unsupported system '%s'." % platform.system())
 
     @classmethod
     def _wake_word_callback(cls):
@@ -64,6 +72,7 @@ class PicovoiceTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls._pv = Picovoice(
+            access_key=sys.argv[1],
             keyword_path=pvporcupine.KEYWORD_PATHS['picovoice'],
             wake_word_callback=cls._wake_word_callback,
             context_path=cls._context_path(),
@@ -98,4 +107,8 @@ class PicovoiceTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+    if len(sys.argv) != 2:
+        print("usage: test_rhino.py ${ACCESS_KEY}")
+        exit(1)
+
+    unittest.main(argv=sys.argv[:1])

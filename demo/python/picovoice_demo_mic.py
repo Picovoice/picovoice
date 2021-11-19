@@ -23,6 +23,7 @@ from pvrecorder import PvRecorder
 class PicovoiceDemo(Thread):
     def __init__(
             self,
+            access_key,
             audio_device_index,
             keyword_path,
             context_path,
@@ -32,10 +33,12 @@ class PicovoiceDemo(Thread):
             rhino_library_path=None,
             rhino_model_path=None,
             rhino_sensitivity=0.5,
+            require_endpoint=True,
             output_path=None):
         super(PicovoiceDemo, self).__init__()
 
         self._picovoice = Picovoice(
+            access_key=access_key,
             keyword_path=keyword_path,
             wake_word_callback=self._wake_word_callback,
             context_path=context_path,
@@ -45,7 +48,8 @@ class PicovoiceDemo(Thread):
             porcupine_sensitivity=porcupine_sensitivity,
             rhino_library_path=rhino_library_path,
             rhino_model_path=rhino_model_path,
-            rhino_sensitivity=rhino_sensitivity)
+            rhino_sensitivity=rhino_sensitivity,
+            require_endpoint=require_endpoint)
 
         self.audio_device_index = audio_device_index
         self.output_path = output_path
@@ -114,6 +118,11 @@ class PicovoiceDemo(Thread):
 def main():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument(
+        '--access_key',
+        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+        required=True)
+
     parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.")
 
     parser.add_argument('--context_path', help="Absolute path to a Rhino context file.")
@@ -126,6 +135,7 @@ def main():
         '--porcupine_sensitivity',
         help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity " +
              "results in fewer misses at the cost of increasing the false alarm rate.",
+        type=float,
         default=0.5)
 
     parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
@@ -136,7 +146,13 @@ def main():
         '--rhino_sensitivity',
         help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer" +
              "misses at the cost of (potentially) increasing the erroneous inference rate.",
+        type=float,
         default=0.5)
+
+    parser.add_argument(
+        '--require_endpoint',
+        help="If set, Rhino requires an endpoint (chunk of silence) before finishing inference",
+        action='store_true')
 
     parser.add_argument('--audio_device_index', help='index of input audio device', type=int, default=-1)
 
@@ -156,6 +172,7 @@ def main():
             raise ValueError("Missing path to Rhino's context file.")
 
         PicovoiceDemo(
+            access_key=args.access_key,
             audio_device_index=args.audio_device_index,
             keyword_path=args.keyword_path,
             context_path=args.context_path,
@@ -165,6 +182,7 @@ def main():
             rhino_library_path=args.rhino_library_path,
             rhino_model_path=args.rhino_model_path,
             rhino_sensitivity=args.rhino_sensitivity,
+            require_endpoint=args.require_endpoint,
             output_path=os.path.expanduser(args.output_path) if args.output_path is not None else None).run()
 
 

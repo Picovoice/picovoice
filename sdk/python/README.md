@@ -15,13 +15,22 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 * Python 3
-* Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), NVIDIA Jetson (Nano), and BeagleBone.
+* Runs on Linux (x86_64), macOS (x86_64, arm64), Windows (x86_64), Raspberry Pi (all variants), NVIDIA Jetson (Nano), and BeagleBone.
 
 ## Installation
 
 ```console
 pip3 install picovoice
 ```
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Usage
 
@@ -30,6 +39,8 @@ Create a new instance of Picovoice runtime engine
 ```python
 from picovoice import Picovoice
 
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+ 
 keyword_path = ...
 
 def wake_word_callback():
@@ -45,6 +56,7 @@ def inference_callback(inference):
     pass
 
 handle = Picovoice(
+        access_key=access_key,
         keyword_path=keyword_path,
         wake_word_callback=wake_word_callback,
         context_path=context_path,

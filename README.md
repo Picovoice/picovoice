@@ -197,6 +197,7 @@ From the root of the repository run the following in the terminal:
 
 ```console
 picovoice_demo_mic \
+--access_key ${ACCESS_KEY} \
 --keyword_path resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 --context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -676,6 +677,8 @@ Create a new instance of Picovoice:
 ```python
 from picovoice import Picovoice
 
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+ 
 keyword_path = ...
 
 def wake_word_callback():
@@ -689,6 +692,7 @@ def inference_callback(inference):
     print(inference.slots)
 
 handle = Picovoice(
+        access_key=access_key,
         keyword_path=keyword_path,
         wake_word_callback=wake_word_callback,
         context_path=context_path,

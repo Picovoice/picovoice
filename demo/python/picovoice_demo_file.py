@@ -18,6 +18,11 @@ from picovoice import Picovoice
 def main():
     parser = argparse.ArgumentParser()
 
+    parser.add_argument(
+        '--access_key',
+        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+        required=True)
+
     parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
 
     parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.", required=True)
@@ -32,6 +37,7 @@ def main():
         '--porcupine_sensitivity',
         help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity " +
              "results in fewer misses at the cost of increasing the false alarm rate.",
+        type=float,
         default=0.5)
 
     parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
@@ -42,7 +48,13 @@ def main():
         '--rhino_sensitivity',
         help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer" +
              "misses at the cost of (potentially) increasing the erroneous inference rate.",
+        type=float,
         default=0.5)
+
+    parser.add_argument(
+        '--require_endpoint',
+        help="If set, Rhino requires an endpoint (chunk of silence) before finishing inference",
+        action='store_true')
 
     args = parser.parse_args()
 
@@ -62,6 +74,7 @@ def main():
             print("Didn't understand the command.\n")
 
     pv = Picovoice(
+        access_key=args.access_key,
         keyword_path=args.keyword_path,
         wake_word_callback=wake_word_callback,
         context_path=args.context_path,
@@ -71,7 +84,8 @@ def main():
         porcupine_sensitivity=args.porcupine_sensitivity,
         rhino_library_path=args.rhino_library_path,
         rhino_model_path=args.rhino_model_path,
-        rhino_sensitivity=args.rhino_sensitivity)
+        rhino_sensitivity=args.rhino_sensitivity,
+        require_endpoint=args.require_endpoint)
 
     audio, sample_rate = soundfile.read(args.input_audio_path, dtype='int16')
     if audio.ndim == 2:
