@@ -47,8 +47,8 @@ program
     0.5
   )
   .option(
-    "-e, --requires_endpoint",
-    "If set, Rhino requires an endpoint (chunk of silence) before finishing inference"
+    "-e, --requires_endpoint <bool>",
+    "If set to `false`, Rhino does not require an endpoint (chunk of silence) before finishing inference."
   )
   .option(
     "--porcupine_library_file_path <string>",
@@ -85,7 +85,7 @@ async function micDemo() {
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
-  let requiresEndpoint = program["requires_endpoint"] !== undefined ? true : false;
+  let requiresEndpoint = program["requires_endpoint"].toLowerCase() === 'false' ? false : true;
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
