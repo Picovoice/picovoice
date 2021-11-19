@@ -14,11 +14,10 @@ struct ContentView: View {
             VStack(alignment: .center, spacing:20) {
                 Text("Say 'Hey Barista!'").font(.largeTitle).foregroundColor(activeBlue)
                 Image("cuppa").resizable().scaledToFit().padding(.horizontal,50.0)
-                
+
                 VStack(alignment: .center, spacing: 5) {
             
                     Text("Beverage Size").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey)
-            
                     
                     // Size row
                     HStack(alignment: .center, spacing: 10) {
@@ -29,7 +28,9 @@ struct ContentView: View {
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
                                     .padding(10)
                                 
-                            }.background(
+                            }
+                            .disabled(true)
+                            .background(
                                 Capsule()
                                     .fill(item.isSelected ? activeBlue : Color.white)
                                     .overlay(
@@ -50,7 +51,9 @@ struct ContentView: View {
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
                                     .padding(8.0)
                                 
-                            }.background(
+                            }
+                            .disabled(true)
+                            .background(
                                 Capsule()
                                     .fill(item.isSelected ? activeBlue : Color.white)
                                     .overlay(
@@ -72,7 +75,9 @@ struct ContentView: View {
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
                                         .padding(8.0)
                                     
-                                }.background(
+                                }
+                                .disabled(true)
+                                .background(
                                     Capsule()
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
@@ -90,7 +95,9 @@ struct ContentView: View {
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
                                         .padding(8.0)
                                     
-                                }.background(
+                                }
+                                .disabled(true)
+                                .background(
                                     Capsule()
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
@@ -104,6 +111,14 @@ struct ContentView: View {
                 }
                 .padding(.top, 10.0)
                 ZStack(alignment: .center) {
+                    Text(viewModel.errorMessage)
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(Color.white)
+                        .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
+                        .font(.body)
+                        .opacity(viewModel.errorMessage.isEmpty ? 0 : 1)
+                        .cornerRadius(.infinity)
                     Text("Listening...")
                         .font(.body)
                         .foregroundColor(activeBlue)

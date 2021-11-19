@@ -20,8 +20,11 @@ class ViewModel: ObservableObject {
     @Published var bevSel = [CapsuleSelection(title: "Americano"), CapsuleSelection(title: "Cappuccino"), CapsuleSelection(title: "Coffee"),
                      CapsuleSelection(title: "Espresso"),CapsuleSelection(title: "Latte"),CapsuleSelection(title: "Mocha")]
     
-    @Published  var isListening = false
-    @Published  var missedCommand = false
+    @Published var isListening = false
+    @Published var missedCommand = false
+    @Published var errorMessage = ""
+    
+    let ACCESS_KEY = "{YOUR_ACCESS_KEY_HERE}"
     
     let contextPath = Bundle.main.path(forResource: "coffee_maker_ios", ofType: "rhn")
     let keywordPath = Bundle.main.path(forResource: "hey barista_ios", ofType: "ppn")
@@ -30,8 +33,8 @@ class ViewModel: ObservableObject {
     init() {
         do {
             picovoiceManager = PicovoiceManager(
+                accessKey : ACCESS_KEY,
                 keywordPath: keywordPath!,
-                porcupineSensitivity: 0.5,
                 onWakeWordDetection: {
                     DispatchQueue.main.async {
                         self.isListening = true
@@ -40,7 +43,6 @@ class ViewModel: ObservableObject {
                     }
                 },
                 contextPath: contextPath!,
-                rhinoSensitivity: 0.0,
                 onInference: { inference in
                     DispatchQueue.main.async {
                         if inference.isUnderstood {
@@ -73,9 +75,19 @@ class ViewModel: ObservableObject {
                 })
 
             try picovoiceManager.start()
+        } catch PicovoiceError.PicovoiceInvalidArgumentError (let message){
+            errorMessage = "\(message)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+        } catch PicovoiceError.PicovoiceActivationError {
+            errorMessage = "ACCESS_KEY activation error"
+        } catch PicovoiceError.PicovoiceActivationRefusedError {
+            errorMessage = "ACCESS_KEY activation refused"
+        } catch PicovoiceError.PicovoiceActivationLimitError {
+            errorMessage = "ACCESS_KEY reached its limit"
+        } catch PicovoiceError.PicovoiceActivationThrottledError  {
+            errorMessage = "ACCESS_KEY is throttled"
         } catch {
-           print("\(error)")
-       }
+            errorMessage = "\(error)"
+        }
     }
     
     func clearSelectedItems() {
