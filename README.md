@@ -429,7 +429,7 @@ To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService)
 pod install
 ```
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceBackgroundServiceDemo.xcworkspace` and run the application.
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceBackgroundServiceDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Build and run the demo.
 
 #### ForegroundApp Demo
 
@@ -439,7 +439,7 @@ To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run
 pod install
 ```
 
-Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceForegroundAppDemo.xcworkspace` and run the application.
+Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `PicovoiceForegroundAppDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Build and run the demo.
 
 #### Wake Word Detection and Context Inference
 
@@ -1363,7 +1363,10 @@ intent inference. The class can be initialized as below:
 ```swift
 import Picovoice
 
-PicovoiceManager manager = PicovoiceManager(
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
+let manager = PicovoiceManager(
+    accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     onWakeWordDetection: { 
         // logic to execute upon deletection of wake word
@@ -1386,8 +1389,11 @@ o constuct an instance, you'll need to provide a Porcupine keyword file (.ppn), 
 ```swift
 import Picovoice
 
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 do {
-    Picovoice picovoice = try Picovoice(
+    let picovoice = try Picovoice(
+        accessKey: accessKey,
         keywordPath: "/path/to/keyword.ppn",
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv"
