@@ -53,10 +53,16 @@ def main():
 
     parser.add_argument(
         '--require_endpoint',
-        help="If set, Rhino requires an endpoint (chunk of silence) before finishing inference",
-        action='store_true')
+        help="If set to `False`, Rhino does not require an endpoint (chunk of silence) before finishing inference.",
+        default='True',
+        choices=['True', 'False'])
 
     args = parser.parse_args()
+
+    if args.require_endpoint.lower() == 'false':
+        require_endpoint = False
+    else:
+        require_endpoint = True
 
     def wake_word_callback():
         print('[wake word]\n')
@@ -85,7 +91,7 @@ def main():
         rhino_library_path=args.rhino_library_path,
         rhino_model_path=args.rhino_model_path,
         rhino_sensitivity=args.rhino_sensitivity,
-        require_endpoint=args.require_endpoint)
+        require_endpoint=require_endpoint)
 
     audio, sample_rate = soundfile.read(args.input_audio_path, dtype='int16')
     if audio.ndim == 2:

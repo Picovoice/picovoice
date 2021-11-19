@@ -151,8 +151,9 @@ def main():
 
     parser.add_argument(
         '--require_endpoint',
-        help="If set, Rhino requires an endpoint (chunk of silence) before finishing inference",
-        action='store_true')
+        help="If set to `False`, Rhino does not require an endpoint (chunk of silence) before finishing inference.",
+        default='True',
+        choices=['True', 'False'])
 
     parser.add_argument('--audio_device_index', help='index of input audio device', type=int, default=-1)
 
@@ -161,6 +162,11 @@ def main():
     parser.add_argument('--show_audio_devices', action='store_true')
 
     args = parser.parse_args()
+
+    if args.require_endpoint.lower() == 'false':
+        require_endpoint = False
+    else:
+        require_endpoint = True
 
     if args.show_audio_devices:
         PicovoiceDemo.show_audio_devices()
@@ -182,7 +188,7 @@ def main():
             rhino_library_path=args.rhino_library_path,
             rhino_model_path=args.rhino_model_path,
             rhino_sensitivity=args.rhino_sensitivity,
-            require_endpoint=args.require_endpoint,
+            require_endpoint=require_endpoint,
             output_path=os.path.expanduser(args.output_path) if args.output_path is not None else None).run()
 
 
