@@ -6,6 +6,8 @@ import Rhino
 
 class PicovoiceDemoUITests: XCTestCase {
 
+    let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
+    
     var isWakeWordDetected = false
     var inferenceResult:Inference? = nil
     
@@ -32,10 +34,12 @@ class PicovoiceDemoUITests: XCTestCase {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
         let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback)
         
         XCTAssert(Picovoice.picovoiceVersion != "")
         XCTAssert(Picovoice.frameLength > 0)
@@ -50,12 +54,14 @@ class PicovoiceDemoUITests: XCTestCase {
         let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
         let porcupineModelPath = bundle.path(forResource: "porcupine_params", ofType: "pv")!
         let rhinoModelPath = bundle.path(forResource: "rhino_params", ofType: "pv")!
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineModelPath: porcupineModelPath,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoModelPath: rhinoModelPath)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineModelPath: porcupineModelPath,
+            rhinoModelPath: rhinoModelPath)
         
         XCTAssert(p.contextInfo != "")
         p.delete()
@@ -65,12 +71,14 @@ class PicovoiceDemoUITests: XCTestCase {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
         let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineSensitivity: 0.7,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoSensitivity: 0.35)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineSensitivity: 0.7,
+            rhinoSensitivity: 0.35)
         
         XCTAssert(p.contextInfo != "")
         p.delete()
@@ -83,12 +91,14 @@ class PicovoiceDemoUITests: XCTestCase {
         let porcupineModelPath = bundle.path(forResource: "porcupine_params_de", ofType: "pv")!
         let rhinoModelPath = bundle.path(forResource: "rhino_params_de", ofType: "pv")!
         
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineModelPath: porcupineModelPath,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoModelPath: rhinoModelPath)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineModelPath: porcupineModelPath,
+            rhinoModelPath: rhinoModelPath)
         
         XCTAssert(p.contextInfo != "")
         p.delete()
@@ -101,12 +111,14 @@ class PicovoiceDemoUITests: XCTestCase {
         let porcupineModelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
         let rhinoModelPath = bundle.path(forResource: "rhino_params_es", ofType: "pv")!
         
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineModelPath: porcupineModelPath,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoModelPath: rhinoModelPath)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineModelPath: porcupineModelPath,
+            rhinoModelPath: rhinoModelPath)
         
         XCTAssert(p.contextInfo != "")
         p.delete()
@@ -119,12 +131,14 @@ class PicovoiceDemoUITests: XCTestCase {
         let porcupineModelPath = bundle.path(forResource: "porcupine_params_fr", ofType: "pv")!
         let rhinoModelPath = bundle.path(forResource: "rhino_params_fr", ofType: "pv")!
         
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineModelPath: porcupineModelPath,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoModelPath: rhinoModelPath)
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineModelPath: porcupineModelPath,
+            rhinoModelPath: rhinoModelPath)
         
         XCTAssert(p.contextInfo != "")
         p.delete()
@@ -137,10 +151,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -155,10 +171,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -173,10 +191,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -191,10 +211,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -210,11 +232,13 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineModelPath: porcupineModelPath,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback,
+                porcupineModelPath: porcupineModelPath)
         } catch {
             didFail = true
         }
@@ -230,11 +254,13 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoModelPath: rhinoModelPath)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback,
+                rhinoModelPath: rhinoModelPath)
         } catch {
             didFail = true
         }
@@ -249,11 +275,13 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   porcupineSensitivity: 10,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback,
+                porcupineSensitivity: 10)
         } catch {
             didFail = true
         }
@@ -268,11 +296,13 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback,
-                                   rhinoSensitivity: -1)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback,
+                rhinoSensitivity: -1)
         } catch {
             didFail = true
         }
@@ -287,10 +317,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -305,10 +337,12 @@ class PicovoiceDemoUITests: XCTestCase {
         
         var didFail = false
         do {
-            _ = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+            _ = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
         } catch {
             didFail = true
         }
@@ -316,14 +350,21 @@ class PicovoiceDemoUITests: XCTestCase {
         XCTAssert(didFail)
     }
     
+    var multiUsePicovoice: Picovoice?
+    
     func testProcSuccess() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
-        let p = try Picovoice.init(keywordPath: keywordPath,
-                                   onWakeWordDetection: wakeWordCallback,
-                                   contextPath: contextPath,
-                                   onInference: inferenceCallback)
+        if multiUsePicovoice == nil {
+            let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
+            let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+            
+            multiUsePicovoice = try! Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: wakeWordCallback,
+                contextPath: contextPath,
+                onInference: inferenceCallback)
+        }
         
         let fileURL:URL = bundle.url(forResource: "picovoice-coffee", withExtension: "wav")!
         let data = try Data(contentsOf: fileURL)
@@ -332,7 +373,7 @@ class PicovoiceDemoUITests: XCTestCase {
         var index = 44
         while(index + frameLengthBytes < data.count) {
             _ = pcmBuffer.withUnsafeMutableBytes { data.copyBytes(to: $0, from: index..<(index + frameLengthBytes)) }
-            try p.process(pcm:pcmBuffer)
+            try multiUsePicovoice!.process(pcm:pcmBuffer)
             
             index += frameLengthBytes
         }
@@ -349,11 +390,10 @@ class PicovoiceDemoUITests: XCTestCase {
         ]
         
         XCTAssert(expectedSlotValues == inferenceResult!.slots)
-        
-        p.delete()
     }
     
     func testProcSuccessAgain() throws {
         try testProcSuccess()
+        multiUsePicovoice!.delete()
     }
 }
