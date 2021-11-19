@@ -39,6 +39,7 @@ jobs:
       run: |
         sudo apt install libsndfile1-dev
         python -m pip install --upgrade pip
+        pip install wheel
 
     - name: Python dependencies pre-build
       run: python3 setup.py sdist bdist_wheel
