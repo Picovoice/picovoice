@@ -12,16 +12,35 @@ import Picovoice
 
 struct ContentView: View {
     
+    let ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"
+    
     let keywordPath = Bundle.main.path(forResource: "picovoice_ios", ofType: "ppn")
     let contextPath = Bundle.main.path(forResource: "smart_lighting_ios", ofType: "rhn")
+    
+    @State var textTimer: Timer?
     
     @State var picovoiceManager: PicovoiceManager!
     @State var buttonLabel = "START"
     @State var result: String = ""
+    @State var errorMessage: String = ""
     
     var body: some View {
-        ZStack {
+        
             VStack{
+                Spacer()
+                Spacer()
+                Text("\(result)")
+                    .foregroundColor(Color.black)
+                    .padding()
+                
+                Text(errorMessage)
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(Color.white)
+                    .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
+                    .font(.body)
+                    .opacity(errorMessage.isEmpty ? 0 : 1)
+                    .cornerRadius(.infinity)
                 Spacer()
                 
                 Text("Press the Start button and say \"Picovoice, turn off the lights\".")
@@ -30,17 +49,17 @@ struct ContentView: View {
                 
                 Button(action: {
                     if self.buttonLabel == "START" {
+                        self.textTimer?.invalidate()
                         self.result = ""
                         
                         do {
                             self.picovoiceManager = PicovoiceManager(
+                                accessKey: self.ACCESS_KEY,
                                 keywordPath: self.keywordPath!,
-                                porcupineSensitivity: 0.5,
                                 onWakeWordDetection: {
-                                    result = "Wake Word Detected ..."
+                                    result = "Wake Word Detected!\nListening for command..."
                                 },
                                 contextPath: self.contextPath!,
-                                rhinoSensitivity: 0.0,
                                 onInference: { x in
                                     DispatchQueue.main.async {
                                         result = "{\n"
@@ -57,40 +76,49 @@ struct ContentView: View {
                                         }
                                         result += "}\n"
                                     }
+                                    
+                                    self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { timer in
+                                        if buttonLabel == "STOP" {
+                                            result = "Listening for Wake Word.."
+                                        }
+                                    }
                                 })
 
                             try self.picovoiceManager.start()
+                            
+                            self.buttonLabel = "STOP"
+                            self.result = "Listening for Wake Word..."
+                        } catch PicovoiceError.PicovoiceInvalidArgumentError (let message){
+                            errorMessage = "\(message)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+                        } catch PicovoiceError.PicovoiceActivationError {
+                            errorMessage = "ACCESS_KEY activation error"
+                        } catch PicovoiceError.PicovoiceActivationRefusedError {
+                            errorMessage = "ACCESS_KEY activation refused"
+                        } catch PicovoiceError.PicovoiceActivationLimitError {
+                            errorMessage = "ACCESS_KEY reached its limit"
+                        } catch PicovoiceError.PicovoiceActivationThrottledError  {
+                            errorMessage = "ACCESS_KEY is throttled"
                         } catch {
-                            print("\(error)")
+                            errorMessage = "\(error)"
                         }
                         
-                        self.buttonLabel = "STOP"
                     } else {
                         self.picovoiceManager.stop()
                         self.buttonLabel = "START"
                         self.result = ""
+                        self.textTimer?.invalidate()
                     }
                 }) {
                     Text("\(buttonLabel)")
                         .padding()
-                        .background(Color.blue)
+                        .background(errorMessage.isEmpty ? Color.blue : Color.gray)
                         .foregroundColor(Color.white)
                         .font(.largeTitle)
-                }
-                
-                Spacer()
-                Spacer()
-                Spacer()
+                }.disabled(!errorMessage.isEmpty)
             }
-            VStack(alignment: .trailing) {
-                Spacer()
-                Spacer()
-                Spacer()
-                Text("\(result)")
-                    .padding()
-                Spacer()
-            }
-        }
+            .padding()
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+            .background(Color.white)
     }
 }
 
