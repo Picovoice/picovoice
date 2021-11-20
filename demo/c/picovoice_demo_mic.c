@@ -203,7 +203,9 @@ int main(int argc, char *argv[]) {
                 rhino_model_path = optarg;
                 break;
             case 'e':
-                require_endpoint = strcmp(optarg, "true") == 0;
+                if (strcmp(optarg, "false") == 0) {
+                    require_endpoint = false;
+                }
                 break;
             case 'i':
                 device_index = (int32_t) strtol(optarg, NULL, 10);

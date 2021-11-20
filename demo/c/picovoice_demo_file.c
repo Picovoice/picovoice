@@ -174,7 +174,9 @@ int main(int argc, char *argv[]) {
                 rhino_model_path = optarg;
                 break;
             case 'e':
-                require_endpoint = strcmp(optarg, "true") == 0;
+                if (strcmp(optarg, "false") == 0) {
+                    require_endpoint = false;
+                }
                 break;
             default:
                 print_usage(argv[0]);
