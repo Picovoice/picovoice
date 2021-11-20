@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2021 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -32,6 +32,7 @@ class Picovoice(object):
 
     def __init__(
             self,
+            access_key,
             keyword_path,
             wake_word_callback,
             context_path,
@@ -41,10 +42,12 @@ class Picovoice(object):
             porcupine_sensitivity=0.5,
             rhino_library_path=None,
             rhino_model_path=None,
-            rhino_sensitivity=0.5):
+            rhino_sensitivity=0.5,
+            require_endpoint=True):
         """
         Constructor.
 
+        :param access_key: AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
         :param keyword_path: Absolute path to Porcupine's keyword model file.
         :param wake_word_callback: User-defined callback invoked upon detection of the wake phrase. The callback accepts
         no input arguments.
@@ -65,7 +68,12 @@ class Picovoice(object):
         :param rhino_model_path: Absolute path to the file containing Rhino's model parameters.
         :param rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
+        :param require_endpoint If set to `False`, Rhino does not require an endpoint (chunk of silence) before
+        finishing inference.
         """
+
+        if not access_key:
+            raise ValueError("access_key should be a non-empty string.")
 
         if not os.path.exists(keyword_path):
             raise ValueError("Couldn't find Porcupine's keyword file at '%s'." % keyword_path)
@@ -98,6 +106,7 @@ class Picovoice(object):
             raise ValueError("Rhino's sensitivity should be within [0, 1]")
 
         self._porcupine = pvporcupine.create(
+            access_key=access_key,
             library_path=porcupine_library_path,
             model_path=porcupine_model_path,
             keyword_paths=[keyword_path],
@@ -108,10 +117,12 @@ class Picovoice(object):
         self._is_wake_word_detected = False
 
         self._rhino = pvrhino.create(
+            access_key=access_key,
             library_path=rhino_library_path,
             model_path=rhino_model_path,
             context_path=context_path,
-            sensitivity=rhino_sensitivity)
+            sensitivity=rhino_sensitivity,
+            require_endpoint=require_endpoint)
 
         self._inference_callback = inference_callback
 

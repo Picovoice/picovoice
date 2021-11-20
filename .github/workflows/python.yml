@@ -3,12 +3,12 @@ name: Python
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.0 ]
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
@@ -39,9 +39,18 @@ jobs:
       run: |
         sudo apt install libsndfile1-dev
         python -m pip install --upgrade pip
+        pip install wheel
+
+    - name: Python dependencies pre-build
+      run: python3 setup.py sdist bdist_wheel
+      working-directory: resources/porcupine/binding/python
+
+    - name: Python dependencies pre-build
+      run: python3 setup.py sdist bdist_wheel
+      working-directory: resources/rhino/binding/python
 
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    - name: Test
-      run: python setup.py test
+    - name: Run tests
+      run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}

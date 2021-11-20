@@ -1,4 +1,4 @@
 numpy
-picovoice==1.1.3
-pvrecorder==1.0.0
+../../sdk/python/dist/picovoice-2.0.0-py3-none-any.whl
+pvrecorder==1.0.2
 soundfile
