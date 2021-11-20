@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2020-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,13 +12,11 @@
 
 package ai.picovoice.picovoice;
 
-import ai.picovoice.porcupine.Porcupine;
-import ai.picovoice.porcupine.PorcupineException;
-import ai.picovoice.rhino.Rhino;
-import ai.picovoice.rhino.RhinoException;
+import ai.picovoice.porcupine.*;
+import ai.picovoice.rhino.*;
 
 /**
- * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
+ * Java binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
  * similar to Alexa but runs entirely on-device (offline).
  * <p>
  * Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of
@@ -33,15 +31,16 @@ import ai.picovoice.rhino.RhinoException;
  * engine for intent inference.
  */
 public class Picovoice {
-    final private Porcupine porcupine;
+    private Porcupine porcupine;
     final private PicovoiceWakeWordCallback wakeWordCallback;
     private boolean isWakeWordDetected = false;
-    final private Rhino rhino;
+    private Rhino rhino;
     final private PicovoiceInferenceCallback inferenceCallback;
 
     /**
      * Constructor
      *
+     * @param accessKey            AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -57,12 +56,15 @@ public class Picovoice {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
+     * @param requireEndpoint      If set to `False`, Rhino does not require an endpoint (chunk of silence)
+     *                             before finishing inference.
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
-     * @throws PicovoiceException if there is an error while initializing.
+     * @throws PicovoiceException  if there is an error while initializing.
      */
     public Picovoice(
+            String accessKey,
             String porcupineLibraryPath,
             String porcupineModelPath,
             String keywordPath,
@@ -72,18 +74,31 @@ public class Picovoice {
             String rhinoModelPath,
             String contextPath,
             float rhinoSensitivity,
+            boolean requireEndpoint,
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
+
+        if (wakeWordCallback == null) {
+            final String message = String.format("Wake word callback is required");
+            throw new PicovoiceInvalidArgumentException(message);
+        }
+
+        if (inferenceCallback == null) {
+            final String message = String.format("Inference callback is required");
+            throw new PicovoiceInvalidArgumentException(message);
+        }
+
         try {
             porcupine = new Porcupine.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(porcupineLibraryPath)
                     .setModelPath(porcupineModelPath)
                     .setSensitivity(porcupineSensitivity)
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("1.9.")) {
+            if (!porcupine.getVersion().startsWith("2.0.")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '1.9.x' but received %s",
+                        "Expected Porcupine library with version '2.0.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -91,22 +106,40 @@ public class Picovoice {
             this.wakeWordCallback = wakeWordCallback;
 
             rhino = new Rhino.Builder()
+                    .setAccessKey(accessKey)
                     .setLibraryPath(rhinoLibraryPath)
                     .setModelPath(rhinoModelPath)
                     .setContextPath(contextPath)
                     .setSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .build();
 
-            if (!rhino.getVersion().startsWith("1.6.")) {
+            if (!rhino.getVersion().startsWith("2.0.")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '1.6.x' but received %s",
+                        "Expected Rhino library with version '2.0.x' but received %s",
                         rhino.getVersion());
+                throw new PicovoiceException(message);
+            }
+
+            if (rhino.getFrameLength() != porcupine.getFrameLength()) {
+                final String message = String.format(
+                        "Incompatible frame lengths for Porcupine and Rhino engines: '%d' and '%d' samples",
+                        porcupine.getFrameLength(),
+                        rhino.getFrameLength());
+                throw new PicovoiceException(message);
+            }
+
+            if (rhino.getSampleRate() != porcupine.getSampleRate()) {
+                final String message = String.format(
+                        "Incompatible sample rates for Porcupine and Rhino engines: '%d' and '%d' Hz",
+                        porcupine.getSampleRate(),
+                        rhino.getSampleRate());
                 throw new PicovoiceException(message);
             }
 
             this.inferenceCallback = inferenceCallback;
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
+            throw mapToPicovoiceException(e);
         }
     }
 
@@ -114,8 +147,14 @@ public class Picovoice {
      * Releases resources acquired.
      */
     public void delete() {
-        porcupine.delete();
-        rhino.delete();
+        if (porcupine != null) {
+            porcupine.delete();
+            porcupine = null;
+        }
+        if (rhino != null) {
+            rhino.delete();
+            rhino = null;
+        }
     }
 
     /**
@@ -129,6 +168,20 @@ public class Picovoice {
      * @throws PicovoiceException if there is an error while processing the audio frame.
      */
     public void process(short[] pcm) throws PicovoiceException {
+        if (porcupine == null || rhino == null) {
+            throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released");
+        }
+
+        if (pcm == null) {
+            throw new PicovoiceInvalidArgumentException("Passed null frame to Picovoice process.");
+        }
+
+        if (pcm.length != getFrameLength()) {
+            throw new PicovoiceInvalidArgumentException(
+                    String.format("Picovoice process requires frames of length %d. " +
+                            "Received frame of size %d.", getFrameLength(), pcm.length));
+        }
+
         try {
             if (!isWakeWordDetected) {
                 isWakeWordDetected = (porcupine.process(pcm) == 0);
@@ -142,7 +195,7 @@ public class Picovoice {
                 }
             }
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
+            throw mapToPicovoiceException(e);
         }
     }
 
@@ -152,7 +205,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "1.1.0";
+        return "2.0.0";
     }
 
     /**
@@ -161,7 +214,7 @@ public class Picovoice {
      * @return Porcupine version.
      */
     public String getPorcupineVersion() {
-        return porcupine.getVersion();
+        return porcupine != null ? porcupine.getVersion() : "";
     }
 
     /**
@@ -170,7 +223,7 @@ public class Picovoice {
      * @return Rhino version.
      */
     public String getRhinoVersion() {
-        return rhino.getVersion();
+        return rhino != null ? rhino.getVersion() : "";
     }
 
     /**
@@ -179,7 +232,7 @@ public class Picovoice {
      * @return Number of audio samples per frame.
      */
     public int getFrameLength() {
-        return rhino.getFrameLength();
+        return porcupine != null ? porcupine.getFrameLength() : 0;
     }
 
     /**
@@ -188,7 +241,52 @@ public class Picovoice {
      * @return Audio sample rate accepted by Picovoice.
      */
     public int getSampleRate() {
-        return porcupine.getSampleRate();
+        return porcupine != null ? porcupine.getSampleRate() : 0;
+    }
+
+    /**
+     * Getter for the Rhino context
+     *
+     * @return Rhino context
+     */
+    public String getContextInformation() {
+        return rhino != null ? rhino.getContextInformation() : "";
+    }
+
+    /**
+     * Maps Porcupine/Rhino Exception to Picovoice Exception.
+     */
+    private static PicovoiceException mapToPicovoiceException(Exception e) {
+        if (e instanceof PorcupineActivationException || e instanceof RhinoActivationException) {
+            return new PicovoiceActivationException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationLimitException || e instanceof RhinoActivationLimitException) {
+            return new PicovoiceActivationLimitException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationRefusedException || e instanceof RhinoActivationRefusedException) {
+            return new PicovoiceActivationRefusedException(e.getMessage(), e);
+        } else if (e instanceof PorcupineActivationThrottledException || e instanceof RhinoActivationThrottledException) {
+            return new PicovoiceActivationThrottledException(e.getMessage(), e);
+        } else if (e instanceof PorcupineInvalidArgumentException || e instanceof RhinoInvalidArgumentException) {
+            return new PicovoiceInvalidArgumentException(e.getMessage(), e);
+        } else if (e instanceof PorcupineInvalidStateException || e instanceof RhinoInvalidStateException) {
+            return new PicovoiceInvalidStateException(e.getMessage(), e);
+        } else if (e instanceof PorcupineIOException || e instanceof RhinoIOException) {
+            return new PicovoiceIOException(e.getMessage(), e);
+        } else if (e instanceof PorcupineKeyException || e instanceof RhinoKeyException) {
+            return new PicovoiceKeyException(e.getMessage(), e);
+        } else if (e instanceof PorcupineMemoryException || e instanceof RhinoMemoryException) {
+            return new PicovoiceMemoryException(e.getMessage(), e);
+        } else if (e instanceof PorcupineRuntimeException || e instanceof RhinoRuntimeException) {
+            return new PicovoiceRuntimeException(e.getMessage(), e);
+        } else if (e instanceof PorcupineStopIterationException || e instanceof RhinoStopIterationException) {
+            return new PicovoiceStopIterationException(e.getMessage(), e);
+        } else if (e instanceof PorcupineException || e instanceof RhinoException) {
+            return new PicovoiceException(e.getMessage(), e);
+        } else {
+            return new PicovoiceException(
+                    String.format("Unknown exception: '%s', message: '%s'",
+                            e.getClass().getSimpleName(),
+                            e.getMessage()), e);
+        }
     }
 
     /**
@@ -196,6 +294,7 @@ public class Picovoice {
      */
     public static class Builder {
 
+        private String accessKey = null;
         private String porcupineLibraryPath = null;
         private String porcupineModelPath = null;
         private String keywordPath = null;
@@ -205,7 +304,13 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
+
+        public Picovoice.Builder setAccessKey(String accessKey) {
+            this.accessKey = accessKey;
+            return this;
+        }
 
         public Picovoice.Builder setPorcupineLibraryPath(String porcupineLibraryPath) {
             this.porcupineLibraryPath = porcupineLibraryPath;
@@ -257,6 +362,11 @@ public class Picovoice {
             return this;
         }
 
+        public Picovoice.Builder setRequireEndpoint(boolean requireEndpoint) {
+            this.requireEndpoint = requireEndpoint;
+            return this;
+        }
+
         /**
          * Validates properties and creates an instance of the Picovoice end-to-end platform.
          *
@@ -264,7 +374,9 @@ public class Picovoice {
          * @throws PicovoiceException if there is an error while initializing Picovoice.
          */
         public Picovoice build() throws PicovoiceException {
-            return new Picovoice(porcupineLibraryPath,
+            return new Picovoice(
+                    accessKey,
+                    porcupineLibraryPath,
                     porcupineModelPath,
                     keywordPath,
                     porcupineSensitivity,
@@ -273,6 +385,7 @@ public class Picovoice {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
+                    requireEndpoint,
                     inferenceCallback);
         }
     }

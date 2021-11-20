@@ -13,6 +13,7 @@
 import ai.picovoice.picovoice.Picovoice;
 import ai.picovoice.picovoice.PicovoiceInferenceCallback;
 import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
+import org.apache.commons.cli.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -44,6 +45,32 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        Options options = BuildCommandLineOptions();
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+
+        CommandLine cmd;
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            formatter.printHelp("JavaSwingDemo", options);
+            System.exit(1);
+            return;
+        }
+
+        if (cmd.hasOption("help")) {
+            formatter.printHelp("JavaSwingDemo", options);
+            return;
+        }
+
+        String accessKey = cmd.getOptionValue("access_key");
+
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required.");
+        }
+
         JFrame f = new JFrame();
         f.setSize(575, 300);
         f.setLayout(null);
@@ -158,6 +185,7 @@ public class Main {
 
         try {
             picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
@@ -194,6 +222,19 @@ public class Main {
         }
     }
 
+    private static Options BuildCommandLineOptions() {
+        Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
+                .build());
+
+        options.addOption(new Option("h", "help", false, ""));
+
+        return options;
+    }
     static void ChangeLightColor(Set<String> locations, Color color) {
         for (String location : locations) {
             locationLights.get(location).setBackground(color);

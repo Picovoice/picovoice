@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PicovoiceTest {
 
     private Picovoice picovoice;
+    final private String accessKey = System.getProperty("pvTestingAccessKey");
     private final String environmentName = getEnvironmentName();
     private final String keywordPath = String.format("../../resources/porcupine/resources/keyword_files" +
             "/%s/picovoice_%s.ppn", environmentName, environmentName);
@@ -61,6 +62,7 @@ public class PicovoiceTest {
     @BeforeEach
     void setUp() throws PicovoiceException {
         picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
                 .setKeywordPath(keywordPath)
                 .setWakeWordCallback(wakeWordCallback)
                 .setContextPath(contextPath)
