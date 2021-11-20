@@ -161,7 +161,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
-            bool requireEndpoint = false;
+            bool requireEndpoint = true;
             bool showHelp = false;
 
             // parse command line arguments
@@ -226,8 +226,13 @@ namespace PicovoiceDemo
                 }
                 else if (args[argIndex] == "--require_endpoint")
                 {
-                    requireEndpoint = true;
-                    argIndex++;
+                    if (++argIndex < args.Length)
+                    {
+                        if (args[argIndex++].ToLower() == "false")
+                        {
+                            requireEndpoint = false;
+                        }
+                    }
                 }
                 else if (args[argIndex] == "-h" || args[argIndex] == "--help")
                 {
@@ -289,6 +294,6 @@ namespace PicovoiceDemo
             "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
             "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity " +
             "value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
-            "\t--require_endpoint: If set, Rhino requires an endpoint (chunk of silence) before finishing inference.\n";
+            "\t--require_endpoint: ['true'|'false'] If set to 'false', Rhino does not require an endpoint (chunk of silence) before finishing inference.\n";
     }
 }
