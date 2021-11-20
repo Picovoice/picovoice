@@ -584,15 +584,13 @@ Run the demo using:
 
 ```console
 ./demo/c/build/picovoice_demo_mic \
-${PICOVOICE_LIBRARY_PATH} \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
-
+-a ${ACCESS_KEY}
+-l ${PICOVOICE_LIBRARY_PATH} \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn \
+-i {AUDIO_DEVICE_INDEX}
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [/sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
@@ -610,7 +608,7 @@ List input audio devices with:
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\picovoice_demo_mic.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn 0.5 {AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\picovoice_demo_mic.exe -a ${ACCESS_KEY} -l sdk/c/lib/windows/amd64/libpicovoice.dll -p resources/porcupine/lib/common/porcupine_params.pv -k resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn -r resources/rhino/lib/common/rhino_params.pv -c resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn -i {AUDIO_DEVICE_INDEX}
 ```
 
 Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device.
@@ -634,14 +632,13 @@ Run the demo using:
 
 ```console
 ./demo/c/build/picovoice_demo_file \
-${LIBRARY_PATH} \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/${PLATFORM}/coffee_maker_${PLATFORM}.rhn \
-0.5 \
-resources/audio_samples/picovoice-coffee.wav
+-a ${ACCESS_KEY}
+-l ${LIBRARY_PATH} \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/${PLATFORM}/picovoice_${PLATFORM}.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/${PLATFORM}/coffee_maker_${PLATFORM}.rhn \
+-w resources/audio_samples/picovoice-coffee.wav
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
@@ -652,7 +649,7 @@ name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `bea
 Run the demo using:
 
 ```console
-.\\demo\\c\\build\\picovoice_demo_file.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn 0.5 resources/audio_samples/picovoice-coffee.wav
+.\\demo\\c\\build\\picovoice_demo_file.exe -a ${ACCESS_KEY} -l sdk/c/lib/windows/amd64/libpicovoice.dll -p resources/porcupine/lib/common/porcupine_params.pv -k resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn -r resources/rhino/lib/common/rhino_params.pv -c resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn -w resources/audio_samples/picovoice-coffee.wav
 ```
 
 The demo opens up the WAV file. It detects the wake word and infers the intent in the context of a coffee maker system.
