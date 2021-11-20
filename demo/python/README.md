@@ -20,13 +20,22 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 * Python 3
-* Runs on Linux (x86_64), Mac (x86_64), Windows (x86_64), Raspberry Pi (all variants), NVIDIA Jetson (Nano), and BeagleBone.
+* Runs on Linux (x86_64), macOS (x86_64, arm64), Windows (x86_64), Raspberry Pi (all variants), NVIDIA Jetson (Nano), and BeagleBone.
 
 ## Installation
 
 ```console
 sudo pip3 install picovoicedemo
 ```
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Usage
 
@@ -40,6 +49,7 @@ using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}
 
 ```console
 picovoice_demo_file \
+--access_key ${ACCESS_KEY} \
 --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
@@ -55,6 +65,7 @@ detection.
 
 ```console
 picovoice_demo_mic \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```
@@ -78,6 +89,7 @@ USB Audio Device in the above example, you can invoke the demo application as be
 
 ```console
 picovoice_demo_mic \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
 --audio_device_index 0
@@ -87,6 +99,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 
 ```console
 picovoice_demo_mic \
+--access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
 --audio_device_index 0 \
