@@ -38,7 +38,7 @@ func main() {
 		"The value should be a number within [0, 1]. A higher sensitivity value results in "+
 		"fewer misses at the cost of (potentially) increasing the erroneous inference rate. "+
 		"If not set, 0.5 will be used.")
-	requireEndpointArg := flag.Bool("require_endpoint", false,
+	requireEndpointArg := flag.String("require_endpoint", "true",
 		"If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.")
 	flag.Parse()
 
@@ -59,7 +59,10 @@ func main() {
 	}
 
 	p := Picovoice{
-		RequireEndpoint: *requireEndpointArg,
+		RequireEndpoint: true,
+	}
+	if *requireEndpointArg == "false" {
+		p.RequireEndpoint = false
 	}
 
 	if *accessKeyArg == "" {
