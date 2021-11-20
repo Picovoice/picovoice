@@ -53,6 +53,16 @@ cd picovoice/sdk/java
 
 Once the task is complete, the output JAR can be found in `picovoice/sdk/java/build/libs`.
 
+## AccessKey
+
+The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
+
 ## Usage
 
 The easiest way to create an instance of the engine is with the Picovoice Builder:
@@ -61,6 +71,8 @@ The easiest way to create an instance of the engine is with the Picovoice Builde
 import ai.picovoice.picovoice.*;
 
 String keywordPath = "/absolute/path/to/keyword.ppn"
+
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
 
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
@@ -76,6 +88,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
 
 try{        
     Picovoice handle = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)

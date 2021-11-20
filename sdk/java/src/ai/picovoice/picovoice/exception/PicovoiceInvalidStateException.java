@@ -1,5 +1,5 @@
 /*
-    Copyright 2020 Picovoice Inc.
+    Copyright 2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -12,12 +12,16 @@
 
 package ai.picovoice.picovoice;
 
-public class PicovoiceException extends Exception {
-    PicovoiceException(Throwable cause) {
+public class PicovoiceInvalidStateException extends PicovoiceException {
+    PicovoiceInvalidStateException(Throwable cause) {
         super(cause);
     }
 
-    PicovoiceException(String message) {
+    PicovoiceInvalidStateException(String message) {
         super(message);
+    }
+
+    PicovoiceInvalidStateException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

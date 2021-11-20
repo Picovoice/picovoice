@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2021 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -29,9 +29,10 @@ import java.util.Map;
 
 public class FileDemo {
 
-    public static void runDemo(File inputAudioFile, String keywordPath, String contextPath,
-                               String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
-                               String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity) {
+    public static void runDemo(
+            String accessKey, File inputAudioFile, String keywordPath, String contextPath,
+            String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
+            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity, boolean requireEndpoint) {
 
         AudioInputStream audioInputStream;
         try {
@@ -64,6 +65,7 @@ public class FileDemo {
         Picovoice picovoice = null;
         try {
             picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
@@ -74,6 +76,7 @@ public class FileDemo {
                     .setRhinoLibraryPath(rhinoLibraryPath)
                     .setRhinoModelPath(rhinoModelPath)
                     .setRhinoSensitivity(rhinoSensitivity)
+                    .setRequireEndpoint(requireEndpoint)
                     .build();
 
             AudioFormat audioFormat = audioInputStream.getFormat();
@@ -139,6 +142,7 @@ public class FileDemo {
             return;
         }
 
+        String accessKey = cmd.getOptionValue("access_key");
         String inputAudioPath = cmd.getOptionValue("input_audio_path");
         String keywordPath = cmd.getOptionValue("keyword_path");
         String contextPath = cmd.getOptionValue("context_path");
@@ -148,6 +152,11 @@ public class FileDemo {
         String rhinoLibraryPath = cmd.getOptionValue("rhino_library_path");
         String rhinoModelPath = cmd.getOptionValue("rhino_model_path");
         String rhinoSensitivityStr = cmd.getOptionValue("rhino_sensitivity");
+        String requireEndpointValue = cmd.getOptionValue("require_endpoint");
+
+        if (accessKey == null || accessKey.length() == 0) {
+            throw new IllegalArgumentException("AccessKey is required for Picovoice.");
+        }
 
         // parse sensitivity
         float porcupineSensitivity = 0.5f;
@@ -202,13 +211,24 @@ public class FileDemo {
             throw new IllegalArgumentException(String.format("Context file at path '%s' does not exist", contextPath));
         }
 
-        runDemo(inputAudioFile, keywordPath, contextPath,
+        boolean requireEndpoint = true;
+        if (requireEndpointValue != null && requireEndpointValue.toLowerCase().equals("false")) {
+            requireEndpoint = false;
+        }
+
+        runDemo(accessKey, inputAudioFile, keywordPath, contextPath,
                 porcupineLibraryPath, porcupineModelPath, porcupineSensitivity,
-                rhinoLibraryPath, rhinoModelPath, rhinoSensitivity);
+                rhinoLibraryPath, rhinoModelPath, rhinoSensitivity, requireEndpoint);
     }
 
     private static Options BuildCommandLineOptions() {
         Options options = new Options();
+
+        options.addOption(Option.builder("a")
+                .longOpt("access_key")
+                .hasArg(true)
+                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
+                .build());
 
         options.addOption(Option.builder("i")
                 .longOpt("input_audio_path")
@@ -264,6 +284,13 @@ public class FileDemo {
                 .hasArgs()
                 .desc("Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value " +
                         "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
+                .build());
+
+        options.addOption(Option.builder("e")
+                .longOpt("require_endpoint")
+                .hasArg(true)
+                .desc("If set to `false`, Rhino does not require an endpoint (chunk of silence) before " +
+                        "finishing inference.")
                 .build());
 
         options.addOption(new Option("h", "help", false, ""));

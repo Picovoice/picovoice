@@ -304,6 +304,7 @@ cd demo/java
 ./gradlew build
 cd build/libs
 java -jar picovoice-mic-demo.jar \
+-a ${ACCESS_KEY} \
 -k resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn \
 -c resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
@@ -855,6 +856,8 @@ import ai.picovoice.picovoice.*;
 
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+        
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
 String contextPath = "/absolute/path/to/context.rhn"
@@ -869,6 +872,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
 
 try{
     Picovoice handle = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setWakeWordCallback(wakeWordCallback)
                     .setContextPath(contextPath)
