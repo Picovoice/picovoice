@@ -9,12 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
-#if !defined(_WIN32) && !defined(_WIN64)
-
-#include <dlfcn.h>
-
-#endif
-
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -23,7 +18,15 @@
 
 #include <windows.h>
 
+#else
+
+#include <dlfcn.h>
+
 #endif
+
+#define DR_WAV_IMPLEMENTATION
+
+#include "dr_wav.h"
 
 #include "pv_picovoice.h"
 
@@ -107,23 +110,82 @@ static void inference_callback(pv_inference_t *inference) {
     pv_inference_delete_func(inference);
 }
 
+static struct option long_options[] = {
+        {"library_path",          required_argument, NULL, 'l'},
+        {"wav_path",              required_argument, NULL, 'w'},
+        {"access_key",            required_argument, NULL, 'a'},
+        {"keyword_path",          required_argument, NULL, 'k'},
+        {"context_path",          required_argument, NULL, 'c'},
+        {"porcupine_sensitivity", required_argument, NULL, 's'},
+        {"porcupine_model_path",  required_argument, NULL, 'p'},
+        {"rhino_sensitivity",     required_argument, NULL, 't'},
+        {"rhino_model_path",      required_argument, NULL, 'r'},
+        {"require_endpoint",      required_argument,       NULL, 'e'},
+};
+
+void print_usage(const char *program_name) {
+    fprintf(stderr,
+            "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -w WAV_PATH -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH"
+            "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n",
+            program_name);
+}
+
 int main(int argc, char *argv[]) {
-    if (argc != 9) {
-        static const char *USAGE_STRING =
-                "usage : %s library_path porcupine_model_path keyword_path porcupine_sensitivity rhino_model_path "
-                "context_path rhino_sensitivity wav_path\n";
-        fprintf(stderr, USAGE_STRING, argv[0]);
-        exit(1);
+
+    const char *library_path = NULL;
+    const char *wav_path = NULL;
+    const char *access_key = NULL;
+    const char *keyword_path = NULL;
+    const char *context_path = NULL;
+    float porcupine_sensitivity = 0.5f;
+    const char *porcupine_model_path = NULL;
+    float rhino_sensitivity = 0.5f;
+    const char *rhino_model_path = NULL;
+    bool require_endpoint = true;
+
+    int c;
+    while ((c = getopt_long(argc, argv, "el:w:a:k:c:s:p:t:r:", long_options, NULL)) != -1) {
+        switch (c) {
+            case 'l':
+                library_path = optarg;
+                break;
+            case 'w':
+                wav_path = optarg;
+                break;
+            case 'a':
+                access_key = optarg;
+                break;
+            case 'k':
+                keyword_path = optarg;
+                break;
+            case 'c':
+                context_path = optarg;
+                break;
+            case 's':
+                porcupine_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'p':
+                porcupine_model_path = optarg;
+                break;
+            case 't':
+                rhino_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'r':
+                rhino_model_path = optarg;
+                break;
+            case 'e':
+                require_endpoint = strcmp(optarg, "true") == 0;
+                break;
+            default:
+                print_usage(argv[0]);
+                exit(1);
+        }
     }
 
-    const char *library_path = argv[1];
-    const char *porcupine_model_path = argv[2];
-    const char *keyword_path = argv[3];
-    const float porcupine_sensitivity = strtof(argv[4], NULL);
-    const char *rhino_model_path = argv[5];
-    const char *context_path = argv[6];
-    const float rhino_sensitivity = strtof(argv[7], NULL);
-    const char *wav_path = argv[8];
+    if (!library_path || !keyword_path || !context_path || !access_key || !wav_path || !porcupine_model_path || !rhino_model_path) {
+        print_usage(argv[0]);
+        exit(1);
+    }
 
     void *picovoice_library = open_dl(library_path);
     if (!picovoice_library) {
@@ -146,11 +208,13 @@ int main(int argc, char *argv[]) {
     pv_status_t (*pv_picovoice_init_func)(
             const char *,
             const char *,
+            const char *,
             float,
             void (*)(void),
             const char *,
             const char *,
             float,
+            bool,
             void (*)(pv_inference_t *),
             pv_picovoice_t **) = NULL;
     pv_picovoice_init_func = load_symbol(picovoice_library, "pv_picovoice_init");
@@ -166,7 +230,7 @@ int main(int argc, char *argv[]) {
     }
 
     pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *) =
-            load_symbol(picovoice_library, "pv_picovoice_process");
+    load_symbol(picovoice_library, "pv_picovoice_process");
     if (!pv_picovoice_process_func) {
         print_dl_error("failed to load 'pv_picovoice_process'");
         exit(1);
@@ -178,14 +242,49 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    const char *(*pv_picovoice_version_func)() = load_symbol(picovoice_library, "pv_picovoice_version");
+    if (!pv_picovoice_version_func) {
+        print_dl_error("failed to load 'pv_picovoice_version'");
+        exit(1);
+    }
+
     pv_inference_delete_func = load_symbol(picovoice_library, "pv_inference_delete");
     if (!pv_inference_delete_func) {
         print_dl_error("failed to load 'pv_inference_delete'");
         exit(1);
     }
 
+    drwav f;
+
+    if (!drwav_init_file(&f, wav_path, NULL)) {
+        fprintf(stderr, "failed to open wav file at '%s'.", wav_path);
+        exit(1);
+    }
+
+    if (f.sampleRate != (uint32_t) pv_sample_rate_func()) {
+        fprintf(stderr, "audio sample rate should be %d\n.", pv_sample_rate_func());
+        exit(1);
+    }
+
+    if (f.bitsPerSample != 16) {
+        fprintf(stderr, "audio format should be 16-bit\n.");
+        exit(1);
+    }
+
+    if (f.channels != 1) {
+        fprintf(stderr, "audio should be single-channel.\n");
+        exit(1);
+    }
+
+    int16_t *pcm = calloc(pv_picovoice_frame_length_func(), sizeof(int16_t));
+    if (!pcm) {
+        fprintf(stderr, "failed to allocate memory for audio frame.\n");
+        exit(1);
+    }
+
     pv_picovoice_t *handle = NULL;
     pv_status_t status = pv_picovoice_init_func(
+            access_key,
             porcupine_model_path,
             keyword_path,
             porcupine_sensitivity,
@@ -193,6 +292,7 @@ int main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            require_endpoint,
             inference_callback,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
@@ -200,30 +300,13 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    FILE *wav = fopen(wav_path, "rb");
-    if (!wav) {
-        fprintf(stderr, "failed to open wav file\n");
-        exit(1);
-    }
-
-    if (fseek(wav, 44, SEEK_SET) != 0) {
-        fprintf(stderr, "failed to skip the wav header\n");
-        exit(1);
-    }
-
-    const int32_t frame_length = pv_picovoice_frame_length_func();
-
-    int16_t *pcm = malloc(sizeof(int16_t) * frame_length);
-    if (!pcm) {
-        fprintf(stderr, "failed to allocate memory for audio buffer\n");
-        exit(1);
-    }
+    fprintf(stdout, "Picovoice End-to-End Platform (%s) :\n\n", pv_picovoice_version_func());
 
     double total_cpu_time_usec = 0;
     double total_processed_time_usec = 0;
     int32_t frame_index = 0;
 
-    while (fread(pcm, sizeof(int16_t), frame_length, wav) == (size_t) frame_length) {
+    while ((int32_t) drwav_read_pcm_frames_s16(&f, pv_picovoice_frame_length_func(), pcm) == pv_picovoice_frame_length_func()) {
         struct timeval before;
         gettimeofday(&before, NULL);
 
@@ -238,7 +321,7 @@ int main(int argc, char *argv[]) {
 
         total_cpu_time_usec +=
                 (double) (after.tv_sec - before.tv_sec) * 1e6 + (double) (after.tv_usec - before.tv_usec);
-        total_processed_time_usec += (frame_length * 1e6) / pv_sample_rate_func();
+        total_processed_time_usec += (pv_picovoice_frame_length_func() * 1e6) / pv_sample_rate_func();
         frame_index++;
     }
 
@@ -246,7 +329,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "real time factor : %.3f\n", real_time_factor);
 
     free(pcm);
-    fclose(wav);
+    drwav_uninit(&f);
     pv_picovoice_delete_func(handle);
     close_dl(picovoice_library);
 
