@@ -195,7 +195,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
-            bool requireEndpoint = false;
+            bool requireEndpoint = true;
             string outputPath = null;
             int audioDeviceIndex = -1;
             bool showAudioDevices = false;
@@ -256,8 +256,13 @@ namespace PicovoiceDemo
                 }
                 else if (args[argIndex] == "--require_endpoint")
                 {
-                    requireEndpoint = true;
-                    argIndex++;
+                    if (++argIndex < args.Length)
+                    {
+                        if (args[argIndex++].ToLower() == "false")
+                        {
+                            requireEndpoint = false;
+                        }
+                    }
                 }
                 else if (args[argIndex] == "--show_audio_devices")
                 {
@@ -337,7 +342,7 @@ namespace PicovoiceDemo
             "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
             "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity \n" +
             "\t\tvalue results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
-            "\t--require_endpoint: If set, Rhino requires an endpoint (chunk of silence) before finishing inference.\n" +
+            "\t--require_endpoint: ['true'|'false'] If set to 'false', Rhino does not require an endpoint (chunk of silence) before finishing inference.\n" +
             "\t--audio_device_index: Index of input audio device.\n" +
             "\t--output_path: Absolute path to recorded audio for debugging.\n" +
             "\t--show_audio_devices: Print available recording devices.\n";
