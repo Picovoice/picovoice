@@ -9,45 +9,24 @@
     specific language governing permissions and limitations under the License.
 */
 
-#if !defined(_WIN32) && !defined(_WIN64)
+#include <getopt.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#if defined(_WIN32) || defined(_WIN64)
+
+#include <windows.h>
+
+#else
 
 #include <dlfcn.h>
 
 #endif
 
-#include <signal.h>
-#include <stdio.h>
-
-#if defined(_WIN32) && defined(_WIN64)
-
-#include <windows.h>
-
-#endif
-
-#pragma GCC diagnostic push
-
-#pragma GCC diagnostic ignored "-Wunused-result"
-
-#define MINIAUDIO_IMPLEMENTATION
-
-#include "miniaudio/miniaudio.h"
-
-#pragma GCC diagnostic pop
-
 #include "pv_picovoice.h"
+#include "pv_recorder.h"
 
-typedef struct {
-    int16_t *buffer;
-    int32_t max_size;
-    int32_t filled;
-} frame_buffer_t;
-
-typedef struct {
-    frame_buffer_t frame_buffer;
-    const char *(*pv_status_to_string_func)(pv_status_t);
-    pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *);
-    pv_picovoice_t *picovoice;
-} pv_picovoice_data_t;
 
 static volatile bool is_interrupted = false;
 
@@ -107,59 +86,50 @@ static void print_dl_error(const char *message) {
 
 }
 
-static void print_usage(const char *program) {
-    fprintf(stderr, "usage : %s library_path porcupine_model_path keyword_path porcupine_sensitivity rhino_model_path "
-                    "context_path rhino_sensitivity input_audio_device\n"
-                    "        %s --show_audio_devices\n", program, program);
-}
+static struct option long_options[] = {
+        {"show_audio_devices", no_argument,       NULL, 'd'},
+        {"library_path",          required_argument, NULL, 'l'},
+        {"wav_path",              required_argument, NULL, 'w'},
+        {"access_key",            required_argument, NULL, 'a'},
+        {"keyword_path",          required_argument, NULL, 'k'},
+        {"context_path",          required_argument, NULL, 'c'},
+        {"porcupine_sensitivity", required_argument, NULL, 's'},
+        {"porcupine_model_path",  required_argument, NULL, 'p'},
+        {"rhino_sensitivity",     required_argument, NULL, 't'},
+        {"rhino_model_path",      required_argument, NULL, 'r'},
+        {"require_endpoint",      required_argument,       NULL, 'e'},
+        {"audio_device_index", required_argument, NULL, 'i'}
+};
 
-static void picovoice_process_callback(const pv_picovoice_data_t *pv_picovoice_data, const int16_t *pcm) {
-    pv_status_t status = pv_picovoice_data->pv_picovoice_process_func(pv_picovoice_data->picovoice, pcm);
-    if (status != PV_STATUS_SUCCESS) {
-        fprintf(stderr, "'pv_picovoice_process' failed with '%s'\n",
-                pv_picovoice_data->pv_status_to_string_func(status));
-        exit(1);
-    }
-}
-
-static void mic_callback(ma_device *device, void *output, const void *input, ma_uint32 frame_count) {
-    (void) output;
-
-    pv_picovoice_data_t *pv_picovoice_data = (pv_picovoice_data_t *) device->pUserData;
-
-    frame_buffer_t *frame_buffer = &pv_picovoice_data->frame_buffer;
-
-    int16_t *buffer_ptr = &frame_buffer->buffer[frame_buffer->filled];
-    int16_t *input_ptr = (int16_t *) input;
-
-    int32_t processed_frames = 0;
-
-    while (processed_frames < frame_count) {
-        const int32_t remaining_frames = (int32_t) frame_count - processed_frames;
-        const int32_t available_frames = frame_buffer->max_size - frame_buffer->filled;
-
-        if (available_frames > 0) {
-            const int32_t frames_to_read = (remaining_frames < available_frames) ? remaining_frames : available_frames;
-
-            memcpy(buffer_ptr, input_ptr, frames_to_read * sizeof(int16_t));
-            buffer_ptr += frames_to_read;
-            input_ptr += frames_to_read;
-
-            processed_frames += frames_to_read;
-            frame_buffer->filled += frames_to_read;
-        } else {
-            picovoice_process_callback(pv_picovoice_data, frame_buffer->buffer);
-
-            buffer_ptr = frame_buffer->buffer;
-            frame_buffer->filled = 0;
-        }
-    }
+void print_usage(const char *program_name) {
+    fprintf(stderr,
+            "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH"
+            "[--audio_device_index AUDIO_DEVICE_INDEX --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n"
+            "       %s --show_audio_devices",
+            program_name, program_name);
 }
 
 void interrupt_handler(int _) {
     (void) _;
     is_interrupted = true;
-    fprintf(stdout, "\n");
+}
+
+void show_audio_devices(void) {
+    char **devices = NULL;
+    int32_t count = 0;
+
+    pv_recorder_status_t status = pv_recorder_get_audio_devices(&count, &devices);
+    if (status != PV_RECORDER_STATUS_SUCCESS) {
+        fprintf(stderr, "Failed to get audio devices with: %s.\n", pv_recorder_status_to_string(status));
+        exit(1);
+    }
+
+    fprintf(stdout, "Printing devices...\n");
+    for (int32_t i = 0; i < count; i++) {
+        fprintf(stdout, "index: %d, name: %s\n", i, devices[i]);
+    }
+
+    pv_recorder_free_device_list(count, devices);
 }
 
 static void wake_word_callback(void) {
@@ -189,51 +159,65 @@ static void inference_callback(pv_inference_t *inference) {
 }
 
 int main(int argc, char *argv[]) {
-    if (argc != 2 && argc != 9) {
-        print_usage(argv[0]);
-        exit(1);
-    }
 
-    ma_context context;
-    ma_result result;
+    signal(SIGINT, interrupt_handler);
+    const char *library_path = NULL;
+    const char *access_key = NULL;
+    const char *keyword_path = NULL;
+    const char *context_path = NULL;
+    float porcupine_sensitivity = 0.5f;
+    const char *porcupine_model_path = NULL;
+    float rhino_sensitivity = 0.5f;
+    const char *rhino_model_path = NULL;
+    bool require_endpoint = true;
+    int32_t device_index = -1;
 
-    result = ma_context_init(NULL, 0, NULL, &context);
-    if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to initialize the input audio device list.\n");
-        exit(1);
-    }
-
-    ma_device_info *capture_info;
-    ma_uint32 capture_count;
-
-    result = ma_context_get_devices(&context, NULL, NULL, &capture_info, &capture_count);
-    if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to get the available input devices.\n");
-        exit(1);
-    }
-
-    if (argc == 2) {
-        if (strcmp(argv[1], "--show_audio_devices") == 0) {
-            for (ma_uint32 device = 0; device < capture_count; device++) {
-                fprintf(stdout, "index: %d, name: %s\n", device, capture_info[device].name);
-            }
-            return 0;
-        } else {
-            print_usage(argv[0]);
-            exit(1);
+    int c;
+    while ((c = getopt_long(argc, argv, "del:a:k:c:s:p:t:r:i:", long_options, NULL)) != -1) {
+        switch (c) {
+            case 'd':
+                show_audio_devices();
+                return 0;
+            case 'l':
+                library_path = optarg;
+                break;
+            case 'a':
+                access_key = optarg;
+                break;
+            case 'k':
+                keyword_path = optarg;
+                break;
+            case 'c':
+                context_path = optarg;
+                break;
+            case 's':
+                porcupine_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'p':
+                porcupine_model_path = optarg;
+                break;
+            case 't':
+                rhino_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'r':
+                rhino_model_path = optarg;
+                break;
+            case 'e':
+                require_endpoint = strcmp(optarg, "true") == 0;
+                break;
+            case 'i':
+                device_index = (int32_t) strtol(optarg, NULL, 10);
+                break;
+            default:
+                print_usage(argv[0]);
+                exit(1);
         }
     }
 
-    signal(SIGINT, interrupt_handler);
-
-    const char *library_path = argv[1];
-    const char *porcupine_model_path = argv[2];
-    const char *keyword_path = argv[3];
-    const float porcupine_sensitivity = strtof(argv[4], NULL);
-    const char *rhino_model_path = argv[5];
-    const char *context_path = argv[6];
-    const float rhino_sensitivity = strtof(argv[7], NULL);
-    const int32_t device_index = (int32_t) strtol(argv[8], NULL, 10);
+    if (!library_path || !keyword_path || !context_path || !access_key || !porcupine_model_path || !rhino_model_path) {
+        print_usage(argv[0]);
+        exit(1);
+    }
 
     void *picovoice_library = open_dl(library_path);
     if (!picovoice_library) {
@@ -256,11 +240,13 @@ int main(int argc, char *argv[]) {
     pv_status_t (*pv_picovoice_init_func)(
             const char *,
             const char *,
+            const char *,
             float,
             void (*)(void),
             const char *,
             const char *,
             float,
+            bool,
             void (*)(pv_inference_t *),
             pv_picovoice_t **) = NULL;
     pv_picovoice_init_func = load_symbol(picovoice_library, "pv_picovoice_init");
@@ -282,15 +268,15 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    const char *(*pv_picovoice_version_func)() = load_symbol(picovoice_library, "pv_picovoice_version");
-    if (!pv_picovoice_version_func) {
-        print_dl_error("failed to load 'pv_picovoice_version'");
-        exit(1);
-    }
-
     int32_t (*pv_picovoice_frame_length_func)() = load_symbol(picovoice_library, "pv_picovoice_frame_length");
     if (!pv_picovoice_frame_length_func) {
         print_dl_error("failed to load 'pv_picovoice_frame_length'");
+        exit(1);
+    }
+
+    const char *(*pv_picovoice_version_func)() = load_symbol(picovoice_library, "pv_picovoice_version");
+    if (!pv_picovoice_version_func) {
+        print_dl_error("failed to load 'pv_picovoice_version'");
         exit(1);
     }
 
@@ -300,8 +286,15 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    fprintf(stdout, "%s\n", access_key);
+    fprintf(stdout, "%s\n", library_path);
+    fprintf(stdout, "%s\n", keyword_path);
+    fprintf(stdout, "%s\n", context_path);
+    fprintf(stdout, "%s\n", access_key);
+
     pv_picovoice_t *picovoice = NULL;
     pv_status_t status = pv_picovoice_init_func(
+            access_key,
             porcupine_model_path,
             keyword_path,
             porcupine_sensitivity,
@@ -309,6 +302,7 @@ int main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            require_endpoint,
             inference_callback,
             &picovoice);
     if (status != PV_STATUS_SUCCESS) {
@@ -316,57 +310,62 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    fprintf(stdout, "Picovoice End-to-End Platform (%s) :\n\n", pv_picovoice_version_func());
+
     const int32_t frame_length = pv_picovoice_frame_length_func();
-
-    pv_picovoice_data_t pv_picovoice_data;
-    pv_picovoice_data.frame_buffer.buffer = malloc(frame_length * sizeof(int16_t));
-    if (!pv_picovoice_data.frame_buffer.buffer) {
-        fprintf(stderr, "failed to allocate memory using 'malloc'\n");
+    pv_recorder_t *recorder = NULL;
+    pv_recorder_status_t recorder_status = pv_recorder_init(device_index, frame_length, 100, true, &recorder);
+    if (recorder_status != PV_RECORDER_STATUS_SUCCESS) {
+        fprintf(stderr, "Failed to initialize device with %s.\n", pv_recorder_status_to_string(recorder_status));
         exit(1);
     }
 
-    pv_picovoice_data.frame_buffer.max_size = frame_length;
-    pv_picovoice_data.frame_buffer.filled = 0;
+    const char *selected_device = pv_recorder_get_selected_device(recorder);
+    fprintf(stdout, "Selected device: %s\n", selected_device);
 
-    pv_picovoice_data.pv_picovoice_process_func = pv_picovoice_process_func;
-    pv_picovoice_data.pv_status_to_string_func = pv_status_to_string_func;
-    pv_picovoice_data.picovoice = picovoice;
 
-    ma_device_config device_config;
-    ma_device device;
-
-    device_config = ma_device_config_init(ma_device_type_capture);
-    device_config.capture.format = ma_format_s16;
-    device_config.capture.pDeviceID = &capture_info[device_index].id;
-    device_config.capture.channels = 1;
-    device_config.sampleRate = pv_sample_rate_func();
-    device_config.dataCallback = mic_callback;
-    device_config.pUserData = &pv_picovoice_data;
-
-    result = ma_device_init(&context, &device_config, &device);
-    if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to initialize capture device.\n");
+    recorder_status = pv_recorder_start(recorder);
+    if (recorder_status != PV_RECORDER_STATUS_SUCCESS) {
+        fprintf(stderr, "Failed to start device with %s.\n", pv_recorder_status_to_string(recorder_status));
         exit(1);
     }
 
-    result = ma_device_start(&device);
-    if (result != MA_SUCCESS) {
-        fprintf(stderr, "failed to start device.\n");
+    int16_t *pcm = malloc(frame_length * sizeof(int16_t));
+    if (!pcm) {
+        fprintf(stderr, "Failed to allocate pcm memory.\n");
         exit(1);
     }
 
-    fprintf(stdout, "Using device: %s\n", device.capture.name);
-    fprintf(stdout, "Picovoice %s\nListening ...\n\n", pv_picovoice_version_func());
+    fprintf(stdout, "Listening...\n\n");
     fflush(stdout);
 
-    while (!is_interrupted) {}
+    while (!is_interrupted) {
+        recorder_status = pv_recorder_read(recorder, pcm);
+        if (recorder_status != PV_RECORDER_STATUS_SUCCESS) {
+            fprintf(stderr, "Failed to read with %s.\n", pv_recorder_status_to_string(recorder_status));
+            exit(1);
+        }
 
-    ma_device_uninit(&device);
-    ma_context_uninit(&context);
+        status = pv_picovoice_process_func(picovoice, pcm);
+        if (status != PV_STATUS_SUCCESS) {
+            fprintf(stderr, "'pv_picovoice_process' failed with '%s'\n",
+                    pv_status_to_string_func(status));
+            exit(1);
+        }
+    }
 
-    free(pv_picovoice_data.frame_buffer.buffer);
+    fprintf(stdout, "Stopping...\n");
+    fflush(stdout);
+
+    recorder_status = pv_recorder_stop(recorder);
+    if (recorder_status != PV_RECORDER_STATUS_SUCCESS) {
+        fprintf(stderr, "Failed to stop device with %s.\n", pv_recorder_status_to_string(recorder_status));
+        exit(1);
+    }
+
+    free(pcm);
+    pv_recorder_delete(recorder);
     pv_picovoice_delete_func(picovoice);
-
     close_dl(picovoice_library);
 
     return 0;
