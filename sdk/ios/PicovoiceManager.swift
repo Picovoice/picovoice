@@ -29,7 +29,7 @@ public class PicovoiceManager {
     private var rhinoSensitivity: Float32
     private var requireEndpoint: Bool
     
-    private var processErrorCallback: ((Error) -> Void)?
+    private var processErrorCallback: ((PicovoiceError) -> Void)?
 
     /// Constructor.
     ///
@@ -130,12 +130,14 @@ public class PicovoiceManager {
         
         do {
            try self.picovoice!.process(pcm: pcm)
-        } catch {
+        } catch let error as PicovoiceError {
             if self.processErrorCallback != nil {
                 self.processErrorCallback!(error)
             } else {
                 print("\(error)")
             }
+        } catch {
+            print("\(error)")
         }
     }
 }
