@@ -6,9 +6,16 @@ You need a C99-compatible compiler to build these demos.
 
 ## Requirements
 - The demo requires [CMake](https://cmake.org/) version 3.4 or higher.
-- The microphone based demo requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
-- The following demo must be run at the [root](/../../) of the directory.
 - **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
+
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 # Microphone Demo
 
@@ -28,8 +35,10 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/picovoice_demo_mic
-usage : ./demo/c/build/picovoice_demo_mic library_path porcupine_model_path keyword_path porcupine_sensitivity \
-                                    rhino_model_path context_path rhino_sensitivity input_audio_device
+usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
+                                          -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
+                                          --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
+                                          --require_endpoint "true"|"false" ]
         ./demo/c/build/picovoice_demo_mic --show_audio_devices
 ```
 
@@ -37,8 +46,10 @@ usage : ./demo/c/build/picovoice_demo_mic library_path porcupine_model_path keyw
 
 ```console
 .\\demo\\c\\build\\picovoice_demo_mic.exe
-usage : .\\demo\\c\\build\\picovoice_demo_mic.exe library_path porcupine_model_path keyword_path porcupine_sensitivity
-                                                  rhino_model_path context_path rhino_sensitivity input_audio_device
+usage : .\\demo\\c\\build\\picovoice_demo_mic.exe -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
+                                                  -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
+                                                  --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
+                                                  --require_endpoint "true"|"false" ]
         .\\demo\\c\\build\\picovoice_demo_mic.exe --show_audio_devices
 ```
 
@@ -61,70 +72,66 @@ The following commands shows the available audio input devices to the console.
 ### Wake Phrase and Follow-on Commands
 
 The following commands start up a microphone audio steam and will wait for the "Picovoice" wake word phrase.
-Replace `${AUDIO_DEVICE_INDEX}` with the index of the audio device.
+Replace `$-i {AUDIO_DEVICE_INDEX}` with the index of the audio device.
 
 #### Linux
 
 ```console
 ./demo/c/build/picovoice_demo_mic \
-sdk/c/lib/linux/x86_64/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/linux/smart_lighting_linux.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
+-a ${ACCESS_KEY}
+-l sdk/c/lib/linux/x86_64/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/linux/smart_lighting_linux.rhn \
+-i {AUDIO_DEVICE_INDEX}
 ```
 #### macOS
 
 ```console
 ./demo/c/build/picovoice_demo_mic \
-sdk/c/lib/mac/x86_64/libpicovoice.dylib \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
+-a ${ACCESS_KEY}
+-l sdk/c/lib/mac/x86_64/libpicovoice.dylib \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/mac/smart_lighting_mac.rhn \
+-i {AUDIO_DEVICE_INDEX}
 ```
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../sdk/c/lib/raspberry-pi)
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../-l sdk/c/lib/raspberry-pi)
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
 ./demo/c/build/picovoice_demo_mic \
-sdk/c/lib/raspberry-pi/${PROCESSOR}/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/raspberry-pi/smart_lighting_raspberry-pi.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
+-a ${ACCESS_KEY}
+-l sdk/c/lib/raspberry-pi/${PROCESSOR}/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/raspberry-pi/smart_lighting_raspberry-pi.rhn \
+-i {AUDIO_DEVICE_INDEX}
 ```
 
 #### BeagleBone
 
 ```console
 ./demo/c/build/picovoice_demo_mic \
-sdk/c/lib/beaglebone/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/beaglebone/smart_lighting_beaglebone.rhn \
-0.5 \
-{AUDIO_DEVICE_INDEX}
+-a ${ACCESS_KEY}
+-l sdk/c/lib/beaglebone/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/beaglebone/smart_lighting_beaglebone.rhn \
+-i {AUDIO_DEVICE_INDEX}
 ```
 
 #### Windows
 
 ```console
-.\\demo\\c\\build\\picovoice_demo_mic.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn 0.5 {AUDIO_DEVICE_INDEX}
+.\\demo\\c\\build\\picovoice_demo_mic.exe -a ${ACCESS_KEY} -l sdk/c/lib/windows/amd64/libpicovoice.dll -p resources/porcupine/lib/common/porcupine_params.pv -k resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 -r resources/rhino/lib/common/rhino_params.pv -c resources/rhino/resources/contexts/windows/smart_lighting_windows.rhn 0.5 -i {AUDIO_DEVICE_INDEX}
 ```
 
 Once the wake word is detected, the following will print:
@@ -165,16 +172,18 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/picovoice_demo_file
-usage : ./demo/c/picovoice_demo_file library_path porcupine_model_path keyword_path porcupine_sensitivity \
-                                     rhino_model_path context_path rhino_sensitivity wav_path
+usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
+                                     -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
+                                     --rhino_sensitivity RHN_SENSITIVITY --require_endpoint "true"|"false" ]
 ```
 
 #### Windows
 
 ```console
 .\\demo\\c\\build\\picovoice_demo_file
-usage : .\\demo\\c\\build\\picovoice_demo_file library_path porcupine_model_path keyword_path porcupine_sensitivity
-                                               rhino_model_path context_path rhino_sensitivity wav_pat
+usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
+                                               -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
+                                               --rhino_sensitivity RHN_SENSITIVITY --require_endpoint "true"|"false" ]
 ```
 
 ### Wake Phrase and Follow-on Commands
@@ -189,65 +198,61 @@ and infers the intent in the context of a coffee maker system.
 
 ```console
 ./demo/c/build/picovoice_demo_file \
-sdk/c/lib/linux/x86_64/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn \
-0.5 \
-resources/audio_samples/picovoice-coffee.wav
+-a ${ACCESS_KEY}
+-l sdk/c/lib/linux/x86_64/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/linux/picovoice_linux.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn \
+-w resources/audio_samples/picovoice-coffee.wav
 ```
 
 #### macOS
 
 ```console
 ./demo/c/build/picovoice_demo_file \
-sdk/c/lib/mac/x86_64/libpicovoice.dylib \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
-0.5 \
-resources/audio_samples/picovoice-coffee.wav
+-a ${ACCESS_KEY}
+-l sdk/c/lib/mac/x86_64/libpicovoice.dylib \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/mac/picovoice_mac.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn \
+-w resources/audio_samples/picovoice-coffee.wav
 ```
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../sdk/c/lib/raspberry-pi)
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../-l sdk/c/lib/raspberry-pi)
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
 ./demo/c/build/picovoice_demo_file \
-sdk/c/lib/raspberry-pi/${PROCESSOR}/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn \
-0.5 \
-resources/audio_samples/picovoice-coffee.wav
+-a ${ACCESS_KEY}
+-l sdk/c/lib/raspberry-pi/${PROCESSOR}/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn \
+-w resources/audio_samples/picovoice-coffee.wav
 ```
 
 #### BeagleBone
 
 ```console
 ./demo/c/build/picovoice_demo_file \
-sdk/c/lib/beaglebone/libpicovoice.so \
-resources/porcupine/lib/common/porcupine_params.pv \
-resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
-0.5 \
-resources/rhino/lib/common/rhino_params.pv \
-resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn \
-0.5 \
-resources/audio_samples/picovoice-coffee.wav 
+-a ${ACCESS_KEY}
+-l sdk/c/lib/beaglebone/libpicovoice.so \
+-p resources/porcupine/lib/common/porcupine_params.pv \
+-k resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
+-r resources/rhino/lib/common/rhino_params.pv \
+-c resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn \
+-w resources/audio_samples/picovoice-coffee.wav 
 ```
 
 #### Windows
 
 ```console
-.\\demo\\c\\build\\picovoice_demo_file.exe sdk/c/lib/windows/amd64/libpicovoice.dll resources/porcupine/lib/common/porcupine_params.pv resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 resources/rhino/lib/common/rhino_params.pv resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn 0.5 resources/audio_samples/picovoice-coffee.wav
+.\\demo\\c\\build\\picovoice_demo_file.exe -a ${ACCESS_KEY} -l sdk/c/lib/windows/amd64/libpicovoice.dll -p resources/porcupine/lib/common/porcupine_params.pv -k resources/porcupine/resources/keyword_files/windows/picovoice_windows.ppn 0.5 -r resources/rhino/lib/common/rhino_params.pv -c resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn 0.5 -w resources/audio_samples/picovoice-coffee.wav
 ```
 
 The following prints to the console:
