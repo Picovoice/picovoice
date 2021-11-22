@@ -24,7 +24,7 @@
     "@angular/router": "~11.0.5",
     "@picovoice/picovoice-web-angular": "file:../../sdk/angular/dist/picovoice-web-angular",
     "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
-    "@picovoice/web-voice-processor": "^2.0.4",
+    "@picovoice/web-voice-processor": "^2.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

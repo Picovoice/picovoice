@@ -7,7 +7,7 @@
   "dependencies": {
     "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
     "@picovoice/picovoice-web-react": "file:../../sdk/react",
-    "@picovoice/web-voice-processor": "^2.0.3",
+    "@picovoice/web-voice-processor": "^2.1.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
