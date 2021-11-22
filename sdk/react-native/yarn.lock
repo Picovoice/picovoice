@@ -1563,7 +1563,7 @@
 
 "@picovoice/porcupine-react-native@../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#7677b09ab589a74bceeb40570ebf880facb1b6b5"
+  resolved "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#e6e600e6258827e1d9a726d250d987ea2fea4701"
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
@@ -1572,7 +1572,7 @@
 
 "@picovoice/rhino-react-native@../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz#ec142ccfddda0d7c756cd6e8cd78acf9615970fd"
+  resolved "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz#b31b592e3c751cfb7699826b93fc57e108dae2da"
 
 "@react-native-community/bob@^0.16.2":
   version "0.16.2"

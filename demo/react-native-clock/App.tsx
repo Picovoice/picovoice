@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceExceptions, PicovoiceManager} from '@picovoice/picovoice-react-native';
+import {PicovoiceErrors, PicovoiceManager} from '@picovoice/picovoice-react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Moment from 'react-moment';
 import moment from 'moment';
@@ -227,15 +227,15 @@ export default class App extends Component<Props, State> {
         }
       } catch(err) {
         let errorMessage = '';
-        if (err instanceof PicovoiceExceptions.PicovoiceInvalidArgumentException) {
+        if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
           errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
           errorMessage = "AccessKey activation error";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationLimitException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
           errorMessage = "AccessKey reached its device limit";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationRefusedException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationRefusedError) {
           errorMessage = "AccessKey refused";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationThrottledException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationThrottledError) {
           errorMessage = "AccessKey has been throttled";
         } else {
           errorMessage = err.toString();

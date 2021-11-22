@@ -1187,7 +1187,10 @@ audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
 ```javascript    
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 this._picovoiceManager = PicovoiceManager.create(
+    accessKey,
     '/path/to/keyword/file.ppn',
     wakeWordCallback,
     '/path/to/context/file.rhn',
@@ -1217,20 +1220,26 @@ who want to incorporate it into a already existing audio processing pipeline.
 `Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPicovoice(){
     let porcupineSensitivity = 0.7
     let rhinoSensitivity = 0.6
+    let requireEndpoint = false
 
     try{
         this._picovoice = await Picovoice.create(
+            accessKey,
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
             '/path/to/context/file.rhn',
             inferenceCallback,
+            processErrorCallback,
             porcupineSensitivity,
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv")
+            "/path/to/rhino/model.pv",
+            requireEnpoint)
     } catch (err) {
         // handle error
     }

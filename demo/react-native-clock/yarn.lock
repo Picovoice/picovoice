@@ -862,11 +862,11 @@
 
 "@picovoice/picovoice-react-native@../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.0.0.tgz#b5d561bda5fbad5b196c402b4b53a8e35ba20a90"
+  resolved "../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.0.0.tgz#7e2307a564fc0a72e7b8043f8baab09c09f4801c"
 
 "@picovoice/porcupine-react-native@../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#7677b09ab589a74bceeb40570ebf880facb1b6b5"
+  resolved "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz#c97d505e199472de57f4ca12b860143a20a55ba3"
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
@@ -875,7 +875,7 @@
 
 "@picovoice/rhino-react-native@../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz":
   version "2.0.0"
-  resolved "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz#59165df16fc3d0a1903a92022c2f1a00be8f8be2"
+  resolved "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz#9e809e4ee3d2d7a8af077359c2a25657bc5487f7"
 
 "@react-native-community/cli-debugger-ui@^4.13.1":
   version "4.13.1"

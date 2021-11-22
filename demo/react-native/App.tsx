@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceManager, PicovoiceExceptions} from '@picovoice/picovoice-react-native';
-import {Rhino, RhinoInference} from '@picovoice/rhino-react-native';
+import {PicovoiceManager, PicovoiceErrors} from '@picovoice/picovoice-react-native';
+import {RhinoInference} from '@picovoice/rhino-react-native';
 
 type Props = {};
 type State = {
@@ -42,7 +42,7 @@ export default class App extends Component<Props, State> {
       this._wakeWordCallback.bind(this),
       contextPath,
       this._inferenceCallback.bind(this),
-      (error: PicovoiceExceptions.PicovoiceException) => {
+      (error: PicovoiceErrors.PicovoiceError) => {
         this._errorCallback(error.message);
       }
     );    
@@ -137,15 +137,15 @@ export default class App extends Component<Props, State> {
         }
       } catch(err){
         let errorMessage = '';
-        if (err instanceof PicovoiceExceptions.PicovoiceInvalidArgumentException) {
+        if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
           errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
           errorMessage = "AccessKey activation error";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationLimitException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
           errorMessage = "AccessKey reached its device limit";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationRefusedException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationRefusedError) {
           errorMessage = "AccessKey refused";
-        } else if (err instanceof PicovoiceExceptions.PicovoiceActivationThrottledException) {
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationThrottledError) {
           errorMessage = "AccessKey has been throttled";
         } else {
           errorMessage = err.toString();

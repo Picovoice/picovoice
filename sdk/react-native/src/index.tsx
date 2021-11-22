@@ -13,6 +13,6 @@
 
 import { Picovoice, WakeWordCallback, InferenceCallback } from './picovoice';
 import PicovoiceManager, { ProcessErrorCallback } from './picovoice_manager';
-import * as PicovoiceExceptions from './picovoice_exceptions';
+import * as PicovoiceErrors from './picovoice_errors';
 
-export { Picovoice, PicovoiceManager, WakeWordCallback, InferenceCallback, ProcessErrorCallback, PicovoiceExceptions };
+export { Picovoice, PicovoiceManager, WakeWordCallback, InferenceCallback, ProcessErrorCallback, PicovoiceErrors };

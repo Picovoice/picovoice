@@ -9,9 +9,9 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import { Porcupine, PorcupineExceptions } from '@picovoice/porcupine-react-native';
-import { Rhino, RhinoExceptions, RhinoInference } from '@picovoice/rhino-react-native';
-import * as PicovoiceExceptions from './picovoice_exceptions';
+import { Porcupine, PorcupineErrors } from '@picovoice/porcupine-react-native';
+import { Rhino, RhinoErrors, RhinoInference } from '@picovoice/rhino-react-native';
+import * as PicovoiceErrors from './picovoice_errors';
 
 type WakeWordCallback = () => void;
 type InferenceCallback = (inference: RhinoInference) => void;
@@ -80,28 +80,28 @@ class Picovoice {
       if (wakeWordCallback === undefined || 
           wakeWordCallback === null ||
           typeof(wakeWordCallback) !== 'function') {
-          throw new PicovoiceExceptions.PicovoiceInvalidArgumentException("'wakeWordCallback' must be set.");
+          throw new PicovoiceErrors.PicovoiceInvalidArgumentError("'wakeWordCallback' must be set.");
       }
   
       if (inferenceCallback === undefined || 
           inferenceCallback === null ||
           typeof(inferenceCallback) !== 'function') {
-          throw new PicovoiceExceptions.PicovoiceInvalidArgumentException("'inferenceCallback' must be set.");
+          throw new PicovoiceErrors.PicovoiceInvalidArgumentError("'inferenceCallback' must be set.");
       }
   
       if (porcupine.frameLength !== rhino.frameLength) {
-        throw new PicovoiceExceptions.PicovoiceInvalidArgumentException(
+        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
           `Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.`);
       }
   
       if (porcupine.sampleRate !== rhino.sampleRate) {
-        throw new PicovoiceExceptions.PicovoiceInvalidArgumentException(
+        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
           `Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.`);
       }
   
       return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
     } catch (e) {
-      throw this.mapToPicovoiceException(e as Error);
+      throw this.mapToPicovoiceError(e as Error);
     }
   }
 
@@ -130,15 +130,15 @@ class Picovoice {
    */
   async process(frame: number[]) {
     if (this._porcupine === null || this._rhino === null) {
-      throw new PicovoiceExceptions.PicovoiceInvalidStateException('Cannot process frame - resources have been released.');
+      throw new PicovoiceErrors.PicovoiceInvalidStateError('Cannot process frame - resources have been released.');
     }
 
     if (frame === undefined || frame === null) {
-      throw new PicovoiceExceptions.PicovoiceInvalidArgumentException('Passed null frame to Picovoice process.');
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError('Passed null frame to Picovoice process.');
     }
 
     if (frame.length !== this._frameLength) {
-      throw new PicovoiceExceptions.PicovoiceInvalidArgumentException(
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
         `Picovoice process requires frames of length ${this._frameLength}. Received frame of size ${frame.length}.`);
     }
 
@@ -220,33 +220,33 @@ class Picovoice {
    * Gets the exception type given a code.
    * @param e Error to covert to picovoice exception
    */
-   private static mapToPicovoiceException(e: PorcupineExceptions.PorcupineException | RhinoExceptions.RhinoException) {
-    if (e instanceof PorcupineExceptions.PorcupineActivationException || e instanceof RhinoExceptions.RhinoActivationException) {
-        return new PicovoiceExceptions.PicovoiceActivationException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineActivationLimitException || e instanceof RhinoExceptions.RhinoActivationLimitException) {
-        return new PicovoiceExceptions.PicovoiceActivationLimitException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineActivationRefusedException || e instanceof RhinoExceptions.RhinoActivationRefusedException) {
-        return new PicovoiceExceptions.PicovoiceActivationRefusedException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineActivationThrottledException || e instanceof RhinoExceptions.RhinoActivationThrottledException) {
-        return new PicovoiceExceptions.PicovoiceActivationThrottledException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineInvalidArgumentException || e instanceof RhinoExceptions.RhinoInvalidArgumentException) {
-        return new PicovoiceExceptions.PicovoiceInvalidArgumentException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineInvalidStateException || e instanceof RhinoExceptions.RhinoInvalidStateException) {
-        return new PicovoiceExceptions.PicovoiceInvalidStateException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineIOException || e instanceof RhinoExceptions.RhinoIOException) {
-        return new PicovoiceExceptions.PicovoiceIOException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineKeyException || e instanceof RhinoExceptions.RhinoKeyException) {
-        return new PicovoiceExceptions.PicovoiceKeyException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineMemoryException || e instanceof RhinoExceptions.RhinoMemoryException) {
-        return new PicovoiceExceptions.PicovoiceMemoryException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineRuntimeException || e instanceof RhinoExceptions.RhinoRuntimeException) {
-        return new PicovoiceExceptions.PicovoiceRuntimeException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineStopIterationException || e instanceof RhinoExceptions.RhinoStopIterationException) {
-        return new PicovoiceExceptions.PicovoiceStopIterationException(e.message);
-    } else if (e instanceof PorcupineExceptions.PorcupineException || e instanceof RhinoExceptions.RhinoException) {
-        return new PicovoiceExceptions.PicovoiceException(e.message);
+   private static mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
+    if (e instanceof PorcupineErrors.PorcupineActivationError || e instanceof RhinoErrors.RhinoActivationError) {
+        return new PicovoiceErrors.PicovoiceActivationError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineActivationLimitError || e instanceof RhinoErrors.RhinoActivationLimitError) {
+        return new PicovoiceErrors.PicovoiceActivationLimitError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
+        return new PicovoiceErrors.PicovoiceActivationRefusedError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
+        return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
+        return new PicovoiceErrors.PicovoiceInvalidArgumentError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
+        return new PicovoiceErrors.PicovoiceInvalidStateError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
+        return new PicovoiceErrors.PicovoiceIOError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineKeyError || e instanceof RhinoErrors.RhinoKeyError) {
+        return new PicovoiceErrors.PicovoiceKeyError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineMemoryError || e instanceof RhinoErrors.RhinoMemoryError) {
+        return new PicovoiceErrors.PicovoiceMemoryError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
+        return new PicovoiceErrors.PicovoiceRuntimeError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
+        return new PicovoiceErrors.PicovoiceStopIterationError(e.message);
+    } else if (e instanceof PorcupineErrors.PorcupineError || e instanceof RhinoErrors.RhinoError) {
+        return new PicovoiceErrors.PicovoiceError(e.message);
     } else {
-        return new PicovoiceExceptions.PicovoiceException(e);
+        return new PicovoiceErrors.PicovoiceError(e);
     }
   }
 }
