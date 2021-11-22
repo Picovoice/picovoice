@@ -29,12 +29,21 @@ Then install the demo:
 sudo pip3 install pvrespeakerdemo
 ```
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Usage
 
 Run the demo:
 
 ```console
-picovoice_respeaker_demo
+picovoice_respeaker_demo --access_key ${ACCESS_KEY}
 ```
 
 Say
