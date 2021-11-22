@@ -148,7 +148,7 @@ public class Picovoice {
     
     private func mapToPicovoiceError(_ error: Error) -> PicovoiceError {
         switch error {
-        case PorcupineError.PorcupineOutOfMemoryError(let message), RhinoError.RhinoMemoryError(let message):
+        case PorcupineError.PorcupineMemoryError(let message), RhinoError.RhinoMemoryError(let message):
             return PicovoiceError.PicovoiceMemoryError(message)
         case PorcupineError.PorcupineIOError(let message), RhinoError.RhinoIOError(let message):
             return PicovoiceError.PicovoiceIOError(message)
@@ -170,7 +170,7 @@ public class Picovoice {
             return PicovoiceError.PicovoiceActivationThrottledError(message)
         case PorcupineError.PorcupineActivationRefusedError(let message), RhinoError.RhinoActivationRefusedError(let message):
             return PicovoiceError.PicovoiceActivationRefusedError(message)
-        case PorcupineError.PorcupineInternalError(let message), RhinoError.RhinoError(let message):
+        case PorcupineError.PorcupineError(let message), RhinoError.RhinoError(let message):
             return PicovoiceError.PicovoiceError(message)
         default:
             return PicovoiceError.PicovoiceError("\(error)")
