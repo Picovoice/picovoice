@@ -3,7 +3,7 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PicovoiceBackgroundServiceDemo' do
-    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v2.0-ios/sdk/ios/Picovoice-iOS.podspec'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v2.0/sdk/ios/Picovoice-iOS.podspec'
     pod 'SwiftySound'
 
     # delete

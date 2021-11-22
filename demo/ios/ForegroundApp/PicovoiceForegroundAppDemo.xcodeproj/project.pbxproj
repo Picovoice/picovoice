@@ -585,8 +585,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvRhino/PvRhino.framework/PvRhino",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Rhino-iOS/PvRhino.framework/PvRhino",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -605,8 +605,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemo/Pods-PicovoiceForegroundAppDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvRhino/PvRhino.framework/PvRhino",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Rhino-iOS/PvRhino.framework/PvRhino",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (

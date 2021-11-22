@@ -274,8 +274,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceBackgroundServiceDemo/Pods-PicovoiceBackgroundServiceDemo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvPorcupine/PvPorcupine.framework/PvPorcupine",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/PvRhino/PvRhino.framework/PvRhino",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Rhino-iOS/PvRhino.framework/PvRhino",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
