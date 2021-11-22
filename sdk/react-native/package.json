@@ -42,9 +42,9 @@
   "homepage": "https://github.com/Picovoice/picovoice#readme",
   "devDependencies": {
     "@commitlint/config-conventional": "^8.3.4",
-    "@picovoice/porcupine-react-native": "../../../porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.0.0.tgz",
+    "@picovoice/porcupine-react-native": "./picovoice-porcupine-react-native-2.0.0.tgz",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "../../../rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.0.0.tgz",
+    "@picovoice/rhino-react-native": "./picovoice-rhino-react-native-2.0.0.tgz",
     "@react-native-community/bob": "^0.16.2",
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^1.1.4",
