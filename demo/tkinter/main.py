@@ -9,6 +9,7 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import argparse
 import os
 import platform
 import struct
@@ -21,8 +22,10 @@ from picovoice import Picovoice
 
 
 class PicovoiceThread(Thread):
-    def __init__(self, time_label):
+    def __init__(self, time_label, access_key):
         super().__init__()
+
+        self._access_key = access_key
 
         self._time_label = time_label
 
@@ -135,6 +138,7 @@ class PicovoiceThread(Thread):
 
         try:
             pv = Picovoice(
+                access_key=self._access_key,
                 keyword_path=self._keyword_path(),
                 porcupine_sensitivity=0.75,
                 wake_word_callback=self._wake_word_callback,
@@ -179,6 +183,15 @@ class PicovoiceThread(Thread):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--access_key',
+        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+        required=True)
+
+    args = parser.parse_args()
+
     window = tk.Tk()
     window.title('Picovoice Demo')
     window.minsize(width=400, height=200)
@@ -186,7 +199,7 @@ def main():
     time_label = tk.Label(window, text='00 : 00 : 00', font=('Ubuntu', 48))
     time_label.pack(fill=tk.BOTH, pady=90)
 
-    picovoice_thread = PicovoiceThread(time_label)
+    picovoice_thread = PicovoiceThread(time_label, args.access_key)
 
     def on_close():
         picovoice_thread.stop()

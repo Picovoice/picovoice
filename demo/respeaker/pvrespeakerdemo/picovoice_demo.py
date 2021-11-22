@@ -9,6 +9,7 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import argparse
 import os
 import struct
 import sys
@@ -41,6 +42,7 @@ class PicovoiceDemo(Thread):
             self,
             keyword_path,
             context_path,
+            access_key,
             porcupine_sensitivity=0.75,
             rhino_sensitivity=0.25):
         super(PicovoiceDemo, self).__init__()
@@ -49,6 +51,7 @@ class PicovoiceDemo(Thread):
             return self._inference_callback(inference)
 
         self._picovoice = Picovoice(
+            access_key=access_key,
             keyword_path=keyword_path,
             wake_word_callback=self._wake_word_callback,
             context_path=context_path,
@@ -131,9 +134,20 @@ class PicovoiceDemo(Thread):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--access_key',
+        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+        required=True)
+
+    args = parser.parse_args()
+
     o = PicovoiceDemo(
         os.path.join(os.path.dirname(__file__), 'picovoice_raspberry-pi.ppn'),
-        os.path.join(os.path.dirname(__file__), 'respeaker_raspberry-pi.rhn'))
+        os.path.join(os.path.dirname(__file__), 'respeaker_raspberry-pi.rhn'),
+        args.access_key,
+    )
     o.run()
 
 
