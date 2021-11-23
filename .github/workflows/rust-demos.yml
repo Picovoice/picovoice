@@ -27,14 +27,6 @@ jobs:
     - name: Rust dependencies
       run: sudo apt update && sudo apt install -y libasound2-dev
 
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/rhino/binding/rust
-
     - name: Rust build micdemo
       run: cargo build --verbose
       working-directory: demo/rust/micdemo
@@ -48,14 +40,6 @@ jobs:
 
     - name: Rust dependencies
       run: sudo apt update && sudo apt install -y libasound2-dev
-
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/rhino/binding/rust
 
     - name: Rust build filedemo
       run: cargo build --verbose

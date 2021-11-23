@@ -31,14 +31,6 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Rust dependencies pre-build
-      run: ./copy.sh
-      working-directory: resources/rhino/binding/rust
-
     - name: Rust build
       run: cargo build --verbose
 
