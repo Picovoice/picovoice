@@ -74,15 +74,15 @@ struct ContentView: View {
                         self.buttonLabel = "STOP"
                         Sound.category = .playAndRecord
                         NotificationManager.shared.requestNotificationAuthorization()
-                    } catch PicovoiceError.PicovoiceInvalidArgumentError (let message){
-                        errorMessage = "\(message)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
-                    } catch PicovoiceError.PicovoiceActivationError {
+                    } catch let error as PicovoiceInvalidArgumentError {
+                        errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+                    } catch is PicovoiceActivationError {
                         errorMessage = "ACCESS_KEY activation error"
-                    } catch PicovoiceError.PicovoiceActivationRefusedError {
+                    } catch is PicovoiceActivationRefusedError {
                         errorMessage = "ACCESS_KEY activation refused"
-                    } catch PicovoiceError.PicovoiceActivationLimitError {
+                    } catch is PicovoiceActivationLimitError {
                         errorMessage = "ACCESS_KEY reached its limit"
-                    } catch PicovoiceError.PicovoiceActivationThrottledError  {
+                    } catch is PicovoiceActivationThrottledError  {
                         errorMessage = "ACCESS_KEY is throttled"
                     } catch {
                         errorMessage = "\(error)"
