@@ -1,11 +1,7 @@
-github.com/Picovoice/porcupine/binding/go v1.9.2 h1:yGXxn3zSLmt5BBBwMgtdh8uI1gCLOWAxaAnExhrdUP0=
-github.com/Picovoice/porcupine/binding/go v1.9.2/go.mod h1:gOmG9lfydCV4EG4YdM4pTSbSsRhHvcDUn/3hJ9G1Nag=
-github.com/Picovoice/porcupine/binding/go v1.9.3-0.20211118180657-190bdd3fd0c3 h1:PRsbMtHYJdXdeKrGp+BXz8jusTEBgv6BCbALDzeSWKA=
-github.com/Picovoice/porcupine/binding/go v1.9.3-0.20211118180657-190bdd3fd0c3/go.mod h1:gOmG9lfydCV4EG4YdM4pTSbSsRhHvcDUn/3hJ9G1Nag=
-github.com/Picovoice/rhino/binding/go v1.6.3 h1:5GNHWuJdsQo/IT0l3evzBdJHANJlRrJAQWIKrWVjHao=
-github.com/Picovoice/rhino/binding/go v1.6.3/go.mod h1:ezrmZbTY/NN0y8Lu5uQTM82Z5jYe3AkyMLDes/amUIU=
-github.com/Picovoice/rhino/binding/go v1.6.4-0.20211118193545-9c3f361976da h1:nUhwFwtJAJLO9Wo7IE3nTGwvneWP/STCJs07xexpHpI=
-github.com/Picovoice/rhino/binding/go v1.6.4-0.20211118193545-9c3f361976da/go.mod h1:ezrmZbTY/NN0y8Lu5uQTM82Z5jYe3AkyMLDes/amUIU=
+github.com/Picovoice/porcupine/binding/go/v2 v2.0.1 h1:ZdWn2pd5Uxpwk1NYfTekTGQtuPkQPU2gB4TEF6YdcJw=
+github.com/Picovoice/porcupine/binding/go/v2 v2.0.1/go.mod h1:ZoCMGeBEiDKYVDE+6jRg1/cdSOCjM4cuoBKV3+EBtM8=
+github.com/Picovoice/rhino/binding/go/v2 v2.0.0 h1:XKnXt13soWq6WSNdEBHeqzQgDB3QalaEPyfSr5k8t1U=
+github.com/Picovoice/rhino/binding/go/v2 v2.0.0/go.mod h1:8f1JuYLexgD44ISYSLhEIGfns6Z+4vQhpLitwNgpM2I=
 golang.org/x/sys v0.0.0-20210514084401-e8d321eab015/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2 h1:48AqIJLs69Wmc3mA52aIcqt544rjrDCqolKAv7L8leA=
 golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=

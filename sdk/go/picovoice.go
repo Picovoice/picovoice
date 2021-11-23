@@ -26,8 +26,8 @@ package picovoice
 import (
 	"fmt"
 
-	ppn "github.com/Picovoice/porcupine/binding/go"
-	rhn "github.com/Picovoice/rhino/binding/go"
+	ppn "github.com/Picovoice/porcupine/binding/go/v2"
+	rhn "github.com/Picovoice/rhino/binding/go/v2"
 )
 
 // PvStatus descibes error codes returned from native code

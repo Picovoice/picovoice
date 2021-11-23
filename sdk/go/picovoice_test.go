@@ -25,7 +25,7 @@ import (
 	"strings"
 	"testing"
 
-	rhn "github.com/Picovoice/rhino/binding/go"
+	rhn "github.com/Picovoice/rhino/binding/go/v2"
 )
 
 var (
