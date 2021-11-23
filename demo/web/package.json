@@ -1,7 +1,7 @@
 {
   "name": "picovoice-web-demo",
   "private": true,
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "A basic demo to show how to use Picovoice for web browsers, using the IIFE version of the library",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
+    "@picovoice/picovoice-web-en-worker": "^2.0.0",
     "@picovoice/web-voice-processor": "^2.1.2"
   },
   "devDependencies": {
