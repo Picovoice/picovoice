@@ -140,8 +140,8 @@ inferenceCallback(inference){
     }
 }
 ```
-You can override also the default model file and/or the inference sensitivity.  You can also override `requireEndpoint` parameter to 
-false if you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback`
+You can override the default model file and/or the inference sensitivity. There is also a `requireEndpoint` parameter to 
+false if you do not wish to wait for silence before Rhino infers context. There is an optional `processErrorCallback`
 that is called if there is a problem encountered while processing audio.
 
 These optional parameters can be passed in like so:
