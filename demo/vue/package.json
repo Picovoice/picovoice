@@ -13,8 +13,8 @@
     "postinstall": "node scripts/base64.mjs"
   },
   "dependencies": {
-    "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
-    "@picovoice/picovoice-web-vue": "file:../../sdk/vue",
+    "@picovoice/picovoice-web-en-worker": "^2.0.0",
+    "@picovoice/picovoice-web-vue": "^2.0.0",
     "@picovoice/web-voice-processor": "^2.1.2",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
