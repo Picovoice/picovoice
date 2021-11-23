@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-web-vue",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Vue component (renderless) for Picovoice Web SDK",
   "entry": "src/index.js",
   "module": "dist/esm/index.js",
