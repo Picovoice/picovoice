@@ -93,7 +93,7 @@ public class PicovoiceManager {
         }
         
         guard try VoiceProcessor.shared.hasPermissions() else {
-            throw PicovoiceError.PicovoiceRuntimeError("PicovoiceManager requires microphone permissions.")
+            throw PicovoiceRuntimeError("PicovoiceManager requires microphone permissions.")
         }
         
         picovoice = try Picovoice(
