@@ -108,7 +108,7 @@ class PicovoiceTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
-        print("usage: test_rhino.py ${ACCESS_KEY}")
+        print("usage: test_porcupine.py ${ACCESS_KEY}")
         exit(1)
 
     unittest.main(argv=sys.argv[:1])
