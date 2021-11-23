@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {PermissionsAndroid, Platform} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceManager} from '@picovoice/picovoice-react-native';
+import {PicovoiceErrors, PicovoiceManager} from '@picovoice/picovoice-react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Moment from 'react-moment';
 import moment from 'moment';
@@ -9,11 +9,27 @@ import NotificationSounds, { playSampleSound, stopSampleSound } from  'react-nat
 import BottomNavigation, {
   FullTab,
 } from 'react-native-material-bottom-navigation';
+import { RhinoInference } from '@picovoice/rhino-react-native';
 
-const RNFS = require('react-native-fs');
+type Props = {};
+type State = {
+  activeTab: string;
+  isListening: boolean;
+  isStopwatchRunning: boolean;
+  stopwatchTime: moment.Duration;
+  isTimerRunning: boolean;
+  timerStartTime: moment.Duration;
+  timerCurrentTime: moment.Duration;
+  alarmTime: moment.Moment;
+  alarmSounding: boolean;
+  isError: boolean;
+  errorMessage: string;
+};
 
-export default class App extends Component {
+export default class App extends Component<Props, State> {
+  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
   _picovoiceManager;
+
   tabs = [
     {
       key: 'clock',
@@ -64,82 +80,28 @@ export default class App extends Component {
         millisecond: 0,
       }),
       alarmTime: undefined,
-      alarmSounding: false
+      alarmSounding: false,
+      isError: false,
+      errorMessage: '',
     };
   }
 
   async componentDidMount() {
-    let wakeWordName = 'pico_clock';
-    let wakeWordFilename = wakeWordName;
-    let wakeWordPath = '';
-    let contextName = 'clock';
-    let contextFilename = contextName;
-    let contextPath = '';
+    let wakeWordPath = `pico_clock_${Platform.OS}.ppn`;
+    let contextPath = `clock_${Platform.OS}.rhn`;
 
-    // get platform filesystem path to resources
-    if (Platform.OS == 'android') {
-      // for Android, extract resources
-      wakeWordFilename += '_android.ppn';
-      wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename.replace(
-        ' ',
-        '_',
-      )}`;
-      await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
+    this._picovoiceManager = PicovoiceManager.create(
+      this._accessKey,
+      wakeWordPath,
+      this._wakeWordCallback.bind(this),
+      contextPath,
+      this._inferenceCallback.bind(this),
+      (error) => {
+        this._errorCallback(error.message);
+      }
+    );
 
-      contextFilename += '_android.rhn';
-      contextPath = `${RNFS.DocumentDirectoryPath}/${contextFilename}`;
-      await RNFS.copyFileRes(contextFilename, contextPath);
-    } else if (Platform.OS == 'ios') {
-      wakeWordFilename += '_ios.ppn';
-      wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
-
-      contextFilename += '_ios.rhn';
-      contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
-    }
-
-    try {
-      this._picovoiceManager = PicovoiceManager.create(
-        wakeWordPath,
-        () => {         
-          this.setState({
-            isListening: true,
-          });        
-        },
-        contextPath,
-        (inference) => {
-          var tab = this.state.activeTab;
-          if (inference['isUnderstood']) {
-            if (inference['intent'] == 'clock') {
-              tab = 'clock';
-            } else if (inference['intent'] == 'timer') {
-              this._performTimerCommand(inference['slots']);
-              tab = 'timer';
-            } else if (inference['intent'] == 'setTimer') {
-              this._setTimer(inference['slots']);
-              tab = 'timer';
-            } else if (inference['intent'] == 'alarm') {
-              this._performAlarmCommand(inference['slots']);
-              tab = 'clock';
-            } else if (inference['intent'] == 'setAlarm') {
-              this._setAlarm(inference['slots']);
-              tab = 'clock';
-            } else if (inference['intent'] == 'stopwatch') {
-              this._performStopwatchCommand(inference['slots']);
-              tab = 'stopwatch';
-            }
-          }
-
-          this.setState({
-            activeTab: tab,
-            isListening: false,
-          });
-        },
-      );
-
-      await this._startProcessing();
-    } catch (e) {
-      console.error(e);
-    }
+    await this._startProcessing();
   }
 
   componentWillUnmount() {
@@ -147,6 +109,49 @@ export default class App extends Component {
       this._stopProcessing();
     }
     this._picovoiceManager?.delete();
+  }
+
+  _wakeWordCallback() {
+    this.setState({
+      isListening: true,
+    }); 
+  }
+
+  _inferenceCallback(inference: RhinoInference) {
+    let tab = this.state.activeTab;
+    if (inference.isUnderstood) {
+      if (inference.intent == 'clock') {
+        tab = 'clock';
+      } else if (inference.intent == 'timer') {
+        this._performTimerCommand(inference.slots);
+        tab = 'timer';
+      } else if (inference.intent == 'setTimer') {
+        this._setTimer(inference.slots);
+        tab = 'timer';
+      } else if (inference.intent == 'alarm') {
+        this._performAlarmCommand(inference.slots);
+        tab = 'clock';
+      } else if (inference.intent == 'setAlarm') {
+        this._setAlarm(inference.slots);
+        tab = 'clock';
+      } else if (inference.intent == 'stopwatch') {
+        this._performStopwatchCommand(inference.slots);
+        tab = 'stopwatch';
+      }
+    }
+
+    this.setState({
+      activeTab: tab,
+      isListening: false,
+    });
+  }
+
+  _errorCallback(error: string) {
+    this._picovoiceManager?.stop();
+    this.setState({
+      isError: true,
+      errorMessage: error
+    });
   }
 
   _updateTime() {
@@ -178,7 +183,7 @@ export default class App extends Component {
       });
     }
 
-    var now = moment()
+    const now = moment()
     if (this.state.alarmTime&& ! this.state.alarmSounding && this.state.alarmTime.isSameOrBefore(now))
     {        
         this.setState({            
@@ -209,20 +214,33 @@ export default class App extends Component {
       });
     }
 
-    recordAudioRequest.then((hasPermission) => {
+    recordAudioRequest.then(async (hasPermission) => {
       if (!hasPermission) {
-        console.error('Required microphone permission was not granted.');
+        this._errorCallback('Required microphone permission was not granted.');
         return;
       }
 
       try{
-        this._picovoiceManager?.start().then((didStart) => {
-          if (didStart) {
-            setInterval(this._updateTime.bind(this), 100);
-          }
-        });
+        const didStart = await this._picovoiceManager?.start();
+        if (didStart) {
+          setInterval(this._updateTime.bind(this), 100);
+        }
       } catch(err) {
-        console.error(err);
+        let errorMessage = '';
+        if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
+          errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
+          errorMessage = "AccessKey activation error";
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
+          errorMessage = "AccessKey reached its device limit";
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationRefusedError) {
+          errorMessage = "AccessKey refused";
+        } else if (err instanceof PicovoiceErrors.PicovoiceActivationThrottledError) {
+          errorMessage = "AccessKey has been throttled";
+        } else {
+          errorMessage = err.toString();
+        }
+        this._errorCallback(errorMessage);
       }
     });
   }
@@ -284,9 +302,9 @@ export default class App extends Component {
       });
     }
 
-    var hours = 0;
-    var minutes = 0;
-    var seconds = 0;
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
     if (slots['hours']) {
       hours = Number.parseInt(slots['hours']);
     }
@@ -316,14 +334,16 @@ export default class App extends Component {
 
   _performAlarmCommand(slots) {    
     if (slots['action'] == 'delete') {
-      _alarmTime = undefined;
+      this.setState({
+        alarmTime: undefined
+      })
     }
   }
 
   _setAlarm(slots) {       
-    var hours = 0;
-    var minutes = 0;
-    var alarmWeekday = moment().day();
+    let hours = 0;
+    let minutes = 0;
+    let alarmWeekday = moment().day();
     if (slots['day']) {
       alarmWeekday = this._dayToWeekday(slots['day']);
     }
@@ -341,9 +361,9 @@ export default class App extends Component {
       return;
     }
 
-    var now = moment();
-    var dayOfMonth = now.date() + alarmWeekday - now.day();
-    var time = moment({
+    const now = moment();
+    const dayOfMonth = now.date() + alarmWeekday - now.day();
+    const time = moment({
       year:now.year(),
       month: now.month(),
       date: dayOfMonth,
@@ -376,7 +396,7 @@ export default class App extends Component {
   }
 
   _performStopwatchCommand(slots) {
-    var action = slots['action'];
+    const action = slots['action'];
     if (action == 'start') {
       this.setState({
         isStopwatchRunning: true,
@@ -489,7 +509,17 @@ export default class App extends Component {
           {this._renderDisplayClockText()}
           {this._renderDisplayDateText()}           
           {this._renderAlarmText()}
-        </View>        
+        </View>
+        {this.state.isError ?
+          <View style={styles.errorBox}>
+            <Text style={{
+              color: 'white',
+              fontSize: 16
+            }}>
+              {this.state.errorMessage}
+            </Text>
+          </View>
+        : 
         <View style={{flex: 0.35, justifyContent: 'center'}}>
           <Icon
             size={100}
@@ -499,6 +529,7 @@ export default class App extends Component {
           />
           <Text style={styles.instructions}>Say 'PicoClock'!</Text>
         </View>
+        }
         <View style={{flex: 0.18, justifyContent: 'flex-end'}}>
           <BottomNavigation
             style={{borderTopWidth: 2, borderTopColor: '#EEEEEE', flex: 1}}
@@ -541,5 +572,12 @@ const styles = StyleSheet.create({
     color: '#BBBBBB',
     fontWeight: 'bold',
     fontSize: 18
+  },
+  errorBox: {
+    backgroundColor: 'red',
+    borderRadius: 5,
+    margin: 20,
+    padding: 20,
+    textAlign: 'center'
   },
 });

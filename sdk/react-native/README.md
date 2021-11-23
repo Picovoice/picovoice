@@ -17,7 +17,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 This binding is for running Picovoice on **React Native 0.62.2+** on the following platforms:
 
 - Android 4.1+ (API 16+)
-- iOS 9.0+
+- iOS 10.0+
 
 ## Installation
 
@@ -45,6 +45,15 @@ cd ios && pod install && cd ..
 
 **NOTE**: Due to a limitation in React Native CLI autolinking, these native modules cannot be included as transitive depedencies. If you are creating a module that depends on these packages you will have to list these as peer dependencies and require developers to install them alongside.
 
+## AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
+You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+
+To obtain your `AccessKey`:
+1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+
 ## Permissions
 
 To enable recording with the hardware's microphone, you must first ensure that you have enabled the proper permission on both iOS and Android.
@@ -58,6 +67,7 @@ On iOS, open your Info.plist and add the following line:
 On Android, open your AndroidManifest.xml and add the following line:
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.INTERNET" />
 ```
 
 Finally, in your app JS code, be sure to check for user permission consent before proceeding with audio capture:
@@ -100,12 +110,15 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](/sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
 ```javascript
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 this._picovoiceManager = PicovoiceManager.create(
+    accessKey
     '/path/to/keyword/file.ppn',
     wakeWordCallback,
     '/path/to/context/file.rhn',
@@ -120,26 +133,38 @@ wakeWordCallback(){
 }
 
 inferenceCallback(inference){
-    // `inference` is a JSON object with the following fields:
-    // (1) isUnderstood
-    // (2) intent
-    // (3) slots
+    if (inference.isUnderstood) {
+        // do something with:
+        // inference.intent - string representing intent
+        // inference.slots - Object<string, string> representing the slot values
+    }
 }
 ```
+You can override also the default model file and/or the inference sensitivity.  You can also override `requireEndpoint` parameter to 
+false if you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback`
+that is called if there is a problem encountered while processing audio.
 
-You can override the default model files and sensitivities:
+These optional parameters can be passed in like so:
+
 ```javascript
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 let porcupineSensitivity = 0.7
 let rhinoSensitivity = 0.6
+let requireEndpoint = false
+
 this._picovoiceManager = PicovoiceManager.create(
+            accessKey,
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
             '/path/to/context/file.rhn',
             inferenceCallback,
+            processErrorCallback,
             porcupineSensitivity,
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv");
+            "/path/to/rhino/model.pv",
+            requireEndpoint); 
 ```
 
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
@@ -169,12 +194,16 @@ who want to incorporate it into a already existing audio processing pipeline.
 `Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 async createPicovoice(){
     let porcupineSensitivity = 0.7
     let rhinoSensitivity = 0.6
+    let requireEndpoint = false
 
     try{
         this._picovoice = await Picovoice.create(
+            accessKey
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
             '/path/to/context/file.rhn',
@@ -182,7 +211,8 @@ async createPicovoice(){
             porcupineSensitivity,
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv")
+            "/path/to/rhino/model.pv",
+            false)
     } catch (err) {
         // handle error
     }
@@ -193,10 +223,11 @@ wakeWordCallback(){
 }
 
 inferenceCallback(inference){
-    // `inference` is a JSON object with the following fields:
-    // (1) isUnderstood
-    // (2) intent
-    // (3) slots
+    if (inference.isUnderstood) {
+        // do something with:
+        // inference.intent - string representing intent
+        // inference.slots - Object<string, string> representing the slot values
+    }
 }
 ```
 
@@ -223,32 +254,43 @@ this._picovoice.delete();
 
 ## Custom Model Integration
 
-To add custom models to your React Native application you'll need to add the files to your platform projects. Android models must be added to `./android/app/src/main/res/raw/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS project. Then in your app javascript code, using the [react-native-fs](https://www.npmjs.com/package/react-native-fs) package, retreive the files like so:
-```javascript
-const RNFS = require('react-native-fs');
+To add a custom models to your React Native application you'll need to add the rhn files to your platform projects.
 
-let wakeWordName = 'keyword';
-let wakeWordFilename = wakeWordName;
+### Adding Android Models
+
+Android custom models must be added to [`./android/app/src/main/assets/`](android/app/src/main/assets/).
+
+### Adding iOS Models
+
+iOS models can be added anywhere under [`./ios`](ios), but it must be included as a bundled resource. 
+The easiest way to include a bundled resource in the iOS project is to:
+
+1. Open XCode.
+2. Either:
+  - Drag and Drop the model/keyword file to the navigation tab.
+  - Right click on the navigation tab, and click `Add Files To ...`.
+
+This will bundle your models together when the app is built.
+
+### Using Custom Models
+
+```javascript
+
+const accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://picovoice.ai/console/)
+
 let wakeWordPath = '';
-let contextName = 'context';
-let contextFilename = contextName;
 let contextPath = '';
 
 if (Platform.OS == 'android') {
     // for Android, extract resources from APK
-    wakeWordFilename += '_android.ppn';
-    wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename}`;
-    await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
+    wakeWordPath = `keyword_android.ppn`;
 
-    contextFilename += '_android.rhn';
-    contextPath = `${RNFS.DocumentDirectoryPath}/${contextFilename}`;
-    await RNFS.copyFileRes(contextFilename, contextPath);
+    contextPath = `context_android.rhn`;
 } else if (Platform.OS == 'ios') {
-    wakeWordFilename += '_ios.ppn';
-    wakeWordPath = `${RNFS.MainBundlePath}/${wakeWordFilename}`;
+    wakeWordPath = `keyword_ios.ppn`;
 
     contextFilename += '_ios.rhn';
-    contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
+    contextPath = `context_ios.rhn`;
 }
 ```
 
