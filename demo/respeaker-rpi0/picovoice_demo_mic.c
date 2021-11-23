@@ -9,6 +9,7 @@
     specific language governing permissions and limitations under the License.
 */
 
+#include <getopt.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -113,25 +114,81 @@ static void inference_callback(pv_inference_t *inference) {
     pv_inference_delete_func(inference);
 }
 
+static struct option long_options[] = {
+        {"library_path",          required_argument, NULL, 'l'},
+        {"access_key",            required_argument, NULL, 'a'},
+        {"keyword_path",          required_argument, NULL, 'k'},
+        {"context_path",          required_argument, NULL, 'c'},
+        {"porcupine_sensitivity", required_argument, NULL, 's'},
+        {"porcupine_model_path",  required_argument, NULL, 'p'},
+        {"rhino_sensitivity",     required_argument, NULL, 't'},
+        {"rhino_model_path",      required_argument, NULL, 'r'},
+        {"require_endpoint",      required_argument,       NULL, 'e'},
+        {"input_audio_device", required_argument, NULL, 'i'}
+};
+
+void print_usage(const char *program_name) {
+    fprintf(stderr,
+            "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH -i INPUT_AUDIO_DEVICE"
+            "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n",
+            program_name, program_name);
+}
+
 int main(int argc, char *argv[]) {
-    if (argc != 9) {
-        static const char *USAGE_STRING =
-                "usage : %s library_path porcupine_model_path keyword_path porcupine_sensitivity rhino_model_path "
-                "context_path rhino_sensitivity input_audio_device\n";
-        fprintf(stderr, USAGE_STRING, argv[0]);
-        exit(1);
-    }
 
     signal(SIGINT, interrupt_handler);
 
-    const char *library_path = argv[1];
-    const char *porcupine_model_path = argv[2];
-    const char *keyword_path = argv[3];
-    const float porcupine_sensitivity = (float) atof(argv[4]);
-    const char *rhino_model_path = argv[5];
-    const char *context_path = argv[6];
-    const float rhino_sensitivity = (float) atof(argv[7]);
-    const char *input_audio_device = argv[8];
+    const char *library_path = NULL;
+    const char *access_key = NULL;
+    const char *keyword_path = NULL;
+    const char *context_path = NULL;
+    float porcupine_sensitivity = 0.5f;
+    const char *porcupine_model_path = NULL;
+    float rhino_sensitivity = 0.5f;
+    const char *rhino_model_path = NULL;
+    bool require_endpoint = true;
+    const char *input_audio_device = NULL;
+
+    int c;
+    while ((c = getopt_long(argc, argv, "el:a:k:c:s:p:t:r:i:", long_options, NULL)) != -1) {
+        switch (c) {
+            case 'l':
+                library_path = optarg;
+                break;
+            case 'a':
+                access_key = optarg;
+                break;
+            case 'k':
+                keyword_path = optarg;
+                break;
+            case 'c':
+                context_path = optarg;
+                break;
+            case 's':
+                porcupine_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'p':
+                porcupine_model_path = optarg;
+                break;
+            case 't':
+                rhino_sensitivity = strtof(optarg, NULL);
+                break;
+            case 'r':
+                rhino_model_path = optarg;
+                break;
+            case 'e':
+                if (strcmp(optarg, "false") == 0) {
+                    require_endpoint = false;
+                }
+                break;
+            case 'i':
+                input_audio_device = optarg;
+                break;
+            default:
+                print_usage(argv[0]);
+                exit(1);
+        }
+    }
 
     void *picovoice_library = dlopen(library_path, RTLD_NOW);
     if (!picovoice_library) {
@@ -156,11 +213,13 @@ int main(int argc, char *argv[]) {
     pv_status_t (*pv_picovoice_init_func)(
             const char *,
             const char *,
+            const char *,
             float,
             void (*)(void),
             const char *,
             const char *,
             float,
+            bool,
             void (*)(pv_inference_t *),
             pv_picovoice_t **) = NULL;
     pv_picovoice_init_func = dlsym(picovoice_library, "pv_picovoice_init");
@@ -202,6 +261,7 @@ int main(int argc, char *argv[]) {
 
     pv_picovoice_t *handle = NULL;
     pv_status_t status = pv_picovoice_init_func(
+            access_key,
             porcupine_model_path,
             keyword_path,
             porcupine_sensitivity,
@@ -209,6 +269,7 @@ int main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            require_endpoint,
             inference_callback,
             &handle);
     if (status != PV_STATUS_SUCCESS) {
