@@ -27,7 +27,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@picovoice/picovoice-web-en-worker": "file:../../sdk/web/picovoice-web-en-worker",
-    "@picovoice/web-voice-processor": "^2.1.1"
+    "@picovoice/web-voice-processor": "^2.1.2"
   },
   "devDependencies": {
     "http-server": "^14.0.0"
