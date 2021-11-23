@@ -1561,20 +1561,18 @@
     "@octokit/openapi-types" "^2.2.0"
     "@types/node" ">= 8"
 
-"@picovoice/porcupine-react-native@^1.9.9":
-  version "1.9.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-1.9.9.tgz#9f13a1065c01d8fdbfd9d0a53bd8f74c3128957e"
-  integrity sha512-kO0lDIPD8D8J20zt34ieW9Z6ETgU+Qw7nd7gmdIgZ6D8ElOkpN5nfPCQtnDQ18sO+sdQy0zzWvRveQ3kseuuMA==
+"@picovoice/porcupine-react-native@./picovoice-porcupine-react-native-2.0.0.tgz":
+  version "2.0.0"
+  resolved "./picovoice-porcupine-react-native-2.0.0.tgz#c97d505e199472de57f4ca12b860143a20a55ba3"
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.4.tgz#500a83a19b84e43d9a21f8eb643b176eacc5ec46"
   integrity sha512-fkAALaMHN54OeQ2sg/ViIsz/UL1kzdj/nOyMmHwvhrGpPTlv91CgCSQQWQn7+vWSv0tggL1ckxeAt7Apfi0Pzw==
 
-"@picovoice/rhino-react-native@^1.6.9":
-  version "1.6.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-1.6.9.tgz#cfbf5b3c28349e1fb6c8930272af4f5dc661d7dd"
-  integrity sha512-39cgAQ62A3BXBy3rIO94uwZwFwfiIVLzAeMPCkIi99nLXkYSszF36OAFpX6ViODsEpwSeNdTQCpwTlJC1cbhoQ==
+"@picovoice/rhino-react-native@./picovoice-rhino-react-native-2.0.0.tgz":
+  version "2.0.0"
+  resolved "./picovoice-rhino-react-native-2.0.0.tgz#9e809e4ee3d2d7a8af077359c2a25657bc5487f7"
 
 "@react-native-community/bob@^0.16.2":
   version "0.16.2"
