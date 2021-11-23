@@ -13,6 +13,7 @@
 		1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF33253A175500395344 /* Preview Assets.xcassets */; };
 		1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF57253A442A00395344 /* smart_lighting_ios.rhn */; };
 		1E1A679426C42A4C00EDD6EC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A679326C42A4C00EDD6EC /* NotificationManager.swift */; };
+		1E846C92274D929D00A63382 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C91274D929D00A63382 /* picovoice_ios.ppn */; };
 		1ECA2AA926EAD5A5000F22A4 /* beep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA2AA826EAD5A5000F22A4 /* beep.wav */; };
 		7D984E8175A65BCE7A77807D /* libPods-PicovoiceBackgroundServiceDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00161816136C821FDBF9F61B /* libPods-PicovoiceBackgroundServiceDemo.a */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		1760DF35253A175500395344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1760DF57253A442A00395344 /* smart_lighting_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = smart_lighting_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn; sourceTree = "<group>"; };
 		1E1A679326C42A4C00EDD6EC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		1E846C91274D929D00A63382 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
 		1ECA2AA826EAD5A5000F22A4 /* beep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = beep.wav; sourceTree = "<group>"; };
 		E0114AAE0572E4E7AC6F7C95 /* Pods-PicovoiceBackgroundServiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceBackgroundServiceDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceBackgroundServiceDemo/Pods-PicovoiceBackgroundServiceDemo.release.xcconfig"; sourceTree = "<group>"; };
 		E429C1B8109916CD609F9FC0 /* libPods-PicovoiceDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +82,7 @@
 		1760DF2B253A175000395344 /* PicovoiceBackgroundServiceDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1E846C91274D929D00A63382 /* picovoice_ios.ppn */,
 				1760DF57253A442A00395344 /* smart_lighting_ios.rhn */,
 				1760DF2C253A175000395344 /* PicovoiceBackgroundServiceDemo.swift */,
 				1760DF2E253A175000395344 /* ContentView.swift */,
@@ -189,6 +192,7 @@
 			files = (
 				1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */,
 				1ECA2AA926EAD5A5000F22A4 /* beep.wav in Resources */,
+				1E846C92274D929D00A63382 /* picovoice_ios.ppn in Resources */,
 				1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */,
 				1760DF31253A175500395344 /* Assets.xcassets in Resources */,
 			);
@@ -204,41 +208,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceBackgroundServiceDemo/Pods-PicovoiceBackgroundServiceDemo-resources.sh",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/alexa_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/americano_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/blueberry_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/bumblebee_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/computer_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grapefruit_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/grasshopper_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/hey siri_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/jarvis_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/ok google_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/picovoice_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/porcupine_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/resources/keyword_files/ios/terminator_ios.ppn",
-				"${PODS_ROOT}/Porcupine-iOS/lib/common/porcupine_params.pv",
-				"${PODS_ROOT}/Rhino-iOS/lib/common/rhino_params.pv",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Porcupine-iOS/PorcupineResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Rhino-iOS/RhinoResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/alexa_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/americano_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/blueberry_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/bumblebee_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/computer_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grapefruit_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/grasshopper_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/hey siri_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/jarvis_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ok google_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/picovoice_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/terminator_ios.ppn",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/porcupine_params.pv",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/rhino_params.pv",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PorcupineResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RhinoResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
