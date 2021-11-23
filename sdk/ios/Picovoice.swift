@@ -133,30 +133,30 @@ public class Picovoice {
     
     private func mapToPicovoiceError(_ error: Error) -> PicovoiceError {
         switch error {
-        case PorcupineMemoryError(let message), RhinoMemoryError(let message):
-            return PicovoiceMemoryError(message)
-        case PorcupineIOError(let message), RhinoIOError(let message):
-            return PicovoiceIOError(message)
-        case PorcupineInvalidArgumentError(let message), RhinoInvalidArgumentError(let message):
-            return PicovoiceInvalidArgumentError(message)
-        case PorcupineStopIterationError(let message), RhinoStopIterationError(let message):
-            return PicovoiceStopIterationError(message)
-        case PorcupineKeyError(let message), RhinoKeyError(let message):
-            return PicovoiceKeyError(message)
-        case PorcupineInvalidStateError(let message), RhinoInvalidStateError(let message):
-            return PicovoiceInvalidStateError(message)
-        case PorcupineRuntimeError(let message), RhinoRuntimeError(let message):
-            return PicovoiceRuntimeError(message)
-        case PorcupineActivationError(let message), RhinoActivationError(let message):
-            return PicovoiceActivationError(message)
-        case PorcupineActivationLimitError(let message), RhinoActivationLimitError(let message):
-            return PicovoiceActivationLimitError(message)
-        case PorcupineActivationThrottledError(let message), RhinoActivationThrottledError(let message):
-            return PicovoiceActivationThrottledError(message)
-        case PorcupineActivationRefusedError(let message), RhinoActivationRefusedError(let message):
-            return PicovoiceActivationRefusedError(message)
-        case PorcupineError(let message), RhinoError(let message):
-            return PicovoiceError(message)
+        case is PorcupineMemoryError, is RhinoMemoryError:
+            return PicovoiceMemoryError(error.localizedDescription)
+        case is PorcupineIOError, is RhinoIOError:
+            return PicovoiceIOError(error.localizedDescription)
+        case is PorcupineInvalidArgumentError, is RhinoInvalidArgumentError:
+            return PicovoiceInvalidArgumentError(error.localizedDescription)
+        case is PorcupineStopIterationError, is RhinoStopIterationError:
+            return PicovoiceStopIterationError(error.localizedDescription)
+        case is PorcupineKeyError, is RhinoKeyError:
+            return PicovoiceKeyError(error.localizedDescription)
+        case is PorcupineInvalidStateError, is RhinoInvalidStateError:
+            return PicovoiceInvalidStateError(error.localizedDescription)
+        case is PorcupineRuntimeError, is RhinoRuntimeError:
+            return PicovoiceRuntimeError(error.localizedDescription)
+        case is PorcupineActivationError, is RhinoActivationError:
+            return PicovoiceActivationError(error.localizedDescription)
+        case is PorcupineActivationLimitError, is RhinoActivationLimitError:
+            return PicovoiceActivationLimitError(error.localizedDescription)
+        case is PorcupineActivationThrottledError, is RhinoActivationThrottledError:
+            return PicovoiceActivationThrottledError(error.localizedDescription)
+        case is PorcupineActivationRefusedError, is RhinoActivationRefusedError:
+            return PicovoiceActivationRefusedError(error.localizedDescription)
+        case is PorcupineError, is RhinoError:
+            return PicovoiceError(error.localizedDescription)
         default:
             return PicovoiceError("\(error)")
         }

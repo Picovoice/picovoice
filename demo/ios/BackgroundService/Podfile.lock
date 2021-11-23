@@ -11,7 +11,7 @@ PODS:
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v2.0/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v2.0-ios-fix/sdk/ios/Picovoice-iOS.podspec`)
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.0/binding/ios/Porcupine-iOS.podspec`)
   - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v2.0/binding/ios/Rhino-iOS.podspec`)
   - SwiftySound
@@ -23,7 +23,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v2.0/sdk/ios/Picovoice-iOS.podspec
+    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v2.0-ios-fix/sdk/ios/Picovoice-iOS.podspec
   Porcupine-iOS:
     :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.0/binding/ios/Porcupine-iOS.podspec
   Rhino-iOS:
@@ -31,22 +31,22 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Picovoice-iOS:
-    :commit: d4301afbd362841ecd99151f56d9867b6cea1293
+    :commit: cf4d4c3bff6d86f7309a3d503c7c285c6a471331
     :git: https://github.com/Picovoice/picovoice.git
   Porcupine-iOS:
-    :commit: eaa834c9978decfe0e8bb72e9cc8d05b03f75f2b
+    :commit: 20ee27d09ced4780331f522c893b1949cf9fca29
     :git: https://github.com/Picovoice/porcupine.git
   Rhino-iOS:
-    :commit: 721f46aed26cf3decc25f456140924e20421c6dc
+    :commit: 0e3759e66c6c0fcc477ef11b30bcb017c2e49430
     :git: https://github.com/Picovoice/rhino.git
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Picovoice-iOS: c12256c5a457326a8965dac92edbce63c159b6a6
+  Picovoice-iOS: 5478c3a3c21b5c8d49030f1c493911622f0a54f9
   Porcupine-iOS: fb5c644bdce95f4e32f9e547c31ba05e76ccb6db
   Rhino-iOS: 36cec1f457365e4918c97d2b68d8a08cee6d8662
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: a6bc4ddb454bfe50d5aab191d947ac297fe4fd7b
+PODFILE CHECKSUM: e8ed12dc201b708501cc6d8c7152c727d16b381f
 
 COCOAPODS: 1.11.2

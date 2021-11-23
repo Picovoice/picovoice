@@ -13,10 +13,6 @@ public class PicovoiceError : LocalizedError {
     public init (_ message: String) {
         self.message = message
     }
-
-    public init (_ error: LocalizedError) {
-        self.message = error.localizedDescription
-    }
     
     public var errorDescription: String? {
         return message
