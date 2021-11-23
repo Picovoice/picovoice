@@ -9,5 +9,5 @@ clap = "2.33.3"
 ctrlc = "3.1.9"
 hound = "3.4.0"
 itertools = "0.10.1"
-picovoice = { path = "../../../sdk/rust" }
-pv_recorder = "1.0.0"
+picovoice = "2.0.0"
+pv_recorder = "1.0.1"
