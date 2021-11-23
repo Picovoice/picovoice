@@ -129,7 +129,7 @@ static struct option long_options[] = {
 
 void print_usage(const char *program_name) {
     fprintf(stderr,
-            "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH -i INPUT_AUDIO_DEVICE"
+            "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH -i INPUT_AUDIO_DEVICE "
             "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n",
             program_name, program_name);
 }
