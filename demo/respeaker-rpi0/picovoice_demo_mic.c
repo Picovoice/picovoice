@@ -190,6 +190,11 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    if (!library_path || !keyword_path || !context_path || !access_key || !porcupine_model_path || !rhino_model_path || !input_audio_device) {
+        print_usage(argv[0]);
+        exit(1);
+    }
+
     void *picovoice_library = dlopen(library_path, RTLD_NOW);
     if (!picovoice_library) {
         fprintf(stderr, "failed to open library.\n");
