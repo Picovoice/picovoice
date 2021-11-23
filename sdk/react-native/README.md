@@ -132,7 +132,7 @@ wakeWordCallback(){
     // wake word detected!
 }
 
-inferenceCallback(object){
+inferenceCallback(inference){
     if (inference.isUnderstood) {
         // do something with:
         // inference.intent - string representing intent
@@ -140,7 +140,7 @@ inferenceCallback(object){
     }
 }
 ```
-You can override also the default model file and/or the inference sensitivity.  You can set `requireEndpoint` parameter to 
+You can override also the default model file and/or the inference sensitivity.  You can also override `requireEndpoint` parameter to 
 false if you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback`
 that is called if there is a problem encountered while processing audio.
 
@@ -283,14 +283,14 @@ let contextPath = '';
 
 if (Platform.OS == 'android') {
     // for Android, extract resources from APK
-    wakeWordPath = `path_to_keyword_android.ppn`;
+    wakeWordPath = `keyword_android.ppn`;
 
-    contextPath = `path_to_context_android.rhn`;
+    contextPath = `context_android.rhn`;
 } else if (Platform.OS == 'ios') {
-    wakeWordPath = `path_to_keyword_ios.ppn`;
+    wakeWordPath = `keyword_ios.ppn`;
 
     contextFilename += '_ios.rhn';
-    contextPath = `path_to_context_ios.rhn`;
+    contextPath = `context_ios.rhn`;
 }
 ```
 

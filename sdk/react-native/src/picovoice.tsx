@@ -30,7 +30,7 @@ class Picovoice {
   /**
    * Picovoice constructor
    *
-   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/.
+   * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
    * @param keywordPath Absolute path to Porcupine's keyword model file.
    * @param wakeWordCallback User-defined callback invoked upon detection of the wake phrase.
    * The callback accepts no input arguments.
