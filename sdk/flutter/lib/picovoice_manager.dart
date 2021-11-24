@@ -66,8 +66,8 @@ class PicovoiceManager {
   ///
   /// [requireEndpoint] Boolean variable to indicate if Rhino should wait
   /// for a chunk of silence before finishing inference.
-  /// 
-  /// [processErrorCallback] Reports errors that are encountered while 
+  ///
+  /// [processErrorCallback] Reports errors that are encountered while
   /// the engine is processing audio.
   ///
   /// returns an instance of the Picovoice end-to-end platform.
@@ -128,7 +128,7 @@ class PicovoiceManager {
         requireEndpoint: _requireEndpoint);
 
     _voiceProcessor ??= VoiceProcessor.getVoiceProcessor(
-          _picovoice!.frameLength!, _picovoice!.sampleRate!);
+        _picovoice!.frameLength!, _picovoice!.sampleRate!);
 
     if (_voiceProcessor == null) {
       throw PicovoiceRuntimeException("flutter_voice_processor not available.");
@@ -152,7 +152,9 @@ class PicovoiceManager {
       try {
         _picovoice?.process(picovoiceFrame);
       } on PicovoiceException catch (error) {
-        _processErrorCallback == null ? print(error.message) : _processErrorCallback!(error);
+        _processErrorCallback == null
+            ? print(error.message)
+            : _processErrorCallback!(error);
       }
     });
 
