@@ -525,22 +525,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Container(
                     margin: EdgeInsets.only(top: 40),
                     child: _clockWidgets.elementAt(_selectedIndex))),
-            _isError ? buildErrorMessage(context) :
-            Column(
-              children: [
-                Container(
-                  child: _listeningForCommand
-                      ? Icon(Icons.mic,
-                          size: 100, color: Theme.of(context).focusColor)
-                      : Icon(Icons.mic_none,
-                          size: 100,
-                          color: Theme.of(context).primaryColor)),
-                Container( 
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Text("Say 'PicoClock'!",
-                      style: Theme.of(context).textTheme.bodyText1))
-              ],
-            )
+            _isError
+                ? buildErrorMessage(context)
+                : Column(
+                    children: [
+                      Container(
+                          child: _listeningForCommand
+                              ? Icon(Icons.mic,
+                                  size: 100,
+                                  color: Theme.of(context).focusColor)
+                              : Icon(Icons.mic_none,
+                                  size: 100,
+                                  color: Theme.of(context).primaryColor)),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text("Say 'PicoClock'!",
+                              style: Theme.of(context).textTheme.bodyText1))
+                    ],
+                  )
           ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

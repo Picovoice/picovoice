@@ -100,6 +100,7 @@ mapToPicovoiceException(Exception ex, String? message) {
     case RhinoActivationRefusedException:
       return PicovoiceActivationRefusedException(message);
     default:
-      return PicovoiceException("unexpected exception: ${ex.runtimeType}, message: $message");
+      return PicovoiceException(
+          "unexpected exception: ${ex.runtimeType}, message: $message");
   }
 }

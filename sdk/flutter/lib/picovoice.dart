@@ -136,8 +136,8 @@ class Picovoice {
     }
 
     if (frame.length != frameLength) {
-        throw PicovoiceInvalidArgumentException(
-            "Picovoice process requires frames of length $frameLength. Received frame of size ${frame.length}.");
+      throw PicovoiceInvalidArgumentException(
+          "Picovoice process requires frames of length $frameLength. Received frame of size ${frame.length}.");
     }
 
     if (!_isWakeWordDetected) {
