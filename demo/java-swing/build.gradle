@@ -18,14 +18,13 @@ sourceSets {
 jar {
     manifest {
         attributes 'Main-Class': 'Main',
-                "Class-Path": "picovoice-2.0.0.jar;commons-cli-1.4.jar"
+                "Class-Path": "picovoice-2.0.1.jar;commons-cli-1.4.jar"
     }
     from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 
 dependencies {
-    // implementation 'ai.picovoice:picovoice-java:2.0.0'
-    implementation files('../../sdk/java/build/libs/Picovoice.jar')
+    implementation 'ai.picovoice:picovoice-java:2.0.0'
     implementation 'commons-cli:commons-cli:1.4'
 }
