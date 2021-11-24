@@ -17,8 +17,8 @@ import (
 	"os"
 	"path/filepath"
 
-	. "github.com/Picovoice/picovoice/sdk/go"
-	rhn "github.com/Picovoice/rhino/binding/go"
+	. "github.com/Picovoice/picovoice/sdk/go/v2"
+	rhn "github.com/Picovoice/rhino/binding/go/v2"
 	"github.com/go-audio/audio"
 	"github.com/go-audio/wav"
 )

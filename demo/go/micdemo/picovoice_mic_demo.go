@@ -18,9 +18,9 @@ import (
 	"os/signal"
 	"path/filepath"
 
-	. "github.com/Picovoice/picovoice/sdk/go"
+	. "github.com/Picovoice/picovoice/sdk/go/v2"
 	pvrecorder "github.com/Picovoice/pvrecorder/sdk/go"
-	rhn "github.com/Picovoice/rhino/binding/go"
+	rhn "github.com/Picovoice/rhino/binding/go/v2"
 
 	"github.com/go-audio/wav"
 )
