@@ -15,7 +15,7 @@ See the [Picovoice Docs](https://picovoice.ai/docs/quick-start/picovoice-nodejs/
 
 ## Compatibility
 
-This binding is for running Picovoice on **NodeJS 10+** on the following platforms:
+This binding is for running Picovoice on **NodeJS 12+** on the following platforms:
 
 - Windows (x86_64)
 - Linux (x86_64)
