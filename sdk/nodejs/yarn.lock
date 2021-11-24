@@ -483,11 +483,15 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@picovoice/porcupine-node@file:../../resources/porcupine/binding/nodejs":
+"@picovoice/porcupine-node@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.0.0.tgz#4497775af751afd1183dfc3af38c3839c65f8efe"
+  integrity sha512-hI3f2UiGNCQwko3QSdKWdRu8jZgZw6y/PpLnkbTZWPZOdWiCB+8idWOw+aptG4hDNvWTOYsR1IeovLhXuvO4mA==
 
-"@picovoice/rhino-node@file:../../resources/rhino/binding/nodejs":
+"@picovoice/rhino-node@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.0.0.tgz#bcb27f8d0c011577417f3072b873a1c8a393a40c"
+  integrity sha512-VSyvqjohoNrsPzeUozzeJcpiHv26TgoWO49wtVNJw1qiabKCQfIFb1O6ZBbOduRkYSjadYdM3xwg+r746MZ0WQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"

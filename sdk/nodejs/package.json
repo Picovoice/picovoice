@@ -33,14 +33,17 @@
   },
   "homepage": "https://picovoice.ai/",
   "dependencies": {
-    "@picovoice/porcupine-node": "file:../../resources/porcupine/binding/nodejs",
-    "@picovoice/rhino-node": "file:../../resources/rhino/binding/nodejs"
+    "@picovoice/porcupine-node": "^2.0.0",
+    "@picovoice/rhino-node": "^2.0.0"
   },
   "devDependencies": {
     "jest": "^26.4.0",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
     "wavefile": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "cpu": [
     "!ia32",
