@@ -2,14 +2,18 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@file:../../sdk/nodejs":
+"@picovoice/picovoice-node@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.0.0.tgz#3f1947029648398c548cdfcd27557a77005cf1b7"
+  integrity sha512-zhtapWmfafSEQyTU8kxLFz/1WXrC22CrogM1+HGGldL5rp2gVhk4BBaq2ZHNl2gCVyiMrDRQ/Gp6PZfxVPth6g==
   dependencies:
-    "@picovoice/porcupine-node" "file:../../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-0bcb4b35-7093-4860-beaa-eef0d3de2372-1637364391983/node_modules/resources/porcupine/binding/nodejs"
-    "@picovoice/rhino-node" "file:../../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-2.0.0-0bcb4b35-7093-4860-beaa-eef0d3de2372-1637364391983/node_modules/resources/rhino/binding/nodejs"
+    "@picovoice/porcupine-node" "^2.0.0"
+    "@picovoice/rhino-node" "^2.0.0"
 
-"@picovoice/porcupine-node@file:../../resources/porcupine/binding/nodejs":
+"@picovoice/porcupine-node@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.0.0.tgz#4497775af751afd1183dfc3af38c3839c65f8efe"
+  integrity sha512-hI3f2UiGNCQwko3QSdKWdRu8jZgZw6y/PpLnkbTZWPZOdWiCB+8idWOw+aptG4hDNvWTOYsR1IeovLhXuvO4mA==
 
 "@picovoice/pvrecorder-node@^1.0.2":
   version "1.0.2"
@@ -18,13 +22,15 @@
   dependencies:
     ncp "^2.0.0"
 
-"@picovoice/rhino-node@file:../../resources/rhino/binding/nodejs":
+"@picovoice/rhino-node@^2.0.0":
   version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.0.0.tgz#bcb27f8d0c011577417f3072b873a1c8a393a40c"
+  integrity sha512-VSyvqjohoNrsPzeUozzeJcpiHv26TgoWO49wtVNJw1qiabKCQfIFb1O6ZBbOduRkYSjadYdM3xwg+r746MZ0WQ==
 
 commander@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-6.1.0.tgz#f8d722b78103141006b66f4c7ba1e97315ba75bc"
-  integrity sha512-wl7PNrYWd2y5mp1OK/LhTlv8Ff4kQJQRXXAvF+uU/TPNiVJUxZLRYGj/B0y/lPGAVcSbJqH2Za/cvHmrPMC8mA==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
+  integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
 
 ncp@^2.0.0:
   version "2.0.0"
