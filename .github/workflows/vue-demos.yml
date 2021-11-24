@@ -38,16 +38,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Local package dependencies
-      run: .github/workflows/web_action_helper.sh || exit 1
-      working-directory: .
-
-    - name: Local package dependencies
-      run: |
-        yarn install
-        yarn build
-      working-directory: sdk/vue
-
     - name: Install dependencies
       run: yarn install
 
