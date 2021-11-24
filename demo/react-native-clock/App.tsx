@@ -108,7 +108,6 @@ export default class App extends Component<Props, State> {
     if (this.state.isListening) {
       this._stopProcessing();
     }
-    this._picovoiceManager?.delete();
   }
 
   _wakeWordCallback() {
