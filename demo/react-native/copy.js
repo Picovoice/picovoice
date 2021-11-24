@@ -16,12 +16,20 @@ const mkdirp = require('mkdirp');
 // copy Android resources
 mkdirp.sync('./android/picovoice-rn-demo-app/src/main/assets');
 fs.copyFileSync(
+  '../../resources/porcupine/resources/keyword_files/android/porcupine_android.ppn',
+  './android/picovoice-rn-demo-app/src/main/assets/porcupine_android.ppn',
+);
+fs.copyFileSync(
   '../../resources/rhino/resources/contexts/android/smart_lighting_android.rhn',
   './android/picovoice-rn-demo-app/src/main/assets/smart_lighting_android.rhn',
 );
 
 // copy iOS resources
 mkdirp.sync('./ios/resources');
+fs.copyFileSync(
+  '../../resources/porcupine/resources/keyword_files/ios/porcupine_ios.ppn',
+  './ios/porcupine_ios.ppn',
+);
 fs.copyFileSync(
   '../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn',
   './ios/smart_lighting_ios.rhn',
