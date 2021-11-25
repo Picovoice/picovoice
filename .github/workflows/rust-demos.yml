@@ -6,12 +6,13 @@ on:
     branches: [ master ]
     paths:
       - 'demo/rust/**'
-      - '!demo/rust/README.md'
+      - '!demo/rust/README.md'      
+
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/rust/**'
-      - '!demo/rust/README.md'
+      - '!demo/rust/README.md'      
 
 env:
   CARGO_TERM_COLOR: always

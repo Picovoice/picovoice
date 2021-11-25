@@ -7,13 +7,15 @@ on:
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
-      - 'lib/wasm/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
-      - 'lib/wasm/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 defaults:
   run:

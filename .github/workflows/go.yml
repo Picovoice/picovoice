@@ -7,11 +7,16 @@ on:
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 defaults:
   run:

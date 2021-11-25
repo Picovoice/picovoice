@@ -6,6 +6,7 @@ on:
     branches: [ master ]
     paths: 
       - 'demo/ios/ForegroundApp/Podfile.lock'
+
   pull_request:
     branches: [ master ]
     paths: 
