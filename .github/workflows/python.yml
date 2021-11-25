@@ -7,11 +7,16 @@ on:
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 defaults:
   run:

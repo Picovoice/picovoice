@@ -6,11 +6,16 @@ on:
     paths:
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 defaults:
   run:

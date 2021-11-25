@@ -7,13 +7,16 @@ on:
     paths:
       - 'sdk/react/**'
       - '!sdk/react/README.md'
-      - 'lib/wasm/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/react/**'
       - '!sdk/react/README.md'
-      - 'lib/wasm/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
 
 defaults:
   run:
