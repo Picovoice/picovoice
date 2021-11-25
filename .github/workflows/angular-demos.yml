@@ -6,12 +6,13 @@ on:
     branches: [ master ]
     paths:
       - 'demo/angular/**'
-      - '!demo/angular/README.md'      
+      - '!demo/angular/README.md'
+
   pull_request:
     branches: [ master ]
     paths:
       - 'demo/angular/**'
-      - '!demo/angular/README.md'      
+      - '!demo/angular/README.md'
 
 defaults:
   run:
