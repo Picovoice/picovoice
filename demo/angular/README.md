@@ -1,8 +1,8 @@
 # picovoice-web-angular-demo
 
-This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our `VoiceWidget` subscribes to these event and displays the results.
+This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our `VoiceWidget` subscribes to this event and displays the results.
 
-The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the `~4-6MB` requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an intial web app load.
+The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the `~4-6MB` requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
 
 If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
 
@@ -69,7 +69,7 @@ Try a phrase that is out-of-context:
 }
 ```
 
-This command falls outside of the domain of "Alarm Clock" and is therefore not understood.
+This command falls outside the domain of "Alarm Clock" and is therefore not understood.
 
 The Alarm Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://picovoice.ai/console/) to create a `.rhn` file for the WebAssembly (WASM) platform.
 

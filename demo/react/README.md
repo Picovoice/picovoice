@@ -32,7 +32,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The demo uses "Bumblebee" as the Porcupine wake word and "Alarm Clock" as the Rhino context for follow-on commands.
 
-When the demo is loaded and you have granted microphone permissions, say the following e.g.:
+When the demo is loaded, and you have granted microphone permissions, say the following e.g.:
 
 > "Bumblebee, set a timer for five minutes"
 
@@ -72,7 +72,7 @@ Inference:
 }
 ```
 
-This command falls outside of the domain of "Alarm Clock" and is therefore not understood.
+This command falls outside the domain of "Alarm Clock" and is therefore not understood.
 
 The Alarm Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://picovoice.ai/console/) to create a `.rhn` file.
 

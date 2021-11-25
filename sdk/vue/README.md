@@ -32,7 +32,7 @@ The natural commands are domain-specific. In this case, a clock. It will only un
 }
 ```
 
-This command was outside of the domain and therefore not understood.
+This command was outside the domain and therefore not understood.
 
 All processing is done via WebAssembly and Workers in a separate thread. Speech results are converted into inference directly, without intermediate Speech-to-Text.
 
@@ -46,7 +46,7 @@ The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API,
 
 All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
 
-Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
+Using the Web Audio API requires a secure context (HTTPS connection), except for `localhost`, for local development.
 
 ## AccessKey
 

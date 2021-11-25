@@ -1,12 +1,12 @@
 # Picovoice Unity Demo 
 
-The Picovoice demo for Unity is is a multi-platform demo that runs on:
+The Picovoice demo for Unity is a multi-platform demo that runs on:
 
 - Desktop Standalone (Windows, macOS and Linux x86_64)
 - iOS 9.0+
 - Android 4.1+
 
-Additionally you will need a version of Unity that is 2017.4 or higher.
+Additionally, you will need a version of Unity that is 2017.4 or higher.
 
 ## AccessKey
 
@@ -24,7 +24,7 @@ private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtain
 ```
 
 ## Usage
-The easiest way to run the demo is to simply import the [Picovoice Unity package](/sdk/unity/picovoice.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+The easiest way to run the demo is to simply import the [Picovoice Unity package](/sdk/unity/picovoice-2.0.0.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 Once the demo launches, you can say "Picovoice" and then give it any command within the smart lighting context:
 

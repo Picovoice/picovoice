@@ -8,7 +8,7 @@ Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -55,7 +55,7 @@ npm install -g @picovoice/picovoice-node-demo
 
 ### Run the mic demo
 
-Here is an example which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repostiory](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
+Here is an example which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repository](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
 
 Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. 
 
@@ -157,7 +157,7 @@ The file-based demo allows you to scan a compatible wave file with Rhino. Note: 
 
 To run the file-based demo, we need to provide a Porcupine keyword and Rhino Speech-to-Intent context, along with a path to a compatible WAV file.
 
-We can use the WAV file that are bundled in the [Picovoice GitHub repostiory](https://github.com/Picovoice/picovoice/blob/master/resources/audio_samples/). This is intended to be used with the sample "Coffee Maker" context and the "Picovoice" keyword, also available in the [Picovoice GitHub repostiory](https://github.com/Picovoice/picovoice/blob/master/resources/) (note that keyword and context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version of each file)
+We can use the WAV file that are bundled in the [Picovoice GitHub repository](https://github.com/Picovoice/picovoice/blob/master/resources/audio_samples/). This is intended to be used with the sample "Coffee Maker" context and the "Picovoice" keyword, also available in the [Picovoice GitHub repository](https://github.com/Picovoice/picovoice/blob/master/resources/) (note that keyword and context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version of each file)
 
 Run the file demo and the successful inference with the intent "orderDrink" along with the specific details are returned:
 

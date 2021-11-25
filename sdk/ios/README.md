@@ -9,7 +9,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -106,7 +106,7 @@ manager.stop();
 
 [Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
 
-To constuct an instance, you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
+To construct an instance, you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
 ```swift
 import Picovoice

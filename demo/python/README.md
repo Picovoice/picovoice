@@ -10,7 +10,7 @@ using Picovoice platform.
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins

@@ -12,7 +12,7 @@ This binding is for running Picovoice on **Unity 2017.4+** on the following plat
 
 ## Installation
 
-If running the project from source, run the `copy.sh` script first to copy resouces from elsewhere in the repo. You should then be able to choose one of the supported platforms and build the demo.
+If running the project from source, run the `copy.sh` script first to copy resources from elsewhere in the repo. You should then be able to choose one of the supported platforms and build the demo.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 # React Native Clock with Voice Commands
 
-To run the PicoClock app you'll first need to install yarn and setup your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands from this repo location.
+To run the PicoClock app you'll first need to install yarn and set up your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands from this repo location.
 
 ## AccessKey
 
@@ -11,7 +11,7 @@ To obtain your `AccessKey`:
 1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
-Once you obtain your `AccessKey`, replace it in [App.tsx](app.tsx) file:
+Once you obtain your `AccessKey`, replace it in [App.tsx](App.tsx) file:
 
 ```javascript
 readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)

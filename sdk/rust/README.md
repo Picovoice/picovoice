@@ -6,7 +6,7 @@ Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -39,7 +39,7 @@ To obtain your `AccessKey`:
 ## Usage
 
 To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function.
-You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function.
+You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function.
 You must then make a call to `init()`:
 
 ```rust
@@ -74,7 +74,7 @@ from the follow-on voice command within the context defined by the file located 
 `keyword_path` is the absolute path to [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
 `context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file (with `.rhn` suffix).
 `wake_word_callback` is invoked upon the detection of wake phrase and
-`inference_callback` isinvoked upon completion of follow-on voice command inference.
+`inference_callback` is invoked upon completion of follow-on voice command inference.
 
 When instantiated, valid sample rate can be obtained via `sample_rate()`.
 Expected number of audio samples per frame is `frame_length()`.

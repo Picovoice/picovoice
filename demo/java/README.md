@@ -12,7 +12,7 @@ similar to Alexa and Google, but it entirely runs 100% on-device.
 
 Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins

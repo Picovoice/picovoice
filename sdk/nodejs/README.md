@@ -4,7 +4,7 @@ Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -89,7 +89,7 @@ while (true) {
 }
 ```
 
-As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the built-in "picovoice" keyword and [sample "coffee maker" context](./resources/rhino/resources/contexts/) to the Picovoice class, and then provide it a [test WAV file](./resources/audio_samples/picovoice-coffee.wav) that contains the following utterance:
+As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the built-in "picovoice" keyword and [sample "coffee maker" context](/resources/rhino/resources/contexts) to the Picovoice class, and then provide it a [test WAV file](/resources/audio_samples/picovoice-coffee.wav) that contains the following utterance:
 
 > "Picovoice, make me a large coffee"
 
