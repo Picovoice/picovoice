@@ -3,12 +3,12 @@ name: Java
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/java/**'
       - '!sdk/java/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/java/**'
       - '!sdk/java/README.md'

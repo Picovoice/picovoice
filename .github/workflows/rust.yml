@@ -3,12 +3,12 @@ name: Rust
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
