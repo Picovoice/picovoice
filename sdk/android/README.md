@@ -9,7 +9,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -169,7 +169,7 @@ try {
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
 
-RequireEndpoint is the parameter which indicates if Rhino should wait for a moment of silence before infering context. Default is set to true.
+RequireEndpoint is the parameter which indicates if Rhino should wait for a moment of silence before inferring context. Default is set to true.
 
 The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 

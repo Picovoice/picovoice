@@ -9,7 +9,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -93,7 +93,7 @@ _picovoiceManager = PicovoiceManager.create(
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 The `inferenceCallback` callback function takes a parameter of `RhinoInference` instance with the following variables:
-- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understood context
+- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understand context
 - intent - **null** if `isUnderstood` is not true, otherwise name of intent that were inferred
 - slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
 
@@ -166,7 +166,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 #### Low-Level API
 
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, and requireEndpoint are optional.
 

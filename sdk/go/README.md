@@ -7,7 +7,7 @@ Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -38,7 +38,7 @@ Depending on your setup you also may need to run `go mod tidy` after in order to
 
 ## Usage
 
-To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function. You must then make a call to `Init()`.
+To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function. You must then make a call to `Init()`.
 
 ```go
 . "github.com/Picovoice/picovoice/sdk/go"

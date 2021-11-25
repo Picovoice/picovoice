@@ -101,7 +101,7 @@ Replace `$-i {AUDIO_DEVICE_INDEX}` with the index of the audio device.
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../-l sdk/c/lib/raspberry-pi)
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../sdk/c/lib/raspberry-pi)
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console
@@ -191,7 +191,7 @@ usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k 
 **Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
 
-The following processes a WAV file under the [audio_samples](/resources/audio_samples/) directory. It detects the wake word
+The following processes a WAV file under the [audio_samples](/resources/audio_samples) directory. It detects the wake word
 and infers the intent in the context of a coffee maker system.
 
 #### Linux
@@ -222,7 +222,7 @@ and infers the intent in the context of a coffee maker system.
 
 #### Raspberry Pi
 
-Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../-l sdk/c/lib/raspberry-pi)
+Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](../../sdk/c/lib/raspberry-pi)
 (e.g., for Raspberry Pi 4 this would be "cortex-a72") and run:
 
 ```console

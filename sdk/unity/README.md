@@ -9,7 +9,7 @@ similar to Alexa and Google, except it entirely runs 100% on-device.
 
 Picovoice is:
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -28,7 +28,7 @@ This binding is for running Picovoice on **Unity 2017.4+** on the following plat
 
 ## Installation
 
-The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 ## AccessKey
 
@@ -40,14 +40,14 @@ To obtain your `AccessKey`:
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 ## Packaging
-To build the package from source, you have first have to clone the repo with submodules:
+To build the package from source, you first have to clone the repo with submodules:
 ```console
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
 # or 
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 ```
 
-You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/sdk/unity](/sdk/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
+You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/sdk/unity](/sdk/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
 
 ## Usage
 
@@ -142,7 +142,7 @@ Unity package to capture frames of audio and automatically pass it to the Picovo
 #### Low-Level API
 
 [Picovoice](/sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `Create` static constructor.
 
@@ -208,7 +208,7 @@ catch (PicovoiceException ex)
 For process to work correctly, the audio data must be in the audio format required by Picovoice.
 The required audio format is found by calling `.sampleRate` to get the required sample rate and `.frameLength` to get the required frame size. Audio must be single-channel and 16-bit linearly-encoded.
 
-Picovoice implements the `IDisposable` interface, so you can use Picovoice in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically or you can explicitly release the resources like so:
+Picovoice implements the `IDisposable` interface, so you can use Picovoice in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically, or you can explicitly release the resources like so:
 
 ```csharp
 _picovoice.Dispose();

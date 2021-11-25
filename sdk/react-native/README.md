@@ -5,7 +5,7 @@ Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
 similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR compliant.
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
 - **Reliable:** Runs without needing constant connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 - **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
@@ -43,7 +43,7 @@ Link the iOS packages:
 cd ios && pod install && cd ..
 ```
 
-**NOTE**: Due to a limitation in React Native CLI autolinking, these native modules cannot be included as transitive depedencies. If you are creating a module that depends on these packages you will have to list these as peer dependencies and require developers to install them alongside.
+**NOTE**: Due to a limitation in React Native CLI auto-linking, these native modules cannot be included as transitive dependencies. If you are creating a module that depends on these packages you will have to list these as peer dependencies and require developers to install them alongside.
 
 ## AccessKey
 
@@ -128,7 +128,7 @@ this._picovoiceManager = PicovoiceManager.create(
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```javascript
-wakeWordCallback(){    
+wakeWordCallback(){
     // wake word detected!
 }
 
@@ -140,7 +140,7 @@ inferenceCallback(inference){
     }
 }
 ```
-You can override the default model file and/or the inference sensitivity. There is also a `requireEndpoint` parameter to 
+You can override the default model file and/or the inference sensitivity. There is also a `requireEndpoint` parameter to
 false if you do not wish to wait for silence before Rhino infers context. There is an optional `processErrorCallback`
 that is called if there is a problem encountered while processing audio.
 
@@ -164,7 +164,7 @@ this._picovoiceManager = PicovoiceManager.create(
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            requireEndpoint); 
+            requireEndpoint);
 ```
 
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
@@ -189,9 +189,9 @@ module to capture frames of audio and automatically pass it to Picovoice.
 #### Low-Level API
 
 [Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
@@ -218,8 +218,8 @@ async createPicovoice(){
     }
 }
 
-wakeWordCallback(){    
-    // wake word detected!    
+wakeWordCallback(){
+    // wake word detected!
 }
 
 inferenceCallback(inference){
@@ -258,17 +258,17 @@ To add a custom models to your React Native application you'll need to add the r
 
 ### Adding Android Models
 
-Android custom models must be added to [`./android/app/src/main/assets/`](android/app/src/main/assets/).
+Android custom models must be added to `./android/app/src/main/assets/`.
 
 ### Adding iOS Models
 
-iOS models can be added anywhere under [`./ios`](ios), but it must be included as a bundled resource. 
+iOS models can be added anywhere under `./ios`, but it must be included as a bundled resource.
 The easiest way to include a bundled resource in the iOS project is to:
 
 1. Open XCode.
 2. Either:
   - Drag and Drop the model/keyword file to the navigation tab.
-  - Right click on the navigation tab, and click `Add Files To ...`.
+  - Right-click on the navigation tab, and click `Add Files To ...`.
 
 This will bundle your models together when the app is built.
 

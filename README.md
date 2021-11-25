@@ -44,11 +44,14 @@ spoken command:
 
 ## Why Picovoice
 
-- **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR compliant.
+- **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR-compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
-- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks. Raspberry Pi, BeagleBone,
-  Android, iOS, Linux (x86_64), macOS (x86_64), Windows (x86_64), and modern web browsers are supported. Enterprise customers
-  can access the ARM Cortex-M SDK.
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
+  - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT
+  - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+  - Android and iOS
+  - Chrome, Safari, Firefox, and Edge
+  - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
 - **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://picovoice.ai/console/).
 - **Reliable:** Runs locally without needing continuous connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
@@ -86,14 +89,6 @@ Picovoice relies on the [Rhino Speech-to-Intent engine](https://github.com/Picov
 intent from spoken commands within a given domain of interest (a "context"). You can design and train custom contexts
 for your product using Picovoice Console. The exported Rhino models then can run with the Picovoice SDK on any supported
 platform.
-
-## License & Terms
-
-The Picovoice SDK is free and licensed under Apache 2.0 including the models released within. [Picovoice Console](https://picovoice.ai/console/) offers
-two types of subscriptions: Personal and Enterprise. Personal accounts can train custom speech models that run on the
-Picovoice SDK, subject to limitations and strictly for non-commercial purposes. Personal accounts empower researchers,
-hobbyists, and tinkerers to experiment. Enterprise accounts can unlock all capabilities of Picovoice Console, are
-permitted for use in commercial settings, and have a path to graduate to commercial distribution[<sup>\*</sup>](https://picovoice.ai/pricing/).
 
 ## Table of Contents
 
@@ -376,19 +371,19 @@ To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flu
 
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
-Run the following command from [demo/flutter](/demo/flutter/) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
 ```console
 flutter run
 ```
 
 Once the application has been deployed, press the start button and say:
 
-> Picovoice, turn of the lights in the kitchen.
+> Picovoice, turn off the lights in the kitchen.
 
 For the full set of supported commands refer to [demo's readme](/demo/flutter/README.md).
 
 ### React Native Demos
-To run the React Native Picovoice demo app you'll first need to install yarn and setup your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
+To run the React Native Picovoice demo app you'll first need to install yarn and set up your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
 
 #### Running On Android
 ```console
@@ -407,7 +402,7 @@ yarn ios-run            # builds and deploys to iOS
 
 Once the application has been deployed, press the start button and say
 
-> Porcupine, turn of the lights in the kitchen.
+> Porcupine, turn off the lights in the kitchen.
 
 For the full set of supported commands refer to [demo's readme](/demo/react-native/README.md).
 
@@ -416,7 +411,7 @@ For the full set of supported commands refer to [demo's readme](/demo/react-nati
 Using Android Studio, open [demo/android/Activity](/demo/android/Activity) as an Android project and then run the
 application. Press the start button and say
 
-> Porcupine, turn of the lights in the kitchen.
+> Porcupine, turn off the lights in the kitchen.
 
 For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
 
@@ -562,7 +557,7 @@ For more information about the Rust demos go to [demo/rust](/demo/rust/README.md
 
 The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
-The [Microphone demo](/demo/c/rhino_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 **Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
 
@@ -919,7 +914,7 @@ To install the Picovoice Go module to your project, use the command:
 go get github.com/Picovoice/picovoice/sdk/go
 ```
 
-To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function. You must then make a call to `Init()`.
+To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function. You must then make a call to `Init()`.
 
 ```go
 . "github.com/Picovoice/picovoice/sdk/go"
@@ -1026,7 +1021,7 @@ Unity package to capture frames of audio and automatically pass it to the Picovo
 #### Low-Level API
 
 [Picovoice](/sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `Create` static constructor.
 
@@ -1069,7 +1064,7 @@ catch (Exception ex)
 
 For `Process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
 
-Picovoice implements the `IDisposable` interface, so you can use Picovoice in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically or you can explicitly release the resources like so:
+Picovoice implements the `IDisposable` interface, so you can use Picovoice in a `using` block. If you don't use a `using` block, resources will be released by the garbage collector automatically, or you can explicitly release the resources like so:
 
 ```csharp
 _picovoice.Dispose();
@@ -1109,7 +1104,7 @@ void createPicovoiceManager() {
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 The `inferenceCallback` callback function takes a parameter of `RhinoInference` instance with the following variables:
-- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understood context
+- isUnderstood - true if Rhino understood what it heard based on the context or false if Rhino did not understand context
 - intent - **null** if `isUnderstood` is not true, otherwise name of intent that were inferred
 - slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
 
@@ -1127,9 +1122,9 @@ Flutter plugin handles audio capture and passes frames to Picovoice for you.
 #### Low-Level API
 
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files and requireEndpoint are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files and requireEndpoint are optional.
 
 ```dart
 import 'package:picovoice/picovoice_manager.dart';
@@ -1187,7 +1182,7 @@ The [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/react-native/src/picovoicemanager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](/sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -1220,9 +1215,9 @@ module handles audio capture and passes frames to Picovoice for you.
 #### Low-Level API
 
 [Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
-who want to incorporate it into a already existing audio processing pipeline.
+who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
@@ -1414,7 +1409,7 @@ when initialized input audio can be processed using `manager.start()`. The proce
 
 [Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
 
-o constuct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
+o construct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
 ```swift
 import Picovoice
@@ -1509,18 +1504,14 @@ Each spoken language is available as a dedicated npm package (e.g. @picovoice/pi
           }
         };
 
-        console.log(
-          "WebVoiceProcessor initializing. Microphone permissions requested ..."
-        );
+        console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
 
         try {
           let webVp = await WebVoiceProcessor.WebVoiceProcessor.init({
             engines: [picovoiceWorker],
             start: true,
           });
-          console.log(
-            "WebVoiceProcessor ready! Say 'Picovoice' to start the interaction."
-          );
+          console.log("WebVoiceProcessor ready! Say 'Picovoice' to start the interaction.");
         } catch (e) {
           console.log("WebVoiceProcessor failed to initialize: " + e);
         }
@@ -1824,7 +1815,7 @@ picovoice = "*"
 ```
 
 To create an instance of the engine with default parameters, use the `PicovoiceBuilder` function.
-You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and a inference callback function.
+You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function.
 You must then make a call to `init()`:
 
 ```rust
@@ -1856,7 +1847,7 @@ from the follow-on voice command within the context defined by the file located 
 `keyword_path` is the absolute path to [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
 `context_path` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file (with `.rhn` suffix).
 `wake_word_callback` is invoked upon the detection of wake phrase and
-`inference_callback` isinvoked upon completion of follow-on voice command inference.
+`inference_callback` is invoked upon completion of follow-on voice command inference.
 
 When instantiated, valid sample rate can be obtained via `sample_rate()`.
 Expected number of audio samples per frame is `frame_length()`.
@@ -1945,6 +1936,14 @@ Finally, when done be sure to release the acquired resources.
 pv_picovoice_delete(handle);
 ```
 ## Releases
+
+### v2.0.0 - Nov 25th, 2021
+- Improved accuracy.
+- Added Rust SDK.
+- macOS arm64 support.
+- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone.
+- Added .NET support for NVIDIA Jetson Nano and BeagleBone.
+- Runtime optimization.
 
 ### v1.1.0 - December 2nd, 2020
 

@@ -1,6 +1,6 @@
 # picovoice-web-react
 
-React hook for Picovoice SDK for Web.
+React Hook for Picovoice SDK for Web.
 
 Picovoice is also available for React Native, as a separate package. See [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native).
 
@@ -46,7 +46,7 @@ The Picovoice SDK for Web is powered by WebAssembly (WASM), the Web Audio API, a
 
 All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
 
-Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
+Using the Web Audio API requires a secure context (HTTPS connection), except for `localhost`, for local development.
 
 ## AccessKey
 
