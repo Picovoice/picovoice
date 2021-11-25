@@ -3,13 +3,13 @@ name: React
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/react/**'
       - '!sdk/react/README.md'
       - 'lib/wasm/**'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/react/**'
       - '!sdk/react/README.md'
@@ -39,10 +39,6 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-
-    - name: Local package dependencies
-      run: .github/workflows/web_action_helper.sh || exit 1
-      working-directory: .
 
     - name: Install dependencies
       run: yarn install

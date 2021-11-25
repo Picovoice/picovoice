@@ -3,12 +3,12 @@ name: Go
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'

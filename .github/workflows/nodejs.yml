@@ -3,12 +3,12 @@ name: Nodejs
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
@@ -34,18 +34,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Building ppn binding
-      working-directory: resources/porcupine/binding/nodejs
-      run: |
-        npm install yarn
-        yarn install
-
-    - name: Building rhn binding
-      working-directory: resources/rhino/binding/nodejs
-      run: |
-        npm install yarn
-        yarn install
 
     - name: Pre-build dependencies
       run: |

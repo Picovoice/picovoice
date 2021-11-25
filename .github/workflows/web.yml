@@ -3,12 +3,12 @@ name: Web
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
   pull_request:
-    branches: [ master, v2.0 ]
+    branches: [ master ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
