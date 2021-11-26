@@ -12,10 +12,11 @@
 import argparse
 import os
 import sys
+import struct
+import wave
 from threading import Thread
 
 import numpy as np
-import soundfile
 from picovoice import Picovoice
 from pvrecorder import PvRecorder
 
@@ -53,8 +54,6 @@ class PicovoiceDemo(Thread):
 
         self.audio_device_index = audio_device_index
         self.output_path = output_path
-        if self.output_path is not None:
-            self._recorded_frames = list()
 
     @staticmethod
     def _wake_word_callback():
@@ -75,10 +74,15 @@ class PicovoiceDemo(Thread):
 
     def run(self):
         recorder = None
+        wav_file = None
 
         try:
             recorder = PvRecorder(device_index=self.audio_device_index, frame_length=self._picovoice.frame_length)
             recorder.start()
+
+            if self.output_path is not None:
+                wav_file = wave.open(self.output_path, "w")
+                wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
             print(f"Using device: {recorder.selected_device}")
             print('[Listening ...]')
@@ -86,8 +90,8 @@ class PicovoiceDemo(Thread):
             while True:
                 pcm = recorder.read()
 
-                if self.output_path is not None:
-                    self._recorded_frames.append(pcm)
+                if wav_file is not None:
+                    wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
 
                 self._picovoice.process(pcm)
         except KeyboardInterrupt:
@@ -97,13 +101,8 @@ class PicovoiceDemo(Thread):
             if recorder is not None:
                 recorder.delete()
 
-            if self.output_path is not None and len(self._recorded_frames) > 0:
-                recorded_audio = np.concatenate(self._recorded_frames, axis=0).astype(np.int16)
-                soundfile.write(
-                    self.output_path,
-                    recorded_audio,
-                    samplerate=self._picovoice.sample_rate,
-                    subtype='PCM_16')
+            if wav_file is not None:
+                wav_file.close()
 
             self._picovoice.delete()
 
