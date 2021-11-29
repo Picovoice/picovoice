@@ -2,18 +2,18 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.0.0.tgz#3f1947029648398c548cdfcd27557a77005cf1b7"
-  integrity sha512-zhtapWmfafSEQyTU8kxLFz/1WXrC22CrogM1+HGGldL5rp2gVhk4BBaq2ZHNl2gCVyiMrDRQ/Gp6PZfxVPth6g==
+"@picovoice/picovoice-node@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.0.1.tgz#4619f659aae59d5a1aae7b2abf90eb7b9cdaba06"
+  integrity sha512-hFRuBlRkId5ZekutzX+UbjvIhztmbQGs+qOuyYYU3jEfUIThoYmgZO/7VxT6Kj+xDQmF4m0abFTIZjIBsbX0ZQ==
   dependencies:
-    "@picovoice/porcupine-node" "^2.0.0"
-    "@picovoice/rhino-node" "^2.0.0"
+    "@picovoice/porcupine-node" "^2.0.1"
+    "@picovoice/rhino-node" "^2.0.1"
 
-"@picovoice/porcupine-node@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.0.0.tgz#4497775af751afd1183dfc3af38c3839c65f8efe"
-  integrity sha512-hI3f2UiGNCQwko3QSdKWdRu8jZgZw6y/PpLnkbTZWPZOdWiCB+8idWOw+aptG4hDNvWTOYsR1IeovLhXuvO4mA==
+"@picovoice/porcupine-node@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.0.1.tgz#c9de678ae510bdb248892e4fbf076813ff3ebd1b"
+  integrity sha512-DrgIps2qNtJNSvn6DTy9W5G1gnaFCcEKI5JhnHUBHLPeR//cKobHMqd/wD1XgQEuYBqYDOyVmwSCyXXO10+NIw==
 
 "@picovoice/pvrecorder-node@^1.0.2":
   version "1.0.2"
@@ -22,10 +22,10 @@
   dependencies:
     ncp "^2.0.0"
 
-"@picovoice/rhino-node@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.0.0.tgz#bcb27f8d0c011577417f3072b873a1c8a393a40c"
-  integrity sha512-VSyvqjohoNrsPzeUozzeJcpiHv26TgoWO49wtVNJw1qiabKCQfIFb1O6ZBbOduRkYSjadYdM3xwg+r746MZ0WQ==
+"@picovoice/rhino-node@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.0.1.tgz#5c1ec955fde53a88f3ae267bcbacb536619c2d42"
+  integrity sha512-h99H6rAy+bewht1q16uWsP/qvvXvVy1Z0dsSSQKkdXAbo37Fe5sAnUyfwB0su/LRwFyEUk53VeOSP4bQIShUeQ==
 
 commander@^6.1.0:
   version "6.2.1"
