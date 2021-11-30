@@ -24,7 +24,7 @@ const { PvArgumentError, PvStateError } = require("./errors");
 class Picovoice {
   /**
    * Creates an instance of Picovoice with a specific keyword and context.
-   *
+   * @param {accessKey} AccessKey Obtained from the Picovoice Console (https://console.picovoice.ai/)
    * @param {string} keywordPath,
    * @param {function} wakeWordCallBack,
    * @param {string} contextPath,
@@ -33,8 +33,8 @@ class Picovoice {
    * @param {number} rhinoSensitivity = 0.5,
    * @param {boolean} requireEndpoint = true,
    * @param {string} porcupineModelPath,
-   * @param {string} porcupineLibraryPath,
    * @param {string} rhinoModelPath,
+   * @param {string} porcupineLibraryPath,
    * @param {string} rhinoLibraryPath,
    */
   constructor(
@@ -47,8 +47,8 @@ class Picovoice {
     rhinoSensitivity = 0.5,
     requireEndpoint = true,
     porcupineModelPath,
-    porcupineLibraryPath,
     rhinoModelPath,
+    porcupineLibraryPath,
     rhinoLibraryPath
   ) {
     if (
