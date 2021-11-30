@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-node",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Picovoice SDK for NodeJS",
   "main": "index.js",
   "scripts": {
@@ -33,8 +33,8 @@
   },
   "homepage": "https://picovoice.ai/",
   "dependencies": {
-    "@picovoice/porcupine-node": "^2.0.1",
-    "@picovoice/rhino-node": "^2.0.1"
+    "@picovoice/porcupine-node": "^2.0.2",
+    "@picovoice/rhino-node": "^2.0.2"
   },
   "devDependencies": {
     "jest": "^26.4.0",
