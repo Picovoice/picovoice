@@ -1,3 +1,2 @@
 picovoice==2.0.1
 pvrecorder==1.0.2
-soundfile
