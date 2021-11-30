@@ -1,3 +1,2 @@
-pvporcupine==2.0.0
-pvrhino==2.0.0
-soundfile
+pvporcupine==2.0.1
+pvrhino==2.0.1
