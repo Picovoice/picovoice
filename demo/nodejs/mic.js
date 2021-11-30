@@ -178,8 +178,8 @@ async function micDemo() {
     sensitivity,
     requiresEndpoint,
     porcupineModelFilePath,
-    porcupineLibraryFilePath,
     rhinoModelFilePath,
+    porcupineLibraryFilePath,
     rhinoLibraryFilePath
   );
 

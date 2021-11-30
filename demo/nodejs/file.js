@@ -163,8 +163,8 @@ function fileDemo() {
     sensitivity,
     requiresEndpoint,
     porcupineModelFilePath,
-    porcupineLibraryFilePath,
     rhinoModelFilePath,
+    porcupineLibraryFilePath,
     rhinoLibraryFilePath
   );
 
