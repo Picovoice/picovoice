@@ -47,7 +47,7 @@ export default {
         } = this.picovoiceFactoryArgs;
         this.pvWorker = await this.picovoiceFactory.create({
           accessKey,
-          porcupineKeyword,
+          porcupineKeyword: JSON.parse(JSON.stringify(porcupineKeyword)),
           rhinoContext: JSON.parse(JSON.stringify(rhinoContext)),
           requireEndpoint,
           start: true,
@@ -74,6 +74,7 @@ export default {
         this.$emit('pv-ready');
 
       } catch (error) {
+        console.log(error)
         this.$emit('pv-error', error);
       }
     },
