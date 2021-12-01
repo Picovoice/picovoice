@@ -74,7 +74,6 @@ export default {
         this.$emit('pv-ready');
 
       } catch (error) {
-        console.log(error)
         this.$emit('pv-error', error);
       }
     },
