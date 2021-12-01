@@ -7,6 +7,20 @@
 <script>
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
+/**
+ * Picovoice Vue Component
+ * 
+ * Props
+ * picovoiceFactoryArgs: Arguments for PicovoiceWorkerFactory.
+ * picovoiceFactory: The language-specific worker factory. 
+ * 
+ * Events
+ * pv-ready: A method invoked after component has initialized.
+ * ppn-keyword: A method invoked upon detection of the keywords.
+ * rhn-inference: A method invoked upon completion of intent inference.
+ * rhn-info: A method invoked after component has initialized and has context information.
+ * pv-error: A method invoked if an error occurs within PicovoiceWorkerFactory.
+ */
 export default {
   name: 'Picovoice',
   props: {
@@ -17,6 +31,9 @@ export default {
     return { webVp: null, pvWorker: null };
   },
   methods: {
+    /**
+     * Initializes PicovoiceWorkerFactory.
+     */
     async initEngine() {
       this.$emit('pv-loading');
 
@@ -60,6 +77,9 @@ export default {
         this.$emit('pv-error', error);
       }
     },
+    /**
+     * Method to start processing audio.
+     */
     start() {
       if (this.webVp !== null) {
         this.webVp.start();
@@ -67,6 +87,9 @@ export default {
       }
       return false;
     },
+    /**
+     * Method to stop processing audio.
+     */
     pause() {
       if (this.webVp !== null) {
         this.webVp.pause();
