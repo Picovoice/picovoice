@@ -100,7 +100,7 @@ PV_API pv_status_t pv_picovoice_init(
 /**
  * Destructor.
  *
- * @param object Porcupine object.
+ * @param object Picovoice object.
  */
 PV_API void pv_picovoice_delete(pv_picovoice_t *object);
 

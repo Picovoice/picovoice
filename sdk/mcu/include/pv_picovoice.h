@@ -60,8 +60,8 @@ PV_API void pv_inference_delete(pv_inference_t *inference);
  * Constructor.
  *
  * @param access_key AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
- * @param memory_size Memory needs to be 8-byte aligned.
- * @param memory_buffer Memory size in bytes.
+ * @param memory_size Memory size in bytes.
+ * @param memory_buffer Memory needs to be 8-byte aligned.
  * @param keyword_model_size Size of keyword model in bytes.
  * @param keyword_model Keyword model.
  * @param porcupine_sensitivity Wake word detection sensitivity. It should be a number within [0, 1]. A higher
@@ -104,7 +104,7 @@ PV_API pv_status_t pv_picovoice_init(
 /**
  * Destructor.
  *
- * @param object Porcupine object.
+ * @param object Picovoice object.
  */
 PV_API void pv_picovoice_delete(pv_picovoice_t *object);
 
