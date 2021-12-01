@@ -949,10 +949,10 @@
     "@picovoice/porcupine-web-en-factory" "2.0.0"
     "@picovoice/rhino-web-en-factory" "2.0.0"
 
-"@picovoice/picovoice-web-vue@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-2.0.0.tgz#3daa53048b204322f408efe8a2050c380861f6f7"
-  integrity sha512-pov8CcjzKNT3SJd1eN2FPqoFu55Ksa9hGReGecsT0KYHgFlQk+ZcN/d40j1m2onn+bniTAVCYfKTpXHMZOrxtw==
+"@picovoice/picovoice-web-vue@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-2.0.1.tgz#057b6b9b7901c8d328372ab7d5772dafd555d9d0"
+  integrity sha512-GBJhcBluXQiXJaCGPEx3ZlvtjPp5Xdpm3qbg0QjD2hqGtY/tzepOmOGzitP2b0Ves4yREAnH4+WryyQ0Le2auQ==
 
 "@picovoice/porcupine-web-en-factory@2.0.0":
   version "2.0.0"
