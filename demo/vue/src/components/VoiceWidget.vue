@@ -78,7 +78,9 @@ export default {
       factoryArgs: {
         accessKey: "",
         start: true,
-        porcupineKeyword: 'Picovoice',
+        porcupineKeyword: {
+          builtin: 'Picovoice'
+        },
         rhinoContext: {
           base64: CLOCK_EN_64,
         },
