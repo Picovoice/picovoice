@@ -30,7 +30,7 @@ To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/i
 To add the Picovoice package to your app project, you can reference it in your pub.yaml:
 ```yaml
 dependencies:  
-  picovoice: ^<version>
+  picovoice_flutter: ^<version>
 ```
 
 If you prefer to clone the repo and use it locally, you can reference the local binding location:
