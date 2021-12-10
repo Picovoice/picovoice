@@ -163,11 +163,11 @@ if (done) {
 
 ### Factory
 
-If you wish to build your own worker, or perhaps not use workers at all, use the factory packages. This will let you instantiate Picovoice engine instances directly. Use the `Picovoice.create()` async factory method to create Picovoice instances.
+If you wish to not use workers at all, use the factory packages. This will let you instantiate Picovoice engine instances directly. Use the `Picovoice.create()` async factory method to create Picovoice instances.
 
 #### Usage
 
-The audio passed to the worker must be of the correct format (16-bit 16kHz linear PCM, single channel). The WebVoiceProcessor handles downsampling in the examples above. If you are not using that, you must ensure you do it yourself.
+The audio passed to the engine must be of the correct format (16-bit 16kHz linear PCM, single channel). The WebVoiceProcessor handles downsampling in the examples above. If you are not using that, you must ensure you do it yourself.
 
 Provide Picovoice with callback functions for wake word (`porcupineCallback`) and inference (`rhinoCallback`) events.
 
