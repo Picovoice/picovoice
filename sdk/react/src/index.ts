@@ -12,6 +12,8 @@ import {
 
 export {
   usePicovoice,
+  RhinoInference,
+  RhinoContext,
   PorcupineKeywordCustom,
   PorcupineKeywordBuiltin,
   PorcupineKeyword,
