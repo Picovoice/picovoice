@@ -1,15 +1,5 @@
 <template>
   <div class="voice-widget">
-    <Picovoice
-      ref="picovoice"
-      v-bind:picovoiceFactoryArgs="factoryArgs"
-      v-bind:picovoiceFactory="factory"
-      v-on:pv-ready="pvReadyFn"
-      v-on:ppn-keyword="pvKeywordFn"
-      v-on:rhn-inference="pvInferenceFn"
-      v-on:rhn-info="pvInfoFn"
-      v-on:pv-error="pvErrorFn"
-    />
     <h2>VoiceWidget</h2>
     <h3>
       <label>
@@ -52,28 +42,33 @@
   </div>
 </template>
 
-<script>
-import Picovoice from "@picovoice/picovoice-web-vue";
+<script lang="ts">
+import Vue, { VueConstructor } from 'vue';
+
+import picovoiceMixin, { 
+  EngineControlType, 
+  PicovoiceVue, 
+  RhinoInferenceFinalized 
+} from "@picovoice/picovoice-web-vue";
 import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
 
 import { CLOCK_EN_64 } from "../dist/rhn_contexts_base64";
 
-export default {
+export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend({
   name: "VoiceWidget",
-  components: {
-    Picovoice,
-  },
+  mixins: [picovoiceMixin],
   data: function () {
     return {
-      inference: null,
-      detections: [],
+      inference: null as RhinoInferenceFinalized | null,
+      detections: [] as string[],
       isError: false,
+      errorMessage: '',
       isLoaded: false,
       isListening: false,
       isTalking: false,
       context64: CLOCK_EN_64,
-      info: null,
-      engine: null,
+      info: null as string | null,
+      engine: null as EngineControlType | null,
       factory: PicovoiceWorkerFactoryEn,
       factoryArgs: {
         accessKey: "",
@@ -88,46 +83,53 @@ export default {
     };
   },
   methods: {
-    initEngine: function (event) {
+    initEngine: function (event: any) {
       this.factoryArgs.accessKey = event.target.value;
       this.isError = false;
       this.isLoaded = false;
       this.isListening = false;
-      this.$refs.picovoice.initEngine();
+      this.$picovoice.init(
+        this.factoryArgs,
+        this.factory,
+        this.pvKeywordFn,
+        this.pvInferenceFn,
+        this.pvInfoFn,
+        this.pvReadyFn,
+        this.pvErrorFn
+      );
     },
     start: function () {
-      if (this.$refs.picovoice.start()) {
+      if (this.$picovoice.start()) {
         this.isListening = !this.isListening;
       }
     },
     pause: function () {
-      if (this.$refs.picovoice.pause()) {
+      if (this.$picovoice.pause()) {
         this.isListening = !this.isListening;
       }
     },
-
     pvReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
       this.engine = "ppn";
     },
-    pvInfoFn: function (info) {
+    pvInfoFn: function (info: string) {
       this.info = info;
     },
-    pvKeywordFn: function (keyword) {
+    pvKeywordFn: function (keyword: string) {
       this.detections = [...this.detections, keyword];
       this.engine = "rhn";
     },
-    pvInferenceFn: function (inference) {
+    pvInferenceFn: function (inference: RhinoInferenceFinalized) {
       this.inference = inference;
       this.engine = "ppn";
     },
-    pvErrorFn: function (error) {
+    pvErrorFn: function (error: Error) {
       this.isError = true;
       this.errorMessage = error.toString();
     },
   },
-};
+});
 </script>
 
 <style scoped>
