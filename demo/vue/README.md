@@ -1,6 +1,6 @@
 # picovoice-web-vue-demo
 
-This demo application includes a sample `VoiceWidget` Vue component which uses the `Picovoice` renderless Vue component service to allow processing naturally spoken phrases within a domain (context) of interest. Wake word events are handled via the `ppn-keyword` event. Inference events are handled via the `rhn-inference` event. Our VoiceWidget subscribes to this event and displays the results.
+This demo application includes a sample `VoiceWidget` Vue component which uses the `picovoiceMixin` service to allow processing naturally spoken phrases within a domain (context) of interest. Wake word events are handled via the `keywordCallback` function. Inference events are handled via the `inferenceCallback` function. Our VoiceWidget subscribes to this event and displays the results.
 
 The demo uses dynamic imports to split the `VoiceWidget` away from the main application bundle. This means that the initial download size of the Vue app will not be impacted by the ~4-6 MB requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
 

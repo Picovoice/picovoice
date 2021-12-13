@@ -1739,65 +1739,59 @@ npm install @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker
 ```
 
 ```html
-<template>
-  <div class="voice-widget">
-    <Picovoice
-      v-bind:picovoiceFactoryArgs="{
-        accessKey: '${ACCESS_KEY}', <!-- AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) -->
-        start: true,
-        porcupineKeyword: 'Picovoice',
-        rhinoContext: { base64: '... Base64 representation of a .rhn file ...' },
-      }"
-      v-bind:picovoiceFactory="factory"
-      v-on:pv-init="pvInitFn"
-      v-on:pv-ready="pvReadyFn"
-      v-on:ppn-keyword="pvKeywordFn"
-      v-on:rhn-inference="pvInferenceFn"
-      v-on:pv-error="pvErrorFn"
-    />
-    <h3>Keyword Detections:</h3>
-    <ul v-if="detections.length > 0">
-      <li v-for="(item, index) in detections" :key="index">{{ item }}</li>
-    </ul>
-    <h3>Inference:</h3>
-    <pre v-if="inference !== null">{{ JSON.stringify(inference, null, 2) }}</pre>
-  </div>
-</template>
-<script>
-import Picovoice from "@picovoice/picovoice-web-vue";
-import { PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
- 
+<script lang="ts">
+import picovoiceMixinfrom '@picovoice/picovoice-web-vue';
+import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from '@picovoice/picovoice-web-en-worker';
+
 export default {
-  name: "VoiceWidget",
-  components: {
-    Picovoice,
-  },
-  data: function() {
+  name: 'App',
+  mixins: [picovoiceMixin],
+  data: function () {
     return {
-      detections: [],
-      isError: null,
+      inference: null,
+      isError: false,
       isLoaded: false,
+      isListening: false,
+      isTalking: false,
       factory: PicovoiceWorkerFactoryEn,
+      factoryArgs: {
+        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+        porcupineKeyword: { builtin: 'Picovoice', sensitivity: 0.6 },
+        rhinoContext: {
+          base64: 'RHINO_TRAINED_CONTEXT_BASE_64_STRING'
+        },
+      }
     };
   },
+  created() {
+    this.$picovoice.init(
+      this.factoryArgs,
+      this.factory,
+      this.pvKeywordFn,
+      this.pvInferenceFn,
+      this.pvInfoFn,
+      this.pvReadyFn,
+      this.pvErrorFn
+    );
+  },
   methods: {
-    pvInitFn: function () {
-      this.isError = false;
-    },
     pvReadyFn: function () {
       this.isLoaded = true;
       this.isListening = true;
-      this.engine = 'ppn'
+      this.engine = "ppn";
     },
-    pvKeywordFn: function (keyword) {
+    pvInfoFn: function (info: string) {
+      this.info = info;
+    },
+    pvKeywordFn: function (keyword: string) {
       this.detections = [...this.detections, keyword];
-      this.engine = 'rhn'
+      this.engine = "rhn";
     },
-    pvInferenceFn: function (inference) {
+    pvInferenceFn: function (inference: RhinoInferenceFinalized) {
       this.inference = inference;
-      this.engine = 'ppn'
+      this.engine = "ppn";
     },
-    pvErrorFn: function (error) {
+    pvErrorFn: function (error: Error) {
       this.isError = true;
       this.errorMessage = error.toString();
     },
