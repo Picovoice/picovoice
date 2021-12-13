@@ -994,8 +994,10 @@
     "@picovoice/porcupine-web-en-factory" "2.0.1"
     "@picovoice/rhino-web-en-factory" "2.0.1"
 
-"@picovoice/picovoice-web-vue@file:../../sdk/vue":
-  version "2.0.1"
+"@picovoice/picovoice-web-vue@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-2.0.2.tgz#99564cf5d9d17e6e2fbd252c41c9baabd0311e21"
+  integrity sha512-CCzZDwckYBOtsXEV885AibdVFKyZD4k0c3WLKktPpOl/Tv7GUaLgP0sW4mMT4TUM8GwjA0NvRk4Ot76n7LbgIA==
 
 "@picovoice/porcupine-web-en-factory@2.0.1":
   version "2.0.1"
