@@ -41,8 +41,8 @@ Underneath, Picovoice SDK wake word and inference detection is powered by the [P
 ## Compatibility
 
 This library is compatible with Vue:
-- Vue.js 2.6.11+.
-- Vue.js 3.0.0+.
+- Vue.js 2.6.11+
+- Vue.js 3.0.0+
 
 The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API, and Web Workers.
 
