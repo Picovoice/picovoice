@@ -9,23 +9,23 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@picovoice/picovoice-web-en-worker@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.0.0.tgz#9c684b5215b37352a8777be05573c9db06a181d6"
-  integrity sha512-J/USqv+j8XD5+8KWSvGhhdfkKWUrWiPRvX1NsvcTjQ+VlBzC+5WtSFOJ9Rhdmz/yG2v5yM2q4ql10b+Xf7ZqkQ==
+"@picovoice/picovoice-web-en-worker@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.0.2.tgz#b9305b9a121386894b2c4a7c48d30e6b041b705d"
+  integrity sha512-NYDSjGa/Ec2E5vMdUQISi3hkCb0FCyLzomPDDXtznqVHff4hVqoyZY27oh/befT9hH1lfDUQO+wVxA7Eue9d6A==
   dependencies:
-    "@picovoice/porcupine-web-en-factory" "2.0.0"
-    "@picovoice/rhino-web-en-factory" "2.0.0"
+    "@picovoice/porcupine-web-en-factory" "2.0.2"
+    "@picovoice/rhino-web-en-factory" "2.0.2"
 
-"@picovoice/porcupine-web-en-factory@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.0.0.tgz#87add883c8a6b3398e38de7b6688af464b5d0ea9"
-  integrity sha512-RgVVJyIrENr0eTeCc02YcS9gRVoDofqdGi1EDxmMNecMswCJU8TPwQYl5lmi/nePlmaYoN9iG2TG3+5ESauWMw==
+"@picovoice/porcupine-web-en-factory@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.0.2.tgz#7c1a7b76be1316465a5e4858092d28727c85488e"
+  integrity sha512-vFQ7Pe3qrhd6TgU5xKvJoaO5PxAWm/4g5ck9DbamCy+hBDx1/OjMEQnP4D2HYtP4lol+aFnT/HgRioUi+2jG2w==
 
-"@picovoice/rhino-web-en-factory@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-2.0.0.tgz#56352607cc2d5559cbe6671586e68493ce467ac4"
-  integrity sha512-3VlkV7VG4AQdHc9mnh0alu7FCUuzJpxVyEngn/TZSXKyPEuVItebYEcfEzI0U0VsoYLbqaOaAZXjknVrcj4VQA==
+"@picovoice/rhino-web-en-factory@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-2.0.2.tgz#749a709f3e85c9a80300ec6669bc5d4e340cd26d"
+  integrity sha512-zjvMhRmLYKlAXfc0KQ9I2q4IiIcAs5eziBn9Koi6AUNP+LxvsTvlHlpHnPdYaXRyqHcIF9Ad/a3m9KOaGSeu0A==
 
 "@picovoice/web-voice-processor@^2.1.2":
   version "2.1.2"
