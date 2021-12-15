@@ -26,7 +26,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web-en-worker": "^2.0.0",
+    "@picovoice/picovoice-web-en-worker": "^2.0.2",
     "@picovoice/web-voice-processor": "^2.1.2"
   },
   "devDependencies": {
