@@ -23,38 +23,6 @@ defaults:
     working-directory: sdk/python
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
-
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Pre-build dependencies
-      run: |
-        sudo apt install libsndfile1-dev
-        python -m pip install --upgrade pip
-        pip install wheel
-
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Run tests
-
-      run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
-
-
-jobs:
   build-github-hosted:
     runs-on: ${{ matrix.os }}
 
@@ -102,12 +70,13 @@ jobs:
         submodules: recursive
 
     - name: Pre-build dependencies
-      run: python3 -m pip install --upgrade pip
+      run: |
+        python3 -m pip install --upgrade pip
+        pip3 install wheel 
 
     - name: Install dependencies
-      run: |
-        pip3 install -r requirements.txt
-        pip3 install wheel 
+      run: pip3 install -r requirements.txt
+        
 
     - name: Test
       run: python3 test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
