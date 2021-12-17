@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/python.yml'
       - 'sdk/python/**'
       - '!sdk/python/README.md'
       - 'resources/porcupine'
