@@ -24,16 +24,22 @@ from picovoice import Picovoice
 
 class PicovoiceTestCase(unittest.TestCase):
     @staticmethod
-    def _context_path():
-        if platform.system() == 'Darwin':
-            return os.path.join(
-                os.path.dirname(__file__),
-                '../../resources/rhino/resources/contexts/mac/coffee_maker_mac.rhn')
-        elif platform.system() == 'Linux':
+    def __append_language(s, language):
+        if language == 'en':
+            return s
+        return s + '_' + language
+
+    @classmethod
+    def __context_path(cls, context, language):
+        system = platform.system()
+
+        contexts_root = cls.__append_language('../../resources/rhino/resources/contexts', language)
+
+        if system == 'Darwin':
+            return os.path.join(os.path.dirname(__file__), contexts_root, 'mac', context+'_mac.rhn')
+        elif system == 'Linux':
             if platform.machine() == 'x86_64':
-                return os.path.join(
-                    os.path.dirname(__file__),
-                    '../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn')
+                return os.path.join(os.path.dirname(__file__), contexts_root, 'linux', context+'_linux.rhn')
             else:
                 cpu_info = ''
                 try:
@@ -44,22 +50,20 @@ class PicovoiceTestCase(unittest.TestCase):
                     raise RuntimeError("Failed to identify the CPU with '%s'\nCPU info: %s" % (error, cpu_info))
 
                 if '0xb76' == cpu_part or '0xc07' == cpu_part or '0xd03' == cpu_part or '0xd08' == cpu_part:
-                    return os.path.join(
-                        os.path.dirname(__file__),
-                        '../../resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn')
+                    return os.path.join(os.path.dirname(__file__),
+                                        contexts_root, 'raspberry-pi', context+'_raspberry-pi.rhn')
                 elif '0xd07' == cpu_part:
                     return os.path.join(os.path.dirname(__file__),
-                                        '../../resources/rhino/resources/contexts/jetson/coffee_maker_jetson.rhn')
+                                        contexts_root, 'jetson', context+'_jetson.rhn')
                 elif '0xc08' == cpu_part:
-                    return os.path.join(
-                        os.path.dirname(__file__),
-                        '../../resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn')
+                    return os.path.join(os.path.dirname(__file__),
+                                        contexts_root, 'beaglebone', context+'_beaglebone.rhn')    
                 else:
                     raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
-        elif platform.system() == 'Windows':
-            return os.path.join(os.path.dirname(__file__), '../../resources/contexts/windows/coffee_maker_windows.rhn')
+        elif system == 'Windows':
+            return os.path.join(os.path.dirname(__file__), contexts_root, 'windows', context+'_windows.rhn')
         else:
-            raise ValueError("Unsupported system '%s'." % platform.system())
+            raise ValueError("Unsupported system '%s'." % system)
 
     @classmethod
     def _wake_word_callback(cls):
@@ -75,7 +79,7 @@ class PicovoiceTestCase(unittest.TestCase):
             access_key=sys.argv[1],
             keyword_path=pvporcupine.KEYWORD_PATHS['picovoice'],
             wake_word_callback=cls._wake_word_callback,
-            context_path=cls._context_path(),
+            context_path=cls.__context_path('coffee_maker', 'en'),
             inference_callback=cls._inference_callback)
 
         cls._is_wake_word_detected = False
