@@ -62,7 +62,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [jetson]
+        machine: [beaglebone]
         # machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
 
     steps:
