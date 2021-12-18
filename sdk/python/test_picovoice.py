@@ -57,7 +57,7 @@ class PicovoiceTestCase(unittest.TestCase):
                 else:
                     raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
         elif platform.system() == 'Windows':
-            return os.path.join(os.path.dirname(__file__), '../../resources/contexts/windows/coffee_maker_windows.rhn')
+            return os.path.join(os.path.dirname(__file__), '../../resources/rhino/resources/contexts/windows/coffee_maker_windows.rhn')
         else:
             raise ValueError("Unsupported system '%s'." % platform.system())
 

@@ -5,6 +5,7 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/python.yml'
       - 'sdk/python/**'
       - '!sdk/python/README.md'
       - 'resources/porcupine'
@@ -23,11 +24,12 @@ defaults:
     working-directory: sdk/python
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
@@ -40,14 +42,41 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
+    - name: Pre-build dependencies specific to Ubuntu
+      if: runner.os == 'Linux'
+      run: sudo apt install libsndfile1-dev
+
     - name: Pre-build dependencies
       run: |
-        sudo apt install libsndfile1-dev
         python -m pip install --upgrade pip
         pip install wheel
 
     - name: Install dependencies
       run: pip install -r requirements.txt
 
-    - name: Run tests
+    - name: Test
       run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
+
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive      
+
+    - name: Pre-build dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip3 install wheel 
+
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
+        
+    - name: Test
+      run: python3 test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
