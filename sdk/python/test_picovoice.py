@@ -91,28 +91,28 @@ class PicovoiceTestCase(unittest.TestCase):
                 intent='orderBeverage',
                 slots=dict(size='large', beverage='coffee')) 
 
-    def test_again(self):
-        self.test()                        
+    # def test_again(self):
+    #     self.test()                        
 
-    def test_es(self):
-        self.run_picovoice(
-                pv_index=1,
-                audio_file_name='manzana-luz_es.wav',
-                intent='changeColor',
-                slots=dict(location='habitación', color='rosado'))
+    # def test_es(self):
+    #     self.run_picovoice(
+    #             pv_index=1,
+    #             audio_file_name='manzana-luz_es.wav',
+    #             intent='changeColor',
+    #             slots=dict(location='habitación', color='rosado'))
 
-    def test_de(self):
-        self.run_picovoice(
-                pv_index=2,
-                audio_file_name='heuschrecke-beleuchtung_de.wav',
-                intent='changeState',
-                slots=dict(state='aus'))
+    # def test_de(self):
+    #     self.run_picovoice(
+    #             pv_index=2,
+    #             audio_file_name='heuschrecke-beleuchtung_de.wav',
+    #             intent='changeState',
+    #             slots=dict(state='aus'))
 
-    def test_es_again(self):
-        self.test_es()                
+    # def test_es_again(self):
+    #     self.test_es()                
 
-    def test_de_again(self):
-        self.test_de()
+    # def test_de_again(self):
+    #     self.test_de()
 
 
 if __name__ == '__main__':
