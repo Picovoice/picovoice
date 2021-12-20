@@ -84,15 +84,15 @@ class PicovoiceTestCase(unittest.TestCase):
         self.assertEqual(_meta.inference.intent, intent)
         self.assertEqual(_meta.inference.slots, slots)
 
-    # def test(self):
-    #     self.run_picovoice(
-    #             pv_index=0,
-    #             audio_file_name='picovoice-coffee.wav',
-    #             intent='orderBeverage',
-    #             slots=dict(size='large', beverage='coffee')) 
+    def test(self):
+        self.run_picovoice(
+                pv_index=0,
+                audio_file_name='picovoice-coffee.wav',
+                intent='orderBeverage',
+                slots=dict(size='large', beverage='coffee')) 
 
-    # def test_again(self):
-    #     self.test()                        
+    def test_again(self):
+        self.test()                        
 
     def test_es(self):
         self.run_picovoice(
@@ -101,18 +101,18 @@ class PicovoiceTestCase(unittest.TestCase):
                 intent='changeColor',
                 slots=dict(location='habitación', color='rosado'))
 
-    # def test_de(self):
-    #     self.run_picovoice(
-    #             pv_index=2,
-    #             audio_file_name='heuschrecke-beleuchtung_de.wav',
-    #             intent='changeState',
-    #             slots=dict(state='aus'))
+    def test_de(self):
+        self.run_picovoice(
+                pv_index=2,
+                audio_file_name='heuschrecke-beleuchtung_de.wav',
+                intent='changeState',
+                slots=dict(state='aus'))
 
     def test_es_again(self):
         self.test_es()                
 
-    # def test_de_again(self):
-    #     self.test_de()
+    def test_de_again(self):
+        self.test_de()
 
 
 if __name__ == '__main__':
