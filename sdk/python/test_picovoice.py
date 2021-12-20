@@ -108,8 +108,8 @@ class PicovoiceTestCase(unittest.TestCase):
     #             intent='changeState',
     #             slots=dict(state='aus'))
 
-    # def test_es_again(self):
-    #     self.test_es()                
+    def test_es_again(self):
+        self.test_es()                
 
     # def test_de_again(self):
     #     self.test_de()
