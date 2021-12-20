@@ -80,8 +80,6 @@ class PicovoiceTestCase(unittest.TestCase):
             frame = audio[i * _pv.frame_length:(i + 1) * _pv.frame_length]
             _pv.process(frame)
 
-        # print('st ', _meta.inference, ' en')
-
         self.assertTrue(_meta.is_wake_word_detected)
         self.assertEqual(_meta.inference.intent, intent)
         self.assertEqual(_meta.inference.slots, slots)
