@@ -21,11 +21,9 @@ from picovoice import Picovoice
 from test_util import *
 
 
-class PicovoiceMetaData:
-    def __init__(self, language, context, keywords):
-        self.language = language
-        self.keywords = keywords
-        self.context = context
+class PicovoiceTestData:
+    def __init__(self):
+        self.pv = None
         self.reset()
 
     def reset(self):
@@ -42,34 +40,42 @@ class PicovoiceMetaData:
 class PicovoiceTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        metas = [
-            PicovoiceMetaData('en', 'coffee_maker', ['picovoice']),
-            PicovoiceMetaData('es', 'luz', ['manzana']),
-            PicovoiceMetaData('de', 'beleuchtung', ['heuschrecke'])]
+        models = [
+            ('en', 'coffee_maker', 'picovoice'),
+            ('es', 'luz', 'manzana'),
+            ('de', 'beleuchtung', 'heuschrecke')]
 
-        cls._pvs = list()
-        for meta in metas:
-            keyword_paths = list()
-            for x in meta.keywords:
-                keyword_paths.append(pv_keyword_paths_by_language(meta.language)[x])
-            
-            cls._pvs.append([meta, Picovoice(
+        cls._pvs = dict()
+        for model in models:
+            language, context, keyword = model
+            pvTestData = PicovoiceTestData()
+            _pv = Picovoice(
                 access_key=sys.argv[1],
-                keyword_path=keyword_paths[0],
-                context_path=context_path(meta.context, meta.language),
-                porcupine_model_path=pv_porcupine_model_path_by_language(meta.language),
-                rhino_model_path=pv_rhino_model_path_by_language(meta.language),
-                wake_word_callback=meta.wake_word_callback,
-                inference_callback=meta.inference_callback)])
+                keyword_path=pv_keyword_paths_by_language(language)[keyword],
+                context_path=context_path(context, language),
+                porcupine_model_path=pv_porcupine_model_path_by_language(language),
+                rhino_model_path=pv_rhino_model_path_by_language(language),
+                wake_word_callback=pvTestData.wake_word_callback,
+                inference_callback=pvTestData.inference_callback)
+            pvTestData.pv = _pv
+
+            if language not in cls._pvs:
+                cls._pvs[language] = dict()
+            if context not in cls._pvs[language]:
+                cls._pvs[language][context] = dict()
+            cls._pvs[language][context][keyword] = pvTestData
 
     @classmethod
     def tearDownClass(cls):
-        for meta, pv in cls._pvs:
-            pv.delete()
+        for language in cls._pvs:
+            for context in cls._pvs[language]:
+                for keyword in cls._pvs[language][context]:
+                    cls._pvs[language][context][keyword].pv.delete()
 
-    def run_picovoice(self, pv_index, audio_file_name, intent, slots):
-        _meta, _pv = self._pvs[pv_index]
-        _meta.reset()
+    def run_picovoice(self, language, context, keyword, audio_file_name, intent, slots):
+        _pvTestData = self._pvs[language][context][keyword]
+        _pvTestData.reset()
+        _pv = _pvTestData.pv
 
         audio, sample_rate = \
             soundfile.read(
@@ -80,13 +86,15 @@ class PicovoiceTestCase(unittest.TestCase):
             frame = audio[i * _pv.frame_length:(i + 1) * _pv.frame_length]
             _pv.process(frame)
 
-        self.assertTrue(_meta.is_wake_word_detected)
-        self.assertEqual(_meta.inference.intent, intent)
-        self.assertEqual(_meta.inference.slots, slots)
+        self.assertTrue(_pvTestData.is_wake_word_detected)
+        self.assertEqual(_pvTestData.inference.intent, intent)
+        self.assertEqual(_pvTestData.inference.slots, slots)
 
     def test(self):
         self.run_picovoice(
-                pv_index=0,
+                language='en',
+                context='coffee_maker',
+                keyword='picovoice',
                 audio_file_name='picovoice-coffee.wav',
                 intent='orderBeverage',
                 slots=dict(size='large', beverage='coffee')) 
@@ -96,14 +104,18 @@ class PicovoiceTestCase(unittest.TestCase):
 
     def test_es(self):
         self.run_picovoice(
-                pv_index=1,
+                language='es',
+                context='luz',
+                keyword='manzana',            
                 audio_file_name='manzana-luz_es.wav',
                 intent='changeColor',
                 slots=dict(location='habitación', color='rosado'))
 
     def test_de(self):
         self.run_picovoice(
-                pv_index=2,
+                language='de',
+                context='beleuchtung',
+                keyword='heuschrecke',
                 audio_file_name='heuschrecke-beleuchtung_de.wav',
                 intent='changeState',
                 slots=dict(state='aus'))
