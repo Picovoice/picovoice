@@ -15,6 +15,82 @@ import pvporcupine
 import pvrhino
 
 
+class PicovoiceError(Exception):
+    pass
+
+
+class PicovoiceMemoryError(PicovoiceError):
+    pass
+
+
+class PicovoiceIOError(PicovoiceError):
+    pass
+
+
+class PicovoiceInvalidArgumentError(PicovoiceError):
+    pass
+
+
+class PicovoiceStopIterationError(PicovoiceError):
+    pass
+
+
+class PicovoiceKeyError(PicovoiceError):
+    pass
+
+
+class PicovoiceInvalidStateError(PicovoiceError):
+    pass
+
+
+class PicovoiceRuntimeError(PicovoiceError):
+    pass
+
+
+class PicovoiceActivationError(PicovoiceError):
+    pass
+
+
+class PicovoiceActivationLimitError(PicovoiceError):
+    pass
+
+
+class PicovoiceActivationThrottledError(PicovoiceError):
+    pass
+
+
+class PicovoiceActivationRefusedError(PicovoiceError):
+    pass
+
+
+_PPN_RHN_ERROR_TO_PICOVOICE_ERROR = {
+    pvporcupine.PorcupineError: PicovoiceError,
+    pvrhino.RhinoError: PicovoiceError,
+    pvporcupine.PorcupineMemoryError: PicovoiceMemoryError,
+    pvrhino.RhinoMemoryError: PicovoiceMemoryError,
+    pvporcupine.PorcupineIOError: PicovoiceIOError,
+    pvrhino.RhinoIOError: PicovoiceIOError,
+    pvporcupine.PorcupineInvalidArgumentError: PicovoiceInvalidArgumentError,
+    pvrhino.RhinoInvalidArgumentError: PicovoiceInvalidArgumentError,
+    pvporcupine.PorcupineStopIterationError: PicovoiceStopIterationError,
+    pvrhino.RhinoStopIterationError: PicovoiceStopIterationError,
+    pvporcupine.PorcupineKeyError: PicovoiceKeyError,
+    pvrhino.RhinoKeyError: PicovoiceKeyError,
+    pvporcupine.PorcupineInvalidStateError: PicovoiceInvalidStateError,
+    pvrhino.RhinoInvalidStateError: PicovoiceInvalidStateError,
+    pvporcupine.PorcupineRuntimeError: PicovoiceRuntimeError,
+    pvrhino.RhinoRuntimeError: PicovoiceRuntimeError,
+    pvporcupine.PorcupineActivationError: PicovoiceActivationError,
+    pvrhino.RhinoActivationError: PicovoiceActivationError,
+    pvporcupine.PorcupineActivationLimitError: PicovoiceActivationLimitError,
+    pvrhino.RhinoActivationLimitError: PicovoiceActivationLimitError,
+    pvporcupine.PorcupineActivationThrottledError: PicovoiceActivationThrottledError,
+    pvrhino.RhinoActivationThrottledError: PicovoiceActivationThrottledError,
+    pvporcupine.PorcupineActivationRefusedError: PicovoiceActivationRefusedError,
+    pvrhino.RhinoActivationRefusedError: PicovoiceActivationRefusedError,
+}
+
+
 class Picovoice(object):
     """
     Python binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but
@@ -105,24 +181,30 @@ class Picovoice(object):
         if not 0 <= rhino_sensitivity <= 1:
             raise ValueError("Rhino's sensitivity should be within [0, 1]")
 
-        self._porcupine = pvporcupine.create(
-            access_key=access_key,
-            library_path=porcupine_library_path,
-            model_path=porcupine_model_path,
-            keyword_paths=[keyword_path],
-            sensitivities=[porcupine_sensitivity])
+        try:
+            self._porcupine = pvporcupine.create(
+                access_key=access_key,
+                library_path=porcupine_library_path,
+                model_path=porcupine_model_path,
+                keyword_paths=[keyword_path],
+                sensitivities=[porcupine_sensitivity])
+        except pvporcupine.PorcupineError as e:
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
         self._wake_word_callback = wake_word_callback
 
         self._is_wake_word_detected = False
 
-        self._rhino = pvrhino.create(
-            access_key=access_key,
-            library_path=rhino_library_path,
-            model_path=rhino_model_path,
-            context_path=context_path,
-            sensitivity=rhino_sensitivity,
-            require_endpoint=require_endpoint)
+        try:
+            self._rhino = pvrhino.create(
+                access_key=access_key,
+                library_path=rhino_library_path,
+                model_path=rhino_model_path,
+                context_path=context_path,
+                sensitivity=rhino_sensitivity,
+                require_endpoint=require_endpoint)
+        except pvporcupine.RhinoError as e:
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
         self._inference_callback = inference_callback
 
@@ -152,15 +234,21 @@ class Picovoice(object):
             raise ValueError("Invalid frame length. expected %d but received %d" % (self.frame_length, len(pcm)))
 
         if not self._is_wake_word_detected:
-            self._is_wake_word_detected = self._porcupine.process(pcm) == 0
-            if self._is_wake_word_detected:
-                self._wake_word_callback()
+            try:
+                self._is_wake_word_detected = self._porcupine.process(pcm) == 0
+                if self._is_wake_word_detected:
+                    self._wake_word_callback()
+            except pvporcupine.PorcupineError as e:
+                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
         else:
-            is_finalized = self._rhino.process(pcm)
-            if is_finalized:
-                self._is_wake_word_detected = False
-                inference = self._rhino.get_inference()
-                self._inference_callback(inference)
+            try:
+                is_finalized = self._rhino.process(pcm)
+                if is_finalized:
+                    self._is_wake_word_detected = False
+                    inference = self._rhino.get_inference()
+                    self._inference_callback(inference)
+            except pvporcupine.RhinoError as e:
+                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
     @property
     def sample_rate(self):

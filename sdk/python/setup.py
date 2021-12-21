@@ -41,7 +41,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
-    install_requires=["pvporcupine==2.0.1", "pvrhino==2.0.1"],
+    install_requires=["pvporcupine==2.0.4", "pvrhino==2.0.2"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
