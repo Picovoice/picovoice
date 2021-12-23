@@ -3,7 +3,7 @@ plugins {
 }
 
 repositories {
-    mavenCentral()    
+    mavenCentral()
 }
 
 sourceSets {
@@ -15,30 +15,32 @@ sourceSets {
 }
 
 dependencies {
-    implementation 'ai.picovoice:picovoice-java:2.0.2'
+    implementation 'ai.picovoice:picovoice-java:2.0.4'
     implementation 'commons-cli:commons-cli:1.4'
 }
 
 jar {
     manifest {
         attributes "Main-Class": "ai.picovoice.picovoicedemo.MicDemo",
-                "Class-Path" : "picovoice-2.0.2.jar;commons-cli-1.4.jar"
+                   "Class-Path" : "picovoice-2.0.4.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/FileDemo.class"
     archiveFileName = 'picovoice-mic-demo.jar'
     from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    duplicatesStrategy = 'include'
 }
 
 task fileDemoJar(type: Jar) {
     manifest {
         attributes "Main-Class": "ai.picovoice.picovoicedemo.FileDemo",
-                "Class-Path" : "picovoice-2.0.2.jar;commons-cli-1.4.jar"
+                   "Class-Path" : "picovoice-2.0.4.jar;commons-cli-1.4.jar"
     }
     from sourceSets.main.output
     exclude "**/MicDemo.class"
     archiveFileName = 'picovoice-file-demo.jar'
     from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    duplicatesStrategy = 'include'
 }
 
 artifacts {

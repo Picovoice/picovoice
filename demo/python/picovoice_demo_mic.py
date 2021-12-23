@@ -17,7 +17,7 @@ import wave
 from threading import Thread
 
 import numpy as np
-from picovoice import Picovoice
+from picovoice import *
 from pvrecorder import PvRecorder
 
 
@@ -38,19 +38,52 @@ class PicovoiceDemo(Thread):
             output_path=None):
         super(PicovoiceDemo, self).__init__()
 
-        self._picovoice = Picovoice(
-            access_key=access_key,
-            keyword_path=keyword_path,
-            wake_word_callback=self._wake_word_callback,
-            context_path=context_path,
-            inference_callback=self._inference_callback,
-            porcupine_library_path=porcupine_library_path,
-            porcupine_model_path=porcupine_model_path,
-            porcupine_sensitivity=porcupine_sensitivity,
-            rhino_library_path=rhino_library_path,
-            rhino_model_path=rhino_model_path,
-            rhino_sensitivity=rhino_sensitivity,
-            require_endpoint=require_endpoint)
+        try:
+            self._picovoice = Picovoice(
+                access_key=access_key,
+                keyword_path=keyword_path,
+                wake_word_callback=self._wake_word_callback,
+                context_path=context_path,
+                inference_callback=self._inference_callback,
+                porcupine_library_path=porcupine_library_path,
+                porcupine_model_path=porcupine_model_path,
+                porcupine_sensitivity=porcupine_sensitivity,
+                rhino_library_path=rhino_library_path,
+                rhino_model_path=rhino_model_path,
+                rhino_sensitivity=rhino_sensitivity,
+                require_endpoint=require_endpoint)
+        except PicovoiceInvalidArgumentError as e:
+            print("One or more arguments provided to Picovoice is invalid: {\n" +
+                  f"\t{access_key=}\n" +
+                  f"\t{keyword_path=}\n" +
+                  f"\t{self._wake_word_callback=}\n" +
+                  f"\t{context_path=}\n" +
+                  f"\t{self._inference_callback=}\n" +
+                  f"\t{porcupine_library_path=}\n" +
+                  f"\t{porcupine_model_path=}\n" +
+                  f"\t{porcupine_sensitivity=}\n" +
+                  f"\t{rhino_library_path=}\n" +
+                  f"\t{rhino_model_path=}\n" +
+                  f"\t{rhino_sensitivity=}\n" +
+                  f"\t{require_endpoint=}\n" +
+                  "}")
+            print(f"If all other arguments seem valid, ensure that '{access_key}' is a valid AccessKey")
+            raise e
+        except PicovoiceActivationError as e:
+            print("AccessKey activation error")
+            raise e
+        except PicovoiceActivationLimitError as e:
+            print(f"AccessKey '{access_key}' has reached it's temporary device limit")
+            raise e
+        except PicovoiceActivationRefusedError as e:
+            print(f"AccessKey '{access_key}' refused")
+            raise e
+        except PicovoiceActivationThrottledError as e:
+            print(f"AccessKey '{access_key}' has been throttled")
+            raise e
+        except PicovoiceError as e:
+            print("Failed to initialize Picovoice")
+            raise e
 
         self.audio_device_index = audio_device_index
         self.output_path = output_path

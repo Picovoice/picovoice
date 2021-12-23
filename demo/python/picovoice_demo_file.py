@@ -13,7 +13,7 @@ import argparse
 import struct
 import wave
 
-from picovoice import Picovoice
+from picovoice import *
 
 
 def read_file(file_name, sample_rate):
@@ -99,19 +99,39 @@ def main():
         else:
             print("Didn't understand the command.\n")
 
-    pv = Picovoice(
-        access_key=args.access_key,
-        keyword_path=args.keyword_path,
-        wake_word_callback=wake_word_callback,
-        context_path=args.context_path,
-        inference_callback=inference_callback,
-        porcupine_library_path=args.porcupine_library_path,
-        porcupine_model_path=args.porcupine_model_path,
-        porcupine_sensitivity=args.porcupine_sensitivity,
-        rhino_library_path=args.rhino_library_path,
-        rhino_model_path=args.rhino_model_path,
-        rhino_sensitivity=args.rhino_sensitivity,
-        require_endpoint=require_endpoint)
+    try:
+        pv = Picovoice(
+            access_key=args.access_key,
+            keyword_path=args.keyword_path,
+            wake_word_callback=wake_word_callback,
+            context_path=args.context_path,
+            inference_callback=inference_callback,
+            porcupine_library_path=args.porcupine_library_path,
+            porcupine_model_path=args.porcupine_model_path,
+            porcupine_sensitivity=args.porcupine_sensitivity,
+            rhino_library_path=args.rhino_library_path,
+            rhino_model_path=args.rhino_model_path,
+            rhino_sensitivity=args.rhino_sensitivity,
+            require_endpoint=require_endpoint)
+    except PicovoiceInvalidArgumentError as e:
+        print(f"One or more arguments provided to Picovoice is invalid: {args}")
+        print(f"If all other arguments seem valid, ensure that '{args.access_key}' is a valid AccessKey")
+        raise e
+    except PicovoiceActivationError as e:
+        print("AccessKey activation error")
+        raise e
+    except PicovoiceActivationLimitError as e:
+        print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+        raise e
+    except PicovoiceActivationRefusedError as e:
+        print(f"AccessKey '{args.access_key}' refused")
+        raise e
+    except PicovoiceActivationThrottledError as e:
+        print(f"AccessKey '{args.access_key}' has been throttled")
+        raise e
+    except PicovoiceError as e:
+        print(f"Failed to initialize Picovoice")
+        raise e
 
     audio = read_file(args.input_audio_path, pv.sample_rate)
 
