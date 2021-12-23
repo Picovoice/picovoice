@@ -1,2 +1,2 @@
-picovoice==2.0.1
+picovoice==2.0.2
 pvrecorder==1.0.2
