@@ -1017,25 +1017,25 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@picovoice/picovoice-react-native@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-2.0.0.tgz#5811d722372851485eba8674ac56d959ae63595f"
-  integrity sha512-OBTWcQmUW/4a/OdxCf+HMyNIz3on5iFVb1R3EcmwhvPlPCPcEfiCrrWH9FdCFLq/89ycrhk/Yr/XwgjSi6TOhg==
+"@picovoice/picovoice-react-native@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-2.0.1.tgz#e6f4bf633829fb59ecc76597301c4704f00e9dad"
+  integrity sha512-6MD08xMRmZwXpLMijzR6G9AWnSv57xEQ5gZXSaFsAg3fo/Iqk9Kkmjx5DYw7zUGYlssKuG5d/eEjNN0vvWOInQ==
 
-"@picovoice/porcupine-react-native@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.0.0.tgz#d60272ef840a43f1cb2279dda90a58f66442b596"
-  integrity sha512-rd7Hy4Yte39tXjWYe6ubrNJ+Xkp4vdkmFzlujvGjwuZdNZ/dDgrLfPTUKTAuKkifDcWcMX171+aKkUO/xW1U5Q==
+"@picovoice/porcupine-react-native@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.0.2.tgz#1453d0f9e5da829be932516b7094cc159b6621d1"
+  integrity sha512-BTyhVYKatu5tcB/HLY4Hwk1b73a0IL28yCCqnsdLs68iVoF0TVysSbPHzBNfj5VPOg5OmcRPNPZ5OzStKfGx5g==
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.0.4.tgz#500a83a19b84e43d9a21f8eb643b176eacc5ec46"
   integrity sha512-fkAALaMHN54OeQ2sg/ViIsz/UL1kzdj/nOyMmHwvhrGpPTlv91CgCSQQWQn7+vWSv0tggL1ckxeAt7Apfi0Pzw==
 
-"@picovoice/rhino-react-native@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-2.0.0.tgz#3793b2e185c0edad2829c9749f2d102dcb9606fe"
-  integrity sha512-yXY4Mfji1/03/wKUPngF0qOjxdJSZFQrk32IU8csVt/Xb9q3DkBNhUKvkr4dtzSkCzD8lBzvB/8tDDGn0MA++A==
+"@picovoice/rhino-react-native@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-2.0.1.tgz#7d17f381fdae2545dd454f369410b5d435a8502b"
+  integrity sha512-VvbSargbzfcHhTQO/gOPxu9g4D7h8Sm5jlLIc0eoKISaRIRrRgINw0r8cNFX1HzQaVbZvTmsS7GfPBlq6fevzg==
 
 "@react-native-community/cli-debugger-ui@^4.13.1":
   version "4.13.1"
