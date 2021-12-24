@@ -23,7 +23,7 @@ from test_util import *
 
 class PicovoiceTestData:
     def __init__(self):
-        self.pv = None
+        self.picovoiceInstance = None
         self.reset()
 
     def reset(self):
@@ -38,6 +38,10 @@ class PicovoiceTestData:
 
 
 class PicovoiceTestCase(unittest.TestCase):
+    @staticmethod
+    def _concatenate(language, context, keyword):
+        return f'{language}#{context}#{keyword}'
+
     @classmethod
     def setUpClass(cls):
         models = [
@@ -45,11 +49,11 @@ class PicovoiceTestCase(unittest.TestCase):
             ('es', 'luz', 'manzana'),
             ('de', 'beleuchtung', 'heuschrecke')]
 
-        cls._pvs = dict()
+        cls._pvTestDataDictionary = dict()
         for model in models:
             language, context, keyword = model
             pvTestData = PicovoiceTestData()
-            _pv = Picovoice(
+            _picovoiceInstance = Picovoice(
                 access_key=sys.argv[1],
                 keyword_path=pv_keyword_paths_by_language(language)[keyword],
                 context_path=context_path(context, language),
@@ -57,34 +61,27 @@ class PicovoiceTestCase(unittest.TestCase):
                 rhino_model_path=pv_rhino_model_path_by_language(language),
                 wake_word_callback=pvTestData.wake_word_callback,
                 inference_callback=pvTestData.inference_callback)
-            pvTestData.pv = _pv
-
-            if language not in cls._pvs:
-                cls._pvs[language] = dict()
-            if context not in cls._pvs[language]:
-                cls._pvs[language][context] = dict()
-            cls._pvs[language][context][keyword] = pvTestData
+            pvTestData.picovoiceInstance = _picovoiceInstance
+            cls._pvTestDataDictionary[cls._concatenate(language, context, keyword)] = pvTestData
 
     @classmethod
     def tearDownClass(cls):
-        for language in cls._pvs:
-            for context in cls._pvs[language]:
-                for keyword in cls._pvs[language][context]:
-                    cls._pvs[language][context][keyword].pv.delete()
+        for pvTestData in cls._pvTestDataDictionary.values():
+            pvTestData.picovoiceInstance.delete()
 
     def run_picovoice(self, language, context, keyword, audio_file_name, intent, slots):
-        _pvTestData = self._pvs[language][context][keyword]
+        _pvTestData = self._pvTestDataDictionary[self._concatenate(language, context, keyword)]
         _pvTestData.reset()
-        _pv = _pvTestData.pv
+        _picovoiceInstance = _pvTestData.picovoiceInstance
 
         audio, sample_rate = \
             soundfile.read(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
                 dtype='int16')
 
-        for i in range(len(audio) // _pv.frame_length):
-            frame = audio[i * _pv.frame_length:(i + 1) * _pv.frame_length]
-            _pv.process(frame)
+        for i in range(len(audio) // _picovoiceInstance.frame_length):
+            frame = audio[i * _picovoiceInstance.frame_length:(i + 1) * _picovoiceInstance.frame_length]
+            _picovoiceInstance.process(frame)
 
         self.assertTrue(_pvTestData.is_wake_word_detected)
         self.assertEqual(_pvTestData.inference.intent, intent)
