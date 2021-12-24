@@ -53,6 +53,7 @@ class PicovoiceTestCase(unittest.TestCase):
         for model in models:
             language, context, keyword = model
             pvTestData = PicovoiceTestData()
+
             _picovoiceInstance = Picovoice(
                 access_key=sys.argv[1],
                 keyword_path=pv_keyword_paths_by_language(language)[keyword],
@@ -61,6 +62,7 @@ class PicovoiceTestCase(unittest.TestCase):
                 rhino_model_path=pv_rhino_model_path_by_language(language),
                 wake_word_callback=pvTestData.wake_word_callback,
                 inference_callback=pvTestData.inference_callback)
+
             pvTestData.picovoiceInstance = _picovoiceInstance
             cls._pvTestDataDictionary[cls._concatenate(language, context, keyword)] = pvTestData
 
@@ -89,36 +91,36 @@ class PicovoiceTestCase(unittest.TestCase):
 
     def test(self):
         self.run_picovoice(
-                language='en',
-                context='coffee_maker',
-                keyword='picovoice',
-                audio_file_name='picovoice-coffee.wav',
-                intent='orderBeverage',
-                slots=dict(size='large', beverage='coffee')) 
+            language='en',
+            context='coffee_maker',
+            keyword='picovoice',
+            audio_file_name='picovoice-coffee.wav',
+            intent='orderBeverage',
+            slots=dict(size='large', beverage='coffee'))
 
     def test_again(self):
-        self.test()                        
+        self.test()
 
     def test_es(self):
         self.run_picovoice(
-                language='es',
-                context='luz',
-                keyword='manzana',            
-                audio_file_name='manzana-luz_es.wav',
-                intent='changeColor',
-                slots=dict(location='habitación', color='rosado'))
+            language='es',
+            context='luz',
+            keyword='manzana',
+            audio_file_name='manzana-luz_es.wav',
+            intent='changeColor',
+            slots=dict(location='habitación', color='rosado'))
 
     def test_de(self):
         self.run_picovoice(
-                language='de',
-                context='beleuchtung',
-                keyword='heuschrecke',
-                audio_file_name='heuschrecke-beleuchtung_de.wav',
-                intent='changeState',
-                slots=dict(state='aus'))
+            language='de',
+            context='beleuchtung',
+            keyword='heuschrecke',
+            audio_file_name='heuschrecke-beleuchtung_de.wav',
+            intent='changeState',
+            slots=dict(state='aus'))
 
     def test_es_again(self):
-        self.test_es()                
+        self.test_es()
 
     def test_de_again(self):
         self.test_de()
