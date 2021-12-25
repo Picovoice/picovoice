@@ -247,7 +247,7 @@ class Picovoice(object):
                     self._is_wake_word_detected = False
                     inference = self._rhino.get_inference()
                     self._inference_callback(inference)
-            except pvporcupine.RhinoError as e:
+            except pvrhino.RhinoError as e:
                 raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
     @property
