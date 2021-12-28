@@ -41,34 +41,227 @@ func TestMain(m *testing.M) {
 	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
 
-	keywordPath, _ := filepath.Abs(fmt.Sprintf("../../resources/porcupine/resources/keyword_files/%s/picovoice_%s.ppn", osName, osName))
-	contextPath, _ := filepath.Abs(fmt.Sprintf("../../resources/rhino/resources/contexts/%s/coffee_maker_%s.rhn", osName, osName))
+	os.Exit(m.Run())
+}
+
+func Test(t *testing.T) {
+
+	language := "en"
+	keyword := "picovoice"
+	context := "coffee_maker"
 	wakeWordCallback := func() { isWakeWordDetected = true }
 	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
 	p = NewPicovoice(
 		pvTestAccessKey,
-		keywordPath,
+		getTestKeywordPath(language, keyword),
 		wakeWordCallback,
-		contextPath,
+		getTestContextPath(language, context),
 		inferenceCallback)
-	err := p.Init()
-	if err != nil {
-		log.Fatalf("%v", err)
-	}
-	defer p.Delete()
-
+	initTestPicovoice(t)
 	fmt.Printf("Version: %s\n", Version)
 	fmt.Printf("Frame Length: %d\n", FrameLength)
 	fmt.Printf("Samples Rate: %d\n", SampleRate)
-	fmt.Printf("Context Info: %s\n", p.ContextInfo)
 
-	os.Exit(m.Run())
+	audioFileName := "picovoice-coffee.wav"
+	expectedIntent := "orderBeverage"
+	expectedSlots :=map[string]string{"beverage": "coffee", "size": "large"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
 }
 
-func TestProcess(t *testing.T) {
+func TestTwice(t *testing.T) {
 
-	testFile, _ := filepath.Abs("../../resources/audio_samples/picovoice-coffee.wav")
+	language := "en"
+	keyword := "picovoice"
+	context := "coffee_maker"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	p = NewPicovoice(
+		pvTestAccessKey,
+		getTestKeywordPath(language, keyword),
+		wakeWordCallback,
+		getTestContextPath(language, context),
+		inferenceCallback)
+	initTestPicovoice(t)
 
+	audioFileName := "picovoice-coffee.wav"
+	expectedIntent := "orderBeverage"
+	expectedSlots :=map[string]string{"beverage": "coffee", "size": "large"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)	
+
+	deleteTestPicovoice(t)
+}
+
+func TestDe(t *testing.T) {
+
+	language := "de"
+	keyword := "heuschrecke"
+	context := "beleuchtung"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	p = Picovoice{
+		AccessKey: pvTestAccessKey,
+		KeywordPath: getTestKeywordPath(language, keyword),
+		ContextPath: getTestContextPath(language, context),
+		PorcupineModelPath: getTestPorcupineModelPath(language),
+		RhinoModelPath: getTestRhinoModelPath(language),
+		WakeWordCallback: wakeWordCallback,
+		InferenceCallback: inferenceCallback,
+		PorcupineSensitivity: 0.5,
+		RhinoSensitivity: 0.5,
+		RequireEndpoint: true}
+	initTestPicovoice(t)
+
+	audioFileName := "heuschrecke-beleuchtung_de.wav"
+	expectedIntent := "changeState"
+	expectedSlots :=map[string]string{"state": "aus"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
+}
+
+func TestTwiceDe(t *testing.T) {
+
+	language := "de"
+	keyword := "heuschrecke"
+	context := "beleuchtung"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	p = Picovoice{
+		AccessKey: pvTestAccessKey,
+		KeywordPath: getTestKeywordPath(language, keyword),
+		ContextPath: getTestContextPath(language, context),
+		PorcupineModelPath: getTestPorcupineModelPath(language),
+		RhinoModelPath: getTestRhinoModelPath(language),
+		WakeWordCallback: wakeWordCallback,
+		InferenceCallback: inferenceCallback,
+		PorcupineSensitivity: 0.5,
+		RhinoSensitivity: 0.5,
+		RequireEndpoint: true}
+	initTestPicovoice(t)
+
+	audioFileName := "heuschrecke-beleuchtung_de.wav"
+	expectedIntent := "changeState"
+	expectedSlots :=map[string]string{"state": "aus"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
+}
+
+func TestEs(t *testing.T) {
+
+	language := "es"
+	keyword := "manzana"
+	context := "luz"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	p = Picovoice{
+		AccessKey: pvTestAccessKey,
+		KeywordPath: getTestKeywordPath(language, keyword),
+		ContextPath: getTestContextPath(language, context),
+		PorcupineModelPath: getTestPorcupineModelPath(language),
+		RhinoModelPath: getTestRhinoModelPath(language),
+		WakeWordCallback: wakeWordCallback,
+		InferenceCallback: inferenceCallback,
+		PorcupineSensitivity: 0.5,
+		RhinoSensitivity: 0.5,
+		RequireEndpoint: true}
+	initTestPicovoice(t)
+
+	audioFileName := "manzana-luz_es.wav"
+	expectedIntent := "changeColor"
+	expectedSlots :=map[string]string{"location": "habitación", "color": "rosado"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
+}
+
+func TestTwiceEs(t *testing.T) {
+
+	language := "es"
+	keyword := "manzana"
+	context := "luz"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	p = Picovoice{
+		AccessKey: pvTestAccessKey,
+		KeywordPath: getTestKeywordPath(language, keyword),
+		ContextPath: getTestContextPath(language, context),
+		PorcupineModelPath: getTestPorcupineModelPath(language),
+		RhinoModelPath: getTestRhinoModelPath(language),
+		WakeWordCallback: wakeWordCallback,
+		InferenceCallback: inferenceCallback,
+		PorcupineSensitivity: 0.5,
+		RhinoSensitivity: 0.5,
+		RequireEndpoint: true}
+	initTestPicovoice(t)
+
+	audioFileName := "manzana-luz_es.wav"
+	expectedIntent := "changeColor"
+	expectedSlots :=map[string]string{"location": "habitación", "color": "rosado"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
+}
+
+func initTestPicovoice(t* testing.T) {
+	err := p.Init()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func deleteTestPicovoice(t* testing.T) {
+	err := p.Delete()
+	if err != nil {
+		t.Fatalf("%v", err)
+	}
+}
+
+func runTestCase(t* testing.T, audioFileName string, expectedIntent string, expectedSlots map[string]string) {
+	t.Logf("Context Info: %s\n", p.ContextInfo)
+
+	testFile, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
 	data, err := ioutil.ReadFile(testFile)
 	if err != nil {
 		t.Fatalf("Could not read test file: %v", err)
@@ -93,26 +286,61 @@ func TestProcess(t *testing.T) {
 	}
 
 	if !isWakeWordDetected {
-		t.Fatalf("Did not detect wake word 'picovoice'.")
+		t.Fatalf("Did not detect wake word.")
 	}
 
 	if !inference.IsUnderstood {
 		t.Fatalf("Didn't understand.")
 	}
 
-	expectedIntent := "orderBeverage"
 	if inference.Intent != expectedIntent {
 		t.Fatalf("Incorrect intent '%s' (expected %s)", inference.Intent, expectedIntent)
 	}
 
-	expectedSlotValues := map[string]string{"beverage": "coffee", "size": "large"}
-	if !reflect.DeepEqual(inference.Slots, expectedSlotValues) {
-		t.Fatalf("Incorrect slots '%v'\n Expected %v", inference.Slots, expectedSlotValues)
+	if !reflect.DeepEqual(inference.Slots, expectedSlots) {
+		t.Fatalf("Incorrect slots '%v'\n Expected %v", inference.Slots, expectedSlots)
 	}
 }
 
-func TestProcessAgain(t *testing.T) {
-	TestProcess(t)
+func appendLanguage(s string, language string) string {
+	if language == "en" {
+		return s;
+	}
+	return s + "_" + language
+}
+
+func getTestPorcupineModelPath(language string) string {
+	modelPath, _ := filepath.Abs(fmt.Sprintf(
+		"../../resources/porcupine/lib/common/%s.pv",
+		appendLanguage("porcupine_params", language)))
+	return modelPath
+}
+
+func getTestRhinoModelPath(language string) string {
+	modelPath, _ := filepath.Abs(fmt.Sprintf(
+		"../../resources/rhino/lib/common/%s.pv",
+		appendLanguage("rhino_params", language)))
+	return modelPath
+}
+
+func getTestKeywordPath(language string, keyword string) string {
+	keywordPath, _ := filepath.Abs(fmt.Sprintf(
+		"../../resources/porcupine/resources/%s/%s/%s_%s.ppn",
+		appendLanguage("keyword_files", language),
+		osName,
+		keyword,
+		osName))
+	return keywordPath
+}
+
+func getTestContextPath(language string, context string) string {
+	contextPath, _ :=  filepath.Abs(fmt.Sprintf(
+		"../../resources/rhino/resources/%s/%s/%s_%s.rhn",
+		appendLanguage("contexts", language),
+		osName,
+		context,
+		osName))
+	return contextPath
 }
 
 func getOS() string {
