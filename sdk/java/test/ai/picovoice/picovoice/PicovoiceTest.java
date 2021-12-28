@@ -229,29 +229,6 @@ public class PicovoiceTest {
         runTestCase(audioFileName, expectedIntent, expectedSlots);
     }
 
-    @Test
-    void testTwiceEs() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "es";
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "manzana"))
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "luz"))
-                .setInferenceCallback(inferenceCallback)
-                .build();
-
-        String audioFileName = "manzana-luz_es.wav";
-        String expectedIntent = "changeColor";
-        Map<String, String> expectedSlots = new HashMap<>() {{
-            put("location", "habitación");
-            put("color", "rosado");
-        }};
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-    }
-
     private static String getEnvironmentName() throws RuntimeException {
         String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         if (os.contains("mac") || os.contains("darwin")) {
