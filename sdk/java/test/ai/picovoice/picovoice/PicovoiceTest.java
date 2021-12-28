@@ -175,9 +175,9 @@ public class PicovoiceTest {
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
-        String audioFileName = "picovoice-coffee.wav";
-        String expectedIntent = "orderBeverage";
-        Map<String, String> expectedSlots = new HashMap<>() {{
+        final String audioFileName = "picovoice-coffee.wav";
+        final String expectedIntent = "orderBeverage";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
             put("size", "large");
             put("beverage", "coffee");
         }};
@@ -197,9 +197,9 @@ public class PicovoiceTest {
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
-        String audioFileName = "picovoice-coffee.wav";
-        String expectedIntent = "orderBeverage";
-        Map<String, String> expectedSlots = new HashMap<>() {{
+        final String audioFileName = "picovoice-coffee.wav";
+        final String expectedIntent = "orderBeverage";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
             put("size", "large");
             put("beverage", "coffee");
         }};
@@ -220,9 +220,9 @@ public class PicovoiceTest {
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
-        String audioFileName = "heuschrecke-beleuchtung_de.wav";
-        String expectedIntent = "changeState";
-        Map<String, String> expectedSlots = new HashMap<>() {{
+        final String audioFileName = "heuschrecke-beleuchtung_de.wav";
+        final String expectedIntent = "changeState";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
             put("state", "aus");
         }};
         runTestCase(audioFileName, expectedIntent, expectedSlots);
