@@ -36,12 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PicovoiceTest {
 
     private Picovoice picovoice;
-    final private String accessKey = System.getProperty("pvTestingAccessKey");
-    private final String environmentName = getEnvironmentName();
-    private final String keywordPath = String.format("../../resources/porcupine/resources/keyword_files" +
-            "/%s/picovoice_%s.ppn", environmentName, environmentName);
-    private final String contextPath = String.format("../../resources/rhino/resources/contexts" +
-            "/%s/coffee_maker_%s.rhn", environmentName, environmentName);
+    private final String accessKey = System.getProperty("pvTestingAccessKey");
+    private final static String environmentName = getEnvironmentName();
 
     private boolean isWakeWordDetected = false;
     private final PicovoiceWakeWordCallback wakeWordCallback = new PicovoiceWakeWordCallback() {
@@ -59,18 +55,49 @@ public class PicovoiceTest {
         }
     };
 
-    @BeforeEach
-    void setUp() throws PicovoiceException {
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setKeywordPath(keywordPath)
-                .setWakeWordCallback(wakeWordCallback)
-                .setContextPath(contextPath)
-                .setInferenceCallback(inferenceCallback)
-                .build();
+    private static String appendLanguage(String s, String language) {
+        if (language == "en")
+            return s;
+        return s + "_" + language;
+    }
 
-        isWakeWordDetected = false;
-        inferenceResult = null;
+    private static String getTestKeywordPath(String language, String keyword) {
+        return Paths.get(System.getProperty("user.dir"))
+            .resolve("../../resources/porcupine/resources")
+            .resolve(appendLanguage("keyword_files", language))
+            .resolve(environmentName)
+            .resolve(keyword + "_" + environmentName + ".ppn")
+            .toString();
+    }
+
+    private static String getTestPorcupineModelPath(String language) {
+        return Paths.get(System.getProperty("user.dir"))
+            .resolve("../../resources/porcupine/lib/common")
+            .resolve(appendLanguage("porcupine_params", language)+".pv")
+            .toString();
+    }
+
+    private static String getTestContextPath(String language, String context) {
+        return Paths.get(System.getProperty("user.dir"))
+            .resolve("../../resources/rhino/resources")
+            .resolve(appendLanguage("contexts", language))
+            .resolve(environmentName)
+            .resolve(context + "_" + environmentName + ".rhn")
+            .toString();
+    }
+
+    private static String getTestRhinoModelPath(String language) {
+        return Paths.get(System.getProperty("user.dir"))
+            .resolve("../../resources/rhino/lib/common")
+            .resolve(appendLanguage("rhino_params", language)+".pv")
+            .toString();
+    }  
+
+    private static String getTestAudioFilePath(String audioFileName) {
+        return Paths.get(System.getProperty("user.dir"))
+            .resolve("../../resources/audio_samples")
+            .resolve(audioFileName)
+            .toString();
     }
 
     @AfterEach
@@ -79,19 +106,41 @@ public class PicovoiceTest {
     }
 
     @Test
-    void getFrameLength() {
+    void getFrameLength() throws PicovoiceException {
+        final String language = "en";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "coffee_maker"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
         assertTrue(picovoice.getFrameLength() > 0);
     }
 
     @Test
-    void getSampleRate() {
+    void getSampleRate() throws PicovoiceException {
+        final String language = "en";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "coffee_maker"))
+                .setInferenceCallback(inferenceCallback)
+                .build();     
         assertTrue(picovoice.getSampleRate() > 0);
     }
 
-    @Test
-    void testProcess() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+    void runTestCase(String audioFileName, String expectedIntent, Map<String, String> expectedSlots) throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        isWakeWordDetected = false;
+        inferenceResult = null;
+        
         int frameLen = picovoice.getFrameLength();
-        File testAudioPath = new File("../../resources/audio_samples/picovoice-coffee.wav");
+        File testAudioPath = new File(getTestAudioFilePath(audioFileName));
 
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(testAudioPath);
         assertEquals(audioInputStream.getFormat().getFrameRate(), 16000);
@@ -109,18 +158,121 @@ public class PicovoiceTest {
         }
 
         assertTrue(isWakeWordDetected);
-        assertEquals(inferenceResult.getIntent(), "orderBeverage");
-        Map<String, String> expectedSlotValues = new HashMap<>() {{
-            put("size", "large");
-            put("beverage", "coffee");
-        }};
-        assertEquals(expectedSlotValues, inferenceResult.getSlots());
+        assertEquals(inferenceResult.getIntent(), expectedIntent);
+        assertEquals(inferenceResult.getSlots(), expectedSlots);
     }
 
     @Test
-    void testProcessAgain() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        testProcess();
+    void test() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "en";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "coffee_maker"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "picovoice-coffee.wav";
+        final String expectedIntent = "orderBeverage";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("size", "large");
+            put("beverage", "coffee");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
     }
+
+    @Test
+    void testTwice() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "en";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "coffee_maker"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "picovoice-coffee.wav";
+        final String expectedIntent = "orderBeverage";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("size", "large");
+            put("beverage", "coffee");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }
+
+    @Test
+    void testTwiceDe() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "de";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "heuschrecke"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "beleuchtung"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "heuschrecke-beleuchtung_de.wav";
+        final String expectedIntent = "changeState";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("state", "aus");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }
+
+    @Test
+    void testTwiceEs() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "es";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "manzana"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "luz"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "manzana-luz_es.wav";
+        final String expectedIntent = "changeColor";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("location", "habitación");
+            put("color", "rosado");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }
+
+    @Test
+    void testTwiceFr() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "fr";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "mon chouchou"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "éclairage_intelligent"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "mon-intelligent_fr.wav";
+        final String expectedIntent = "changeColor";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("color", "violet");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }        
 
     private static String getEnvironmentName() throws RuntimeException {
         String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
