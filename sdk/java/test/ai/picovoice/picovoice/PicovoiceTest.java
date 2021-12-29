@@ -229,6 +229,51 @@ public class PicovoiceTest {
         runTestCase(audioFileName, expectedIntent, expectedSlots);
     }
 
+    @Test
+    void testTwiceEs() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "es";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "manzana"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "luz"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "manzana-luz_es.wav";
+        final String expectedIntent = "changeColor";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("location", "habitación");
+            put("color", "rosado");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }
+
+    @Test
+    void testTwiceFr() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        final String language = "fr";
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(getTestPorcupineModelPath(language))
+                .setKeywordPath(getTestKeywordPath(language, "mon chouchou"))
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(getTestRhinoModelPath(language))
+                .setContextPath(getTestContextPath(language, "éclairage_intelligent"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        final String audioFileName = "mon-intelligent_fr.wav";
+        final String expectedIntent = "changeColor";
+        final Map<String, String> expectedSlots = new HashMap<>() {{
+            put("color", "violet");
+        }};
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    }        
+
     private static String getEnvironmentName() throws RuntimeException {
         String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         if (os.contains("mac") || os.contains("darwin")) {
