@@ -181,6 +181,43 @@ func TestTwiceEs(t *testing.T) {
 	deleteTestPicovoice(t)
 }
 
+func TestTwiceFr(t *testing.T) {
+
+	language := "fr"
+	keyword := "mon chouchou"
+	context := "éclairage_intelligent"
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	picovoice = Picovoice{
+		AccessKey: pvTestAccessKey,
+		KeywordPath: getTestKeywordPath(language, keyword),
+		ContextPath: getTestContextPath(language, context),
+		PorcupineModelPath: getTestPorcupineModelPath(language),
+		RhinoModelPath: getTestRhinoModelPath(language),
+		WakeWordCallback: wakeWordCallback,
+		InferenceCallback: inferenceCallback,
+		PorcupineSensitivity: 0.5,
+		RhinoSensitivity: 0.5,
+		RequireEndpoint: true}
+	initTestPicovoice(t)
+
+	audioFileName := "mon-intelligent_fr.wav"
+	expectedIntent := "changeColor"
+	expectedSlots :=map[string]string{"color": "violet"}
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+	runTestCase(
+		t,
+		audioFileName,
+		expectedIntent,
+		expectedSlots)
+
+	deleteTestPicovoice(t)
+}
+
 func initTestPicovoice(t* testing.T) {
 	err := picovoice.Init()
 	if err != nil {

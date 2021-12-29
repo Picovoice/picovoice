@@ -28,7 +28,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         go: [ '1.16', '1.17' ]
 
     steps:
