@@ -25,9 +25,9 @@ namespace PicovoiceTest
     public class MainTest
     {
         private static string _cwd;
+        private static string _rootDir;
         private static string _env;
         private static Architecture _arch;
-        private static string _contextPath;
 
         private static string ACCESS_KEY;
 
@@ -37,7 +37,7 @@ namespace PicovoiceTest
         private static Inference _inference;
         private static void _inferenceCallback(Inference inference) => _inference = inference;
 
-        private static Picovoice _pv;
+        private static Picovoice _picovoice;
 
 
         [ClassInitialize]
@@ -49,21 +49,61 @@ namespace PicovoiceTest
             }
 
             _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _rootDir = Path.Combine(_cwd, "../../../../../..");
             _arch = RuntimeInformation.ProcessArchitecture;
             _env = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
                                                         (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
-            _contextPath = Path.Combine(_cwd, $"resources/rhino/resources/contexts/{_env}/coffee_maker_{_env}.rhn");
-
-            _pv = Picovoice.Create(
-                ACCESS_KEY,
-                Porcupine.BUILT_IN_KEYWORD_PATHS[BuiltInKeyword.PICOVOICE],
-                _wakeWordCallback,
-                _contextPath,
-                _inferenceCallback);
         }
+
+        private static string AppendLanguage(string s, string language)
+        {
+            if(language == "en")
+                return s;
+            return $"{s}_{language}";
+        }
+
+        private static string GetKeywordPath(string language, string keyword)
+        {
+            return Path.Combine(
+                _rootDir,
+                "resources/porcupine/resources",
+                AppendLanguage("keyword_files", language),
+                $"{_env}/{keyword}_{_env}.ppn"
+            );
+        }      
+
+        private static string GetPorcupineModelPath(string language)
+        {
+            string file_name = AppendLanguage("porcupine_params", language);
+            return Path.Combine(
+                _rootDir,
+                "resources/porcupine/lib/common",
+                $"{file_name}.pv"
+            );
+        }
+
+        private static string GetContextPath(string language, string context)
+        {
+            return Path.Combine(
+                _rootDir,
+                "resources/rhino/resources",
+                AppendLanguage("contexts", language),
+                $"{_env}/{context}_{_env}.rhn"
+            );
+        }
+
+        private static string GetRhinoModelPath(string language)
+        {
+            string file_name = AppendLanguage("rhino_params", language);
+            return Path.Combine(
+                _rootDir,
+                "resources/rhino/lib/common",
+                $"{file_name}.pv"
+            );
+        }        
 
         [TestInitialize]
         public void TestInit()
@@ -72,45 +112,135 @@ namespace PicovoiceTest
             _inference = null;
         }
 
-        [TestMethod]
-        public void TestProcess()
+        [TestCleanup]
+        public void TestClean()
         {
-            string testAudioPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "resources/audio_samples/picovoice-coffee.wav");
-            List<short> data = GetPcmFromFile(testAudioPath, _pv.SampleRate);
+            _picovoice?.Dispose();
+        }        
 
-            int framecount = (int)Math.Floor((float)(data.Count / _pv.FrameLength));
+        public void RunTestCase(string audioFileName, string expectedIntent, Dictionary<string, string> expectedSlots)
+        {
+            string testAudioPath = Path.Combine(_rootDir, "resources/audio_samples/", audioFileName);
+
+            List<short> data = GetPcmFromFile(testAudioPath, _picovoice.SampleRate);
+
+            int framecount = (int)Math.Floor((float)(data.Count / _picovoice.FrameLength));
             var results = new List<int>();
             for (int i = 0; i < framecount; i++)
             {
-                int start = i * _pv.FrameLength;
-                int count = _pv.FrameLength;
+                int start = i * _picovoice.FrameLength;
+                int count = _picovoice.FrameLength;
                 List<short> frame = data.GetRange(start, count);
 
-                _pv.Process(frame.ToArray());
+                _picovoice.Process(frame.ToArray());
             }
 
             Assert.IsTrue(_isWakeWordDetected);
-            Assert.AreEqual(_inference.Intent, "orderBeverage");
-            Dictionary<string, string> expectedSlotValues = new Dictionary<string, string>()
+            Assert.AreEqual(_inference.Intent, expectedIntent);
+
+            Assert.IsTrue(_inference.Slots.All((keyValuePair) =>
+                                          expectedSlots.ContainsKey(keyValuePair.Key) &&
+                                          expectedSlots[keyValuePair.Key] == keyValuePair.Value));
+        }
+
+        [TestMethod]
+        public void TestTwice()
+        {
+            string language = "en";
+            _picovoice = Picovoice.Create(
+                ACCESS_KEY,
+                GetKeywordPath(language, "picovoice"),
+                _wakeWordCallback,
+                GetContextPath(language, "coffee_maker"),
+                _inferenceCallback);
+
+            string audioFileName = "picovoice-coffee.wav";
+            string expectedIntent = "orderBeverage";
+            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
             {
                 {"size", "large"},
                 {"beverage", "coffee"}
             };
-            Assert.IsTrue(_inference.Slots.All((keyValuePair) =>
-                                          expectedSlotValues.ContainsKey(keyValuePair.Key) &&
-                                          expectedSlotValues[keyValuePair.Key] == keyValuePair.Value));
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
+            TestInit();
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
 
         [TestMethod]
-        public void TestProcessAgain()
+        public void TestTwiceDe()
         {
-            TestProcess();
+            string language = "de";
+            _picovoice = Picovoice.Create(
+                ACCESS_KEY,
+                GetKeywordPath(language, "heuschrecke"),
+                _wakeWordCallback,
+                GetContextPath(language, "beleuchtung"),
+                _inferenceCallback,
+                GetPorcupineModelPath(language),
+                0.5f,
+                GetRhinoModelPath(language));
+
+            string audioFileName = "heuschrecke-beleuchtung_de.wav";
+            string expectedIntent = "changeState";
+            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
+            {
+                {"state", "aus"}
+            };
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
+            TestInit();
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
 
-        ~MainTest()
+        [TestMethod]
+        public void TestTwiceEs()
         {
-            _pv?.Dispose();
+            string language = "es";
+            _picovoice = Picovoice.Create(
+                ACCESS_KEY,
+                GetKeywordPath(language, "manzana"),
+                _wakeWordCallback,
+                GetContextPath(language, "luz"),
+                _inferenceCallback,
+                GetPorcupineModelPath(language),
+                0.5f,
+                GetRhinoModelPath(language));
+
+            string audioFileName = "manzana-luz_es.wav";
+            string expectedIntent = "changeColor";
+            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
+            {
+                {"location", "habitación"},
+                {"color", "rosado"}
+            };
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
+            TestInit();
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
+
+        [TestMethod]
+        public void TestTwiceFr()
+        {
+            string language = "fr";
+            _picovoice = Picovoice.Create(
+                ACCESS_KEY,
+                GetKeywordPath(language, "mon chouchou"),
+                _wakeWordCallback,
+                GetContextPath(language, "éclairage_intelligent"),
+                _inferenceCallback,
+                GetPorcupineModelPath(language),
+                0.5f,
+                GetRhinoModelPath(language));
+
+            string audioFileName = "mon-intelligent_fr.wav";
+            string expectedIntent = "changeColor";
+            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
+            {
+                {"color", "violet"}
+            };
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
+            TestInit();
+            RunTestCase(audioFileName, expectedIntent, expectedSlots);
+        }                 
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
