@@ -22,10 +22,38 @@ const PICOVOICE_PORCUPINE_KEYWORD = 11;
 
 const WAV_PATH_PICOVOICE_COFFEE =
   "../../resources/audio_samples/picovoice-coffee.wav";
+const WAV_PATH_HEUSCHRECKE_BELUCHTUNG_DE =
+  "../../resources/audio_samples/heuschrecke-beleuchtung_de.wav";
+const WAV_PATH_MANZANA_LUZ_ES =
+  "../../resources/audio_samples/manzana-luz_es.wav";
+const WAV_PATH_MON_INTELLIGENT_FR =
+  "../../resources/audio_samples/mon-intelligent_fr.wav";
 
 const platform = getPlatform();
 
-const contextPathCoffeeMaker = `../../resources/rhino/resources/contexts/${platform}/coffee_maker_${platform}.rhn`;
+const contextPathCoffeeMaker =
+  `../../resources/rhino/resources/contexts/${platform}/coffee_maker_${platform}.rhn`;
+const contextPathBeleuchtungDe =
+  `../../resources/rhino/resources/contexts_de/${platform}/beleuchtung_${platform}.rhn`;
+const contextPathLuzEs =
+  `../../resources/rhino/resources/contexts_es/${platform}/luz_${platform}.rhn`;
+const contextPathIntelligentFr =
+  `../../resources/rhino/resources/contexts_fr/${platform}/éclairage_intelligent_${platform}.rhn`;
+
+const keywordPathHeuschreckeDe = 
+  `../../resources/porcupine/resources/keyword_files_de/${platform}/heuschrecke_${platform}.ppn`
+const keywordPathManzanaEs = 
+  `../../resources/porcupine/resources/keyword_files_es/${platform}/manzana_${platform}.ppn`
+  const keywordPathMonchouchouFr = 
+  `../../resources/porcupine/resources/keyword_files_fr/${platform}/mon chouchou_${platform}.ppn`  
+
+const MODEL_PATH_PP_DE = "../../resources/porcupine/lib/common/porcupine_params_de.pv";
+const MODEL_PATH_PP_ES = "../../resources/porcupine/lib/common/porcupine_params_es.pv";
+const MODEL_PATH_PP_FR = "../../resources/porcupine/lib/common/porcupine_params_fr.pv";
+
+const MODEL_PATH_RH_DE = "../../resources/rhino/lib/common/rhino_params_de.pv";
+const MODEL_PATH_RH_ES = "../../resources/rhino/lib/common/rhino_params_es.pv";
+const MODEL_PATH_RH_FR = "../../resources/rhino/lib/common/rhino_params_fr.pv";
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
@@ -69,6 +97,100 @@ describe("intent detection (coffee maker)", () => {
     );
 
     processWaveFile(handle, WAV_PATH_PICOVOICE_COFFEE);
+
+    handle.release();
+  });
+});
+
+describe("intent detection in DE (Beleuchtung)", () => {
+  test("successful keyword and follow-on command", (done) => {
+    function keywordCallback(keyword) {
+      expect(keyword).toEqual(0);
+    }
+    function inferenceCallback(inference) {
+      expect(inference["isUnderstood"]).toBe(true);
+      expect(inference["intent"]).toEqual("changeState");
+      expect(inference["slots"]["state"]).toEqual("aus");
+      done();
+    }
+
+    let handle = new Picovoice(
+      ACCESS_KEY,
+      keywordPathHeuschreckeDe,
+      keywordCallback,
+      contextPathBeleuchtungDe,
+      inferenceCallback,
+      0.5,
+      0.5,
+      true,
+      MODEL_PATH_PP_DE,
+      MODEL_PATH_RH_DE
+    );
+
+    processWaveFile(handle, WAV_PATH_HEUSCHRECKE_BELUCHTUNG_DE);
+
+    handle.release();
+  });
+});
+
+describe("intent detection in ES (Luz)", () => {
+  test("successful keyword and follow-on command", (done) => {
+    function keywordCallback(keyword) {
+      expect(keyword).toEqual(0);
+    }
+    function inferenceCallback(inference) {
+      expect(inference["isUnderstood"]).toBe(true);
+      expect(inference["intent"]).toEqual("changeColor");
+      expect(inference["slots"]["location"]).toEqual("habitación");
+      expect(inference["slots"]["color"]).toEqual("rosado");
+      done();
+    }
+
+    let handle = new Picovoice(
+      ACCESS_KEY,
+      keywordPathManzanaEs,
+      keywordCallback,
+      contextPathLuzEs,
+      inferenceCallback,
+      0.5,
+      0.5,
+      true,
+      MODEL_PATH_PP_ES,
+      MODEL_PATH_RH_ES
+    );
+
+    processWaveFile(handle, WAV_PATH_MANZANA_LUZ_ES);
+
+    handle.release();
+  });
+});
+
+describe("intent detection in FR (Eclairage Intelligent)", () => {
+  test("successful keyword and follow-on command", (done) => {
+    function keywordCallback(keyword) {
+      expect(keyword).toEqual(0);
+    }
+    function inferenceCallback(inference) {
+      expect(inference["isUnderstood"]).toBe(true);
+      expect(inference["intent"]).toEqual("changeColor");
+      expect(inference["slots"]["color"]).toEqual("violet");
+      done();
+    }
+
+    let handle = new Picovoice(
+      ACCESS_KEY,
+      keywordPathMonchouchouFr,
+      keywordCallback,
+      contextPathIntelligentFr,
+      inferenceCallback,
+      0.5,
+      0.5,
+      true,
+      MODEL_PATH_PP_FR,
+      MODEL_PATH_RH_FR
+    );
+
+    processWaveFile(handle, WAV_PATH_MON_INTELLIGENT_FR);
 
     handle.release();
   });
