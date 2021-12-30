@@ -61,7 +61,7 @@ jobs:
         submodules: recursive      
 
     - name: Build File Demo
-      run: cmake -S . -B build && cmake --build build --target pciovoice_demo_file
+      run: cmake -S . -B build && cmake --build build --target picovoice_demo_file
 
     - name: Test
       run: python3 test_demo.py ${{secrets.PV_VALID_ACCESS_KEY}}
