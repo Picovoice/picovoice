@@ -1,12 +1,12 @@
 /*
-    Copyright 2021 Picovoice Inc.
+  Copyright 2021 Picovoice Inc.
 
-    You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
-    file accompanying this source.
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
-    an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
-    specific language governing permissions and limitations under the License.
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
 */
 
 import { Picovoice, Porcupine, Rhino } from './picovoice';
@@ -90,58 +90,8 @@ function release(): void {
   close();
 }
 
-var count = 0
-
 onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
   switch (event.data.command) {
-    case 'file-save-succeeded':
-      Porcupine.resolveFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.resolveFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-save-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.rejectFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-load-succeeded':
-      Porcupine.resolveFilePromise(event.data.content);
-      Porcupine.clearFilePromises();
-      Rhino.resolveFilePromise(event.data.content);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-load-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.rejectFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-exists-succeeded':
-      Porcupine.resolveFilePromise(event.data.content);
-      Porcupine.clearFilePromises();
-      Rhino.resolveFilePromise(event.data.content);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-exists-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.rejectFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-delete-succeeded':
-      Porcupine.resolveFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.resolveFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
-    case 'file-delete-failed':
-      Porcupine.rejectFilePromise(event.data.message);
-      Porcupine.clearFilePromises();
-      Rhino.rejectFilePromise(event.data.message);
-      Rhino.clearFilePromises();
-      break;
     case 'init':
       init(event.data.picovoiceArgs);
       break;
