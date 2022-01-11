@@ -26,7 +26,7 @@ runs:
   - run: >
       ./build/picovoice_demo_file
       -a ${{ inputs.access-key }}
-      -l ../../lib/${{ inputs.platform }}/${{ inputs.arch }}/libpicovoice.${{ inputs.ext }}
+      -l ../../sdk/c/lib/${{ inputs.platform }}/${{ inputs.arch }}/libpicovoice.${{ inputs.ext }}
       -p ../../resources/porcupine/lib/common/porcupine_params${{ inputs.lang-ext }}.pv
       -k ../../resources/porcupine/resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.ppn
       -r ../../resources/rhino/lib/common/rhino_params${{ inputs.lang-ext }}.pv
