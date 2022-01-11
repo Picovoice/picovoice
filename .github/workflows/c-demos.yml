@@ -134,7 +134,7 @@ jobs:
         ext: ${{ matrix.ext }}
         lang: fr
         lang-ext: '_fr'
-        keyword_file: "mon chouchou"
+        keyword_file: mon chouchou
         context_file: éclairage_intelligent
         audio_file: mon-intelligent_fr
   
@@ -216,6 +216,6 @@ jobs:
         arch: ${{ matrix.arch }}
         lang: fr
         lang-ext: '_fr'
-        keyword_file: "mon chouchou"
+        keyword_file: mon chouchou
         context_file: éclairage_intelligent
         audio_file: mon-intelligent_fr
