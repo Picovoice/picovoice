@@ -35,7 +35,7 @@ runs:
       -c ${{ inputs.context_path }}
       --porcupine_sensitivity ${{ inputs.ppn_sensitivity }}
       --rhino_sensitivity ${{ inputs.rhn_sensitivity }}
-      --require_endpoint ${{ inputs.required_endpoint }}
+      --require_endpoint ${{ inputs.require_endpoint }}
       -w ${{ inputs.audio_path }}
     working-directory: demo/c
     shell: bash
