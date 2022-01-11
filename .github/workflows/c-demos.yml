@@ -61,7 +61,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        lang: [en, de, es, fr]
         include:
         - os: ubuntu-latest
           platform: linux
@@ -75,26 +74,6 @@ jobs:
           platform: mac
           arch: x86_64
           ext: dylib
-        - lang: en
-          lang-ext: ''
-          keyword_file: picovoice
-          context_file: coffee_maker
-          audio_file: picovoice-coffee
-        - lang: de
-          lang-ext: _de
-          keyword_file: heuschrecke
-          context_file: beleuchtung
-          audio_file: heuschrecke-beleuchtung_de
-        - lang: es
-          lang-ext: _es
-          keyword_file: manzana
-          context_file: luz
-          audio_file: manzana-luz_es
-        - lang: fr
-          lang-ext: _fr
-          keyword_file: mon chouchou
-          context_file: éclairage_intelligent
-          audio_file: mon-éclairage_intelligent_fr
 
     steps:
     - uses: actions/checkout@v2
@@ -155,7 +134,7 @@ jobs:
         ext: ${{ matrix.ext }}
         lang: fr
         lang-ext: '_fr'
-        keyword_file: mon chouchou
+        keyword_file: "mon chouchou"
         context_file: éclairage_intelligent
         audio_file: mon-intelligent_fr
   
@@ -165,7 +144,6 @@ jobs:
     strategy:
       matrix:
         machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
-        lang: [en, de, es, fr]
         include:
         - machine: rpi2
           platform: raspberry-pi
@@ -182,26 +160,6 @@ jobs:
         - machine: beaglebone
           platform: beaglebone
           arch: ''
-        - lang: en
-          lang-ext: ''
-          keyword_file: picovoice
-          context_file: coffee_maker
-          audio_file: picovoice-coffee
-        - lang: de
-          lang-ext: _de
-          keyword_file: heuschrecke
-          context_file: beleuchtung
-          audio_file: heuschrecke-beleuchtung_de
-        - lang: es
-          lang-ext: _es
-          keyword_file: manzana
-          context_file: luz
-          audio_file: manzana-luz_es
-        - lang: fr
-          lang-ext: _fr
-          keyword_file: mon chouchou
-          context_file: éclairage_intelligent
-          audio_file: mon-éclairage_intelligent_fr
 
     steps:
     - uses: actions/checkout@v2
@@ -258,6 +216,6 @@ jobs:
         arch: ${{ matrix.arch }}
         lang: fr
         lang-ext: '_fr'
-        keyword_file: mon chouchou
+        keyword_file: "mon chouchou"
         context_file: éclairage_intelligent
         audio_file: mon-intelligent_fr
