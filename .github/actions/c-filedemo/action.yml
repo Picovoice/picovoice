@@ -30,7 +30,7 @@ runs:
       -p ../../resources/porcupine/lib/common/porcupine_params${{ inputs.lang-ext }}.pv
       -k ../../resources/porcupine/resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.ppn
       -r ../../resources/rhino/lib/common/rhino_params${{ inputs.lang-ext }}.pv
-      -c ../../resources/rhino/resources/contexts${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.rhn
+      -c ../../resources/rhino/resources/contexts${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.context_file }}_${{ inputs.platform }}.rhn
       --porcupine_sensitivity 0.5
       --rhino_sensitivity 0.5
       -w ../../resources/audio_samples/${{ inputs.audio_file }}.wav
