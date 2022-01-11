@@ -1,23 +1,25 @@
 name: Run filedemo
 
 inputs:
-  access-key:
+  access_key:
     required: true
-  platform:
+  library_path:
     required: true
-  arch:
+  ppn_model_path:
     required: true
-  ext:
-    default: so
-  lang:
+  keyword_path:
     required: true
-  lang-ext:
+  rhn_model_path:
     required: true
-  keyword_file: 
+  context_path:
     required: true
-  context_file:
-    required: true
-  audio_file:
+  ppn_sensitivity:
+    default: 0.5
+  rhn_sensitivity:
+    default: 0.5
+  require_endpoint:
+    default: "true"
+  audio_path:
     required: true
 
 runs:
@@ -25,15 +27,16 @@ runs:
   steps:
   - run: >
       ./build/picovoice_demo_file
-      -a ${{ inputs.access-key }}
-      -l ../../sdk/c/lib/${{ inputs.platform }}/${{ inputs.arch }}/libpicovoice.${{ inputs.ext }}
-      -p ../../resources/porcupine/lib/common/porcupine_params${{ inputs.lang-ext }}.pv
-      -k '../../resources/porcupine/resources/keyword_files${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.keyword_file }}_${{ inputs.platform }}.ppn'
-      -r ../../resources/rhino/lib/common/rhino_params${{ inputs.lang-ext }}.pv
-      -c '../../resources/rhino/resources/contexts${{ inputs.lang-ext }}/${{ inputs.platform }}/${{ inputs.context_file }}_${{ inputs.platform }}.rhn'
-      --porcupine_sensitivity 0.5
-      --rhino_sensitivity 0.5
-      -w ../../resources/audio_samples/${{ inputs.audio_file }}.wav
+      -a ${{ inputs.access_key }}
+      -l ${{ inputs.library_path }}
+      -p ${{ inputs.ppn_model_path }}
+      -k ${{ inputs.keyword_path }}
+      -r ${{ inputs.rhn_model_path }}
+      -c ${{ inputs.context_path }}
+      --porcupine_sensitivity ${{ inputs.ppn_sensitivity }}
+      --rhino_sensitivity ${{ inputs.rhn_sensitivity }}
+      --require_endpoint ${{ inputs.required_endpoint }}
+      -w ${{ inputs.audio_path }}
     working-directory: demo/c
     shell: bash
   

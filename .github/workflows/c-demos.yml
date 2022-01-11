@@ -89,54 +89,46 @@ jobs:
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (en)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: en
-        lang-ext: ''
-        keyword_file: picovoice
-        context_file: coffee_maker
-        audio_file: picovoice-coffee
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.${{ matrix.ext }}
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params.pv
+        context_path: ../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/picovoice-coffee.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: de
-        lang-ext: '_de'
-        keyword_file: heuschrecke
-        context_file: beleuchtung
-        audio_file: heuschrecke-beleuchtung_de
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.${{ matrix.ext }}
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_de.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files_de/${{ matrix.platform }}/heuschrecke_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_de.pv
+        context_path: ../../resources/rhino/resources/contexts_de/${{ matrix.platform }}/beleuchtung_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/heuschrecke-beleuchtung_de.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: es
-        lang-ext: '_es'
-        keyword_file: manzana
-        context_file: luz
-        audio_file: manzana-luz_es
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.${{ matrix.ext }}
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_es.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_es.pv
+        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/luz_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/manzana-luz_es.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        ext: ${{ matrix.ext }}
-        lang: fr
-        lang-ext: '_fr'
-        keyword_file: mon chouchou
-        context_file: éclairage_intelligent
-        audio_file: mon-intelligent_fr
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.${{ matrix.ext }}
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_fr.pv
+        keyword_path: '../../resources/porcupine/resources/keyword_files_fr/${{ matrix.platform }}/mon chouchou_${{ matrix.platform }}.ppn'
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_fr.pv
+        context_path: ../../resources/rhino/resources/contexts_fr/${{ matrix.platform }}/éclairage_intelligent_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/mon-intelligent_fr.wav
   
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -175,47 +167,43 @@ jobs:
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (en)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: en
-        lang-ext: ''
-        keyword_file: picovoice
-        context_file: coffee_maker
-        audio_file: picovoice-coffee
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.so
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params.pv
+        context_path: ../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/picovoice-coffee.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (de)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: de
-        lang-ext: '_de'
-        keyword_file: heuschrecke
-        context_file: beleuchtung
-        audio_file: heuschrecke-beleuchtung_de
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.so
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_de.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files_de/${{ matrix.platform }}/heuschrecke_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_de.pv
+        context_path: ../../resources/rhino/resources/contexts_de/${{ matrix.platform }}/beleuchtung_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/heuschrecke-beleuchtung_de.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (es)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: es
-        lang-ext: '_es'
-        keyword_file: manzana
-        context_file: luz
-        audio_file: manzana-luz_es
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.so
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_es.pv
+        keyword_path: ../../resources/porcupine/resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_es.pv
+        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/luz_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/manzana-luz_es.wav
 
     - uses: ./.github/actions/c-filedemo
       name: Run filedemo (fr)
       with:
-        access-key: ${{ secrets.PV_VALID_ACCESS_KEY }}
-        platform: ${{ matrix.platform }}
-        arch: ${{ matrix.arch }}
-        lang: fr
-        lang-ext: '_fr'
-        keyword_file: mon chouchou
-        context_file: éclairage_intelligent
-        audio_file: mon-intelligent_fr
+        access_key: ${{ secrets.PV_VALID_ACCESS_KEY }}
+        library_path: ../../sdk/c/lib/${{ matrix.platform }}/${{ matrix.arch }}/libpicovoice.so
+        ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_fr.pv
+        keyword_path: '../../resources/porcupine/resources/keyword_files_fr/${{ matrix.platform }}/mon chouchou_${{ matrix.platform }}.ppn'
+        rhn_model_path: ../../resources/rhino/lib/common/rhino_params_fr.pv
+        context_path: ../../resources/rhino/resources/contexts_fr/${{ matrix.platform }}/éclairage_intelligent_${{ matrix.platform }}.rhn
+        audio_path: ../../resources/audio_samples/mon-intelligent_fr.wav
