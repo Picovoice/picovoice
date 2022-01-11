@@ -4,3 +4,6 @@
 
 ## [2.0.1] - 2021-12-22
 * Porcupine+Rhino version bump
+
+## [2.0.2] - 2021-12-22
+* Android support patch
