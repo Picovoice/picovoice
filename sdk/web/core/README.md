@@ -1,6 +1,6 @@
 # Picovoice-web-core
 
-Package containing types for Picovoice web bindings.
+Package containing types for Picovoice web sdks.
 
 ## Build 
 
@@ -11,4 +11,4 @@ yarn
 yarn build
 ```
 
-This will build the types required for Picovoice web and web-framework bindings.
+This will build the types required for Picovoice web and web-framework sdks.
