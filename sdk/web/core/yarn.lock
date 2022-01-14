@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.0.1.tgz#f4346c408a241c582000955fff081ac679f88696"
   integrity sha512-ouj9MJHwqz/PNdACPwUxzkmExY/5Kep3a/H6zq5C17FVlWF+D2akevleFChoVd9wCLcKLtWRkF98PWq4HljPjw==
 
-"@picovoice/rhino-web-core@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.0.0.tgz#7e374dc7b8652b5e55726124e160b709df17cf4f"
-  integrity sha512-f5/kiHLFL1BmD1CszoFFOmMz0LE6wwrcMxQWhrbKsPMrzyfgyLmNw83Ai2eFf5IcdMTbQX4d8MnJgoai2F7EMA==
+"@picovoice/rhino-web-core@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.0.1.tgz#9157c8fbcbb27890cec6a8a23fea04ea83294bb4"
+  integrity sha512-+bkMsir8+j2xZFMRBrdpwu/0AA79Mjr2MhjvuLMFWYpd2HQXVMwhTYhbWcWWp7vgigNaKtiN96wJicDc5S7FqA==
 
 ansi-styles@^3.2.1:
   version "3.2.1"

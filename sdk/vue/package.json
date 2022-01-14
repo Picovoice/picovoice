@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-web-vue",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Vue mixin for Picovoice Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -55,5 +55,8 @@
     "inference",
     "renderless"
   ],
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@picovoice/picovoice-web-core": "^2.0.0"
+  }
 }

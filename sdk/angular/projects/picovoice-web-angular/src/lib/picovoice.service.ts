@@ -1,3 +1,14 @@
+/*
+  Copyright 2022 Picovoice Inc.
+
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -6,9 +17,24 @@ import type {
   PicovoiceWorker,
   PicovoiceWorkerResponse,
   PicovoiceWorkerFactory,
-  PicovoiceServiceArgs,
-  RhinoInferenceFinalized,
-} from './picovoice_types';
+} from '@picovoice/picovoice-web-core';
+
+import type {
+  PorcupineKeyword
+} from '@picovoice/porcupine-web-core';
+
+import type {
+  RhinoContext,
+  RhinoInference
+} from '@picovoice/rhino-web-core';
+
+export type PicovoiceServiceArgs = {
+  accessKey: string;
+  porcupineKeyword: PorcupineKeyword;
+  rhinoContext: RhinoContext;
+  requireEndpoint?: boolean;
+  start?: boolean;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +44,7 @@ export class PicovoiceService implements OnDestroy {
   public isInit = false;
   public contextInfo: string | null = null;
   public keyword$: Subject<string> = new Subject<string>();
-  public inference$: Subject<RhinoInferenceFinalized> = new Subject<RhinoInferenceFinalized>();
+  public inference$: Subject<RhinoInference> = new Subject<RhinoInference>();
   public isError$: Subject<boolean> = new Subject<boolean>();
   public listening$: Subject<boolean> = new Subject<boolean>();
   public engine$: Subject<string> = new Subject<string>();
@@ -83,7 +109,7 @@ export class PicovoiceService implements OnDestroy {
             break;
           }
           case 'rhn-inference': {
-            this.inference$.next(message.data.inference as RhinoInferenceFinalized);
+            this.inference$.next(message.data.inference as RhinoInference);
             this.engine$.next('ppn');
             break;
           }
@@ -97,7 +123,7 @@ export class PicovoiceService implements OnDestroy {
     } catch (error) {
       this.isInit = false;
       this.isError$.next(true);
-      this.error$.next(error);
+      this.error$.next(error as Error);
       throw error;
     }
 
@@ -112,7 +138,7 @@ export class PicovoiceService implements OnDestroy {
       this.picovoiceWorker = null;
       this.isInit = false;
       this.isError$.next(true);
-      this.error$.next(error);
+      this.error$.next(error as Error);
       throw error;
     }
   }

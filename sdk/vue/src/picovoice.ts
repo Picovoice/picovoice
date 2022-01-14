@@ -1,5 +1,49 @@
+/*
+  Copyright 2022 Picovoice Inc.
+
+  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
+  file accompanying this source.
+
+  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  specific language governing permissions and limitations under the License.
+*/
+
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import { PicovoiceVue, RhinoInferenceFinalized } from './picovoice_types';
+import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-core';
+import { PorcupineKeyword } from '@picovoice/porcupine-web-core';
+import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
+
+/**
+ * Type alias for PicovoiceWorkerFactory arguments.
+ */
+ export type PicovoiceWorkerFactoryArgs = {
+  accessKey: string;
+  porcupineKeyword: PorcupineKeyword;
+  rhinoContext: RhinoContext;
+  requireEndpoint?: boolean;
+  start?: boolean;
+}
+
+/**
+ * Type alias for Picovoice Vue Mixin.
+ * Use with `Vue as VueConstructor extends {$picovoice: PicovoiceVue}` to get types in typescript.
+ */
+ export interface PicovoiceVue {
+  $_pvWorker_: Worker | null;
+  $_webVp_: WebVoiceProcessor | null;
+  init: (
+    picovoiceFactoryArgs: PicovoiceWorkerFactoryArgs,
+    picovoiceFactory: PicovoiceWorkerFactory,
+    keywordCallback: (label: string) => void,
+    inferenceCallback: (inference: RhinoInference) => void,
+    contextCallback: (info: string) => void,
+    readyCallback: () => void,
+    errorCallback: (error: Error) => void) => void;
+  start: () => boolean;
+  pause: () => boolean;
+  delete: () => void;
+}
 
 export default {
   computed: {
@@ -25,7 +69,7 @@ export default {
           picovoiceFactoryArgs,
           picovoiceFactory,
           keywordCallback = (_: string) => {},
-          inferenceCallback = (_: RhinoInferenceFinalized) => {},
+          inferenceCallback = (_: RhinoInference) => {},
           contextCallback = (_: string) => {},
           readyCallback = () => {},
           errorCallback = (error: Error) => {console.error(error)}
