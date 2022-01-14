@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 Picovoice Inc.
+  Copyright 2021-2022 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -16,11 +16,15 @@ import {
   PicovoiceWorkerRequest,
   PicovoiceWorkerResponseErrorInit,
   PicovoiceWorkerResponseReady,
-  PorcupineWorkerResponseKeyword,
+} from '@picovoice/picovoice-web-core';
+
+import { PorcupineWorkerResponseKeyword } from '@picovoice/porcupine-web-core';
+
+import {
   RhinoInference,
   RhinoWorkerResponseInference,
   RhinoWorkerResponseInfo,
-} from './picovoice_types';
+} from '@picovoice/rhino-web-core';
 
 let picovoice: Picovoice;
 let paused: boolean;

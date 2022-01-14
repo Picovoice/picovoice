@@ -1,16 +1,4 @@
-import picovoiceMixin from './picovoice';
-
-import {
-  PorcupineKeywordCustom,
-  PorcupineKeywordBuiltin,
-  PorcupineKeyword,
-  RhinoContext, 
-  RhinoInferenceFinalized,
-  EngineControlType,
-  PicovoiceWorkerFactory, 
-  PicovoiceWorkerFactoryArgs,
-  PicovoiceVue
-} from './picovoice_types';
+import picovoiceMixin, { PicovoiceVue, PicovoiceWorkerFactoryArgs } from './picovoice';
 
 // Create module definition for Vue.use()
 const plugin = {
@@ -37,13 +25,6 @@ export default picovoiceMixin;
 
 // export types
 export {
-  PorcupineKeywordCustom,
-  PorcupineKeywordBuiltin,
-  PorcupineKeyword,
-  RhinoContext, 
-  RhinoInferenceFinalized,
-  EngineControlType,
-  PicovoiceWorkerFactory, 
   PicovoiceWorkerFactoryArgs,
   PicovoiceVue
 };

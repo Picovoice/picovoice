@@ -1,5 +1,5 @@
 /*
-  Copyright 2021 Picovoice Inc.
+  Copyright 2021-2022 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -18,10 +18,15 @@ export { Porcupine, Rhino };
 import {
   PicovoiceEngine,
   PicovoiceEngineArgs,
-  PorcupineEngine,
+} from '@picovoice/picovoice-web-core';
+
+import { PorcupineEngine } from '@picovoice/porcupine-web-core';
+
+import {
   RhinoEngine,
   RhinoInference,
-} from './picovoice_types';
+} from '@picovoice/rhino-web-core';
+
 
 type EngineControlType = 'ppn' | 'rhn';
 

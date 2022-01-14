@@ -8,6 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const PORCUPINE_VERSION = "2.0.3";
 const RHINO_VERSION = "2.0.3";
+const CORE_VERSION = "2.0.0";
 
 for (const language of ["en", "de", "es", "fr"]) {
   for (const flavour of ["factory", "worker"]) {
@@ -43,6 +44,7 @@ function createProject(language, flavour) {
       packageJson.set("dependencies", {
         [`@picovoice/porcupine-web-${language}-factory`]: `${PORCUPINE_VERSION}`,
         [`@picovoice/rhino-web-${language}-factory`]: `${RHINO_VERSION}`,
+        ['@picovoice/picovoice-web-core']: `${CORE_VERSION}`
       });
       packageJson.save((e) => {
         console.log(`${buildTarget} Package JSON updated`);
