@@ -40,7 +40,7 @@ class PicovoiceTestData:
 class PicovoiceTestCase(unittest.TestCase):
     @staticmethod
     def _concatenate(language, context, keyword):
-        return f'{language}#{context}#{keyword}'
+        return '%s#%s#%s' % (language, context, keyword)
 
     @staticmethod
     def __read_file(file_name, sample_rate):

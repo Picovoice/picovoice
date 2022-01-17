@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -51,6 +51,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
-    python_requires='>=3',
+    python_requires='>=3.5',
     keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
