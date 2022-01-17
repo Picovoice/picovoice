@@ -43,10 +43,14 @@ class PicovoiceTestCase(unittest.TestCase):
         return f'{language}#{context}#{keyword}'
 
     @staticmethod
-    def __read_file(file_name):
+    def __read_file(file_name, sample_rate):
         wav_file = wave.open(file_name, mode="rb")
         channels = wav_file.getnchannels()
         num_frames = wav_file.getnframes()
+
+        if wav_file.getframerate() != sample_rate:
+            raise ValueError(
+                "Audio file should have a sample rate of %d, got %d" % (sample_rate, wav_file.getframerate()))
 
         samples = wav_file.readframes(num_frames)
         wav_file.close()
@@ -94,7 +98,8 @@ class PicovoiceTestCase(unittest.TestCase):
 
         audio = \
             self.__read_file(
-                os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name))
+                os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
+                _picovoiceInstance.sample_rate)
 
         for i in range(len(audio) // _picovoiceInstance.frame_length):
             frame = audio[i * _picovoiceInstance.frame_length:(i + 1) * _picovoiceInstance.frame_length]
