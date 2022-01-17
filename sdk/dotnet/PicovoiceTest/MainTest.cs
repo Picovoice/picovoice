@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -58,12 +58,7 @@ namespace PicovoiceTest
                                                         (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
         }
 
-        private static string AppendLanguage(string s, string language)
-        {
-            if(language == "en")
-                return s;
-            return $"{s}_{language}";
-        }
+        private static string AppendLanguage(string s, string language) => language == "en" ? s : $"{s}_{language}";
 
         private static string GetKeywordPath(string language, string keyword)
         {
@@ -106,7 +101,7 @@ namespace PicovoiceTest
         }        
 
         [TestInitialize]
-        public void TestInit()
+        public void ResetCallbacks()
         {
             _isWakeWordDetected = false;
             _inference = null;
@@ -162,7 +157,7 @@ namespace PicovoiceTest
                 {"beverage", "coffee"}
             };
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            TestInit();
+            ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
 
@@ -176,9 +171,8 @@ namespace PicovoiceTest
                 _wakeWordCallback,
                 GetContextPath(language, "beleuchtung"),
                 _inferenceCallback,
-                GetPorcupineModelPath(language),
-                0.5f,
-                GetRhinoModelPath(language));
+                porcupineModelPath: GetPorcupineModelPath(language),
+                rhinoModelPath: GetRhinoModelPath(language));
 
             string audioFileName = "heuschrecke-beleuchtung_de.wav";
             string expectedIntent = "changeState";
@@ -187,7 +181,7 @@ namespace PicovoiceTest
                 {"state", "aus"}
             };
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            TestInit();
+            ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
 
@@ -201,9 +195,8 @@ namespace PicovoiceTest
                 _wakeWordCallback,
                 GetContextPath(language, "luz"),
                 _inferenceCallback,
-                GetPorcupineModelPath(language),
-                0.5f,
-                GetRhinoModelPath(language));
+                porcupineModelPath: GetPorcupineModelPath(language),
+                rhinoModelPath: GetRhinoModelPath(language));
 
             string audioFileName = "manzana-luz_es.wav";
             string expectedIntent = "changeColor";
@@ -213,7 +206,7 @@ namespace PicovoiceTest
                 {"color", "rosado"}
             };
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            TestInit();
+            ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }
 
@@ -227,9 +220,8 @@ namespace PicovoiceTest
                 _wakeWordCallback,
                 GetContextPath(language, "éclairage_intelligent"),
                 _inferenceCallback,
-                GetPorcupineModelPath(language),
-                0.5f,
-                GetRhinoModelPath(language));
+                porcupineModelPath: GetPorcupineModelPath(language),
+                rhinoModelPath: GetRhinoModelPath(language));
 
             string audioFileName = "mon-intelligent_fr.wav";
             string expectedIntent = "changeColor";
@@ -238,7 +230,7 @@ namespace PicovoiceTest
                 {"color", "violet"}
             };
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            TestInit();
+            ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
         }                 
 
