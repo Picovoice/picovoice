@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
     s.swift_version = '5.0'
     s.source_files = 'sdk/ios/*.{swift}'
     
-    # s.dependency 'Porcupine-iOS', '~> 2.1.0'
-    # s.dependency 'Rhino-iOS', '~> 2.1.0'
+    s.dependency 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.1-ios/binding/ios/Porcupine-iOS.podspec'
+    s.dependency 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/v2.1-ios/binding/ios/Rhino-iOS.podspec'
     s.dependency 'ios-voice-processor', '~> 1.0.2'
   end
