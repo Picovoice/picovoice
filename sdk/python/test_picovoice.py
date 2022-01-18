@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -10,14 +10,14 @@
 #
 
 
+import struct
 import sys
 import unittest
+import wave
 
 import pvporcupine
-import soundfile
 
 from picovoice import Picovoice
-
 from test_util import *
 
 
@@ -40,7 +40,27 @@ class PicovoiceTestData:
 class PicovoiceTestCase(unittest.TestCase):
     @staticmethod
     def _concatenate(language, context, keyword):
-        return f'{language}#{context}#{keyword}'
+        return '%s#%s#%s' % (language, context, keyword)
+
+    @staticmethod
+    def __read_file(file_name, sample_rate):
+        wav_file = wave.open(file_name, mode="rb")
+        channels = wav_file.getnchannels()
+        num_frames = wav_file.getnframes()
+
+        if wav_file.getframerate() != sample_rate:
+            raise ValueError(
+                "Audio file should have a sample rate of %d, got %d" % (sample_rate, wav_file.getframerate()))
+
+        samples = wav_file.readframes(num_frames)
+        wav_file.close()
+
+        frames = struct.unpack('h' * num_frames * channels, samples)
+
+        if channels == 2:
+            print("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.")
+
+        return frames[::channels]
 
     @classmethod
     def setUpClass(cls):
@@ -76,10 +96,10 @@ class PicovoiceTestCase(unittest.TestCase):
         _pvTestData.reset()
         _picovoiceInstance = _pvTestData.picovoiceInstance
 
-        audio, sample_rate = \
-            soundfile.read(
+        audio = \
+            self.__read_file(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
-                dtype='int16')
+                _picovoiceInstance.sample_rate)
 
         for i in range(len(audio) // _picovoiceInstance.frame_length):
             frame = audio[i * _picovoiceInstance.frame_length:(i + 1) * _picovoiceInstance.frame_length]

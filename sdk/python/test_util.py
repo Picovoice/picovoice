@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2021 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -102,7 +102,7 @@ def pv_keyword_files_subdir():
 def __append_language(s, language):
     if language == 'en':
         return s
-    return f'{s}_{language}'
+    return '%s_%s' % (s, language)
 
 
 def context_path(context, language):
@@ -111,10 +111,10 @@ def context_path(context, language):
     contexts_root = __append_language('../../resources/rhino/resources/contexts', language)
 
     if system == 'Darwin':
-        return os.path.join(os.path.dirname(__file__), contexts_root, 'mac', f'{context}_mac.rhn')
+        return os.path.join(os.path.dirname(__file__), contexts_root, 'mac', '%s_mac.rhn' % context)
     elif system == 'Linux':
         if platform.machine() == 'x86_64':
-            return os.path.join(os.path.dirname(__file__), contexts_root, 'linux', f'{context}_linux.rhn')
+            return os.path.join(os.path.dirname(__file__), contexts_root, 'linux', '%s_linux.rhn' % context)
         else:
             cpu_info = ''
             try:
@@ -126,17 +126,17 @@ def context_path(context, language):
 
             if '0xb76' == cpu_part or '0xc07' == cpu_part or '0xd03' == cpu_part or '0xd08' == cpu_part:
                 return os.path.join(os.path.dirname(__file__),
-                                    contexts_root, 'raspberry-pi', f'{context}_raspberry-pi.rhn')
+                                    contexts_root, 'raspberry-pi', '%s_raspberry-pi.rhn' % context)
             elif '0xd07' == cpu_part:
                 return os.path.join(os.path.dirname(__file__),
-                                    contexts_root, 'jetson', f'{context}_jetson.rhn')
+                                    contexts_root, 'jetson', '%s_jetson.rhn' % context)
             elif '0xc08' == cpu_part:
                 return os.path.join(os.path.dirname(__file__),
-                                    contexts_root, 'beaglebone', f'{context}_beaglebone.rhn')    
+                                    contexts_root, 'beaglebone', '%s_beaglebone.rhn' % context)
             else:
                 raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
     elif system == 'Windows':
-        return os.path.join(os.path.dirname(__file__), contexts_root, 'windows', f'{context}_windows.rhn')
+        return os.path.join(os.path.dirname(__file__), contexts_root, 'windows', '%s_windows.rhn' % context)
     else:
         raise ValueError("Unsupported system '%s'." % system)
 
@@ -156,11 +156,11 @@ def pv_keyword_paths_by_language(language):
 
 def pv_rhino_model_path_by_language(language):
     model_path_subdir = __append_language('lib/common/rhino_params', language)
-    model_path_subdir = f'{model_path_subdir}.pv'
+    model_path_subdir = '%s.pv' % model_path_subdir
     return os.path.join(os.path.dirname(__file__), '../../resources/rhino', model_path_subdir)
 
 
 def pv_porcupine_model_path_by_language(language):
     model_path_subdir = __append_language('lib/common/porcupine_params', language)
-    model_path_subdir = f'{model_path_subdir}.pv'
+    model_path_subdir = '%s.pv' % model_path_subdir
     return os.path.join(os.path.dirname(__file__), '../../resources/porcupine', model_path_subdir)
