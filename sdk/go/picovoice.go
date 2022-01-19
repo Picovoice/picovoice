@@ -185,7 +185,7 @@ var (
 	RhinoVersion = rhn.Version
 
 	// Picovoice version
-	Version = fmt.Sprintf("2.0.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
+	Version = fmt.Sprintf("2.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
 )
 
 // Init function for Picovoice. Must be called before attempting process.
