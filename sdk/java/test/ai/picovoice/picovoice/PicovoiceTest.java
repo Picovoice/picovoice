@@ -238,7 +238,7 @@ public class PicovoiceTest {
                 .setKeywordPath(getTestKeywordPath(language, "manzana"))
                 .setWakeWordCallback(wakeWordCallback)
                 .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "luz"))
+                .setContextPath(getTestContextPath(language, "iluminación_inteligente"))
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
