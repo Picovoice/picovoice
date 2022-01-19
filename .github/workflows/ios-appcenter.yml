@@ -28,7 +28,7 @@ jobs:
           submodules: recursive
       
       - name: Check branch
-        run: git branch
+        run: pwd && git branch
         working-directory: resources/porcupine
 
       - name: Setup Node.js environment
