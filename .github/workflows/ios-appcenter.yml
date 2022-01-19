@@ -27,14 +27,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Checkout porcupine v2.1
-        run: pwd && git checkout v2.1
-        working-directory: resources/porcupine
-
-      - name: Checkout rhino v2.1
-        run: git checkout v2.1
-        working-directory: resources/rhino
-
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
 
