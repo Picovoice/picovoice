@@ -26,10 +26,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      
-      - name: Check branch
-        run: pwd && git branch
-        working-directory: resources/porcupine
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.0
