@@ -23,7 +23,6 @@ This binding is for running Picovoice on **Flutter 1.20.0+** on the following pl
 - Android 4.4+ (API 19+)
 - iOS 9.0+
 
-
 ## Installation
 
 To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements. 
