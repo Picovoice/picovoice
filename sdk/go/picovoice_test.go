@@ -148,7 +148,7 @@ func TestTwiceEs(t *testing.T) {
 
 	language := "es"
 	keyword := "manzana"
-	context := "luz"
+	context := "iluminación_inteligente"
 	wakeWordCallback := func() { isWakeWordDetected = true }
 	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
 	picovoice = Picovoice{
