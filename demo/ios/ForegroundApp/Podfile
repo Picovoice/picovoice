@@ -3,9 +3,17 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PicovoiceForegroundAppDemo' do
-    pod 'Picovoice-iOS', '~> 2.0.0'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v2.1-ios/sdk/ios/Picovoice-iOS.podspec'
+
+    # remove
+    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec'
+    pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/v2.1/binding/ios/Rhino-iOS.podspec'
 end
 
 target 'PicovoiceForegroundAppDemoUITests' do    
-    pod 'Picovoice-iOS', '~> 2.0.0'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v2.1-ios/sdk/ios/Picovoice-iOS.podspec'
+
+    # remove
+    pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec'
+    pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/v2.1/binding/ios/Rhino-iOS.podspec'
 end
