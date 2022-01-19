@@ -11,7 +11,6 @@
 
 import { Porcupine } from '@picovoice/porcupine-web-$lang$-factory';
 import { Rhino } from '@picovoice/rhino-web-$lang$-factory';
-import { PorcupineKeyword } from '@picovoice/porcupine-web-$lang$-factory/dist/types/porcupine_types';
 
 export { Porcupine, Rhino };
 
@@ -20,7 +19,7 @@ import {
   PicovoiceEngineArgs,
 } from '@picovoice/picovoice-web-core';
 
-import { PorcupineEngine } from '@picovoice/porcupine-web-core';
+import { PorcupineKeyword, PorcupineEngine } from '@picovoice/porcupine-web-core';
 
 import {
   RhinoEngine,
@@ -40,7 +39,7 @@ export class Picovoice implements PicovoiceEngine {
   private _rhinoCallback: (inference: RhinoInference) => void
   private _rhinoEngine: RhinoEngine
   private _sampleRate: number = 16000;
-  private _version: string = '2.0.0';
+  private _version: string = '2.1.0';
 
   private constructor(
     porcupineEngine: PorcupineEngine,
