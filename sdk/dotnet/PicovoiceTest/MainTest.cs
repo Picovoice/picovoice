@@ -193,7 +193,7 @@ namespace PicovoiceTest
                 ACCESS_KEY,
                 GetKeywordPath(language, "manzana"),
                 _wakeWordCallback,
-                GetContextPath(language, "luz"),
+                GetContextPath(language, "iluminación_inteligente"),
                 _inferenceCallback,
                 porcupineModelPath: GetPorcupineModelPath(language),
                 rhinoModelPath: GetRhinoModelPath(language));
