@@ -66,7 +66,7 @@ class PicovoiceTestCase(unittest.TestCase):
     def setUpClass(cls):
         models = [
             ('en', 'coffee_maker', 'picovoice'),
-            ('es', 'luz', 'manzana'),
+            ('es', 'iluminación_inteligente', 'manzana'),
             ('de', 'beleuchtung', 'heuschrecke')]
 
         cls._pvTestDataDictionary = dict()
@@ -124,7 +124,7 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_es(self):
         self.run_picovoice(
             language='es',
-            context='luz',
+            context='iluminación_inteligente',
             keyword='manzana',
             audio_file_name='manzana-luz_es.wav',
             intent='changeColor',
