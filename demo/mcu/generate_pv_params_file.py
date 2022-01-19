@@ -55,11 +55,12 @@ def generate_pv_params(model_files, header_file_folders):
             f_out.write(HEADER)
 
             for language, ppn_rhn_models in model_files.items():
-                rhn_dir = os.path.join(repo_dir, 'resources/rhino/resources/contexts/cortexm')
                 if language == 'en':
                     ppn_dir = os.path.join(repo_dir, 'resources/porcupine/resources/keyword_files/cortexm')
+                    rhn_dir = os.path.join(repo_dir, f'resources/rhino/resources/contexts/cortexm')
                 else:
                     ppn_dir = os.path.join(repo_dir, f'resources/porcupine/resources/keyword_files_{language}/cortexm')
+                    rhn_dir = os.path.join(repo_dir, f'resources/rhino/resources/contexts_{language}/cortexm')
 
                 f_out.write(f'\n#if defined(__PV_LANGUAGE_{LANGUAGE_CODE_TO_NAME[language].upper()}__)\n\n')
 
