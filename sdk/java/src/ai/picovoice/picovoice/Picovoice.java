@@ -205,7 +205,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "2.0.0";
+        return "2.1.0";
     }
 
     /**

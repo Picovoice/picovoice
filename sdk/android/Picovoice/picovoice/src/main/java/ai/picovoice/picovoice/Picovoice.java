@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -141,7 +141,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "2.0.0";
+        return "2.1.0";
     }
 
     /**
