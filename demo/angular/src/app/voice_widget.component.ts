@@ -1,8 +1,8 @@
 import { Component } from "@angular/core"
 import { Subscription } from "rxjs"
 
-import { PicovoiceService } from "@picovoice/picovoice-web-angular"
-import { PicovoiceServiceArgs, RhinoInferenceFinalized } from "@picovoice/picovoice-web-angular/lib/picovoice_types"
+import { PicovoiceService, PicovoiceServiceArgs } from "@picovoice/picovoice-web-angular"
+import { RhinoInference } from "@picovoice/rhino-web-core"
 import { CLOCK_EN_64 } from "../dist/rhn_contexts_base64"
 
 @Component({
@@ -27,7 +27,7 @@ export class VoiceWidget {
   engine: string = 'ppn'
   errorMessage: string
   detections: string[] = []
-  inference: RhinoInferenceFinalized | null = null
+  inference: RhinoInference | null = null
   picovoiceServiceArgs: PicovoiceServiceArgs = {
     accessKey: "",
     rhinoContext: {

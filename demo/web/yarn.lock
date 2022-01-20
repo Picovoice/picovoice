@@ -17,13 +17,13 @@
     "@picovoice/porcupine-web-core" "^2.1.0"
     "@picovoice/rhino-web-core" "^2.1.0"
 
-"@picovoice/picovoice-web-en-worker@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.1.0.tgz#11d35e665256173b35a5d002b4d43524d733f464"
-  integrity sha512-gCnlXI9Db7TSatdcNDzBJhF8+SY1EoirANAiyAY71Wwcb14XXnstgZZZiQ2eZB8uVLv+VfKM8L8zKXTfT528EA==
+"@picovoice/picovoice-web-en-worker@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.1.1.tgz#4a24bd1631ad9c10cbb55bdad55ece60e11c5d0c"
+  integrity sha512-961jLE3zliDn7Wn0Z1q0ruPFG/5KtUzI4qQtmih/PWmQDn06Wi9nl5Ft+VReStG+4wTHEUUUl9/jQzchoj8xFA==
   dependencies:
     "@picovoice/picovoice-web-core" "2.1.0"
-    "@picovoice/porcupine-web-en-factory" "2.1.0"
+    "@picovoice/porcupine-web-en-factory" "2.1.1"
     "@picovoice/rhino-web-en-factory" "2.1.0"
 
 "@picovoice/porcupine-web-core@^2.1.0":
@@ -31,10 +31,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/porcupine-web-en-factory@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.1.0.tgz#57d46bc69f0ad1f3ac4a14795ef2d31ec31548f2"
-  integrity sha512-ju7YwmT3ctuMAXMp4Y4/oUe13y7GdyJ6DjZnLPsFBxRGOvaV2LcnFTzajAj85Eq0adTbvQTC7NZ/Ipy8dt8ckg==
+"@picovoice/porcupine-web-en-factory@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.1.1.tgz#0d50c3ef26899debda72e9f49e7f0a3ddfdcda44"
+  integrity sha512-d9EMSwyyHgKOx8B+fAda1EGd+qF/215xyJAiRakqkwmcuYS/cSCz0fiZDeQ3cauCbMECxY6Zt21/YK2rzCcePA==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 

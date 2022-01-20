@@ -45,12 +45,13 @@
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 
-import picovoiceMixin, { 
-  EngineControlType, 
-  PicovoiceVue, 
-  RhinoInferenceFinalized 
+type EngineControlType = "ppn" | "rhn";
+
+import picovoiceMixin, {
+  PicovoiceVue,
 } from "@picovoice/picovoice-web-vue";
 import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
+import { RhinoInference } from "@picovoice/rhino-web-core";
 
 import { CLOCK_EN_64 } from "../dist/rhn_contexts_base64";
 
@@ -59,7 +60,7 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
   mixins: [picovoiceMixin],
   data: function () {
     return {
-      inference: null as RhinoInferenceFinalized | null,
+      inference: null as RhinoInference | null,
       detections: [] as string[],
       isError: false,
       errorMessage: '',
@@ -120,7 +121,7 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
       this.detections = [...this.detections, keyword];
       this.engine = "rhn";
     },
-    pvInferenceFn: function (inference: RhinoInferenceFinalized) {
+    pvInferenceFn: function (inference: RhinoInference) {
       this.inference = inference;
       this.engine = "ppn";
     },
