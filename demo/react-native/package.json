@@ -1,6 +1,6 @@
 {
   "name": "picovoice-react-native-demo",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "android-run": "react-native run-android",
@@ -14,10 +14,10 @@
     "android-install": "yarn && yarn copy"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "^2.0.2",
-    "@picovoice/porcupine-react-native": "^2.0.3",
+    "@picovoice/picovoice-react-native": "^2.1.0",
+    "@picovoice/porcupine-react-native": "^2.1.0",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "^2.0.2",
+    "@picovoice/rhino-react-native": "^2.1.0",
     "react": "16.13.1",
     "react-native": "0.63.3"
   },
