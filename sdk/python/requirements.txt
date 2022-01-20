@@ -1,2 +1,2 @@
-pvporcupine==2.0.4
-pvrhino==2.0.2
+pvporcupine==2.1.0
+pvrhino==2.1.0
