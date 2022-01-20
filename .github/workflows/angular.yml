@@ -3,14 +3,14 @@ name: Angular
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
   pull_request:
-    branches: [ master ]
+    branches: [ master, v2.1 ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
