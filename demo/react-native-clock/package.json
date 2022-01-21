@@ -1,6 +1,6 @@
 {
   "name": "react-native-clock",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "copy": "node copy.js",
@@ -12,10 +12,10 @@
     "ios-run": "react-native run-ios"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "^2.0.2",
-    "@picovoice/porcupine-react-native": "^2.0.3",
+    "@picovoice/picovoice-react-native": "^2.1.0",
+    "@picovoice/porcupine-react-native": "^2.1.0",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "^2.0.2",
+    "@picovoice/rhino-react-native": "^2.1.0",
     "moment": "^2.29.1",
     "react": "16.13.1",
     "react-moment": "^1.1.1",

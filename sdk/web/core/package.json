@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-web-core",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Picovoice types for web bindings",
   "main": "src/index.ts",
   "types": "dist/types/index.d.ts",
@@ -11,8 +11,8 @@
     "build": "npm-run-all --parallel build:**"
   },
   "dependencies": {
-    "@picovoice/porcupine-web-core": "^2.0.1",
-    "@picovoice/rhino-web-core": "^2.0.1"
+    "@picovoice/porcupine-web-core": "^2.1.0",
+    "@picovoice/rhino-web-core": "^2.1.0"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",

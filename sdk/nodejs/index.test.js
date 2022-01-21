@@ -35,8 +35,8 @@ const contextPathCoffeeMaker =
   `../../resources/rhino/resources/contexts/${platform}/coffee_maker_${platform}.rhn`;
 const contextPathBeleuchtungDe =
   `../../resources/rhino/resources/contexts_de/${platform}/beleuchtung_${platform}.rhn`;
-const contextPathLuzEs =
-  `../../resources/rhino/resources/contexts_es/${platform}/luz_${platform}.rhn`;
+const contextPathInteligenteEs =
+  `../../resources/rhino/resources/contexts_es/${platform}/iluminación_inteligente_${platform}.rhn`;
 const contextPathIntelligentFr =
   `../../resources/rhino/resources/contexts_fr/${platform}/éclairage_intelligent_${platform}.rhn`;
 
@@ -133,7 +133,7 @@ describe("intent detection in DE (Beleuchtung)", () => {
   });
 });
 
-describe("intent detection in ES (Luz)", () => {
+describe("intent detection in ES (Iluminación Inteligente)", () => {
   test("successful keyword and follow-on command", (done) => {
     function keywordCallback(keyword) {
       expect(keyword).toEqual(0);
@@ -150,7 +150,7 @@ describe("intent detection in ES (Luz)", () => {
       ACCESS_KEY,
       keywordPathManzanaEs,
       keywordCallback,
-      contextPathLuzEs,
+      contextPathInteligenteEs,
       inferenceCallback,
       0.5,
       0.5,
@@ -305,9 +305,9 @@ describe("getter functions", () => {
       () => {}
     );
 
-    expect(handle.porcupineVersion).toEqual("2.0.0");
-    expect(handle.rhinoVersion).toEqual("2.0.0");
-    expect(handle.version).toEqual("2.0.0");
+    expect(handle.porcupineVersion).toEqual("2.1.0");
+    expect(handle.rhinoVersion).toEqual("2.1.0");
+    expect(handle.version).toEqual("2.1.0");
 
     handle.release();
   });

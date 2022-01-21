@@ -94,7 +94,7 @@ class Picovoice {
 
     this._frameLength = 512;
     this._sampleRate = 16000;
-    this._version = "2.0.0";
+    this._version = "2.1.0";
 
     this._porcupineVersion = this.porcupine.version;
     this._rhinoVersion = this.rhino.version;

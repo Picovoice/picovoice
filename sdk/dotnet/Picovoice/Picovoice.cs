@@ -227,7 +227,7 @@ namespace Pv
         /// Gets the version number of the Picovoice platform
         /// </summary>
         /// <returns>Version of Picovoice</returns>
-        public string Version => "2.0.0";
+        public string Version => "2.1.0";
 
         /// <summary>
         /// Get the version of the Porcupine library

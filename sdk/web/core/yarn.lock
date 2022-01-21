@@ -2,15 +2,15 @@
 # yarn lockfile v1
 
 
-"@picovoice/porcupine-web-core@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.0.1.tgz#f4346c408a241c582000955fff081ac679f88696"
-  integrity sha512-ouj9MJHwqz/PNdACPwUxzkmExY/5Kep3a/H6zq5C17FVlWF+D2akevleFChoVd9wCLcKLtWRkF98PWq4HljPjw==
+"@picovoice/porcupine-web-core@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
+  integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/rhino-web-core@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.0.1.tgz#9157c8fbcbb27890cec6a8a23fea04ea83294bb4"
-  integrity sha512-+bkMsir8+j2xZFMRBrdpwu/0AA79Mjr2MhjvuLMFWYpd2HQXVMwhTYhbWcWWp7vgigNaKtiN96wJicDc5S7FqA==
+"@picovoice/rhino-web-core@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.1.0.tgz#53a8d50c5fd9588fc5115f0dfa2bc8a563b4a862"
+  integrity sha512-AJEEEIXODRxleTtQoCZIVxwdgfMm23ivLzdXJDhYR/nk/07L5CVcmvihfWlcyCd7Utqkm5Z8UrlJylVnTMVd5g==
 
 ansi-styles@^3.2.1:
   version "3.2.1"

@@ -32,7 +32,7 @@ class Picovoice {
   int? get sampleRate => _porcupine?.sampleRate;
 
   /// Version of Picovoice
-  String get version => "2.0.0";
+  String get version => "2.1.0";
 
   /// Version of Porcupine
   String? get porcupineVersion => _porcupine?.version;

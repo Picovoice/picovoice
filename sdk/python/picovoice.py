@@ -266,7 +266,7 @@ class Picovoice(object):
     def version(self):
         """Version"""
 
-        return '1.1.0'
+        return '2.1.0'
 
     @property
     def context_info(self):
