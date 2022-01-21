@@ -43,6 +43,7 @@ class PicovoiceDemo(Thread):
             keyword_path,
             context_path,
             access_key,
+            device_index,
             porcupine_sensitivity=0.75,
             rhino_sensitivity=0.25):
         super(PicovoiceDemo, self).__init__()
@@ -62,6 +63,7 @@ class PicovoiceDemo(Thread):
         self._context = self._picovoice.context_info
 
         self._color = 'blue'
+        self._device_index = device_index
 
     @staticmethod
     def _set_color(color):
@@ -129,12 +131,15 @@ def main():
         help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
         required=True)
 
+    parser.add_argument('--audio_device_index', help='Index of input audio device.', type=int, default=-1)
+
     args = parser.parse_args()
 
     o = PicovoiceDemo(
         os.path.join(os.path.dirname(__file__), 'picovoice_raspberry-pi.ppn'),
         os.path.join(os.path.dirname(__file__), 'respeaker_raspberry-pi.rhn'),
         args.access_key,
+        args.audio_device_index
     )
     o.run()
 
