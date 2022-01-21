@@ -77,7 +77,7 @@ class PicovoiceDemo(Thread):
 
     def _inference_callback(self, inference):
         print('{')
-        print("  is_understood : '%s'," % 'true' if inference.is_understood else 'false')
+        print("  is_understood : '%s'," % ('true' if inference.is_understood else 'false'))
         if inference.is_understood:
             print("  intent : '%s'," % inference.intent)
             if len(inference.slots) > 0:
