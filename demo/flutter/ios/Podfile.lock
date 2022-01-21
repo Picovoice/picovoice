@@ -20,14 +20,14 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
-  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v2.1/binding/ios/Rhino-iOS.podspec`)
   - rhino_flutter (from `.symlinks/plugins/rhino_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Porcupine-iOS
+    - Rhino-iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -36,12 +36,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.1/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
-  Rhino-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/v2.1/binding/ios/Rhino-iOS.podspec
   rhino_flutter:
     :path: ".symlinks/plugins/rhino_flutter/ios"
 
@@ -50,11 +46,11 @@ SPEC CHECKSUMS:
   flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
-  Porcupine-iOS: 3ba921ebae3daf2edff3f9aee4ac71e3c3bc6e36
+  Porcupine-iOS: 35f3cd9e60b1178631a819e16462ff41894cbf20
   porcupine_flutter: d07702351800af8cd7918e1333bb87359771c347
-  Rhino-iOS: e3bac436f6452b021dae549f66a271ce5eb34106
+  Rhino-iOS: b30668ab5d4a2e18d61bd1bc10f0ae41e0e202c5
   rhino_flutter: 9a6eab42e344c9ab9f641c2433eb89a582f5b786
 
-PODFILE CHECKSUM: 5b937aa5842c99fb249b7d190dbc0673d383dd4f
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.11.2
