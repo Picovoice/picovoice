@@ -10,39 +10,21 @@ PODS:
     - ios-voice-processor (~> 1.0.2)
 
 DEPENDENCIES:
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v2.1-ios/sdk/ios/Picovoice-iOS.podspec`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v2.1-ios/binding/ios/Porcupine-iOS.podspec`)
-  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v2.1-ios/binding/ios/Rhino-iOS.podspec`)
+  - Picovoice-iOS (~> 2.1.0)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-
-EXTERNAL SOURCES:
-  Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v2.1-ios/sdk/ios/Picovoice-iOS.podspec
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v2.1-ios/binding/ios/Porcupine-iOS.podspec
-  Rhino-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/v2.1-ios/binding/ios/Rhino-iOS.podspec
-
-CHECKOUT OPTIONS:
-  Picovoice-iOS:
-    :commit: 244a0b28d065879eb23dd1605d40c57957b715fb
-    :git: https://github.com/Picovoice/picovoice.git
-  Porcupine-iOS:
-    :commit: 70c98afd80d5d5c46c5f4ced9fb69cc07f1513e2
-    :git: https://github.com/Picovoice/porcupine.git
-  Rhino-iOS:
-    :commit: 448b3eca87188d12b653e4427d499778673fed91
-    :git: https://github.com/Picovoice/rhino.git
+    - Picovoice-iOS
+    - Porcupine-iOS
+    - Rhino-iOS
 
 SPEC CHECKSUMS:
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Picovoice-iOS: a0345eb163a0815033ee3b7ee3416d728fb8ad75
-  Porcupine-iOS: 9c30c8ace57462531beef701a72a368f45a304d0
-  Rhino-iOS: 078fe741c7103f8508f04623cca74f992e01183c
+  Picovoice-iOS: d617b931677bb5ee0499b66ae1388d0cf552d70c
+  Porcupine-iOS: 35f3cd9e60b1178631a819e16462ff41894cbf20
+  Rhino-iOS: b30668ab5d4a2e18d61bd1bc10f0ae41e0e202c5
 
-PODFILE CHECKSUM: 8a4dbca95b7d95fca6315d3092dad305a413e801
+PODFILE CHECKSUM: fb00012d3a6986f21944d8d64e726f7a5891e787
 
 COCOAPODS: 1.11.2
