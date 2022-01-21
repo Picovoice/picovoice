@@ -2009,7 +2009,12 @@ pv_picovoice_delete(handle);
 
 ## Releases
 
-### v2.0.0 - Nov 25th, 2021
+### v2.1.0 - January 20th, 2022
+
+- macOS arm64 (Apple Silocon) support added for Java and Unity SDKs
+- Various bug fixes and improvements
+
+### v2.0.0 - November 25th, 2021
 - Improved accuracy.
 - Added Rust SDK.
 - macOS arm64 support.
