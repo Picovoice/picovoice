@@ -103,7 +103,7 @@ class PicovoiceDemo(Thread):
         recorder = None
 
         try:
-            recorder = PvRecorder(device_index=self._device_index, frame_length=self._porcupine.frame_length)
+            recorder = PvRecorder(device_index=self._device_index, frame_length=self._picovoice.frame_length)
             recorder.start()
 
             print(self._context)
