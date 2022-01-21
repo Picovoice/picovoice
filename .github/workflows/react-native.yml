@@ -2,7 +2,7 @@ name: React Native
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'
@@ -10,7 +10,7 @@ on:
       - 'resources/rhino'
 
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'

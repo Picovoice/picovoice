@@ -3,7 +3,7 @@ name: Java
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'sdk/java/**'
       - '!sdk/java/README.md'
@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
 
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'sdk/java/**'
       - '!sdk/java/README.md'

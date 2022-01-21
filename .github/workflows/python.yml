@@ -3,7 +3,7 @@ name: Python
 on:
   workflow_dispatch:
   push:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - '.github/workflows/python.yml'
       - 'sdk/python/**'
@@ -12,7 +12,7 @@ on:
       - 'resources/rhino'
 
   pull_request:
-    branches: [ master, v2.1 ]
+    branches: [ master ]
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
