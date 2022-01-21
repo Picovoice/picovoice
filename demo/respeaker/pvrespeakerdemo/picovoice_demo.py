@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -15,9 +15,9 @@ import struct
 import sys
 from threading import Thread
 
-import pyaudio
 from gpiozero import LED
 from picovoice import Picovoice
+from pvrecorder import PvRecorder
 
 from .apa102 import APA102
 
@@ -98,37 +98,25 @@ class PicovoiceDemo(Thread):
                 raise NotImplementedError()
 
     def run(self):
-        pa = None
-        audio_stream = None
+        recorder = None
 
         try:
-            pa = pyaudio.PyAudio()
-
-            audio_stream = pa.open(
-                rate=self._picovoice.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=self._picovoice.frame_length)
+            recorder = PvRecorder(device_index=self._device_index, frame_length=self._porcupine.frame_length)
+            recorder.start()
 
             print(self._context)
 
             print('[Listening ...]')
 
             while True:
-                pcm = audio_stream.read(self._picovoice.frame_length)
-                pcm = struct.unpack_from("h" * self._picovoice.frame_length, pcm)
-
+                pcm = recorder.read()
                 self._picovoice.process(pcm)
         except KeyboardInterrupt:
             sys.stdout.write('\b' * 2)
             print('Stopping ...')
         finally:
-            if audio_stream is not None:
-                audio_stream.close()
-
-            if pa is not None:
-                pa.terminate()
+            if recorder is not None:
+                recorder.delete()
 
             self._picovoice.delete()
 
