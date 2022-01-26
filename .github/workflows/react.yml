@@ -9,7 +9,7 @@ on:
       - '!sdk/react/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/react.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -17,6 +17,7 @@ on:
       - '!sdk/react/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/react.yml'
 
 defaults:
   run:

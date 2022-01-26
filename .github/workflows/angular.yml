@@ -9,6 +9,7 @@ on:
       - '!sdk/angular/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/angular.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -16,6 +17,7 @@ on:
       - '!sdk/angular/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/angular.yml'
 
 defaults:
   run:

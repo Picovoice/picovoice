@@ -9,7 +9,7 @@ on:
       - '!sdk/rust/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/rust.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -17,6 +17,7 @@ on:
       - '!sdk/rust/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/rust.yml'
 
 defaults:
   run:

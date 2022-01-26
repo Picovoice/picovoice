@@ -9,7 +9,7 @@ on:
       - '!sdk/dotnet/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/dotnet.yml'
   pull_request:
     branches: [ master ]
     paths: 
@@ -17,6 +17,7 @@ on:
       - '!sdk/dotnet/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/dotnet.yml'
 
 defaults:
   run:
@@ -60,7 +61,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3, rpi4, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
     - name: Checkout repository and submodules

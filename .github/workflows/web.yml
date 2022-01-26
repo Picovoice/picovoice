@@ -9,12 +9,13 @@ on:
       - '!sdk/web/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/web.yml'
   pull_request:
     branches: [ master ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
+      - '.github/workflows/web.yml'
 
 defaults:
   run:
