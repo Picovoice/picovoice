@@ -117,7 +117,7 @@ jobs:
         ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_es.pv
         keyword_path: ../../resources/porcupine/resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
         rhn_model_path: ../../resources/rhino/lib/common/rhino_params_es.pv
-        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/luz_${{ matrix.platform }}.rhn
+        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/iluminación_inteligente_${{ matrix.platform }}.rhn
         audio_path: ../../resources/audio_samples/manzana-luz_es.wav
 
     - uses: ./.github/actions/c-filedemo
@@ -201,7 +201,7 @@ jobs:
         ppn_model_path: ../../resources/porcupine/lib/common/porcupine_params_es.pv
         keyword_path: ../../resources/porcupine/resources/keyword_files_es/${{ matrix.platform }}/manzana_${{ matrix.platform }}.ppn
         rhn_model_path: ../../resources/rhino/lib/common/rhino_params_es.pv
-        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/luz_${{ matrix.platform }}.rhn
+        context_path: ../../resources/rhino/resources/contexts_es/${{ matrix.platform }}/iluminación_inteligente_${{ matrix.platform }}.rhn
         audio_path: ../../resources/audio_samples/manzana-luz_es.wav
 
     - uses: ./.github/actions/c-filedemo
