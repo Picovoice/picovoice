@@ -9,7 +9,7 @@ on:
       - '!sdk/vue/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/vue.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -17,6 +17,7 @@ on:
       - '!sdk/vue/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/vue.yml'
 
 defaults:
   run:

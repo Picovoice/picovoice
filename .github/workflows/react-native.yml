@@ -8,7 +8,7 @@ on:
       - '!sdk/react-native/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
-
+      - '.github/workflows/reaact-native.yml'
   pull_request:
     branches: [ master ]
     paths:
@@ -16,6 +16,7 @@ on:
       - '!sdk/react-native/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
+      - '.github/workflows/reaact-native.yml'
 
 defaults:
   run:
