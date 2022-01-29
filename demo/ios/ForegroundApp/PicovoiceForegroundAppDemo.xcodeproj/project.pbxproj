@@ -34,6 +34,8 @@
 		1E846C98274D93F900A63382 /* rhino_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C97274D93F900A63382 /* rhino_params.pv */; };
 		1E846C9A274D947E00A63382 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C99274D947900A63382 /* picovoice_ios.ppn */; };
 		25C78D0516C174D840308756 /* libPods-PicovoiceForegroundAppDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51440C34BE7D52D58A266CCA /* libPods-PicovoiceForegroundAppDemoUITests.a */; };
+		8015EF3427A4C76F006A0E8E /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */; };
+		8015EF3627A4C77F006A0E8E /* iluminación_inteligente_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */; };
 		912216181D5264F91B289465 /* libPods-PicovoiceForegroundAppDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8A4013300AFAB1C6A4B552 /* libPods-PicovoiceForegroundAppDemo.a */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +98,8 @@
 		4AFC1C0D20FF305743767BCE /* Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		51440C34BE7D52D58A266CCA /* libPods-PicovoiceForegroundAppDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceForegroundAppDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6061021C5897072E8282488F /* Pods-PicovoiceForegroundAppDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemo.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemo/Pods-PicovoiceForegroundAppDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = "murciélago_ios.ppn"; sourceTree = "<group>"; };
+		8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iluminación_inteligente_ios.rhn"; sourceTree = "<group>"; };
 		9A134CD3B9B44415F2D732A3 /* Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D2AF6C42DC1F39FC33A02E0E /* Pods-PicovoiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EE4845B1B7FC724401644CAE /* Pods-PicovoiceForegroundAppDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemo/Pods-PicovoiceForegroundAppDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 		1760DF20253A175000395344 = {
 			isa = PBXGroup;
 			children = (
+				8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */,
+				8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */,
 				1760DF2B253A175000395344 /* PicovoiceForegroundAppDemo */,
 				1E1A67BE26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests */,
 				1760DF2A253A175000395344 /* Products */,
@@ -418,6 +424,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8015EF3627A4C77F006A0E8E /* iluminación_inteligente_ios.rhn in Resources */,
+				8015EF3427A4C76F006A0E8E /* murciélago_ios.ppn in Resources */,
 				1E846C94274D93DC00A63382 /* picovoice_ios.ppn in Resources */,
 				1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */,
 				1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */,
