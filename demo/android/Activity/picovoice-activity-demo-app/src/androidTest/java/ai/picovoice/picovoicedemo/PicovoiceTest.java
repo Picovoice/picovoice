@@ -430,6 +430,27 @@ public class PicovoiceTest {
     }
 
     @Test
+    public void testInitWithNonAsciiModelName() throws PicovoiceException {
+        File keywordPath = new File(testResourcesPath, "keyword_files/es/murciélago_android.ppn");
+        File contextPath = new File(testResourcesPath, "context_files/es/iluminación_inteligente_android.rhn");
+        File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_es.pv");
+        File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_es.pv");
+        Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setKeywordPath(keywordPath.getAbsolutePath())
+                .setContextPath(contextPath.getAbsolutePath())
+                .setPorcupineModelPath(porcupineModelPath.getAbsolutePath())
+                .setRhinoModelPath(rhinoModelPath.getAbsolutePath())
+                .setWakeWordCallback(wakeWordCallback)
+                .setInferenceCallback(inferenceCallback)
+                .build(appContext);
+
+        assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
+
+        p.delete();
+    }
+
+    @Test
     public void testProcSuccess() throws Exception {
 
         File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
