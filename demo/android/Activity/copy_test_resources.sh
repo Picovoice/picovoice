@@ -22,6 +22,7 @@ cp ../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn ./
 cp ../../../resources/porcupine/resources/keyword_files_de/android/ananas_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/de/ananas_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files_es/android/emparedado_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/es/emparedado_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files_fr/android/framboise_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/fr/framboise_android.ppn
+cp ../../../resources/porcupine/resources/keyword_files_es/android/murciélago_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/es/murciélago_android.ppn
 
 if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files" ]
 then
@@ -38,6 +39,7 @@ cp ../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn ./pi
 cp ../../../resources/rhino/demo/android/Activity/rhino-activity-demo-app/src/androidTest/assets/test_resources/context_files/test_de_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/de/test_de_android.rhn
 cp ../../../resources/rhino/demo/android/Activity/rhino-activity-demo-app/src/androidTest/assets/test_resources/context_files/test_es_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/es/test_es_android.rhn
 cp ../../../resources/rhino/demo/android/Activity/rhino-activity-demo-app/src/androidTest/assets/test_resources/context_files/test_fr_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/fr/test_fr_android.rhn
+cp ../../../resources/rhino/resources/contexts_es/android/iluminación_inteligente_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/es/iluminación_inteligente_android.rhn 
 
 if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/porcupine_model_files" ]
 then 

@@ -349,6 +349,26 @@ class PicovoiceDemoUITests: XCTestCase {
         
         XCTAssert(didFail)
     }
+
+    func testInitWithNonAsciiModelName() throws {
+        let bundle = Bundle(for: type(of: self))
+        let keywordPath = bundle.path(forResource: "emparedado_ios", ofType: "ppn")!
+        let contextPath = bundle.path(forResource: "test_es_ios", ofType: "rhn")!
+        let porcupineModelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
+        let rhinoModelPath = bundle.path(forResource: "rhino_params_es", ofType: "pv")!
+        
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback,
+            porcupineModelPath: porcupineModelPath,
+            rhinoModelPath: rhinoModelPath)
+        
+        XCTAssert(p.contextInfo != "")
+        p.delete()
+    }
     
     var multiUsePicovoice: Picovoice?
     

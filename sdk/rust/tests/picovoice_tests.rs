@@ -152,4 +152,46 @@ mod tests {
             detected_inference.clone(),
         );
     }
+
+    #[test]
+    fn test_init_with_non_ascii_model_name() {
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+        let keyword_path = format!(
+                "../../resources/porcupine/resources/keyword_files_es/{}/murciélago_{}.ppn",
+                pv_platform(),
+                pv_platform(),
+        );
+        let context_path = format!(
+            "../../resources/rhino/resources/contexts_es/{}/iluminación_inteligente_{}.rhn",
+            pv_platform(),
+            pv_platform(),
+        );
+
+        let is_wake_word_detected = Arc::new(Mutex::new(false));
+        let detected_inference = Arc::new(Mutex::new(None));
+
+        let wake_word_callback = || {
+            if let Ok(mut is_wake_word_detected) = is_wake_word_detected.lock() {
+                *is_wake_word_detected = true;
+            }
+        };
+        let inference_callback = |inference| {
+            if let Ok(mut detected_inference) = detected_inference.lock() {
+                *detected_inference = Some(inference);
+            }
+        };
+
+        let _picovoice = PicovoiceBuilder::new(
+            access_key,
+            keyword_path,
+            wake_word_callback,
+            context_path,
+            inference_callback,
+        )
+        .porcupine_model_path("../../resources/porcupine/lib/common/porcupine_params_es.pv")
+        .rhino_model_path("../../resources/rhino/lib/common/rhino_params_es.pv")
+        .init()
+        .expect("Failed to init Picovoice");
+    }
 }
