@@ -53,3 +53,6 @@ test {
 jar {
     from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
