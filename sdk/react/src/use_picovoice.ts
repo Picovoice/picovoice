@@ -174,12 +174,17 @@ export function usePicovoice(
 
       pvWorker.postMessage({ command: 'info' });
 
-      const webVp = await WebVoiceProcessor.init({
-        engines: [pvWorker],
-        start: startWebVp,
-      });
+      try {
+        const webVp = await WebVoiceProcessor.init({
+          engines: [pvWorker],
+          start: startWebVp,
+        });
 
-      return { webVp, pvWorker };
+        return { webVp, pvWorker };
+      } catch (error) {
+        pvWorker.postMessage({ command: 'release' });
+        throw error;
+      }
     }
     const startPicovoicePromise = startPicovoice();
 
@@ -198,12 +203,14 @@ export function usePicovoice(
 
     return (): void => {
       startPicovoicePromise.then(({ webVp, pvWorker }) => {
-        if (webVp !== undefined) {
+        if (webVp !== undefined && webVp !== null) {
           webVp.release();
         }
-        if (pvWorker !== undefined) {
+        if (pvWorker !== undefined && pvWorker !== undefined) {
           pvWorker.postMessage({ command: 'release' });
         }
+      }).catch(() => {
+        // do nothing
       });
     };
   }, [
