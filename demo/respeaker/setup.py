@@ -30,7 +30,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="pvrespeakerdemo",
-    version="2.1.1",
+    version="2.1.2",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice end-to-end voice platform demo for ReSpeaker 4-mic hat.",
@@ -38,7 +38,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["pvrespeakerdemo"],
-    install_requires=["picovoice==2.1.0", "spidev", "gpiozero", "pvrecorder==1.0.2"],
+    install_requires=["picovoice==2.1.1", "spidev", "gpiozero", "pvrecorder==1.0.2"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

@@ -1,3 +1,2 @@
 pyaudio
-../../sdk/python/dist/picovoice-2.0.0-py3-none-any.whl
-
+picovoice==2.1.1
