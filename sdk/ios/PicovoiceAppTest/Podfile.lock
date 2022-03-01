@@ -1,0 +1,30 @@
+PODS:
+  - ios-voice-processor (1.0.3)
+  - Picovoice-iOS (2.1.0):
+    - ios-voice-processor (~> 1.0.2)
+    - Porcupine-iOS (~> 2.1.0)
+    - Rhino-iOS (~> 2.1.0)
+  - Porcupine-iOS (2.1.0):
+    - ios-voice-processor (~> 1.0.2)
+  - Rhino-iOS (2.1.0):
+    - ios-voice-processor (~> 1.0.2)
+
+DEPENDENCIES:
+  - Picovoice-iOS (~> 2.1.0)
+
+SPEC REPOS:
+  trunk:
+    - ios-voice-processor
+    - Picovoice-iOS
+    - Porcupine-iOS
+    - Rhino-iOS
+
+SPEC CHECKSUMS:
+  ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
+  Picovoice-iOS: d617b931677bb5ee0499b66ae1388d0cf552d70c
+  Porcupine-iOS: 35f3cd9e60b1178631a819e16462ff41894cbf20
+  Rhino-iOS: b30668ab5d4a2e18d61bd1bc10f0ae41e0e202c5
+
+PODFILE CHECKSUM: a963433bf6ee61350449c6534168b49d98c31c8f
+
+COCOAPODS: 1.11.2
