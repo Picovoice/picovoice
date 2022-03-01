@@ -12,42 +12,9 @@
 		1760DF31253A175500395344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF30253A175500395344 /* Assets.xcassets */; };
 		1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF33253A175500395344 /* Preview Assets.xcassets */; };
 		1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1760DF57253A442A00395344 /* smart_lighting_ios.rhn */; };
-		1E1A67C026C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1A67BF26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.swift */; };
-		1E1A67CD26C4397400EDD6EC /* picovoice-coffee.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67CC26C4397400EDD6EC /* picovoice-coffee.wav */; };
-		1E1A67D426C43C7A00EDD6EC /* test_fr_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67D326C43C7A00EDD6EC /* test_fr_ios.rhn */; };
-		1E1A67D626C43C8A00EDD6EC /* test_es_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67D526C43C8A00EDD6EC /* test_es_ios.rhn */; };
-		1E1A67D826C43C9900EDD6EC /* test_de_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67D726C43C9900EDD6EC /* test_de_ios.rhn */; };
-		1E1A67DA26C43CBA00EDD6EC /* coffee_maker_linux.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67D926C43CBA00EDD6EC /* coffee_maker_linux.rhn */; };
-		1E1A67DC26C43CCD00EDD6EC /* coffee_maker_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67DB26C43CCD00EDD6EC /* coffee_maker_ios.rhn */; };
-		1E1A67E326C43CFB00EDD6EC /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67E226C43CFB00EDD6EC /* ananas_ios.ppn */; };
-		1E1A67E726C43D6900EDD6EC /* emparedado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67E626C43D6900EDD6EC /* emparedado_ios.ppn */; };
-		1E1A67E926C43D8000EDD6EC /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67E826C43D8000EDD6EC /* framboise_ios.ppn */; };
-		1E1A67EE26C43DA700EDD6EC /* rhino_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67EB26C43DA700EDD6EC /* rhino_params_de.pv */; };
-		1E1A67EF26C43DA700EDD6EC /* rhino_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67EC26C43DA700EDD6EC /* rhino_params_es.pv */; };
-		1E1A67F026C43DA700EDD6EC /* rhino_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67ED26C43DA700EDD6EC /* rhino_params_fr.pv */; };
-		1E1A67F526C43DC300EDD6EC /* porcupine_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67F226C43DC300EDD6EC /* porcupine_params_fr.pv */; };
-		1E1A67F626C43DC300EDD6EC /* porcupine_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67F326C43DC300EDD6EC /* porcupine_params_es.pv */; };
-		1E1A67F726C43DC300EDD6EC /* porcupine_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67F426C43DC300EDD6EC /* porcupine_params_de.pv */; };
-		1E1A67FB26C43FFB00EDD6EC /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E1A67FA26C43FFB00EDD6EC /* alexa_linux.ppn */; };
 		1E846C94274D93DC00A63382 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C93274D93DC00A63382 /* picovoice_ios.ppn */; };
-		1E846C96274D93ED00A63382 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C95274D93ED00A63382 /* porcupine_params.pv */; };
-		1E846C98274D93F900A63382 /* rhino_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C97274D93F900A63382 /* rhino_params.pv */; };
-		1E846C9A274D947E00A63382 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E846C99274D947900A63382 /* picovoice_ios.ppn */; };
-		25C78D0516C174D840308756 /* libPods-PicovoiceForegroundAppDemoUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 51440C34BE7D52D58A266CCA /* libPods-PicovoiceForegroundAppDemoUITests.a */; };
-		8015EF3427A4C76F006A0E8E /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */; };
-		8015EF3627A4C77F006A0E8E /* iluminación_inteligente_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */; };
 		912216181D5264F91B289465 /* libPods-PicovoiceForegroundAppDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8A4013300AFAB1C6A4B552 /* libPods-PicovoiceForegroundAppDemo.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		1E1A67C226C4388300EDD6EC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1760DF21253A175000395344 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1760DF28253A175000395344;
-			remoteInfo = PicovoiceForegroundAppDemo;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		02A416A625CE026600082745 /* Embed Frameworks */ = {
@@ -70,36 +37,12 @@
 		1760DF33253A175500395344 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1760DF35253A175500395344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1760DF57253A442A00395344 /* smart_lighting_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = smart_lighting_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/smart_lighting_ios.rhn; sourceTree = "<group>"; };
-		1E1A67BD26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicovoiceForegroundAppDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E1A67BF26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicovoiceForegroundAppDemoUITests.swift; sourceTree = "<group>"; };
-		1E1A67C126C4388300EDD6EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1E1A67CC26C4397400EDD6EC /* picovoice-coffee.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "picovoice-coffee.wav"; path = "../../../../resources/audio_samples/picovoice-coffee.wav"; sourceTree = "<group>"; };
-		1E1A67D326C43C7A00EDD6EC /* test_fr_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_fr_ios.rhn; path = ../../../../resources/rhino/demo/ios/RhinoDemoUITests/test_fr_ios.rhn; sourceTree = "<group>"; };
-		1E1A67D526C43C8A00EDD6EC /* test_es_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_es_ios.rhn; path = ../../../../resources/rhino/demo/ios/RhinoDemoUITests/test_es_ios.rhn; sourceTree = "<group>"; };
-		1E1A67D726C43C9900EDD6EC /* test_de_ios.rhn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = test_de_ios.rhn; path = ../../../../resources/rhino/demo/ios/RhinoDemoUITests/test_de_ios.rhn; sourceTree = "<group>"; };
-		1E1A67D926C43CBA00EDD6EC /* coffee_maker_linux.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_linux.rhn; path = ../../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn; sourceTree = "<group>"; };
-		1E1A67DB26C43CCD00EDD6EC /* coffee_maker_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/coffee_maker_ios.rhn; sourceTree = "<group>"; };
-		1E1A67E226C43CFB00EDD6EC /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ananas_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
-		1E1A67E626C43D6900EDD6EC /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = emparedado_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
-		1E1A67E826C43D8000EDD6EC /* framboise_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = framboise_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_fr/ios/framboise_ios.ppn; sourceTree = "<group>"; };
-		1E1A67EB26C43DA700EDD6EC /* rhino_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_de.pv; path = ../../../../resources/rhino/lib/common/rhino_params_de.pv; sourceTree = "<group>"; };
-		1E1A67EC26C43DA700EDD6EC /* rhino_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_es.pv; path = ../../../../resources/rhino/lib/common/rhino_params_es.pv; sourceTree = "<group>"; };
-		1E1A67ED26C43DA700EDD6EC /* rhino_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_fr.pv; path = ../../../../resources/rhino/lib/common/rhino_params_fr.pv; sourceTree = "<group>"; };
-		1E1A67F226C43DC300EDD6EC /* porcupine_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_fr.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_fr.pv; sourceTree = "<group>"; };
-		1E1A67F326C43DC300EDD6EC /* porcupine_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_es.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_es.pv; sourceTree = "<group>"; };
-		1E1A67F426C43DC300EDD6EC /* porcupine_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_de.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_de.pv; sourceTree = "<group>"; };
-		1E1A67FA26C43FFB00EDD6EC /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_linux.ppn; path = ../../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
 		1E846C93274D93DC00A63382 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
-		1E846C95274D93ED00A63382 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params.pv; sourceTree = "<group>"; };
-		1E846C97274D93F900A63382 /* rhino_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params.pv; path = ../../../../resources/rhino/lib/common/rhino_params.pv; sourceTree = "<group>"; };
-		1E846C99274D947900A63382 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
 		225F59ED6B6CC51898C796E9 /* Pods-PicovoiceDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceDemoUITests/Pods-PicovoiceDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		2F8A4013300AFAB1C6A4B552 /* libPods-PicovoiceForegroundAppDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceForegroundAppDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AFC1C0D20FF305743767BCE /* Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig"; sourceTree = "<group>"; };
 		51440C34BE7D52D58A266CCA /* libPods-PicovoiceForegroundAppDemoUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceForegroundAppDemoUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6061021C5897072E8282488F /* Pods-PicovoiceForegroundAppDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemo.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemo/Pods-PicovoiceForegroundAppDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = "murciélago_ios.ppn"; sourceTree = "<group>"; };
-		8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iluminación_inteligente_ios.rhn"; sourceTree = "<group>"; };
 		9A134CD3B9B44415F2D732A3 /* Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D2AF6C42DC1F39FC33A02E0E /* Pods-PicovoiceDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceDemo/Pods-PicovoiceDemo.release.xcconfig"; sourceTree = "<group>"; };
 		EE4845B1B7FC724401644CAE /* Pods-PicovoiceForegroundAppDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceForegroundAppDemo.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceForegroundAppDemo/Pods-PicovoiceForegroundAppDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -116,24 +59,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1E1A67BA26C4388300EDD6EC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				25C78D0516C174D840308756 /* libPods-PicovoiceForegroundAppDemoUITests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		1760DF20253A175000395344 = {
 			isa = PBXGroup;
 			children = (
-				8015EF3527A4C77F006A0E8E /* iluminación_inteligente_ios.rhn */,
-				8015EF3327A4C76F006A0E8E /* murciélago_ios.ppn */,
 				1760DF2B253A175000395344 /* PicovoiceForegroundAppDemo */,
-				1E1A67BE26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests */,
 				1760DF2A253A175000395344 /* Products */,
 				1760DF3D253A185500395344 /* Frameworks */,
 				81DF6A1A45C53858F171B57E /* Pods */,
@@ -144,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				1760DF29253A175000395344 /* PicovoiceForegroundAppDemo.app */,
-				1E1A67BD26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -178,146 +109,6 @@
 				51440C34BE7D52D58A266CCA /* libPods-PicovoiceForegroundAppDemoUITests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		1E1A67BE26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67CA26C4395400EDD6EC /* test_resources */,
-				1E1A67BF26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.swift */,
-				1E1A67C126C4388300EDD6EC /* Info.plist */,
-			);
-			path = PicovoiceForegroundAppDemoUITests;
-			sourceTree = "<group>";
-		};
-		1E1A67CA26C4395400EDD6EC /* test_resources */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67F126C43DAC00EDD6EC /* porcupine_model_files */,
-				1E1A67EA26C43D8400EDD6EC /* rhino_model_files */,
-				1E1A67DD26C43CD100EDD6EC /* keyword_files */,
-				1E1A67CE26C43C2900EDD6EC /* context_files */,
-				1E1A67CB26C4395C00EDD6EC /* audio_samples */,
-			);
-			name = test_resources;
-			sourceTree = "<group>";
-		};
-		1E1A67CB26C4395C00EDD6EC /* audio_samples */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67CC26C4397400EDD6EC /* picovoice-coffee.wav */,
-			);
-			name = audio_samples;
-			sourceTree = "<group>";
-		};
-		1E1A67CE26C43C2900EDD6EC /* context_files */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67D226C43C4800EDD6EC /* en */,
-				1E1A67D126C43C4300EDD6EC /* de */,
-				1E1A67D026C43C3C00EDD6EC /* es */,
-				1E1A67CF26C43C3900EDD6EC /* fr */,
-			);
-			name = context_files;
-			sourceTree = "<group>";
-		};
-		1E1A67CF26C43C3900EDD6EC /* fr */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67D326C43C7A00EDD6EC /* test_fr_ios.rhn */,
-			);
-			name = fr;
-			sourceTree = "<group>";
-		};
-		1E1A67D026C43C3C00EDD6EC /* es */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67D526C43C8A00EDD6EC /* test_es_ios.rhn */,
-			);
-			name = es;
-			sourceTree = "<group>";
-		};
-		1E1A67D126C43C4300EDD6EC /* de */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67D726C43C9900EDD6EC /* test_de_ios.rhn */,
-			);
-			name = de;
-			sourceTree = "<group>";
-		};
-		1E1A67D226C43C4800EDD6EC /* en */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67DB26C43CCD00EDD6EC /* coffee_maker_ios.rhn */,
-				1E1A67D926C43CBA00EDD6EC /* coffee_maker_linux.rhn */,
-			);
-			name = en;
-			sourceTree = "<group>";
-		};
-		1E1A67DD26C43CD100EDD6EC /* keyword_files */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67E126C43CE900EDD6EC /* fr */,
-				1E1A67E026C43CE600EDD6EC /* es */,
-				1E1A67DF26C43CE100EDD6EC /* en */,
-				1E1A67DE26C43CDB00EDD6EC /* de */,
-			);
-			name = keyword_files;
-			sourceTree = "<group>";
-		};
-		1E1A67DE26C43CDB00EDD6EC /* de */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67E226C43CFB00EDD6EC /* ananas_ios.ppn */,
-			);
-			name = de;
-			sourceTree = "<group>";
-		};
-		1E1A67DF26C43CE100EDD6EC /* en */ = {
-			isa = PBXGroup;
-			children = (
-				1E846C99274D947900A63382 /* picovoice_ios.ppn */,
-				1E1A67FA26C43FFB00EDD6EC /* alexa_linux.ppn */,
-			);
-			name = en;
-			sourceTree = "<group>";
-		};
-		1E1A67E026C43CE600EDD6EC /* es */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67E626C43D6900EDD6EC /* emparedado_ios.ppn */,
-			);
-			name = es;
-			sourceTree = "<group>";
-		};
-		1E1A67E126C43CE900EDD6EC /* fr */ = {
-			isa = PBXGroup;
-			children = (
-				1E1A67E826C43D8000EDD6EC /* framboise_ios.ppn */,
-			);
-			name = fr;
-			sourceTree = "<group>";
-		};
-		1E1A67EA26C43D8400EDD6EC /* rhino_model_files */ = {
-			isa = PBXGroup;
-			children = (
-				1E846C97274D93F900A63382 /* rhino_params.pv */,
-				1E1A67EB26C43DA700EDD6EC /* rhino_params_de.pv */,
-				1E1A67EC26C43DA700EDD6EC /* rhino_params_es.pv */,
-				1E1A67ED26C43DA700EDD6EC /* rhino_params_fr.pv */,
-			);
-			name = rhino_model_files;
-			sourceTree = "<group>";
-		};
-		1E1A67F126C43DAC00EDD6EC /* porcupine_model_files */ = {
-			isa = PBXGroup;
-			children = (
-				1E846C95274D93ED00A63382 /* porcupine_params.pv */,
-				1E1A67F426C43DC300EDD6EC /* porcupine_params_de.pv */,
-				1E1A67F326C43DC300EDD6EC /* porcupine_params_es.pv */,
-				1E1A67F226C43DC300EDD6EC /* porcupine_params_fr.pv */,
-			);
-			name = porcupine_model_files;
 			sourceTree = "<group>";
 		};
 		81DF6A1A45C53858F171B57E /* Pods */ = {
@@ -359,27 +150,6 @@
 			productReference = 1760DF29253A175000395344 /* PicovoiceForegroundAppDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1E1A67BC26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1E1A67C426C4388300EDD6EC /* Build configuration list for PBXNativeTarget "PicovoiceForegroundAppDemoUITests" */;
-			buildPhases = (
-				20FD14EAD2D646241E9BAAC4 /* [CP] Check Pods Manifest.lock */,
-				1E1A67B926C4388300EDD6EC /* Sources */,
-				1E1A67BA26C4388300EDD6EC /* Frameworks */,
-				1E1A67BB26C4388300EDD6EC /* Resources */,
-				B66995281F774E197D1A613E /* [CP] Embed Pods Frameworks */,
-				432E53DC9B3DE5152BBA7805 /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1E1A67C326C4388300EDD6EC /* PBXTargetDependency */,
-			);
-			name = PicovoiceForegroundAppDemoUITests;
-			productName = PicovoiceForegroundAppDemoUITests;
-			productReference = 1E1A67BD26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -392,11 +162,6 @@
 					1760DF28253A175000395344 = {
 						CreatedOnToolsVersion = 12.0.1;
 						ProvisioningStyle = Automatic;
-					};
-					1E1A67BC26C4388300EDD6EC = {
-						CreatedOnToolsVersion = 12.5.1;
-						ProvisioningStyle = Automatic;
-						TestTargetID = 1760DF28253A175000395344;
 					};
 				};
 			};
@@ -414,7 +179,6 @@
 			projectRoot = "";
 			targets = (
 				1760DF28253A175000395344 /* PicovoiceForegroundAppDemo */,
-				1E1A67BC26C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -424,8 +188,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8015EF3627A4C77F006A0E8E /* iluminación_inteligente_ios.rhn in Resources */,
-				8015EF3427A4C76F006A0E8E /* murciélago_ios.ppn in Resources */,
 				1E846C94274D93DC00A63382 /* picovoice_ios.ppn in Resources */,
 				1760DF34253A175500395344 /* Preview Assets.xcassets in Resources */,
 				1760DF58253A442A00395344 /* smart_lighting_ios.rhn in Resources */,
@@ -433,77 +195,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1E1A67BB26C4388300EDD6EC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1E1A67E726C43D6900EDD6EC /* emparedado_ios.ppn in Resources */,
-				1E1A67D426C43C7A00EDD6EC /* test_fr_ios.rhn in Resources */,
-				1E1A67DA26C43CBA00EDD6EC /* coffee_maker_linux.rhn in Resources */,
-				1E1A67E926C43D8000EDD6EC /* framboise_ios.ppn in Resources */,
-				1E1A67EF26C43DA700EDD6EC /* rhino_params_es.pv in Resources */,
-				1E1A67FB26C43FFB00EDD6EC /* alexa_linux.ppn in Resources */,
-				1E846C9A274D947E00A63382 /* picovoice_ios.ppn in Resources */,
-				1E1A67E326C43CFB00EDD6EC /* ananas_ios.ppn in Resources */,
-				1E1A67CD26C4397400EDD6EC /* picovoice-coffee.wav in Resources */,
-				1E1A67DC26C43CCD00EDD6EC /* coffee_maker_ios.rhn in Resources */,
-				1E1A67D626C43C8A00EDD6EC /* test_es_ios.rhn in Resources */,
-				1E846C98274D93F900A63382 /* rhino_params.pv in Resources */,
-				1E1A67F726C43DC300EDD6EC /* porcupine_params_de.pv in Resources */,
-				1E846C96274D93ED00A63382 /* porcupine_params.pv in Resources */,
-				1E1A67F626C43DC300EDD6EC /* porcupine_params_es.pv in Resources */,
-				1E1A67EE26C43DA700EDD6EC /* rhino_params_de.pv in Resources */,
-				1E1A67F526C43DC300EDD6EC /* porcupine_params_fr.pv in Resources */,
-				1E1A67F026C43DA700EDD6EC /* rhino_params_fr.pv in Resources */,
-				1E1A67D826C43C9900EDD6EC /* test_de_ios.rhn in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		20FD14EAD2D646241E9BAAC4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PicovoiceForegroundAppDemoUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		432E53DC9B3DE5152BBA7805 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Porcupine-iOS/PorcupineResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Rhino-iOS/RhinoResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PorcupineResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RhinoResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		688BC2131136F7EE3C2138C3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -546,26 +240,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B66995281F774E197D1A613E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Porcupine-iOS/PvPorcupine.framework/PvPorcupine",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Rhino-iOS/PvRhino.framework/PvRhino",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvPorcupine.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PvRhino.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceForegroundAppDemoUITests/Pods-PicovoiceForegroundAppDemoUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FFF41E1237AE54C2CD90B29F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -598,23 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1E1A67B926C4388300EDD6EC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1E1A67C026C4388300EDD6EC /* PicovoiceForegroundAppDemoUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1E1A67C326C4388300EDD6EC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1760DF28253A175000395344 /* PicovoiceForegroundAppDemo */;
-			targetProxy = 1E1A67C226C4388300EDD6EC /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1760DF36253A175500395344 /* Debug */ = {
@@ -776,40 +434,6 @@
 			};
 			name = Release;
 		};
-		1E1A67C526C4388300EDD6EC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A134CD3B9B44415F2D732A3 /* Pods-PicovoiceForegroundAppDemoUITests.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65723695GD;
-				INFOPLIST_FILE = PicovoiceForegroundAppDemoUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.PicovoiceForegroundAppDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = PicovoiceForegroundAppDemo;
-			};
-			name = Debug;
-		};
-		1E1A67C626C4388300EDD6EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AFC1C0D20FF305743767BCE /* Pods-PicovoiceForegroundAppDemoUITests.release.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65723695GD;
-				INFOPLIST_FILE = PicovoiceForegroundAppDemoUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = picovoice.PicovoiceForegroundAppDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = PicovoiceForegroundAppDemo;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -827,15 +451,6 @@
 			buildConfigurations = (
 				1760DF39253A175500395344 /* Debug */,
 				1760DF3A253A175500395344 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1E1A67C426C4388300EDD6EC /* Build configuration list for PBXNativeTarget "PicovoiceForegroundAppDemoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1E1A67C526C4388300EDD6EC /* Debug */,
-				1E1A67C626C4388300EDD6EC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
