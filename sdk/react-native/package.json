@@ -68,8 +68,8 @@
     "@picovoice/porcupine-react-native": "*",
     "@picovoice/react-native-voice-processor": "*",
     "@picovoice/rhino-react-native": "*",
-    "react": "*",
-    "react-native": "*"
+    "react": ">= 16.11",
+    "react-native": ">= 0.62"
   },
   "jest": {
     "preset": "react-native",
