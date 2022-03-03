@@ -23,13 +23,16 @@
 		1E00641827CEDA27006FF6E9 /* rhino_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641427CEDA27006FF6E9 /* rhino_params_es.pv */; };
 		1E00641927CEDA27006FF6E9 /* rhino_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641527CEDA27006FF6E9 /* rhino_params.pv */; };
 		1E00642427CEDA89006FF6E9 /* framboise_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00642327CEDA89006FF6E9 /* framboise_ios.ppn */; };
-		1E00643227CEDB54006FF6E9 /* test_fr_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643127CEDB54006FF6E9 /* test_fr_ios.rhn */; };
-		1E00643427CEDB5A006FF6E9 /* test_es_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643327CEDB5A006FF6E9 /* test_es_ios.rhn */; };
-		1E00643627CEDB5F006FF6E9 /* test_de_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643527CEDB5F006FF6E9 /* test_de_ios.rhn */; };
 		1E00643827CEDB7C006FF6E9 /* coffee_maker_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643727CEDB7C006FF6E9 /* coffee_maker_ios.rhn */; };
 		1E00643A27CEDB85006FF6E9 /* coffee_maker_linux.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643927CEDB85006FF6E9 /* coffee_maker_linux.rhn */; };
 		1E00643C27CEDB98006FF6E9 /* iluminación_inteligente_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643B27CEDB98006FF6E9 /* iluminación_inteligente_ios.rhn */; };
 		1E00643E27CEDBB5006FF6E9 /* murciélago_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00643D27CEDBB5006FF6E9 /* murciélago_ios.ppn */; };
+		1E00659227D057F8006FF6E9 /* beleuchtung_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659127D057F8006FF6E9 /* beleuchtung_ios.rhn */; };
+		1E00659427D136EE006FF6E9 /* éclairage_intelligent_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659327D136EE006FF6E9 /* éclairage_intelligent_ios.rhn */; };
+		1E00659627D136FD006FF6E9 /* ananas_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659527D136FD006FF6E9 /* ananas_ios.ppn */; };
+		1E00659A27D13726006FF6E9 /* emparedado_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659927D13726006FF6E9 /* emparedado_ios.ppn */; };
+		1E00659C27D1373E006FF6E9 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659B27D1373E006FF6E9 /* picovoice_ios.ppn */; };
+		1E00659E27D1374A006FF6E9 /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 1E00659D27D1374A006FF6E9 /* alexa_linux.ppn */; };
 		90483B2471CE0C3DFCABCC2A /* libPods-PicovoiceAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */; };
 		B9815E42B7CA64629D3D9590 /* libPods-PicovoiceAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */; };
 /* End PBXBuildFile section */
@@ -65,17 +68,16 @@
 		1E00641427CEDA27006FF6E9 /* rhino_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_es.pv; path = ../../../../resources/rhino/lib/common/rhino_params_es.pv; sourceTree = "<group>"; };
 		1E00641527CEDA27006FF6E9 /* rhino_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params.pv; path = ../../../../resources/rhino/lib/common/rhino_params.pv; sourceTree = "<group>"; };
 		1E00642327CEDA89006FF6E9 /* framboise_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = framboise_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_fr/ios/framboise_ios.ppn; sourceTree = "<group>"; };
-		1E00642D27CEDACA006FF6E9 /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = emparedado_ios.ppn; sourceTree = "<group>"; };
-		1E00642E27CEDACD006FF6E9 /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = alexa_linux.ppn; sourceTree = "<group>"; };
-		1E00642F27CEDAD0006FF6E9 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = picovoice_ios.ppn; sourceTree = "<group>"; };
-		1E00643027CEDAD2006FF6E9 /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; path = ananas_ios.ppn; sourceTree = "<group>"; };
-		1E00643127CEDB54006FF6E9 /* test_fr_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_fr_ios.rhn; path = ../../../../resources/rhino/binding/ios/RhinoAppTest/RhinoAppTestUITests/test_fr_ios.rhn; sourceTree = "<group>"; };
-		1E00643327CEDB5A006FF6E9 /* test_es_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_es_ios.rhn; path = ../../../../resources/rhino/binding/ios/RhinoAppTest/RhinoAppTestUITests/test_es_ios.rhn; sourceTree = "<group>"; };
-		1E00643527CEDB5F006FF6E9 /* test_de_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = test_de_ios.rhn; path = ../../../../resources/rhino/binding/ios/RhinoAppTest/RhinoAppTestUITests/test_de_ios.rhn; sourceTree = "<group>"; };
 		1E00643727CEDB7C006FF6E9 /* coffee_maker_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/coffee_maker_ios.rhn; sourceTree = "<group>"; };
 		1E00643927CEDB85006FF6E9 /* coffee_maker_linux.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_linux.rhn; path = ../../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn; sourceTree = "<group>"; };
 		1E00643B27CEDB98006FF6E9 /* iluminación_inteligente_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "iluminación_inteligente_ios.rhn"; path = "../../../../resources/rhino/resources/contexts_es/ios/iluminación_inteligente_ios.rhn"; sourceTree = "<group>"; };
 		1E00643D27CEDBB5006FF6E9 /* murciélago_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "murciélago_ios.ppn"; path = "../../../../resources/porcupine/resources/keyword_files_es/ios/murciélago_ios.ppn"; sourceTree = "<group>"; };
+		1E00659127D057F8006FF6E9 /* beleuchtung_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = beleuchtung_ios.rhn; path = ../../../../resources/rhino/resources/contexts_de/ios/beleuchtung_ios.rhn; sourceTree = "<group>"; };
+		1E00659327D136EE006FF6E9 /* éclairage_intelligent_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "éclairage_intelligent_ios.rhn"; path = "../../../../resources/rhino/resources/contexts_fr/ios/éclairage_intelligent_ios.rhn"; sourceTree = "<group>"; };
+		1E00659527D136FD006FF6E9 /* ananas_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ananas_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_de/ios/ananas_ios.ppn; sourceTree = "<group>"; };
+		1E00659927D13726006FF6E9 /* emparedado_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = emparedado_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_es/ios/emparedado_ios.ppn; sourceTree = "<group>"; };
+		1E00659B27D1373E006FF6E9 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
+		1E00659D27D1374A006FF6E9 /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_linux.ppn; path = ../../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
 		2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D81685E3AD5BACC589E154 /* Pods-PicovoiceAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest.debug.xcconfig"; sourceTree = "<group>"; };
@@ -223,7 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				1E00643D27CEDBB5006FF6E9 /* murciélago_ios.ppn */,
-				1E00642D27CEDACA006FF6E9 /* emparedado_ios.ppn */,
+				1E00659927D13726006FF6E9 /* emparedado_ios.ppn */,
 			);
 			name = es;
 			sourceTree = "<group>";
@@ -231,8 +233,8 @@
 		1E00641D27CEDA50006FF6E9 /* en */ = {
 			isa = PBXGroup;
 			children = (
-				1E00642F27CEDAD0006FF6E9 /* picovoice_ios.ppn */,
-				1E00642E27CEDACD006FF6E9 /* alexa_linux.ppn */,
+				1E00659D27D1374A006FF6E9 /* alexa_linux.ppn */,
+				1E00659B27D1373E006FF6E9 /* picovoice_ios.ppn */,
 			);
 			name = en;
 			sourceTree = "<group>";
@@ -240,7 +242,7 @@
 		1E00641E27CEDA55006FF6E9 /* de */ = {
 			isa = PBXGroup;
 			children = (
-				1E00643027CEDAD2006FF6E9 /* ananas_ios.ppn */,
+				1E00659527D136FD006FF6E9 /* ananas_ios.ppn */,
 			);
 			name = de;
 			sourceTree = "<group>";
@@ -248,7 +250,7 @@
 		1E00641F27CEDA5B006FF6E9 /* fr */ = {
 			isa = PBXGroup;
 			children = (
-				1E00643127CEDB54006FF6E9 /* test_fr_ios.rhn */,
+				1E00659327D136EE006FF6E9 /* éclairage_intelligent_ios.rhn */,
 			);
 			name = fr;
 			sourceTree = "<group>";
@@ -256,7 +258,6 @@
 		1E00642027CEDA61006FF6E9 /* es */ = {
 			isa = PBXGroup;
 			children = (
-				1E00643327CEDB5A006FF6E9 /* test_es_ios.rhn */,
 				1E00643B27CEDB98006FF6E9 /* iluminación_inteligente_ios.rhn */,
 			);
 			name = es;
@@ -274,7 +275,7 @@
 		1E00642227CEDA69006FF6E9 /* de */ = {
 			isa = PBXGroup;
 			children = (
-				1E00643527CEDB5F006FF6E9 /* test_de_ios.rhn */,
+				1E00659127D057F8006FF6E9 /* beleuchtung_ios.rhn */,
 			);
 			name = de;
 			sourceTree = "<group>";
@@ -396,22 +397,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E00659227D057F8006FF6E9 /* beleuchtung_ios.rhn in Resources */,
 				1E00643C27CEDB98006FF6E9 /* iluminación_inteligente_ios.rhn in Resources */,
 				1E00641827CEDA27006FF6E9 /* rhino_params_es.pv in Resources */,
 				1E00643A27CEDB85006FF6E9 /* coffee_maker_linux.rhn in Resources */,
 				1E00641927CEDA27006FF6E9 /* rhino_params.pv in Resources */,
-				1E00643427CEDB5A006FF6E9 /* test_es_ios.rhn in Resources */,
 				1E00643827CEDB7C006FF6E9 /* coffee_maker_ios.rhn in Resources */,
 				1E00643E27CEDBB5006FF6E9 /* murciélago_ios.ppn in Resources */,
 				1E00641127CEDA15006FF6E9 /* porcupine_params_es.pv in Resources */,
 				1E00642427CEDA89006FF6E9 /* framboise_ios.ppn in Resources */,
+				1E00659A27D13726006FF6E9 /* emparedado_ios.ppn in Resources */,
 				1E00640927CEDA06006FF6E9 /* picovoice-coffee.wav in Resources */,
+				1E00659427D136EE006FF6E9 /* éclairage_intelligent_ios.rhn in Resources */,
+				1E00659C27D1373E006FF6E9 /* picovoice_ios.ppn in Resources */,
+				1E00659E27D1374A006FF6E9 /* alexa_linux.ppn in Resources */,
 				1E00641727CEDA27006FF6E9 /* rhino_params_fr.pv in Resources */,
+				1E00659627D136FD006FF6E9 /* ananas_ios.ppn in Resources */,
 				1E00640F27CEDA15006FF6E9 /* porcupine_params.pv in Resources */,
-				1E00643627CEDB5F006FF6E9 /* test_de_ios.rhn in Resources */,
 				1E00641627CEDA27006FF6E9 /* rhino_params_de.pv in Resources */,
 				1E00641027CEDA15006FF6E9 /* porcupine_params_de.pv in Resources */,
-				1E00643227CEDB54006FF6E9 /* test_fr_ios.rhn in Resources */,
 				1E00640E27CEDA15006FF6E9 /* porcupine_params_fr.pv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
