@@ -97,7 +97,3 @@ context:
       - "living room"
       - "pantry"
 ```
-
-## Running the On-Device Unit Tests
-
-Open `PicovoiceForegroundAppDemo.xcworkspace` with XCode and run the tests with `Product > Test`.
