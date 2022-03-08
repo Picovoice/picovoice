@@ -2,30 +2,30 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.1.1.tgz#9c0797072d95191b5a69a134670dca5d15bbba74"
-  integrity sha512-vK+viJc6g6BVle4PH1xDy4VfSTikdJoPN3M+neDziUQVscOiGGHD98cFbuTCD35+DI44u66arbc3lkqvgrWprw==
+"@picovoice/picovoice-node@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.1.2.tgz#5801fdab2f25c345baa8242f32a1a5e2f4d1d20f"
+  integrity sha512-kzcHa/uXCm/zAZtMWK2tTL/ixGGkaZNchQYLje8JVloP5UWAfUjQ17dwixBfiYuPuHuZjwbh9K3yLV4xrQjLcA==
   dependencies:
-    "@picovoice/porcupine-node" "^2.1.1"
-    "@picovoice/rhino-node" "^2.1.1"
+    "@picovoice/porcupine-node" "2.1.2"
+    "@picovoice/rhino-node" "2.1.2"
 
-"@picovoice/porcupine-node@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.1.tgz#7d114ba6f9a7a53ece11008de528315c515f74cd"
-  integrity sha512-QVAnNIEF8knbJlcbrNF3p+0laOOOUqaUX6EL6LTGBveYC7ecwbYxx3R72dbkoBDCcgDcPxlfzbbTdZhD5FC7pA==
+"@picovoice/porcupine-node@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.2.tgz#4bbf89bc44efb4a4d24eab0057a3feebc7146b5b"
+  integrity sha512-UP1OpZlNwlnar1KlDgPKMe1An5/pnj1xcVfm6ztwdjuM/mwt0+YU/w+0ya381ZJ9hfbQj8fJRh0mCRoyCLwWtw==
 
-"@picovoice/pvrecorder-node@^1.0.2":
+"@picovoice/pvrecorder-node@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.0.2.tgz#c61b42f06181b09f7fdd87ee1b7bfac60e0e5704"
   integrity sha512-DF8wEAUU3hAZwIBCyX8QAavW0cad1Iuh1OvkglcGUFq/0Ve9whjsd1fKAVaUxY1gSgCfBAK+blEn8alQ2pdpAA==
   dependencies:
     ncp "^2.0.0"
 
-"@picovoice/rhino-node@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.1.tgz#5d4fe82656fc6bb065439727078edd6f0ad6070d"
-  integrity sha512-ZbaijyBT3pWGzvB2BIcVm3iNLQmdGAudNWCB2IGEz5KE5y7AK7mDDWvh+73H6w8wjyn8iwYtJO5R4x+bxyZNFg==
+"@picovoice/rhino-node@2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.2.tgz#2f3e9ce6f6c12c2ed9b9e3a1b028278f31c097ee"
+  integrity sha512-GFAbkyg0rQistAj41fQYCXK3pGdNriOYBmIJzuHOMz+3afYwL8J+ABZgX0yE9oa9Owh6xttVJq+PL05y3+WjOw==
 
 commander@^6.1.0:
   version "6.2.1"
