@@ -48,6 +48,7 @@ export function usePicovoice(
   webVoiceProcessor: WebVoiceProcessor | null;
   start: () => void;
   pause: () => void;
+  stop: () => void;
 } {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [contextInfo, setContextInfo] = useState<string | null>(null);
@@ -80,6 +81,16 @@ export function usePicovoice(
       webVoiceProcessor.pause();
       setIsListening(false);
       return true;
+    }
+    return false;
+  };
+
+  const stop = (): boolean => {
+    if (webVoiceProcessor !== null) {
+      webVoiceProcessor.stop().then(() => {
+        setIsListening(false);
+        return true;
+      });
     }
     return false;
   };
@@ -208,6 +219,7 @@ export function usePicovoice(
         }
         if (pvWorker !== undefined && pvWorker !== undefined) {
           pvWorker.postMessage({ command: 'release' });
+          pvWorker.terminate();
         }
       }).catch(() => {
         // do nothing
@@ -232,5 +244,6 @@ export function usePicovoice(
     webVoiceProcessor,
     start,
     pause,
+    stop
   };
 }
