@@ -15,6 +15,13 @@ You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
+
+Replace your `AccessKey` in [`PicovoiceDemo.cs`](PicovoiceDemo.cs):
+
+```csharp
+private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+```
+
 The easiest way to run the demo is to simply import the [Picovoice Unity package](/sdk/unity/picovoice-2.0.0.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 Once the demo launches, you can say "Picovoice" and then give it any command within the smart lighting context:
