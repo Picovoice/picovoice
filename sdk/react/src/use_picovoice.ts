@@ -69,9 +69,10 @@ export function usePicovoice(
 
   const start = (): boolean => {
     if (webVoiceProcessor !== null) {
-      webVoiceProcessor.start();
-      setIsListening(true);
-      return true;
+      webVoiceProcessor.start().then(() => {
+        setIsListening(true);
+        return true;
+      });
     }
     return false;
   };
