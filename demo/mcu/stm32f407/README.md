@@ -17,12 +17,9 @@ For this demo, you need to:
 
 ## AccessKey
 
-Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -36,7 +33,7 @@ Then, to compile and run the demo project on a STM32F407 discovery board, perfor
 1. Open STM32CubeIDE
 2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f407g-disc1](./stm32f407g-disc1) folder from this repository, and then press the `Finish` button.
 3. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f407g-disc1/Middlewares/ST/STM32_Audio/Addons/PDM)
-4. Replace `ACCESS_KEY` in `main.c` with your AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+4. Replace `ACCESS_KEY` in `main.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 4. Click `Project` > `Build Project`
 5. Connect the board to the computer and press `Run` > `Debug`.
   

@@ -44,12 +44,9 @@ dependencies:
 
 ## AccessKey
 
-All bindings require a valid Picovoice `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Permissions
 
@@ -80,7 +77,7 @@ The constructor `PicovoiceManager.create` will create an instance of the Picovoi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 _picovoiceManager = PicovoiceManager.create(
     accessKey,
@@ -119,7 +116,7 @@ you do not wish to wait for silence before Rhino infers context. There is also a
 that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
 
 ```dart
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoiceManager() {
     double porcupineSensitivity = 0.7;
@@ -174,7 +171,7 @@ who want to incorporate it into an already existing audio processing pipeline.
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
@@ -248,7 +245,7 @@ In your Flutter app code, you can then pass the assets directly to Picovoice's `
 String keywordAsset = "assets/keyword.ppn"
 String contextAsset = "assets/context.rhn"
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 try{
     _picovoice = await Picovoice.create(

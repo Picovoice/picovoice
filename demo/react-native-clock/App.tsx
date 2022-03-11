@@ -27,7 +27,7 @@ type State = {
 };
 
 export default class App extends Component<Props, State> {
-  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
   _picovoiceManager;
 
   tabs = [

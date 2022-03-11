@@ -228,7 +228,7 @@ public class Main {
         options.addOption(Option.builder("a")
                 .longOpt("access_key")
                 .hasArg(true)
-                .desc("AccessKey obtained from Picovoice Console (https://picovoice.ai/console/).")
+                .desc("AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).")
                 .build());
 
         options.addOption(new Option("h", "help", false, ""));

@@ -31,7 +31,7 @@ import java.util.Map;
 import ai.picovoice.picovoice.*;
 
 public class PicovoiceService extends Service {
-    private final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    private final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
     private static final String CHANNEL_ID = "PicovoiceServiceChannel";
 

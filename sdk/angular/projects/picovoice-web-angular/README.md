@@ -44,15 +44,6 @@ All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, includin
 
 Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
 
-## AccessKey
-
-The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
-
 ## Installation
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English ('en'):
@@ -66,6 +57,12 @@ yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```console
 npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```
+
+## AccessKey
+
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
@@ -106,7 +103,7 @@ async ngOnInit() {
     try {
       await this.picovoiceService.init(pvFactoryEn,
         {
-          // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+          // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
           accessKey: "${ACCESS_KEY}",
           // Built-in wake word
           porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
@@ -137,7 +134,7 @@ async ngOnInit() {
     try {
       await this.picovoiceService.init(pvFactoryEn,
         {
-          // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+          // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
           accessKey: "${ACCESS_KEY}",
           // Built-in wake word
           porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},

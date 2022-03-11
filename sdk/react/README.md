@@ -50,12 +50,9 @@ Using the Web Audio API requires a secure context (HTTPS connection), except for
 
 ## AccessKey
 
-The Picovoice SDK requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Installation
 
@@ -87,7 +84,7 @@ import React, { useState } from 'react';
 import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
 import { usePicovoice } from '@picovoice/picovoice-web-react';
 
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
 const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
 
 export default function VoiceWidget() {
@@ -157,7 +154,7 @@ import { useState, useEffect } from "react";
 // Note we are not statically importing "@picovoice/picovoice-web-en-worker" here
 import { usePicovoice } from "@picovoice/picovoice-web-react";
 
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
 const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
 
 export default function VoiceWidget() {
