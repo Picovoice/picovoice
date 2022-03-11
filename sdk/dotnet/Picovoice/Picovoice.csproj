@@ -35,10 +35,10 @@ Picovoice is:
 	  </None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Porcupine" Version="2.1.1">
+		<PackageReference Include="Porcupine" Version="2.1.2">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Rhino" Version="2.1.1">
+		<PackageReference Include="Rhino" Version="2.1.2">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>		
 	</ItemGroup>

@@ -44,12 +44,6 @@ All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, includin
 
 Using the Web Audio API requires a secure context (HTTPS connection), with the exception of `localhost`, for local development.
 
-## AccessKey
-
-Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
-
 ## Installation
 
 Use `npm` or `yarn` to install the package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English ('en'):
@@ -63,6 +57,12 @@ yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```console
 npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
 ```
+
+## AccessKey
+
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 

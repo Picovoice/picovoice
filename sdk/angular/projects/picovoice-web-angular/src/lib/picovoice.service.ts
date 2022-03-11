@@ -19,14 +19,9 @@ import type {
   PicovoiceWorkerFactory,
 } from '@picovoice/picovoice-web-core';
 
-import type {
-  PorcupineKeyword
-} from '@picovoice/porcupine-web-core';
+import type { PorcupineKeyword } from '@picovoice/porcupine-web-core';
 
-import type {
-  RhinoContext,
-  RhinoInference
-} from '@picovoice/rhino-web-core';
+import type { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
 
 export type PicovoiceServiceArgs = {
   accessKey: string;
