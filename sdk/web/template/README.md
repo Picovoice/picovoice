@@ -59,7 +59,7 @@ The Picovoice SDK for Web is split into multiple packages due to each language i
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ### Workers
@@ -98,7 +98,7 @@ yarn add @picovoice/web-voice-processor @picovoice/picovoice-web-en-worker
 import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
 import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
 
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
 const RHINO_CONTEXT_BASE64 = /* Base64 string of the .rhn file for wasm platform, omitted for brevity */
 
 async startPicovoice() {
@@ -173,7 +173,7 @@ E.g.:
 ```javascript
 import { Picovoice } from '@picovoice/picovoice-web-en-factory';
 
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://picovoice.ai/console/) */
+const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
 const RHINO_CONTEXT_BASE64 = /* Base64 string of the .rhn file for wasm platform */
 
   async function startPicovoice() {

@@ -152,7 +152,7 @@ def main():
 
     parser.add_argument(
         '--access_key',
-        help='AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)',
+        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
         required=True)
 
     parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.")

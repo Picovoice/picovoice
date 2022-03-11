@@ -52,7 +52,7 @@ spoken command:
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
-- **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://picovoice.ai/console/).
+- **Self-Service:** Design, train, and test voice interfaces instantly in your browser, using [Picovoice Console](https://console.picovoice.ai/).
 - **Reliable:** Runs locally without needing continuous connectivity.
 - **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
 
@@ -62,7 +62,7 @@ spoken command:
    pre-trained speech models. The SDK is licensed under Apache 2.0 and available on GitHub to encourage independent
    benchmarking and integration testing. You are empowered to make a data-driven decision.
 
-2. **Design:** [Picovoice Console](https://picovoice.ai/console/) is a cloud-based platform for designing voice
+2. **Design:** [Picovoice Console](https://console.picovoice.ai/) is a cloud-based platform for designing voice
    interfaces and training speech models, all within your web browser. No machine learning skills are required. Simply
    describe what you need with text and export trained models.
 
@@ -165,7 +165,7 @@ alternatives with wide margins.
 
 ## Picovoice Console
 
-[Picovoice Console](https://picovoice.ai/console/) is a web-based platform for designing, testing, and training voice
+[Picovoice Console](https://console.picovoice.ai/) is a web-based platform for designing, testing, and training voice
 user interfaces. Using Picovoice Console you can train custom wake word, and domain-specific NLU (Speech-to-Intent)
 models.
 
@@ -673,7 +673,7 @@ Create a new instance of Picovoice:
 ```python
 from picovoice import Picovoice
 
-access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
  
 keyword_path = ...
 
@@ -853,7 +853,7 @@ import ai.picovoice.picovoice.*;
 
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
         
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
@@ -1090,7 +1090,7 @@ The static constructor `PicovoiceManager.create` will create an instance of a Pi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoiceManager() {  
   _picovoiceManager = PicovoiceManager.create(
@@ -1131,7 +1131,7 @@ who want to incorporate it into an already existing audio processing pipeline.
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
@@ -1188,7 +1188,7 @@ audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
 ```javascript    
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 this._picovoiceManager = PicovoiceManager.create(
     accessKey,
@@ -1221,7 +1221,7 @@ who want to incorporate it into an already existing audio processing pipeline.
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 async createPicovoice(){
     let porcupineSensitivity = 0.7
@@ -1389,7 +1389,7 @@ intent inference. The class can be initialized as below:
 ```swift
 import Picovoice
 
-let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let manager = PicovoiceManager(
     accessKey: accessKey,
@@ -1415,7 +1415,7 @@ o construct an instance, you'll need to provide a Porcupine keyword file (.ppn),
 ```swift
 import Picovoice
 
-let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 do {
     let picovoice = try Picovoice(
@@ -1632,7 +1632,7 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
         try {
           await this.picovoiceService.init(pvFactoryEn,
             {
-              // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+              // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
               accessKey: "${ACCESS_KEY}",
               // Built-in wake word
               porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
@@ -1699,7 +1699,7 @@ export default function VoiceWidget() {
   } = usePicovoice(
     PicovoiceWorkerFactory,
     {
-      accessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+      accessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
       // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
       // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
       porcupineKeyword: "Picovoice",
@@ -1756,7 +1756,7 @@ export default {
       isTalking: false,
       factory: PicovoiceWorkerFactoryEn,
       factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
         porcupineKeyword: { builtin: 'Picovoice', sensitivity: 0.6 },
         rhinoContext: {
           base64: 'RHINO_TRAINED_CONTEXT_BASE_64_STRING'
@@ -1863,7 +1863,7 @@ loop {
 Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/include/pv_picovoice.h](sdk/include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
 ```c
-const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://picovoice.ai/console/)
+const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
 const char *pocupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
 const char *keyword_path = ...

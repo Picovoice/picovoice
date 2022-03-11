@@ -30,7 +30,7 @@ dependencies {
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Permissions
@@ -55,7 +55,7 @@ inference completion. The class can be initialized using the PicovoiceManager Bu
 ```java
 import ai.picovoice.picovoice.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 PicovoiceManager manager = new PicovoiceManager.Builder()    
     .setAccessKey(accessKey)
@@ -76,12 +76,12 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .build(appContext);
 ```
 
-The keyword (.ppn) and context (.rhn) file are obtained from the [Picovoice Console](https://picovoice.ai/console/). You can store in your Android assets folder (`src/main/assets`) and pass them into the Picovoice Builder.
+The keyword (.ppn) and context (.rhn) file are obtained from the [Picovoice Console](https://console.picovoice.ai/). You can store in your Android assets folder (`src/main/assets`) and pass them into the Picovoice Builder.
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
 
 ```java
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 PicovoiceManager manager = new PicovoiceManager.Builder()
     .setAccessKey(accessKey)
@@ -128,7 +128,7 @@ low-level binding for Android. It can be initialized using the Picovoice Builder
 ```java
 import ai.picovoice.picovoice.*;
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 final String porcupineModelPath = ...
 final String keywordPath = ...
@@ -200,7 +200,7 @@ To add a custom context or model file to your application, add the files to your
 
 
 ```java
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 // in this example our files are located at 
 // '/assets/picovoice_files/keyword.ppn'

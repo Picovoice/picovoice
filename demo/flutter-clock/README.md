@@ -10,11 +10,11 @@ All demos require a valid Picovoice `AccessKey` at initialization. `AccessKey`s 
 You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 
 To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
+1. Login or Signup for a free account on the [Picovoice Console](https://console.picovoice.ai/).
 2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
 
 Once you obtain your `AccessKey`, replace it in [lib/main.dart](lib/main.dart) file:
 
 ```dart
-final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```

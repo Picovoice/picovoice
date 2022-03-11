@@ -10,7 +10,7 @@ using Pv.Unity;
 
 public class PicovoiceDemo : MonoBehaviour
 {
-    private static string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+    private static string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
     Text _activityText;
     Text _errorMessage;

@@ -245,7 +245,7 @@ public class Picovoice {
         /**
          * Setter for AccessKey
          *
-         * @param accessKey AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+         * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
          */
         public Picovoice.Builder setAccessKey(String accessKey) {
             this.accessKey = accessKey;

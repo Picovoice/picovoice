@@ -33,7 +33,7 @@ These demos and the bindings upon which they are built are for NodeJS and **do n
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Install NPM package
@@ -226,7 +226,7 @@ pv-mic-demo \
 
 ### Creating custom Wake Word (.ppn) and Speech-to-Intent context (.rhn) files
 
-To create keywords and train into PPN files, and to design Speech-to-Intent contexts and train them into RHN files, see the [Picovoice Console](https://picovoice.ai/console/).
+To create keywords and train into PPN files, and to design Speech-to-Intent contexts and train them into RHN files, see the [Picovoice Console](https://console.picovoice.ai/).
 
 Files generated with the Picovoice Console carry restrictions including (but not limited to): training allowance, time limits, available platforms, and commercial usage.
 

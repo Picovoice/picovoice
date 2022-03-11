@@ -33,7 +33,7 @@ Picovoice is:
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -41,7 +41,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/include/pv_picovoice.h](sdk/include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
 ```c
-const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://picovoice.ai/console/)
+const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
 const char *pocupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
 const char *keyword_path = ...

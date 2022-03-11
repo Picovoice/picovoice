@@ -50,7 +50,7 @@ public class PicovoiceManager {
      * Private constructor.
      *
      * @param appContext           Android app context
-     * @param accessKey            AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+     * @param accessKey            AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
      * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
      * @param keywordPath          Absolute path to Porcupine's keyword model file.
      * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
@@ -182,7 +182,7 @@ public class PicovoiceManager {
         /**
          * Setter for AccessKey
          *
-         * @param accessKey AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+         * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
          */
         public PicovoiceManager.Builder setAccessKey(String accessKey) {
             this.accessKey = accessKey;

@@ -56,7 +56,7 @@ Once the task is complete, the output JAR can be found in `picovoice/sdk/java/bu
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -68,7 +68,7 @@ import ai.picovoice.picovoice.*;
 
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
-final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 

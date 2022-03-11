@@ -6,12 +6,9 @@ This document outlines how to use Picovoice platform on a microcontroller using 
 
 ## AccessKey
 
-Picovoice requires a valid `AccessKey` at initialization. `AccessKey`s act as your credentials when using Picovoice SDKs.
-You can create your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-
-To obtain your `AccessKey`:
-1. Login or Signup for a free account on the [Picovoice Console](https://picovoice.ai/console/).
-2. Once logged in, go to the [`AccessKey` tab](https://console.picovoice.ai/access_key) to create one or use an existing `AccessKey`.
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage 
 
@@ -20,7 +17,7 @@ Picovoice is implemented in ANSI C and therefore can be directly linked to embed
 ```c
 #define MEMORY_BUFFER_SIZE ...
 
-static const char* ACCESS_KEY = ... //AccessKey string obtained from [Picovoice Console](https://picovoice.ai/console/)
+static const char* ACCESS_KEY = ... //AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
 static uint8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 

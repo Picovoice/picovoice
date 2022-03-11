@@ -30,7 +30,7 @@ picovoice = "*"
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -42,7 +42,7 @@ You must then make a call to `init()`:
 ```rust
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
 
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let wake_word_callback = || {
     // let user know wake word detected
@@ -93,7 +93,7 @@ They are floating point numbers within [0, 1].
 A higher sensitivity value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate:
 
 ```rust
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let mut picovoice = PicovoiceBuilder::new(
     access_key,
@@ -110,7 +110,7 @@ let mut picovoice = PicovoiceBuilder::new(
 Non-standard model and library paths (For example, when using a non-english model) for both engines can be tuned in a similar manner:
 
 ```rust
-let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://picovoice.ai/console/)
+let access_key = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let mut picovoice = PicovoiceBuilder::new(
     access_key,

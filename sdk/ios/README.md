@@ -35,7 +35,7 @@ To enable recording with your iOS device's microphone you must add the following
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret. 
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
@@ -51,7 +51,7 @@ inference completion. To construct a PicovoiceManager you'll need to provide a P
 ```swift
 import Picovoice
 
-let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let manager = PicovoiceManager(
     accessKey: accessKey,
@@ -68,7 +68,7 @@ let manager = PicovoiceManager(
 The constructor also allows you to override the default model files and/or the sensitivities of Porcupine and Rhino:
 
 ```swift
-let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let manager = PicovoiceManager(
     accessKey: accessKey,
@@ -108,7 +108,7 @@ To construct an instance, you'll need to provide a Picovoice `AccessKey`, a Porc
 ```swift
 import Picovoice
 
-let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://picovoice.ai/console/)
+let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 do {
     let picovoice = try Picovoice(
