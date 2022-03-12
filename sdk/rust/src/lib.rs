@@ -13,6 +13,7 @@ use std::path::PathBuf;
 
 pub use porcupine;
 pub use rhino;
+pub mod util;
 
 pub struct PicovoiceBuilder<W, I>
 where
