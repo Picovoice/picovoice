@@ -19,23 +19,61 @@ on:
       - 'resources/rhino'
       - '.github/workflows/rust.yml'
 
-defaults:
-  run:
-    working-directory: sdk/rust
-
 env:
   CARGO_TERM_COLOR: always
 
-jobs:
-  build:
+defaults:
+  run:
+    working-directory: sdk/rust
+    shell: bash
 
-    runs-on: ubuntu-latest
+jobs:
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - name: Checkout repository and submodules
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       with:
         submodules: recursive
+
+    - name: Rust dependencies
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install libasound2-dev -y
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Rust build
+      run: cargo build --verbose
+
+    - name: Rust run tests
+      run: PV_ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}} cargo test --verbose
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Install stable toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly
+        override: true
 
     - name: Rust build
       run: cargo build --verbose
