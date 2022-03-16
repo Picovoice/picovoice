@@ -90,6 +90,10 @@ export function usePicovoice(
     if (webVoiceProcessor !== null) {
       webVoiceProcessor.stop().then(() => {
         setIsListening(false);
+        setEngine('ppn');
+        if (picovoiceWorker !== null) {
+          picovoiceWorker.postMessage({ command: 'reset' });
+        }
         return true;
       });
     }
