@@ -59,10 +59,23 @@ export class PicovoiceService implements OnDestroy {
     return false;
   }
 
-  public start(): boolean {
+  public async start(): Promise<boolean> {
     if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.start();
+      await this.webVoiceProcessor.start();
       this.listening$.next(true);
+      return true;
+    }
+    return false;
+  }
+
+  public async stop(): Promise<boolean> {
+    if (this.webVoiceProcessor !== null) {
+      await this.webVoiceProcessor.stop();
+      if (this.picovoiceWorker !== null) {
+        this.picovoiceWorker.postMessage({ command: 'reset' });
+        this.engine$.next('ppn');
+      }
+      this.listening$.next(false);
       return true;
     }
     return false;
@@ -130,6 +143,7 @@ export class PicovoiceService implements OnDestroy {
       this.listening$.next(picovoiceServiceArgs.start ?? true);
     } catch (error) {
       this.picovoiceWorker.postMessage({ command: 'release' });
+      this.picovoiceWorker.terminate();
       this.picovoiceWorker = null;
       this.isInit = false;
       this.isError$.next(true);

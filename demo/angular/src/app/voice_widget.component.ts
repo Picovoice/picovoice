@@ -95,6 +95,10 @@ export class VoiceWidget {
     this.picovoiceService.start();
   }
 
+  public stop() {
+    this.picovoiceService.stop();
+  }
+
   public async initEngine(accessKey: string) {
     if (accessKey.length >= 0) {
       this.picovoiceService.release();

@@ -40,9 +40,10 @@ import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
     contextCallback: (info: string) => void,
     readyCallback: () => void,
     errorCallback: (error: Error) => void) => void;
-  start: () => boolean;
-  pause: () => boolean;
-  delete: () => void;
+    start: () => Promise<boolean>;
+    stop: () => Promise<boolean>;
+    pause: () => boolean;
+    delete: () => void;
 }
 
 export default {
@@ -116,15 +117,28 @@ export default {
         /**
          * Start processing audio.
          */
-        start() {
+        async start() {
           if (this.$_webVp_ !== null) {
-            this.$_webVp_.start();
+            await this.$_webVp_.start();
             return true;
           }
           return false;
         },
         /**
          * Stop processing audio.
+         */
+         async stop() {
+          if (this.$_webVp_ !== null) {
+            await this.$_webVp_.stop();
+            if (this.$_pvWorker_ !== null) {
+              this.$_pvWorker_.postMessage({ command: 'reset' });
+            }
+            return true;
+          }
+          return false;
+        },
+        /**
+         * Pause processing audio.
          */
         pause() {
           if (this.$_webVp_ !== null) {
@@ -139,6 +153,7 @@ export default {
         delete() {
           this.$_webVp_?.release();
           this.$_pvWorker_?.postMessage({ command: 'release' });
+          this.$_pvWorker_?.terminate();
         }
       }
     }
