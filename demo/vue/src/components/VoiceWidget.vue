@@ -26,6 +26,9 @@
     <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
       Pause
     </button>
+    <button v-on:click="stop" :disabled="!isLoaded || isError || !isListening">
+      Stop
+    </button>
     <h3>Keyword Detections (Listening for "Picovoice")</h3>
     <ul v-if="detections.length > 0">
       <li v-for="(item, index) in detections" :key="index">
@@ -102,6 +105,12 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
     start: function () {
       if (this.$picovoice.start()) {
         this.isListening = !this.isListening;
+      }
+    },
+    stop: function () {
+      if (this.$picovoice.stop()) {
+        this.isListening = !this.isListening;
+        this.engine = "ppn";
       }
     },
     pause: function () {

@@ -994,19 +994,17 @@
     "@picovoice/porcupine-web-core" "^2.1.0"
     "@picovoice/rhino-web-core" "^2.1.0"
 
-"@picovoice/picovoice-web-en-worker@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.1.1.tgz#4a24bd1631ad9c10cbb55bdad55ece60e11c5d0c"
-  integrity sha512-961jLE3zliDn7Wn0Z1q0ruPFG/5KtUzI4qQtmih/PWmQDn06Wi9nl5Ft+VReStG+4wTHEUUUl9/jQzchoj8xFA==
+"@picovoice/picovoice-web-en-worker@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-en-worker/-/picovoice-web-en-worker-2.1.4.tgz#59c7ffff560bba9e1963534682a450cf502008af"
+  integrity sha512-6HIrHCkOJpzKwLhVWTpq7H8tZjiieZD+1fVNlbwTW64DkKVdSR4/sX8Ps+yvYgRbdNg9tvNwQyEO/lRNExK0WQ==
   dependencies:
     "@picovoice/picovoice-web-core" "2.1.0"
-    "@picovoice/porcupine-web-en-factory" "2.1.1"
-    "@picovoice/rhino-web-en-factory" "2.1.0"
+    "@picovoice/porcupine-web-en-factory" "2.1.5"
+    "@picovoice/rhino-web-en-factory" "2.1.3"
 
-"@picovoice/picovoice-web-vue@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-vue/-/picovoice-web-vue-2.1.0.tgz#2606fbc949b900e034f8dbf17e08e19f2ebee350"
-  integrity sha512-YAXFEIno9vl2q/ZzXNDfpTFdrD1Y6yGmtKeeoWGcs6uQPA+STodS4GVl8A80mcL8EzMfXV+X7X1qG3mcl4taDw==
+"@picovoice/picovoice-web-vue@file:../../sdk/vue":
+  version "2.1.1"
   dependencies:
     "@picovoice/picovoice-web-core" "^2.1.0"
 
@@ -1015,10 +1013,10 @@
   resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
   integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
 
-"@picovoice/porcupine-web-en-factory@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.1.1.tgz#0d50c3ef26899debda72e9f49e7f0a3ddfdcda44"
-  integrity sha512-d9EMSwyyHgKOx8B+fAda1EGd+qF/215xyJAiRakqkwmcuYS/cSCz0fiZDeQ3cauCbMECxY6Zt21/YK2rzCcePA==
+"@picovoice/porcupine-web-en-factory@2.1.5":
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-en-factory/-/porcupine-web-en-factory-2.1.5.tgz#a5bff725a2e0f8be0da9edcc074e41d2abbe396e"
+  integrity sha512-fES5YAEFzFyIVobla74/Pi7Jl/7cE4spz1KTZFRcPBorQRVa3sCC+l5AyWg/Qy3VU6U3Poswh8gg1OENJmj5mg==
   dependencies:
     "@picovoice/porcupine-web-core" "^2.1.0"
 
@@ -1027,17 +1025,17 @@
   resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.1.0.tgz#53a8d50c5fd9588fc5115f0dfa2bc8a563b4a862"
   integrity sha512-AJEEEIXODRxleTtQoCZIVxwdgfMm23ivLzdXJDhYR/nk/07L5CVcmvihfWlcyCd7Utqkm5Z8UrlJylVnTMVd5g==
 
-"@picovoice/rhino-web-en-factory@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-2.1.0.tgz#7b5781c9c9ec2609ddcdccec095c5bd1bafa0d31"
-  integrity sha512-tT7tOo8UlReaMe0VXxt62J9Srx0zb9cGwE7UjMD0eSIrM6TIP4io3eix50Z5yqLgTzAwIASM3p2aaN+aEmzUSg==
+"@picovoice/rhino-web-en-factory@2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-en-factory/-/rhino-web-en-factory-2.1.3.tgz#6ec6c9897ade6325740e0aea163f204816be34dc"
+  integrity sha512-8SK3A01ExxyBTyUh/eCMJ2ujj9Ip+tlwIJHfzWeOaBLPl5Xdz0aBgW/FAgXdnnQPdAt4Y2m0m6kLOcPc82K3tA==
   dependencies:
     "@picovoice/rhino-web-core" "^2.1.0"
 
-"@picovoice/web-voice-processor@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.1.4.tgz#3d7ebabbaa58ec2e4195a5c9e9d7fcd8de88f8a2"
-  integrity sha512-dFdhHnHjZkooSvzhSAdnhB2YrsFxQPjqQTpcpIYnfX3U0TU/KpdBprWaXpL7ShZ3Vbgpkogh/qmpEAzXoNuNBA==
+"@picovoice/web-voice-processor@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-2.2.2.tgz#dcaa18349e2539bb33555532ea0d172b2bf6ba7a"
+  integrity sha512-66DuOQiaZX2OYgBq0+8qJ3r964ai5ebhJkv07SdJudmrSGu/1cCocjt0plMlOkLTWO8SL2J41JZraRf2lSdnDw==
   dependencies:
     "@babel/runtime" "^7.12.18"
 

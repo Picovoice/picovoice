@@ -23,6 +23,8 @@
   <br />
   <button (click)="start()" [disabled]="isError || isListening || !isLoaded">Start</button>
   <button (click)="pause()" [disabled]="isError || !isListening || !isLoaded">Pause</button>
+  <button (click)="stop()" [disabled]="isError || !isListening || !isLoaded">Stop</button>
+
   <h3>Keyword Detections (Listening for "Picovoice"):</h3>
   <ul>
     <li *ngFor="let keywordLabel of detections">"{{ keywordLabel }}"</li>

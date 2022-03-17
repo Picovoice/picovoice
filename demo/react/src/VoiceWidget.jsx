@@ -55,6 +55,7 @@ export default function VoiceWidget() {
     errorMessage,
     start,
     pause,
+    stop,
     engine,
   } = usePicovoice(
     workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePicovoice will start.
@@ -102,6 +103,12 @@ export default function VoiceWidget() {
         disabled={!isLoaded || !isListening || isError}
       >
         Pause
+      </button>
+      <button
+        onClick={() => stop()}
+        disabled={isError || !isListening || !isLoaded}
+      >
+        Stop
       </button>
       <h3>Keyword Detections (Listening for "Bumblebee"):</h3>
       {keywordDetections.length > 0 && (

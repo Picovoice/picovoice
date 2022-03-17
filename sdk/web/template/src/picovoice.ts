@@ -142,6 +142,10 @@ export class Picovoice implements PicovoiceEngine {
     this._rhinoEngine = null;
   }
 
+  public reset(): void {
+    this._engineControl = 'ppn'
+  }
+
   get version(): string {
     return this._version;
   }

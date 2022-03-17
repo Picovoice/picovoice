@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { Picovoice, Porcupine, Rhino } from './picovoice';
+import { Picovoice } from './picovoice';
 import {
   PicovoiceEngineArgs,
   PicovoiceWorkerArgs,
@@ -94,6 +94,10 @@ function release(): void {
   close();
 }
 
+function reset(): void {
+  picovoice.reset();
+}
+
 onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
   switch (event.data.command) {
     case 'init':
@@ -108,6 +112,9 @@ onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
     case 'resume':
       paused = false;
       break;
+    case 'reset':
+        reset();
+      break;
     case 'release':
       release();
       break;
@@ -116,6 +123,7 @@ onmessage = function (event: MessageEvent<PicovoiceWorkerRequest>): void {
       break;
     default:
       // eslint-disable-next-line no-console
+      // @ts-ignore
       console.warn('Unhandled command in picovoice_worker: ' + event.data.command);
   }
 };
