@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,15 +10,19 @@
 //
 "use strict";
 
-const Picovoice = require("./index.js");
-const fs = require("fs");
-const { getInt16Frames, checkWaveFile } = require("./wave_util");
-const WaveFile = require("wavefile").WaveFile;
+import Picovoice from "../src/picovoice";
+import type { RhinoInference } from "@picovoice/rhino-node"
+import { BuiltinKeyword, getBuiltinKeywordPath } from "@picovoice/porcupine-node"
 
-const { PvArgumentError, PvStateError } = require("./errors");
-const { getPlatform, getSystemLibraryPath } = require("./platforms");
+import * as fs from "fs";
+import { getInt16Frames, checkWaveFile } from "../src/wave_util";
+import { WaveFile } from "wavefile";
 
-const PICOVOICE_PORCUPINE_KEYWORD = 11;
+import { PicovoiceInvalidArgumentError, PicovoiceInvalidStateError } from "../src/errors";
+import { getPlatform, getSystemLibraryPath } from "../src/platforms";
+
+const PORCUPINE_KEYWORD = getBuiltinKeywordPath(BuiltinKeyword.PORCUPINE);
+const PICOVOICE_KEYWORD = getBuiltinKeywordPath(BuiltinKeyword.PICOVOICE);
 
 const WAV_PATH_PICOVOICE_COFFEE =
   "../../resources/audio_samples/picovoice-coffee.wav";
@@ -57,7 +61,7 @@ const MODEL_PATH_RH_FR = "../../resources/rhino/lib/common/rhino_params_fr.pv";
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
-function processWaveFile(handle, waveFilePath) {
+function processWaveFile(handle: Picovoice, waveFilePath: string) {
   const waveBuffer = fs.readFileSync(waveFilePath);
   const waveAudioFile = new WaveFile(waveBuffer);
 
@@ -78,19 +82,19 @@ function processWaveFile(handle, waveFilePath) {
 
 describe("intent detection (coffee maker)", () => {
   test("successful keyword and follow-on command", (done) => {
-    function keywordCallback(keyword) {
+    function keywordCallback(keyword: number) {
       expect(keyword).toEqual(0);
     }
-    function inferenceCallback(inference) {
+    function inferenceCallback(inference: RhinoInference) {
       expect(inference["isUnderstood"]).toBe(true);
       expect(inference["intent"]).toEqual("orderBeverage");
-      expect(inference["slots"]["beverage"]).toEqual("coffee");
+      expect(inference.slots?.beverage).toEqual("coffee");
       done();
     }
 
     let handle = new Picovoice(
       ACCESS_KEY,
-      PICOVOICE_PORCUPINE_KEYWORD,
+      PICOVOICE_KEYWORD,
       keywordCallback,
       contextPathCoffeeMaker,
       inferenceCallback
@@ -104,13 +108,13 @@ describe("intent detection (coffee maker)", () => {
 
 describe("intent detection in DE (Beleuchtung)", () => {
   test("successful keyword and follow-on command", (done) => {
-    function keywordCallback(keyword) {
+    function keywordCallback(keyword: number) {
       expect(keyword).toEqual(0);
     }
-    function inferenceCallback(inference) {
+    function inferenceCallback(inference: RhinoInference) {
       expect(inference["isUnderstood"]).toBe(true);
       expect(inference["intent"]).toEqual("changeState");
-      expect(inference["slots"]["state"]).toEqual("aus");
+      expect(inference.slots?.state).toEqual("aus");
       done();
     }
 
@@ -135,14 +139,14 @@ describe("intent detection in DE (Beleuchtung)", () => {
 
 describe("intent detection in ES (Iluminación Inteligente)", () => {
   test("successful keyword and follow-on command", (done) => {
-    function keywordCallback(keyword) {
+    function keywordCallback(keyword: number) {
       expect(keyword).toEqual(0);
     }
-    function inferenceCallback(inference) {
+    function inferenceCallback(inference: RhinoInference) {
       expect(inference["isUnderstood"]).toBe(true);
       expect(inference["intent"]).toEqual("changeColor");
-      expect(inference["slots"]["location"]).toEqual("habitación");
-      expect(inference["slots"]["color"]).toEqual("rosado");
+      expect(inference.slots?.location).toEqual("habitación");
+      expect(inference.slots?.color).toEqual("rosado");
       done();
     }
 
@@ -167,13 +171,13 @@ describe("intent detection in ES (Iluminación Inteligente)", () => {
 
 describe("intent detection in FR (Eclairage Intelligent)", () => {
   test("successful keyword and follow-on command", (done) => {
-    function keywordCallback(keyword) {
+    function keywordCallback(keyword: number) {
       expect(keyword).toEqual(0);
     }
-    function inferenceCallback(inference) {
+    function inferenceCallback(inference: RhinoInference) {
       expect(inference["isUnderstood"]).toBe(true);
       expect(inference["intent"]).toEqual("changeColor");
-      expect(inference["slots"]["color"]).toEqual("violet");
+      expect(inference.slots?.color).toEqual("violet");
       done();
     }
 
@@ -201,60 +205,66 @@ describe("argument checking", () => {
     expect(() => {
       let handle = new Picovoice(
         ACCESS_KEY,
-        PICOVOICE_PORCUPINE_KEYWORD,
+        PORCUPINE_KEYWORD,
+        // @ts-expect-error
         123,
         contextPathCoffeeMaker,
         () => {}
       );
-    }).toThrow(PvArgumentError);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 
   test("callbacks must be functions II", () => {
     expect(() => {
       let handle = new Picovoice(
         ACCESS_KEY,
-        PICOVOICE_PORCUPINE_KEYWORD,
+        PORCUPINE_KEYWORD,
+        // @ts-expect-error
         undefined,
         contextPathCoffeeMaker,
         undefined
       );
-    }).toThrow(PvArgumentError);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 
   test("missing keyword argument", () => {
     expect(() => {
       let handle = new Picovoice(
         ACCESS_KEY,
+        // @ts-expect-error
         undefined,
-        PICOVOICE_PORCUPINE_KEYWORD,
+        PORCUPINE_KEYWORD,
         () => {},
         contextPathCoffeeMaker,
         () => {}
       );
-    }).toThrow(PvArgumentError);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 
   test("no arguments", () => {
     expect(() => {
+      // @ts-expect-error
       let handle = new Picovoice();
-    }).toThrow(PvArgumentError);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 
   test("one arguments", () => {
     expect(() => {
-      let handle = new Picovoice(ACCESS_KEY, PICOVOICE_PORCUPINE_KEYWORD);
-    }).toThrow(PvArgumentError);
+      // @ts-expect-error
+      let handle = new Picovoice(ACCESS_KEY, PORCUPINE_KEYWORD);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 
   test("three arguments", () => {
     expect(() => {
+      // @ts-expect-error
       let handle = new Picovoice(
         ACCESS_KEY,
-        PICOVOICE_PORCUPINE_KEYWORD,
+        PORCUPINE_KEYWORD,
         () => {},
         contextPathCoffeeMaker
       );
-    }).toThrow(PvArgumentError);
+    }).toThrow(PicovoiceInvalidArgumentError);
   });
 });
 
@@ -262,7 +272,7 @@ describe("state", () => {
   test("contextInfo from Rhino", () => {
     let handle = new Picovoice(
       ACCESS_KEY,
-      PICOVOICE_PORCUPINE_KEYWORD,
+      PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
       () => {}
@@ -270,7 +280,7 @@ describe("state", () => {
     handle.release();
     expect(() => {
       handle.process(new Int16Array(512));
-    }).toThrow(PvStateError);
+    }).toThrow(PicovoiceInvalidStateError);
   });
 });
 
@@ -278,7 +288,7 @@ describe("getter functions", () => {
   test("contextInfo from Rhino", () => {
     let handle = new Picovoice(
       ACCESS_KEY,
-      PICOVOICE_PORCUPINE_KEYWORD,
+      PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
       () => {}
@@ -299,7 +309,7 @@ describe("getter functions", () => {
   test("version strings", () => {
     let handle = new Picovoice(
       ACCESS_KEY,
-      PICOVOICE_PORCUPINE_KEYWORD,
+      PORCUPINE_KEYWORD,
       () => {},
       contextPathCoffeeMaker,
       () => {}

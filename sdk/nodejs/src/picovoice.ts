@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,10 +10,13 @@
 //
 "use strict";
 
-const Porcupine = require("@picovoice/porcupine-node");
-const Rhino = require("@picovoice/rhino-node");
+import { Porcupine } from "@picovoice/porcupine-node";
+import { Rhino, RhinoInference } from "@picovoice/rhino-node";
 
-const { PvArgumentError, PvStateError } = require("./errors");
+import { PicovoiceInvalidArgumentError, PicovoiceInvalidStateError } from "./errors";
+
+export type WakeWordCallback = (keyword: number) => void;
+export type InferenceCallback = (inference: RhinoInference) => void;
 
 /**
  * Wraps the Picovoice Porcupine and Rhino engines.
@@ -21,7 +24,22 @@ const { PvArgumentError, PvStateError } = require("./errors");
  * Switches input from Porcupine to Rhino upon wake word detection, then back to Rhino upon inference conclusion.
  * Fires callbacks on wake word and inference events.
  */
-class Picovoice {
+export default class Picovoice {
+  private porcupine: Porcupine | null;
+  private rhino: Rhino | null;
+
+  private wakeWordCallback: WakeWordCallback;
+  private inferenceCallback: InferenceCallback;
+
+  private readonly _frameLength: number;
+  private readonly _sampleRate: number;
+  private readonly _version: string;
+  private readonly _porcupineVersion: string;
+  private readonly _rhinoVersion: string;
+  private readonly _contextInfo: string;
+
+  private isWakeWordDetected: boolean;
+
   /**
    * Creates an instance of Picovoice with a specific keyword and context.
    * @param {accessKey} AccessKey Obtained from the Picovoice Console (https://console.picovoice.ai/)
@@ -38,37 +56,37 @@ class Picovoice {
    * @param {string} rhinoLibraryPath,
    */
   constructor(
-    accessKey,
-    keywordPath,
-    wakeWordCallback,
-    contextPath,
-    inferenceCallback,
-    porcupineSensitivity = 0.5,
-    rhinoSensitivity = 0.5,
-    requireEndpoint = true,
-    porcupineModelPath,
-    rhinoModelPath,
-    porcupineLibraryPath,
-    rhinoLibraryPath
+    accessKey: string,
+    keywordPath: string,
+    wakeWordCallback: WakeWordCallback,
+    contextPath: string,
+    inferenceCallback: InferenceCallback,
+    porcupineSensitivity: number = 0.5,
+    rhinoSensitivity: number = 0.5,
+    requireEndpoint: boolean = true,
+    porcupineModelPath?: string,
+    rhinoModelPath?: string,
+    porcupineLibraryPath?: string,
+    rhinoLibraryPath?: string
   ) {
     if (
       accessKey === null ||
       accessKey === undefined ||
       accessKey.length === 0
     ) {
-      throw new PvArgumentError(`No AccessKey provided to Picovoice`);
+      throw new PicovoiceInvalidArgumentError(`No AccessKey provided to Picovoice`);
     }
 
     if (!(wakeWordCallback instanceof Function)) {
-      throw new PvArgumentError(
+      throw new PicovoiceInvalidArgumentError(
         "Parameter 'wakeWordCallback' is not a function"
       );
     }
 
-    this.wakeWordCallBack = wakeWordCallback;
+    this.wakeWordCallback = wakeWordCallback;
 
     if (!(inferenceCallback instanceof Function)) {
-      throw new PvArgumentError(
+      throw new PicovoiceInvalidArgumentError(
         "Parameter 'inferenceCallback' is not a function"
       );
     }
@@ -107,42 +125,42 @@ class Picovoice {
    * @returns number of audio samples per frame (i.e. the length of the array provided to the process function)
    * @see {@link process}
    */
-  get frameLength() {
+  get frameLength(): number {
     return this._frameLength;
   }
 
   /**
    * @returns the audio sampling rate accepted by Picovoice
    */
-  get sampleRate() {
+  get sampleRate(): number {
     return this._sampleRate;
   }
 
   /**
    * @returns the version of the Picovoice SDK
    */
-  get version() {
+  get version(): string {
     return this._version;
   }
 
   /**
    * @returns the version of the Porcupine SDK
    */
-  get porcupineVersion() {
+  get porcupineVersion(): string {
     return this._porcupineVersion;
   }
 
   /**
    * @returns the version of the Rhino SDK
    */
-  get rhinoVersion() {
+  get rhinoVersion(): string {
     return this._rhinoVersion;
   }
 
   /**
    * @returns the Rhino context source YAML
    */
-  get contextInfo() {
+  get contextInfo(): string {
     return this._contextInfo;
   }
 
@@ -153,9 +171,9 @@ class Picovoice {
    * The specific array length is obtained from Rhino via the frameLength field.
    * @returns {boolean} true when Rhino has concluded processing audio and determined the intent (or that the intent was not understood), false otherwise.
    */
-  process(frame) {
+  process(frame: Int16Array) {
     if (this.porcupine === null || this.rhino === null) {
-      throw new PvStateError(
+      throw new PicovoiceInvalidStateError(
         "Attempting to process but resources have been released."
       );
     }
@@ -164,7 +182,7 @@ class Picovoice {
 
       if (keywordIndex !== -1) {
         this.isWakeWordDetected = true;
-        this.wakeWordCallBack(keywordIndex);
+        this.wakeWordCallback(keywordIndex);
       }
     } else {
       const isFinalized = this.rhino.process(frame);
@@ -190,5 +208,3 @@ class Picovoice {
     }
   }
 }
-
-module.exports = Picovoice;

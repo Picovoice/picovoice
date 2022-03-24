@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -14,14 +14,14 @@
 const fs = require("fs");
 const path = require("path");
 const { program } = require("commander");
-const Picovoice = require("@picovoice/picovoice-node");
-const { PvArgumentError } = require("@picovoice/picovoice-node/errors");
+const { Picovoice } = require("@picovoice/picovoice-node");
+const { PicovoiceInvalidArgumentError } = require("@picovoice/picovoice-node/dist/errors");
 const PvRecorder = require("@picovoice/pvrecorder-node");
 
 const {
-  BUILTIN_KEYWORDS_STRINGS,
-  BUILTIN_KEYWORDS_STRING_TO_ENUM,
-} = require("@picovoice/porcupine-node/builtin_keywords");
+  BuiltinKeyword,
+  getBuiltinKeywordPath
+} = require("@picovoice/porcupine-node");
 
 program
   .requiredOption(
@@ -34,7 +34,7 @@ program
   )
   .option(
     "-b, --keyword <string>",
-    `built in keyword(s) (${Array.from(BUILTIN_KEYWORDS_STRINGS)})`
+    `built in keyword(s) (${Object.keys(BuiltinKeyword)})`
   )
   .option(
     "-c, --context_file_path <string>",
@@ -119,15 +119,13 @@ async function micDemo() {
 
   let keywordArgument;
   if (builtinKeywordsDefined) {
-    let keywordString = keyword.trim().toLowerCase();
-    if (BUILTIN_KEYWORDS_STRINGS.has(keywordString)) {
-      keywordArgument = BUILTIN_KEYWORDS_STRING_TO_ENUM.get(keywordString);
+    let keywordString = keyword.trim().toUpperCase();
+    if (keywordString in BuiltinKeyword) {
+      keywordArgument = getBuiltinKeywordPath(BuiltinKeyword[keywordString])
       friendlyKeywordName = keywordString;
     } else {
       console.error(
-        `Keyword argument '${keywordString}' is not in the list of built-in keywords (${Array.from(
-          BUILTIN_KEYWORDS_STRINGS
-        )})`
+        `Keyword argument '${keywordString}' is not in the list of built-in keywords (${Object.keys(BuiltinKeyword)})`
       );
       return;
     }
@@ -145,7 +143,7 @@ async function micDemo() {
   }
 
   if (!fs.existsSync(contextPath)) {
-    throw new PvArgumentError(
+    throw new PicovoiceInvalidArgumentError(
       `File not found at 'contextPath': ${contextPath}`
     );
   }
