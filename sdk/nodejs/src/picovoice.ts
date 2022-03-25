@@ -28,8 +28,8 @@ export default class Picovoice {
   private porcupine: Porcupine | null;
   private rhino: Rhino | null;
 
-  private wakeWordCallback: WakeWordCallback;
-  private inferenceCallback: InferenceCallback;
+  private readonly wakeWordCallback: WakeWordCallback;
+  private readonly inferenceCallback: InferenceCallback;
 
   private readonly _frameLength: number;
   private readonly _sampleRate: number;
@@ -42,7 +42,7 @@ export default class Picovoice {
 
   /**
    * Creates an instance of Picovoice with a specific keyword and context.
-   * @param {accessKey} AccessKey Obtained from the Picovoice Console (https://console.picovoice.ai/)
+   * @param {string} accessKey Obtained from the Picovoice Console (https://console.picovoice.ai/)
    * @param {string} keywordPath,
    * @param {function} wakeWordCallBack,
    * @param {string} contextPath,

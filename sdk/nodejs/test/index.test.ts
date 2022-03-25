@@ -19,7 +19,7 @@ import { getInt16Frames, checkWaveFile } from "../src/wave_util";
 import { WaveFile } from "wavefile";
 
 import { PicovoiceInvalidArgumentError, PicovoiceInvalidStateError } from "../src/errors";
-import { getPlatform, getSystemLibraryPath } from "../src/platforms";
+import { getPlatform } from "../src/platforms";
 
 const PORCUPINE_KEYWORD = getBuiltinKeywordPath(BuiltinKeyword.PORCUPINE);
 const PICOVOICE_KEYWORD = getBuiltinKeywordPath(BuiltinKeyword.PICOVOICE);
