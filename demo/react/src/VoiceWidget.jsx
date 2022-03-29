@@ -8,6 +8,7 @@ export default function VoiceWidget() {
   const [isChunkLoaded, setIsChunkLoaded] = useState(false);
 
   const [accessKey, setAccessKey] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   const [keywordDetections, setKeywordDetections] = useState([]);
   const [inference, setInference] = useState(null);
@@ -78,10 +79,13 @@ export default function VoiceWidget() {
           <input
             type="text"
             name="accessKey"
-            onChange={(value) => setAccessKey(value.target.value)}
+            onChange={(value) => setInputValue(value.target.value)}
             disabled={isLoaded}
           />
         </label>
+        <button className="start-button" onClick={() => setAccessKey(inputValue)} disabled={isLoaded}>
+          Start Picovoice
+        </button>
       </h3>
       <h3>Dynamic Import Loaded: {JSON.stringify(isChunkLoaded)}</h3>
       <h3>Picovoice Loaded: {JSON.stringify(isLoaded)}</h3>
