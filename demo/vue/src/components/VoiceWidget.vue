@@ -8,10 +8,13 @@
         <input
           type="text"
           name="accessKey"
-          v-on:change="initEngine"
+          v-on:change="updateInputValue"
           :disabled="isLoaded"
         />
       </label>
+      <button class="start-button" v-on:click="initEngine" :disabled="isLoaded">
+          Start Picovoice
+      </button>
     </h3>
     <h3>Picovoice Loaded: {{ isLoaded }}</h3>
     <h3>Listening: {{ isListening }}</h3>
@@ -63,6 +66,7 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
   mixins: [picovoiceMixin],
   data: function () {
     return {
+      inputValue: "",
       inference: null as RhinoInference | null,
       detections: [] as string[],
       isError: false,
@@ -88,7 +92,7 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
   },
   methods: {
     initEngine: function (event: any) {
-      this.factoryArgs.accessKey = event.target.value;
+      this.factoryArgs.accessKey = this.inputValue;
       this.isError = false;
       this.isLoaded = false;
       this.isListening = false;
@@ -101,6 +105,9 @@ export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend(
         this.pvReadyFn,
         this.pvErrorFn
       );
+    },
+    updateInputValue: function (event: any) {
+      this.inputValue = event.target.value;
     },
     start: function () {
       if (this.$picovoice.start()) {
@@ -147,6 +154,12 @@ button {
   padding: 1rem;
   font-size: 1.5rem;
   margin-right: 1rem;
+}
+
+.start-button {
+  padding: 0.1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .voice-widget {
