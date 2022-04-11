@@ -143,7 +143,7 @@ public class PicovoiceService extends Service {
                 this,
                 0,
                 new Intent(this, MainActivity.class),
-                0);
+                PendingIntent.FLAG_MUTABLE);
 
         return new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(title)
