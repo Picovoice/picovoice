@@ -3,14 +3,17 @@ description: Demonstrates how to use the picovoice plugin.
 
 publish_to: 'none'
 
+version: 1.0.0
+
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.8.1"
 
 dependencies:
   flutter:
     sdk: flutter
   
-  path_provider: ^2.0.1
+  path_provider: ^2.0.9
   picovoice_flutter: ^2.1.0
 
 flutter:

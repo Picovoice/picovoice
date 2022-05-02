@@ -4,13 +4,13 @@ version: 2.1.1
 homepage: https://picovoice.ai/
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0"
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.8.1"
 
 dependencies:
   flutter:
     sdk: flutter
-  flutter_voice_processor: ^1.0.6
+  flutter_voice_processor: ^1.0.7
   porcupine_flutter: ^2.1.1
   rhino_flutter: ^2.1.1
 
