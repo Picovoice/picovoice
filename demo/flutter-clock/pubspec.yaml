@@ -5,13 +5,14 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
+  flutter: ">=2.8.1"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: ^0.17.0
-  path_provider: ^2.0.1
+  path_provider: ^2.0.9
   picovoice_flutter: ^2.1.0
   flutter_ringtone_player: ^3.0.0  
   fluttertoast: ^8.0.7
