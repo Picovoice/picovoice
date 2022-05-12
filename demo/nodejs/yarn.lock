@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.1.5.tgz#4b08dfc05cdaf4fff98a754514d897fc25b9d71b"
-  integrity sha512-3agjGNkD0wvheCAyVwZHxmMVVrJ3kdOTvvuzPTCmoJMxbVo/pUH1qfH2shiFDXdILIWsT/2299VInb/CrLmG6Q==
+"@picovoice/picovoice-node@2.1.6":
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.1.6.tgz#3267f1b4399888aa187c26df8e9de1475f50f077"
+  integrity sha512-69z3L0ALCbT3I+LWgCF1cGfBHj5uPdGjnPvc47K0Jo3yLrLUiOpMWoHtS4YD8D+pgRkCxaRfWJFU+hGY5tym8A==
   dependencies:
     "@picovoice/porcupine-node" "2.1.6"
-    "@picovoice/rhino-node" "2.1.6"
+    "@picovoice/rhino-node" "2.1.7"
 
 "@picovoice/porcupine-node@2.1.6":
   version "2.1.6"
@@ -22,10 +22,10 @@
   dependencies:
     ncp "^2.0.0"
 
-"@picovoice/rhino-node@2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.6.tgz#9c4498aeb581c5ec4d1be78f03c71f0c3d84016d"
-  integrity sha512-9Pl9MF1gw3e4c+49drVqv/oInZfOEXXDRJPKuLYswgcjLxdwn5W51nVHgrZ0IUOlfcgphRzCRR8IdP4JmjteHw==
+"@picovoice/rhino-node@2.1.7":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.7.tgz#76dfebda0b1c69ca813b3a0ed7bce96c8979a534"
+  integrity sha512-8QtiCE/ANWW4pdD1FZpTs6hUNOFs+00i6VnegqP7LaKN3kZ5UzFlVDCO/ZX4ZDm8sNBZwt80jRXwO79q9r10jw==
 
 commander@^6.1.0:
   version "6.2.1"
