@@ -115,12 +115,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "lazy_static"
-version = "1.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
-
-[[package]]
 name = "libc"
 version = "0.2.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -134,15 +128,6 @@ checksum = "6f84d96438c15fcd6c3f244c8fce01d1e2b9c6b5623e9c711dc9286d8fc92d6a"
 dependencies = [
  "cfg-if",
  "winapi",
-]
-
-[[package]]
-name = "log"
-version = "0.4.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
-dependencies = [
- "cfg-if",
 ]
 
 [[package]]
@@ -178,9 +163,9 @@ dependencies = [
 
 [[package]]
 name = "picovoice"
-version = "2.1.2"
+version = "2.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dbd1b704723dfcff41fce3247b29d3635b8911e88c8052517bc06208c882c6d4"
+checksum = "0042a4de341d4fb449bd24439d582c871c61d6c04eaf1ab9163c53f07a06cae9"
 dependencies = [
  "pv_porcupine",
  "pv_rhino",
@@ -201,9 +186,9 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "2.1.2"
+version = "2.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f81705e0dcea59ec97f7af8c7e5b4c6df280b51b0faf084e3c9a1ed5dbb8fc34"
+checksum = "516400298c6eb2a925617d20c7445e6d10ee35706871a173af885efea3cb912a"
 dependencies = [
  "libc",
  "libloading",
@@ -211,21 +196,19 @@ dependencies = [
 
 [[package]]
 name = "pv_recorder"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43f749ad06d7aec0204ceb8bc107d9783285468d09378f3565acd703bd667daf"
+checksum = "32150b769ae414f304515c8ce924c6753638c4eaea48bceecbcd85f69d2d16cc"
 dependencies = [
- "lazy_static",
  "libc",
  "libloading",
- "log",
 ]
 
 [[package]]
 name = "pv_rhino"
-version = "2.1.2"
+version = "2.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b412e294925649213fe985d8677de443dad36d2098eb73c2e7df89bd44b537d"
+checksum = "ed2e37b913a84cc687c818ae8e02604195870fb97c825f0c1946f82736358735"
 dependencies = [
  "libc",
  "libloading",
