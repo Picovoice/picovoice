@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netcoreapp3.1;netstandard2.0</TargetFrameworks>
-	  <Version>2.1.2</Version>
+	  <Version>2.1.3</Version>
 	  <Authors>Picovoice</Authors>
 	  <Company />
 	  <Product>Picovoice End-to-End Platform</Product>
@@ -35,10 +35,10 @@ Picovoice is:
 	  </None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Porcupine" Version="2.1.2">
+		<PackageReference Include="Porcupine" Version="2.1.3">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Rhino" Version="2.1.2">
+		<PackageReference Include="Rhino" Version="2.1.3">
 			<PrivateAssets>analyzers</PrivateAssets>
 		</PackageReference>		
 	</ItemGroup>
