@@ -1,14 +1,9 @@
-github.com/Picovoice/picovoice/sdk/go/v2 v2.1.1 h1:EWRmBTOPBZ/T9N0+2VliwX8ts1eVgAnsIpd3oh2niTw=
-github.com/Picovoice/picovoice/sdk/go/v2 v2.1.1/go.mod h1:RiAHW/ltdp6Oa0rfVdzdyFjOaa1npiMFIgNJUOANIFc=
 github.com/Picovoice/picovoice/sdk/go/v2 v2.1.2 h1:+ma5A4c3IBsOShQHF/AKI+KeTvFiwveNGPY7yJ0pJhk=
 github.com/Picovoice/picovoice/sdk/go/v2 v2.1.2/go.mod h1:RiAHW/ltdp6Oa0rfVdzdyFjOaa1npiMFIgNJUOANIFc=
 github.com/Picovoice/porcupine/binding/go/v2 v2.1.1 h1:TdV842uYotkfMg9NFurQ9oIpd7JqiJ+KaR6Tpp28PbU=
 github.com/Picovoice/porcupine/binding/go/v2 v2.1.1/go.mod h1:ZoCMGeBEiDKYVDE+6jRg1/cdSOCjM4cuoBKV3+EBtM8=
-github.com/Picovoice/pvrecorder/sdk/go v1.0.2 h1:UMgGSRjT5ro3DmncOYu6aiCikQp9pZlR3MPQa6QatEo=
-github.com/Picovoice/pvrecorder/sdk/go v1.0.2/go.mod h1:vkNmQAJCFgKBhSfqdff3OuxvXVpIuwv48odGc3ki83M=
 github.com/Picovoice/pvrecorder/sdk/go v1.1.0 h1:QuNOaiHJckfwrVvDQqf08/R08H5UewLpW6ds/2Zf4w8=
 github.com/Picovoice/pvrecorder/sdk/go v1.1.0/go.mod h1:IoSKWuM28e0wWzVSn7B4WvHWmOpcPg85JdwlueTJgGk=
-github.com/Picovoice/rhino/binding/go/v2 v2.1.1 h1:7r1OVNWJWcSDKf0bFZOk6yk5GMx3jKhIeaISo2poeIY=
 github.com/Picovoice/rhino/binding/go/v2 v2.1.1/go.mod h1:8f1JuYLexgD44ISYSLhEIGfns6Z+4vQhpLitwNgpM2I=
 github.com/Picovoice/rhino/binding/go/v2 v2.1.3 h1:F7wvDKUjQzVEOk5wjvgfFOAJcUsjp6HvXKCzBREB78M=
 github.com/Picovoice/rhino/binding/go/v2 v2.1.3/go.mod h1:/DNCpNLIENfz9A85bHUUDTW8YSHFcmPDDDA/XZPQgbI=
@@ -21,5 +16,3 @@ github.com/go-audio/wav v1.0.0/go.mod h1:3yoReyQOsiARkvPl3ERCi8JFjihzG6WhjYpZCf5
 golang.org/x/sys v0.0.0-20210514084401-e8d321eab015/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2 h1:48AqIJLs69Wmc3mA52aIcqt544rjrDCqolKAv7L8leA=
 golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf h1:2ucpDCmfkl8Bd/FsLtiD653Wf96cW37s+iGx93zsu4k=
-golang.org/x/sys v0.0.0-20210823070655-63515b42dcdf/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
