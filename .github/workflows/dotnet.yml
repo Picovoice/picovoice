@@ -26,10 +26,12 @@ defaults:
 jobs:
   build-github-hosted:
     runs-on: ${{ matrix.os }}
+    env: 
+      ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     
     steps:
     - name: Checkout repository and submodules
@@ -41,23 +43,20 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
-    
-    - name: Setup .NET 5.0
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x     
    
     - name: Restore dependencies
-      run: dotnet restore    
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore      
+      run: dotnet build --no-restore
 
     - name: Test
-      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+      run: dotnet test
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
+    env: 
+      ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:
       matrix:
@@ -70,10 +69,10 @@ jobs:
         submodules: recursive
 
     - name: Restore dependencies
-      run: dotnet restore    
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore      
+      run: dotnet build --no-restore
 
     - name: Test
-      run: dotnet test -- TestRunParameters.Parameter\(name=\"pvTestAccessKey\",\ value=\"${{secrets.PV_VALID_ACCESS_KEY}}\"\)
+      run: dotnet test

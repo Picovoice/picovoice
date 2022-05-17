@@ -43,10 +43,8 @@ namespace PicovoiceTest
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            if (testContext.Properties.Contains("pvTestAccessKey"))
-            {
-                ACCESS_KEY = testContext.Properties["pvTestAccessKey"].ToString();
-            }
+
+            ACCESS_KEY = Environment.GetEnvironmentVariable("ACCESS_KEY");
 
             _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             _rootDir = Path.Combine(_cwd, "../../../../../..");
@@ -68,7 +66,7 @@ namespace PicovoiceTest
                 AppendLanguage("keyword_files", language),
                 $"{_env}/{keyword}_{_env}.ppn"
             );
-        }      
+        }
 
         private static string GetPorcupineModelPath(string language)
         {
@@ -98,7 +96,7 @@ namespace PicovoiceTest
                 "resources/rhino/lib/common",
                 $"{file_name}.pv"
             );
-        }        
+        }
 
         [TestInitialize]
         public void ResetCallbacks()
@@ -111,7 +109,7 @@ namespace PicovoiceTest
         public void TestClean()
         {
             _picovoice?.Dispose();
-        }        
+        }
 
         public void RunTestCase(string audioFileName, string expectedIntent, Dictionary<string, string> expectedSlots)
         {
@@ -232,7 +230,7 @@ namespace PicovoiceTest
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
             ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
-        }                 
+        }
 
         private List<short> GetPcmFromFile(string audioFilePath, int expectedSampleRate)
         {
@@ -271,6 +269,6 @@ namespace PicovoiceTest
                 default:
                     throw new PlatformNotSupportedException($"This device (CPU part = {cpuPart}) is not supported by Picovoice.");
             }
-        }        
+        }
     }
 }
