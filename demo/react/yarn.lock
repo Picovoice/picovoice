@@ -1435,10 +1435,8 @@
     "@picovoice/porcupine-web-en-factory" "2.1.6"
     "@picovoice/rhino-web-en-factory" "2.1.4"
 
-"@picovoice/picovoice-web-react@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-react/-/picovoice-web-react-2.1.4.tgz#c7facd55b662ab10af7ec7bc64af65c24dfd0200"
-  integrity sha512-tdi6cJOB6NggM6sytFGXGb/uUXvkIh0bSJOl0kAOOWYXAhnRsaIAmxWdMvBBAvoPwSoe3sHfnO1z41qjt2xrdg==
+"@picovoice/picovoice-web-react@file:../../sdk/react":
+  version "2.1.5"
   dependencies:
     "@picovoice/picovoice-web-core" "^2.1.0"
 
