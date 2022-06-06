@@ -103,6 +103,9 @@ export function usePicovoice(
   /** Refresh the keyword and inference callbacks
    * when they change (avoid stale closure) */
   useEffect(() => {
+    porcupineCallback.current = keywordCallback;
+    rhinoCallback.current = inferenceCallback;
+
     if (picovoiceWorker !== null) {
       picovoiceWorker.onmessage = (
         message: MessageEvent<PicovoiceWorkerResponse>
@@ -124,7 +127,7 @@ export function usePicovoice(
         }
       };
     }
-  }, [porcupineCallback, rhinoCallback]);
+  }, [keywordCallback, inferenceCallback, picovoiceWorker]);
 
   useEffect(() => {
     if (
