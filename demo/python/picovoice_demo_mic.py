@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2021 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -34,6 +34,7 @@ class PicovoiceDemo(Thread):
             rhino_library_path=None,
             rhino_model_path=None,
             rhino_sensitivity=0.5,
+            endpoint_duration_sec=1.,
             require_endpoint=True,
             output_path=None):
         super(PicovoiceDemo, self).__init__()
@@ -51,6 +52,7 @@ class PicovoiceDemo(Thread):
                 rhino_library_path=rhino_library_path,
                 rhino_model_path=rhino_model_path,
                 rhino_sensitivity=rhino_sensitivity,
+                endpoint_duration_sec=endpoint_duration_sec,
                 require_endpoint=require_endpoint)
         except PicovoiceInvalidArgumentError as e:
             print("One or more arguments provided to Picovoice is invalid: {\n" +
@@ -65,6 +67,7 @@ class PicovoiceDemo(Thread):
                   f"\t{rhino_library_path=}\n" +
                   f"\t{rhino_model_path=}\n" +
                   f"\t{rhino_sensitivity=}\n" +
+                  f"\t{endpoint_duration_sec=}\n" +
                   f"\t{require_endpoint=}\n" +
                   "}")
             print(f"If all other arguments seem valid, ensure that '{access_key}' is a valid AccessKey")
@@ -182,8 +185,20 @@ def main():
         default=0.5)
 
     parser.add_argument(
+        '--endpoint_duration_sec',
+        help="Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an utterance that marks "
+             "the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint duration "
+             "reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return "
+             "inference pre-emptively in case the user pauses before finishing the request.",
+        type=float,
+        default=1.)
+
+    parser.add_argument(
         '--require_endpoint',
-        help="If set to `False`, Rhino does not require an endpoint (chunk of silence) before finishing inference.",
+        help="If set to `True`, Rhino requires an endpoint (a chunk of silence) after the spoken command. If set to "
+             "`False`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. "
+             "Set to `False` only if operating in an environment with overlapping speech (e.g. people talking in the "
+             "background).",
         default='True',
         choices=['True', 'False'])
 
@@ -220,6 +235,7 @@ def main():
             rhino_library_path=args.rhino_library_path,
             rhino_model_path=args.rhino_model_path,
             rhino_sensitivity=args.rhino_sensitivity,
+            endpoint_duration_sec=args.endpoint_duration_sec,
             require_endpoint=require_endpoint,
             output_path=os.path.expanduser(args.output_path) if args.output_path is not None else None).run()
 
