@@ -119,6 +119,7 @@ class Picovoice(object):
             rhino_library_path=None,
             rhino_model_path=None,
             rhino_sensitivity=0.5,
+            endpoint_duration_sec=1.,
             require_endpoint=True):
         """
         Constructor.
@@ -144,8 +145,14 @@ class Picovoice(object):
         :param rhino_model_path: Absolute path to the file containing Rhino's model parameters.
         :param rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
-        :param require_endpoint If set to `False`, Rhino does not require an endpoint (chunk of silence) before
-        finishing inference.
+        :param endpoint_duration_sec: Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+        utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+        duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return
+        inference pre-emptively in case the user pauses before finishing the request.
+        require_endpoint: If set to `True`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+        If set to `False`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless.
+        Set to `False` only if operating in an environment with overlapping speech (e.g. people talking in the
+        background).
         """
 
         if not access_key:
@@ -181,6 +188,9 @@ class Picovoice(object):
         if not 0 <= rhino_sensitivity <= 1:
             raise ValueError("Rhino's sensitivity should be within [0, 1]")
 
+        if not 0.5 <= endpoint_duration_sec <= 5.:
+            raise ValueError("Endpoint duration should be within [0.5, 5]")
+
         try:
             self._porcupine = pvporcupine.create(
                 access_key=access_key,
@@ -202,8 +212,9 @@ class Picovoice(object):
                 model_path=rhino_model_path,
                 context_path=context_path,
                 sensitivity=rhino_sensitivity,
+                endpoint_duration_sec=endpoint_duration_sec,
                 require_endpoint=require_endpoint)
-        except pvporcupine.RhinoError as e:
+        except pvrhino.RhinoError as e:
             raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
         self._inference_callback = inference_callback
