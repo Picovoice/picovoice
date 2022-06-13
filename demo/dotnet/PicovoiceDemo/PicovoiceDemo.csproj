@@ -2,8 +2,8 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>		
+		<TargetFramework>net6.0</TargetFramework>
+		<Configurations>FileDemo.Debug;FileDemo.Release;MicDemo.Debug;MicDemo.Release</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'FileDemo.Debug' Or '$(Configuration)' == 'FileDemo.Release'">
@@ -11,7 +11,7 @@
 		<TargetName>PicovoiceFileDemo</TargetName>
 		<AssemblyName>PicovoiceFileDemo</AssemblyName>
 	</PropertyGroup>
-	
+
 	<PropertyGroup Condition="'$(Configuration)' == 'MicDemo.Debug' Or '$(Configuration)' == 'MicDemo.Release'">
 		<StartupObject>PicovoiceDemo.MicDemo</StartupObject>
 		<TargetName>PicovoiceMicDemo</TargetName>
@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="PvRecorder" Version="1.1.0" />
-		<PackageReference Include="Picovoice" Version="2.1.3" />
+		<PackageReference Include="PvRecorder" Version="1.1.1" />
+		<PackageReference Include="Picovoice" Version="2.1.4" />
 	</ItemGroup>
 </Project>
