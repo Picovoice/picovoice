@@ -49,6 +49,7 @@ export default class Picovoice {
    * @param {function} inferenceCallback,
    * @param {number} porcupineSensitivity = 0.5,
    * @param {number} rhinoSensitivity = 0.5,
+   * @param {number} endpointDurationSec = 1.0,
    * @param {boolean} requireEndpoint = true,
    * @param {string} porcupineModelPath,
    * @param {string} rhinoModelPath,
@@ -63,6 +64,7 @@ export default class Picovoice {
     inferenceCallback: InferenceCallback,
     porcupineSensitivity: number = 0.5,
     rhinoSensitivity: number = 0.5,
+    endpointDurationSec: number = 1.0,
     requireEndpoint: boolean = true,
     porcupineModelPath?: string,
     rhinoModelPath?: string,
@@ -105,6 +107,7 @@ export default class Picovoice {
       accessKey,
       contextPath,
       rhinoSensitivity,
+      endpointDurationSec,
       requireEndpoint,
       rhinoModelPath,
       rhinoLibraryPath

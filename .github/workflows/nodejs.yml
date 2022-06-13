@@ -3,7 +3,7 @@ name: Nodejs
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/nodejs.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
@@ -70,4 +70,4 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test  --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
