@@ -27,6 +27,7 @@ export type PicovoiceHookArgs = {
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
+  endpointDurationSec?: number;
   requireEndpoint?: boolean;
   start?: boolean;
 };
