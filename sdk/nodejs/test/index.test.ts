@@ -126,6 +126,7 @@ describe("intent detection in DE (Beleuchtung)", () => {
       inferenceCallback,
       0.5,
       0.5,
+      1.0,
       true,
       MODEL_PATH_PP_DE,
       MODEL_PATH_RH_DE
@@ -158,6 +159,7 @@ describe("intent detection in ES (Iluminación Inteligente)", () => {
       inferenceCallback,
       0.5,
       0.5,
+      1.0,
       true,
       MODEL_PATH_PP_ES,
       MODEL_PATH_RH_ES
@@ -189,6 +191,7 @@ describe("intent detection in FR (Eclairage Intelligent)", () => {
       inferenceCallback,
       0.5,
       0.5,
+      1.0,
       true,
       MODEL_PATH_PP_FR,
       MODEL_PATH_RH_FR
