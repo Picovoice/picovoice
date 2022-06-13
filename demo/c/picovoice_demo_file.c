@@ -120,13 +120,14 @@ static struct option long_options[] = {
         {"porcupine_model_path",  required_argument, NULL, 'p'},
         {"rhino_sensitivity",     required_argument, NULL, 't'},
         {"rhino_model_path",      required_argument, NULL, 'r'},
-        {"require_endpoint",      required_argument,       NULL, 'e'},
+        {"endpoint_duration_sec", required_argument, NULL, 'u'},
+        {"require_endpoint",      required_argument, NULL, 'e'},
 };
 
 void print_usage(const char *program_name) {
     fprintf(stderr,
             "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -w WAV_PATH -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH "
-            "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n",
+            "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint \"true\"|\"false\" ]\n",
             program_name);
 }
 
@@ -141,10 +142,11 @@ int picovoice_main(int argc, char *argv[]) {
     const char *porcupine_model_path = NULL;
     float rhino_sensitivity = 0.5f;
     const char *rhino_model_path = NULL;
+    float endpoint_duration_sec = 1.f;
     bool require_endpoint = true;
 
     int c;
-    while ((c = getopt_long(argc, argv, "e:l:w:a:k:c:s:p:t:r:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "e:l:w:a:k:c:s:p:t:r:u:", long_options, NULL)) != -1) {
         switch (c) {
             case 'l':
                 library_path = optarg;
@@ -172,6 +174,9 @@ int picovoice_main(int argc, char *argv[]) {
                 break;
             case 'r':
                 rhino_model_path = optarg;
+                break;
+            case 'u':
+                endpoint_duration_sec = strtof(optarg, NULL);
                 break;
             case 'e':
                 if (strcmp(optarg, "false") == 0) {
@@ -215,6 +220,7 @@ int picovoice_main(int argc, char *argv[]) {
             void (*)(void),
             const char *,
             const char *,
+            float,
             float,
             bool,
             void (*)(pv_inference_t *),
@@ -294,6 +300,7 @@ int picovoice_main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            endpoint_duration_sec,
             require_endpoint,
             inference_callback,
             &handle);

@@ -88,7 +88,7 @@ static void print_dl_error(const char *message) {
 }
 
 static struct option long_options[] = {
-        {"show_audio_devices", no_argument,       NULL, 'd'},
+        {"show_audio_devices",    no_argument,       NULL, 'd'},
         {"library_path",          required_argument, NULL, 'l'},
         {"access_key",            required_argument, NULL, 'a'},
         {"keyword_path",          required_argument, NULL, 'k'},
@@ -97,16 +97,18 @@ static struct option long_options[] = {
         {"porcupine_model_path",  required_argument, NULL, 'p'},
         {"rhino_sensitivity",     required_argument, NULL, 't'},
         {"rhino_model_path",      required_argument, NULL, 'r'},
-        {"require_endpoint",      required_argument,       NULL, 'e'},
-        {"audio_device_index", required_argument, NULL, 'i'}
+        {"endpoint_duration_sec", required_argument, NULL, 'u'},
+        {"require_endpoint",      required_argument, NULL, 'e'},
+        {"audio_device_index",    required_argument, NULL, 'i'}
 };
 
 void print_usage(const char *program_name) {
     fprintf(stderr,
             "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH "
-            "[--audio_device_index AUDIO_DEVICE_INDEX --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n"
-            "       %s --show_audio_devices",
-            program_name, program_name);
+            "[--audio_device_index AUDIO_DEVICE_INDEX --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint \"true\"|\"false\" ]\n"
+            "       %s --show_audio_devices\n",
+            program_name,
+            program_name);
 }
 
 void interrupt_handler(int _) {
@@ -169,11 +171,12 @@ int picovoice_main(int argc, char *argv[]) {
     const char *porcupine_model_path = NULL;
     float rhino_sensitivity = 0.5f;
     const char *rhino_model_path = NULL;
+    float endpoint_duration_sec = 1.f;
     bool require_endpoint = true;
     int32_t device_index = -1;
 
     int c;
-    while ((c = getopt_long(argc, argv, "de:l:a:k:c:s:p:t:r:i:", long_options, NULL)) != -1) {
+    while ((c = getopt_long(argc, argv, "de:l:a:k:c:s:p:t:r:i:u:", long_options, NULL)) != -1) {
         switch (c) {
             case 'd':
                 show_audio_devices();
@@ -201,6 +204,9 @@ int picovoice_main(int argc, char *argv[]) {
                 break;
             case 'r':
                 rhino_model_path = optarg;
+                break;
+            case 'u':
+                endpoint_duration_sec = strtof(optarg, NULL);
                 break;
             case 'e':
                 if (strcmp(optarg, "false") == 0) {
@@ -247,6 +253,7 @@ int picovoice_main(int argc, char *argv[]) {
             void (*)(void),
             const char *,
             const char *,
+            float,
             float,
             bool,
             void (*)(pv_inference_t *),
@@ -304,6 +311,7 @@ int picovoice_main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            endpoint_duration_sec,
             require_endpoint,
             inference_callback,
             &picovoice);
