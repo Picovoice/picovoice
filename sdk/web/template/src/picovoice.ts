@@ -77,12 +77,13 @@ export class Picovoice implements PicovoiceEngine {
       porcupineCallback,
       rhinoContext,
       rhinoCallback,
+      endpointDurationSec,
       requireEndpoint,
     } = picovoiceArgs;
 
     // We need to assert PorcupineKeyword here because we don't know the language-specific keywords
     const porcupineEngine = await Porcupine.create(accessKey, porcupineKeyword as PorcupineKeyword);
-    const rhinoEngine = await Rhino.create(accessKey, rhinoContext, requireEndpoint);
+    const rhinoEngine = await Rhino.create(accessKey, rhinoContext, endpointDurationSec, requireEndpoint);
 
     if (
       typeof porcupineCallback !== 'function' ||
