@@ -24,6 +24,7 @@ fn picovoice_demo(
     rhino_model_path: Option<&str>,
     porcupine_sensitivity: Option<f32>,
     rhino_sensitivity: Option<f32>,
+    rhino_endpoint_duration_sec: Option<f32>,
     rhino_require_endpoint: Option<bool>,
 ) {
     let wake_word_callback = || println!("[wake word]");
@@ -62,6 +63,9 @@ fn picovoice_demo(
     }
     if let Some(rhino_sensitivity) = rhino_sensitivity {
         picovoice_builder = picovoice_builder.rhino_sensitivity(rhino_sensitivity);
+    }
+    if let Some(rhino_endpoint_duration_sec) = rhino_endpoint_duration_sec {
+        picovoice_builder = picovoice_builder.rhino_endpoint_duration_sec(rhino_endpoint_duration_sec);
     }
     if let Some(rhino_require_endpoint) = rhino_require_endpoint {
         picovoice_builder = picovoice_builder.rhino_require_endpoint(rhino_require_endpoint);
@@ -177,6 +181,13 @@ fn main() {
             .default_value("0.5")
         )
         .arg(
+            Arg::with_name("rhino_endpoint_duration")
+            .long("rhino_endpoint_duration")
+            .value_name("DURATION")
+            .help("Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. If not set 1.0 will be used.")
+            .takes_value(true)
+        )
+        .arg(
             Arg::with_name("rhino_require_endpoint")
             .long("rhino_require_endpoint")
             .value_name("BOOL")
@@ -202,6 +213,9 @@ fn main() {
         .value_of("access_key")
         .expect("AccessKey is REQUIRED for Porcupine operation");
 
+    let rhino_endpoint_duration = matches
+        .value_of("rhino_endpoint_duration")
+        .map(|rhino_endpoint_duration| rhino_endpoint_duration.parse().unwrap());
     let rhino_require_endpoint = matches
         .value_of("rhino_require_endpoint")
         .map(|req| match req {
@@ -219,6 +233,7 @@ fn main() {
         rhino_model_path,
         porcupine_sensitivity,
         rhino_sensitivity,
+        rhino_endpoint_duration,
         rhino_require_endpoint,
     );
 }
