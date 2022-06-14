@@ -56,8 +56,13 @@ public class Picovoice {
      * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
-     * @param requireEndpoint      If set to `False`, Rhino does not require an endpoint (chunk of silence)
-     *                             before finishing inference.
+     * @param endpointDurationSec  Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+     *                             utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+     *                             duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+     *                             pre-emptively in case the user pauses before finishing the request.
+     * @param requireEndpoint      If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+     *                             If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+     *                             to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
      * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
      *                             #{@link PicovoiceInferenceCallback} defines the interface of the
      *                             callback.
@@ -74,6 +79,7 @@ public class Picovoice {
             String rhinoModelPath,
             String contextPath,
             float rhinoSensitivity,
+            float endpointDurationSec,
             boolean requireEndpoint,
             PicovoiceInferenceCallback inferenceCallback) throws PicovoiceException {
 
@@ -111,6 +117,7 @@ public class Picovoice {
                     .setModelPath(rhinoModelPath)
                     .setContextPath(contextPath)
                     .setSensitivity(rhinoSensitivity)
+                    .setEndpointDuration(endpointDurationSec)
                     .setRequireEndpoint(requireEndpoint)
                     .build();
 
@@ -304,6 +311,7 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private float rhinoEndpointDuration = 1.0f;
         private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
 
@@ -357,6 +365,11 @@ public class Picovoice {
             return this;
         }
 
+        public Picovoice.Builder setRhinoEndpointDuration(float rhinoEndpointDuration) {
+            this.rhinoEndpointDuration = rhinoEndpointDuration;
+            return this;
+        }
+
         public Picovoice.Builder setInferenceCallback(PicovoiceInferenceCallback inferenceCallback) {
             this.inferenceCallback = inferenceCallback;
             return this;
@@ -385,6 +398,7 @@ public class Picovoice {
                     rhinoModelPath,
                     contextPath,
                     rhinoSensitivity,
+                    rhinoEndpointDuration,
                     requireEndpoint,
                     inferenceCallback);
         }
