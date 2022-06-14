@@ -15,13 +15,13 @@ using System.Collections.Generic;
 namespace Pv
 {
     /// <summary>
-    /// .NET binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but 
+    /// .NET binding for Picovoice end-to-end platform. Picovoice enables building voice experiences similar to Alexa but
     /// runs entirely on-device(offline).
-    ///  
+    ///
     /// Picovoice detects utterances of a customizable wake word(phrase) within an incoming stream of audio in real-time.
     /// After detection of wake word, it begins to infer the user's intent from the follow-on spoken command. Upon detection
     /// of wake word and completion of voice command, it invokes user-provided callbacks to signal these events.
-    ///  
+    ///
     /// Picovoice processes incoming audio in consecutive frames. The number of samples per frame is
     /// `.FrameLength`. The incoming audio needs to have a sample rate equal to `.SampleRate` and be 16-bit
     /// linearly-encoded.Picovoice operates on single-channel audio. It uses Porcupine wake word engine for wake word
@@ -67,10 +67,18 @@ namespace Pv
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </param>
-        /// <param name="requireEndpoint">
-        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// <param name="endpointDurationSec">
+        /// Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+        /// utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+        /// duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+        /// pre-emptively in case the user pauses before finishing the request.
         /// </param>
-        /// <returns>An instance of the Picovoice end-to-end platform.</returns>     
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+        /// If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+        /// to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
+        /// </param>
+        /// <returns>An instance of the Picovoice end-to-end platform.</returns>
         public static Picovoice Create(
             string accessKey,
             string keywordPath,
@@ -81,6 +89,7 @@ namespace Pv
             float porcupineSensitivity = 0.5f,
             string rhinoModelPath = null,
             float rhinoSensitivity = 0.5f,
+            float endpointDurationSec = 1.0f,
             bool requireEndpoint = true)
         {
             if (wakeWordCallback == null)
@@ -106,6 +115,7 @@ namespace Pv
                     contextPath,
                     modelPath: rhinoModelPath,
                     sensitivity: rhinoSensitivity,
+                    endpointDurationSec: endpointDurationSec,
                     requireEndpoint: requireEndpoint);
 
                 if (porcupine.FrameLength != rhino.FrameLength)
@@ -168,7 +178,7 @@ namespace Pv
         }
 
         /// <summary>
-        /// Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command 
+        /// Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command
         /// inference invokes user-defined callbacks.
         /// </summary>
         /// <param name="pcm">

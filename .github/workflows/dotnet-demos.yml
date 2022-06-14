@@ -3,13 +3,13 @@ name: .NET Demos
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
       - '.github/workflows/dotnet-demos.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'demo/dotnet/**'
       - '!demo/dotnet/README.md'
@@ -31,8 +31,8 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
-    
+        dotnet-version: 6.0.x
+
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
 
@@ -47,7 +47,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 6.0.x
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release

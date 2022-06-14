@@ -20,8 +20,8 @@ namespace PicovoiceDemo
 {
     /// <summary>
     /// File Demo for Picovoice end-to-end platform. It takes an input audio file, a Porcupine keyword and a Rhino context
-    /// and prints when/if it encounters the keyword and when/if it makes an inference. 
-    /// </summary>                
+    /// and prints when/if it encounters the keyword and when/if it makes an inference.
+    /// </summary>
     public class FileDemo
     {
 
@@ -37,8 +37,16 @@ namespace PicovoiceDemo
         /// <param name="porcupineSensitivity">Wake word detection sensitivity.</param>
         /// <param name="rhinoModelPath">Absolute path to the file containing Rhino's model parameters.</param>
         /// <param name="rhinoSensitivity">Inference sensitivity.</param>
+        /// <param name="endpointDurationSec">
+        /// Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+        /// utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+        /// duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+        /// pre-emptively in case the user pauses before finishing the request.
+        /// </param>
         /// <param name="requireEndpoint">
-        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+        /// If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+        /// to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
         /// </param>
         public static void RunDemo(
             string inputAudioPath,
@@ -49,6 +57,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity,
             string rhinoModelPath,
             float rhinoSensitivity,
+            float endpointDurationSec,
             bool requireEndpoint)
         {
             static void wakeWordCallback() => Console.WriteLine("[wake word]");
@@ -82,6 +91,7 @@ namespace PicovoiceDemo
                 porcupineSensitivity,
                 rhinoModelPath,
                 rhinoSensitivity,
+                endpointDurationSec,
                 requireEndpoint);
 
             // open and validate wav
@@ -114,8 +124,8 @@ namespace PicovoiceDemo
         ///  Reads RIFF header of a WAV file and validates its properties against Picovoice audio processing requirements
         /// </summary>
         /// <param name="reader">WAV file stream reader</param>
-        /// <param name="requiredSampleRate">Required sample rate in Hz</param>     
-        /// <param name="requiredBitDepth">Required number of bits per sample</param>             
+        /// <param name="requiredSampleRate">Required sample rate in Hz</param>
+        /// <param name="requiredBitDepth">Required number of bits per sample</param>
         /// <param name="numChannels">Number of channels can be returned by function</param>
         public static void ValidateWavFile(BinaryReader reader, int requiredSampleRate, short requiredBitDepth, out short numChannels)
         {
@@ -161,6 +171,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
+            float endpointDurationSec = 1.0f;
             bool requireEndpoint = true;
             bool showHelp = false;
 
@@ -224,6 +235,14 @@ namespace PicovoiceDemo
                         argIndex++;
                     }
                 }
+                else if (args[argIndex] == "--endpoint_duration")
+                {
+                    argIndex++;
+                    if (argIndex < args.Length && float.TryParse(args[argIndex], out endpointDurationSec))
+                    {
+                        argIndex++;
+                    }
+                }
                 else if (args[argIndex] == "--require_endpoint")
                 {
                     if (++argIndex < args.Length)
@@ -264,7 +283,7 @@ namespace PicovoiceDemo
             }
 
             // run demo with validated arguments
-            RunDemo(                
+            RunDemo(
                 inputAudioPath,
                 accessKey,
                 keywordPath,
@@ -273,6 +292,7 @@ namespace PicovoiceDemo
                 porcupineSensitivity,
                 rhinoModelPath,
                 rhinoSensitivity,
+                endpointDurationSec,
                 requireEndpoint);
         }
 
@@ -294,6 +314,7 @@ namespace PicovoiceDemo
             "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
             "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity " +
             "value results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
+            "\t--endpoint_duration: Endpoint duration in seconds. It should be a positive number within [0.5, 5].\n" +
             "\t--require_endpoint: ['true'|'false'] If set to 'false', Rhino does not require an endpoint (chunk of silence) before finishing inference.\n";
     }
 }

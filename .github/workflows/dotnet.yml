@@ -3,16 +3,16 @@ name: .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
-    paths: 
+    branches: [ master, lib-update ]
+    paths:
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
       - 'resources/porcupine'
       - 'resources/rhino'
       - '.github/workflows/dotnet.yml'
   pull_request:
-    branches: [ master ]
-    paths: 
+    branches: [ master, lib-update ]
+    paths:
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
       - 'resources/porcupine'
@@ -26,24 +26,24 @@ defaults:
 jobs:
   build-github-hosted:
     runs-on: ${{ matrix.os }}
-    env: 
+    env:
       ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    
+
     steps:
     - name: Checkout repository and submodules
       uses: actions/checkout@v2
       with:
         submodules: recursive
 
-    - name: Setup .NET 3.1
+    - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.x
-   
+        dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore
 
@@ -55,7 +55,7 @@ jobs:
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
-    env: 
+    env:
       ACCESS_KEY: ${{secrets.PV_VALID_ACCESS_KEY}}
 
     strategy:
