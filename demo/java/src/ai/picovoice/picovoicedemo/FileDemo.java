@@ -32,7 +32,7 @@ public class FileDemo {
     public static void runDemo(
             String accessKey, File inputAudioFile, String keywordPath, String contextPath,
             String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
-            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity, boolean requireEndpoint) {
+            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity, float rhinoEndpointDuration, boolean requireEndpoint) {
 
         AudioInputStream audioInputStream;
         try {
@@ -76,6 +76,7 @@ public class FileDemo {
                     .setRhinoLibraryPath(rhinoLibraryPath)
                     .setRhinoModelPath(rhinoModelPath)
                     .setRhinoSensitivity(rhinoSensitivity)
+                    .setRhinoEndpointDuration(rhinoEndpointDuration)
                     .setRequireEndpoint(requireEndpoint)
                     .build();
 
@@ -152,13 +153,14 @@ public class FileDemo {
         String rhinoLibraryPath = cmd.getOptionValue("rhino_library_path");
         String rhinoModelPath = cmd.getOptionValue("rhino_model_path");
         String rhinoSensitivityStr = cmd.getOptionValue("rhino_sensitivity");
+        String endpointDurationStr = cmd.getOptionValue("endpoint_duration");
         String requireEndpointValue = cmd.getOptionValue("require_endpoint");
 
         if (accessKey == null || accessKey.length() == 0) {
             throw new IllegalArgumentException("AccessKey is required for Picovoice.");
         }
 
-        // parse sensitivity
+        // Parse sensitivities
         float porcupineSensitivity = 0.5f;
         if (porcupineSensitivityStr != null) {
             try {
@@ -172,7 +174,6 @@ public class FileDemo {
                         "Must be a floating-point number between [0,1].", porcupineSensitivity));
             }
         }
-
         float rhinoSensitivity = 0.5f;
         if (rhinoSensitivityStr != null) {
             try {
@@ -184,6 +185,22 @@ public class FileDemo {
             if (rhinoSensitivity < 0 || rhinoSensitivity > 1) {
                 throw new IllegalArgumentException(String.format("Failed to parse Rhino sensitivity value (%s). " +
                         "Must be a floating-point number between [0,1].", rhinoSensitivity));
+            }
+        }
+
+        // Parse endpoint duration
+        float endpointDuration = 1.0f;
+        if (endpointDurationStr != null) {
+            try {
+                endpointDuration = Float.parseFloat(endpointDurationStr);
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Failed to parse endpointDuration value. " +
+                        "Must be a floating-point number between [0.5, 5.0].");
+            }
+
+            if (endpointDuration < 0.5 || endpointDuration > 5.0) {
+                throw new IllegalArgumentException(String.format("Failed to parse endpointDuration value (%s). " +
+                        "Must be a floating-point number between [0.5, 5.0].", endpointDuration));
             }
         }
 
@@ -218,7 +235,7 @@ public class FileDemo {
 
         runDemo(accessKey, inputAudioFile, keywordPath, contextPath,
                 porcupineLibraryPath, porcupineModelPath, porcupineSensitivity,
-                rhinoLibraryPath, rhinoModelPath, rhinoSensitivity, requireEndpoint);
+                rhinoLibraryPath, rhinoModelPath, rhinoSensitivity, endpointDuration, requireEndpoint);
     }
 
     private static Options BuildCommandLineOptions() {
@@ -286,11 +303,21 @@ public class FileDemo {
                         "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
                 .build());
 
+        options.addOption(Option.builder("u")
+                .longOpt("endpoint_duration")
+                .hasArgs()
+                .desc("Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an " +
+                        "utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint " +
+                        "duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference " +
+                        "pre-emptively in case the user pauses before finishing the request.")
+                .build());
+
         options.addOption(Option.builder("e")
                 .longOpt("require_endpoint")
                 .hasArg(true)
-                .desc("If set to `false`, Rhino does not require an endpoint (chunk of silence) before " +
-                        "finishing inference.")
+                .desc("If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command. " +
+                        "If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set " +
+                        "to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).")
                 .build());
 
         options.addOption(new Option("h", "help", false, ""));
