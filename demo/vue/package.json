@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@picovoice/picovoice-web-en-worker": "^2.1.4",
-    "@picovoice/picovoice-web-vue": "^2.1.2",
+    "@picovoice/picovoice-web-vue": "^2.1.3",
     "@picovoice/web-voice-processor": "^2.2.2",
     "core-js": "^3.6.5",
     "vue": "^2.6.11"

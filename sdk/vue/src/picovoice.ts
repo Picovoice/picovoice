@@ -21,6 +21,7 @@ import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
   accessKey: string;
   porcupineKeyword: PorcupineKeyword;
   rhinoContext: RhinoContext;
+  endpointDurationSec?: number;
   requireEndpoint?: boolean;
   start?: boolean;
 }
@@ -80,6 +81,7 @@ export default {
               accessKey,
               porcupineKeyword,
               rhinoContext,
+              endpointDurationSec,
               requireEndpoint,
               start: startWebVp = true,
             } = picovoiceFactoryArgs;
@@ -87,6 +89,7 @@ export default {
               accessKey,
               porcupineKeyword: JSON.parse(JSON.stringify(porcupineKeyword)),
               rhinoContext: JSON.parse(JSON.stringify(rhinoContext)),
+              endpointDurationSec,
               requireEndpoint,
               start: true,
             });
