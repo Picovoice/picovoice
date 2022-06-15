@@ -143,6 +143,12 @@ type Picovoice struct {
 	// Sensitivity should be a floating-point number within 0 and 1.
 	RhinoSensitivity float32
 
+	// Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+	// utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+	// duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+	// pre-emptively in case the user pauses before finishing the request.
+	EndpointDurationSec float32
+
 	// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
 	RequireEndpoint bool
 
@@ -167,6 +173,7 @@ func NewPicovoice(
 
 		PorcupineSensitivity: 0.5,
 		RhinoSensitivity:     0.5,
+		EndpointDurationSec:  1.0,
 		RequireEndpoint:      true,
 	}
 }
@@ -239,11 +246,12 @@ func (picovoice *Picovoice) Init() error {
 	}
 
 	picovoice.rhino = rhn.Rhino{
-		AccessKey:       picovoice.AccessKey,
-		ModelPath:       picovoice.RhinoModelPath,
-		ContextPath:     picovoice.ContextPath,
-		Sensitivity:     picovoice.RhinoSensitivity,
-		RequireEndpoint: picovoice.RequireEndpoint,
+		AccessKey:           picovoice.AccessKey,
+		ModelPath:           picovoice.RhinoModelPath,
+		ContextPath:         picovoice.ContextPath,
+		Sensitivity:         picovoice.RhinoSensitivity,
+		EndpointDurationSec: picovoice.EndpointDurationSec,
+		RequireEndpoint:     picovoice.RequireEndpoint,
 	}
 	err = picovoice.rhino.Init()
 	if err != nil {
