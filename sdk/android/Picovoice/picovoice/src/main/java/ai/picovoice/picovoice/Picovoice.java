@@ -239,6 +239,7 @@ public class Picovoice {
         private String rhinoModelPath = null;
         private String contextPath = null;
         private float rhinoSensitivity = 0.5f;
+        private float endpointDurationSec = 1.0f;
         private boolean requireEndpoint = true;
         private PicovoiceInferenceCallback inferenceCallback = null;
 
@@ -331,6 +332,19 @@ public class Picovoice {
         }
 
         /**
+         * Setter for endpintDurationSec
+         *
+         * @param endpointDurationSec Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+         *                            utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+         *                            duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+         *                            pre-emptively in case the user pauses before finishing the request.
+         */
+        public Picovoice.Builder setEndpointDurationSec(float endpointDurationSec) {
+            this.endpointDurationSec = endpointDurationSec;
+            return this;
+        }
+
+        /**
          * Setter for requireEndpoint
          *
          * @param requireEndpoint Boolean variable to indicate if Rhino should wait for a chunk of
@@ -381,6 +395,7 @@ public class Picovoice {
                         .setModelPath(rhinoModelPath)
                         .setContextPath(contextPath)
                         .setSensitivity(rhinoSensitivity)
+                        .setEndpointDurationSec(endpointDurationSec)
                         .setRequireEndpoint(requireEndpoint)
                         .build(appContext);
 

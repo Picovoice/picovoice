@@ -144,6 +144,25 @@ public class PicovoiceTest {
     }
 
     @Test
+    public void testInitSuccessCustomEndpointSettings() throws PicovoiceException {
+        File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+        File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
+        Picovoice p = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setKeywordPath(keywordPath.getAbsolutePath())
+                .setContextPath(contextPath.getAbsolutePath())
+                .setEndpointDurationSec(3.0f)
+                .setRequireEndpoint(false)
+                .setWakeWordCallback(wakeWordCallback)
+                .setInferenceCallback(inferenceCallback)
+                .build(appContext);
+
+        assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
+
+        p.delete();
+    }
+
+    @Test
     public void testInitSuccessDE() throws PicovoiceException {
         File keywordPath = new File(testResourcesPath, "keyword_files/de/ananas_android.ppn");
         File contextPath = new File(testResourcesPath, "context_files/de/test_de_android.rhn");
