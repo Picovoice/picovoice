@@ -58,7 +58,7 @@ func Test(t *testing.T) {
 		getTestContextPath(language, context),
 		inferenceCallback)
 	initTestPicovoice(t)
-	
+
 	t.Logf("Version: %s\n", Version)
 	t.Logf("Frame Length: %d\n", FrameLength)
 	t.Logf("Samples Rate: %d\n", SampleRate)
@@ -102,7 +102,7 @@ func TestTwice(t *testing.T) {
 		t,
 		audioFileName,
 		expectedIntent,
-		expectedSlots)	
+		expectedSlots)
 
 	deleteTestPicovoice(t)
 }
@@ -124,6 +124,7 @@ func TestTwiceDe(t *testing.T) {
 		InferenceCallback: inferenceCallback,
 		PorcupineSensitivity: 0.5,
 		RhinoSensitivity: 0.5,
+		EndpointDurationSec: 1.0,
 		RequireEndpoint: true}
 	initTestPicovoice(t)
 
@@ -161,6 +162,7 @@ func TestTwiceEs(t *testing.T) {
 		InferenceCallback: inferenceCallback,
 		PorcupineSensitivity: 0.5,
 		RhinoSensitivity: 0.5,
+		EndpointDurationSec: 1.0,
 		RequireEndpoint: true}
 	initTestPicovoice(t)
 
@@ -198,6 +200,7 @@ func TestTwiceFr(t *testing.T) {
 		InferenceCallback: inferenceCallback,
 		PorcupineSensitivity: 0.5,
 		RhinoSensitivity: 0.5,
+		EndpointDurationSec: 1.0,
 		RequireEndpoint: true}
 	initTestPicovoice(t)
 
@@ -288,7 +291,7 @@ func getTestPorcupineModelPath(language string) string {
 		"../../resources/porcupine/lib/common/%s.pv",
 		appendLanguage("porcupine_params", language));
 	modelPath, _ := filepath.Abs(modelRelPath);
-	return modelPath	
+	return modelPath
 }
 
 func getTestRhinoModelPath(language string) string {
@@ -318,7 +321,7 @@ func getTestContextPath(language string, context string) string {
 		context,
 		osName)
 	contextPath, _ :=  filepath.Abs(contextRelPath)
-	return contextPath	
+	return contextPath
 }
 
 func getOS() string {
