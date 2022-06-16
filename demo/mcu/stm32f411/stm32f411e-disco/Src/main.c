@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2022 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -29,6 +29,8 @@ static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
 static const float PORCUPINE_SENSITIVITY = 0.75f;
 static const float RHINO_SENSITIVITY = 0.5f;
+static const float RHINO_ENDPOINT_DURATION_SEC = 1.0f;
+static const bool RHINO_REQUIRE_ENDPOINT = true;
 
 static void wake_word_callback(void) {
     printf("[wake word]\n");
