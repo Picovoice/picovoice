@@ -25,6 +25,6 @@ Pod::Spec.new do |s|
     s.exclude_files = 'sdk/ios/PicovoiceAppTest/**'
     
     s.dependency 'Porcupine-iOS', '~> 2.1.1'
-    s.dependency 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec'
+    s.dependency 'Rhino-iOS', '~> 2.1.2'
     s.dependency 'ios-voice-processor', '~> 1.0.2'
   end
