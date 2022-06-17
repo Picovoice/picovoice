@@ -323,7 +323,6 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec`)
   - "rhino-react-native (from `../node_modules/@picovoice/rhino-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -332,6 +331,7 @@ SPEC REPOS:
     - fmt
     - ios-voice-processor
     - Porcupine-iOS
+    - Rhino-iOS
 
 EXTERNAL SOURCES:
   boost:
@@ -396,17 +396,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/runtimeexecutor"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  Rhino-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec
   rhino-react-native:
     :path: "../node_modules/@picovoice/rhino-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
-
-CHECKOUT OPTIONS:
-  Rhino-iOS:
-    :commit: ddd25aa993e721ef488ce8f461be3441fece2cbb
-    :git: https://github.com/Picovoice/rhino.git
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
@@ -443,10 +436,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 3b52a7dced19cdb025b4f88ab26ceb2d85f30ba2
   React-runtimeexecutor: a9d3c82ddf7ffdad9fbe6a81c6d6f8c06385464d
   ReactCommon: 07d0c460b9ba9af3eaf1b8f5abe7daaad28c9c4e
-  Rhino-iOS: 075a258d07fc55c316a86a5ec84667e015a2ddaf
+  Rhino-iOS: 334035c5c9883123d0ff776b634b227e5664c65b
   rhino-react-native: b3dc9090528c96a1b5eb0b8925c62222eda4871f
   Yoga: d6b6a80659aa3e91aaba01d0012e7edcbedcbecd
 
-PODFILE CHECKSUM: 20bd35cf1c07076475e2e8e6487e84788672a14a
+PODFILE CHECKSUM: 01013a1f5997e930862476da5284b4ac9e764646
 
 COCOAPODS: 1.11.2

@@ -15,7 +15,5 @@ target 'ReactNativeClock' do
       end
      end
   end
-
-  pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec'
 end
 
