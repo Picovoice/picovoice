@@ -92,6 +92,7 @@ class Picovoice {
       double rhinoSensitivity = 0.5,
       String? porcupineModelPath,
       String? rhinoModelPath,
+      double endpointDurationSec = 1.0,
       bool requireEndpoint = true}) async {
     Porcupine porcupine;
     try {
@@ -106,6 +107,7 @@ class Picovoice {
       rhino = await Rhino.create(accessKey, contextPath,
           modelPath: rhinoModelPath,
           sensitivity: rhinoSensitivity,
+          endpointDurationSec: endpointDurationSec,
           requireEndpoint: requireEndpoint);
     } on RhinoException catch (ex) {
       throw mapToPicovoiceException(ex, ex.message);

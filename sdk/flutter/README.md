@@ -171,7 +171,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, endpointDurationSec, and requireEndpoint are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec`, and `requireEndpoint` are optional.
 
 ```dart
 import 'package:picovoice/picovoice_manager.dart';
