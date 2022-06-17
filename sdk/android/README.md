@@ -93,7 +93,8 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .setPorcupineSensitivity(0.7f)
     .setRhinoModelPath("assets_sub_folder/rhino_model.pv")
     .setRhinoSensitivity(0.35f)
-    .setRequireEndpoint(true)
+    .setEndpointDurationSec(1.5f)
+    .setRequireEndpoint(false)
     .setProcessErrorCallback(new PicovoiceManangerErrorCallback() {
         @Override
         public void invoke(final PicovoiceException e) {
@@ -136,7 +137,6 @@ final float porcupineSensitivity = 0.5f;
 final String rhinoModelPath = ...
 final String contextPath = ...
 final float rhinoSensitivity = 0.5f;
-final boolean requireEndpoint = true;
 
 try {
     Picovoice picovoice = new Picovoice.Builder()
@@ -153,7 +153,8 @@ try {
         .setRhinoModelPath(rhinoModelPath)
         .setContextPath(contextPath)
         .setRhinoSensitivity(rhinoSensitivity)
-        .setRequireEndpoint(true)
+        .setEndpointDurationSec(1.5f)
+        .setRequireEndpoint(false)        
         .setInferenceCallback(new PicovoiceInferenceCallback() {
             @Override
             public void invoke(final RhinoInference inference) {
