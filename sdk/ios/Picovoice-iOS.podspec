@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
     DESC
     s.homepage = 'https://github.com/Picovoice/picovoice/tree/master/sdk/ios'
     s.author = { 'Picovoice' => 'hello@picovoice.ai' }
-    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :branch => "ios-update" }
+    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :branch => "lib-update" }
     s.ios.deployment_target = '9.0'
     s.swift_version = '5.0'
     s.source_files = 'sdk/ios/*.{swift}'
