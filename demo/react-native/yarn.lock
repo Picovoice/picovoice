@@ -1052,7 +1052,7 @@
 
 "@picovoice/picovoice-react-native@file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.1.3.tgz":
   version "2.1.3"
-  resolved "file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.1.3.tgz#4a721af7656a6e6fe8edb494614ade7ad94b1451"
+  resolved "file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.1.3.tgz#22be32ed0c63085eb02187adb1e0c0e2c9c3d710"
 
 "@picovoice/porcupine-react-native@^2.1.2":
   version "2.1.2"
