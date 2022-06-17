@@ -3,7 +3,7 @@ name: Nodejs
 on:
   workflow_dispatch:
   push:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/nodejs.yml'
   pull_request:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - 'sdk/nodejs/**'
       - '!sdk/nodejs/README.md'
@@ -44,7 +44,7 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
-        
+
     - name: Install dependencies
       run: yarn install
 
@@ -65,7 +65,7 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install --global yarn
-        
+
     - name: Install dependencies
       run: yarn install
 

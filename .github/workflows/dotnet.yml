@@ -3,7 +3,7 @@ name: .NET
 on:
   workflow_dispatch:
   push:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/dotnet.yml'
   pull_request:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'

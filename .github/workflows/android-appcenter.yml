@@ -3,25 +3,25 @@ name: Android AppCenter Tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master, lib-update ]
-    paths: 
+    branches: [ master ]
+    paths:
       - 'demo/android/Activity/picovoice-activity-demo-app/build.gradle'
       - '.github/workflows/android-appcenter.yml'
   pull_request:
-    branches: [ master, lib-update ]
-    paths: 
+    branches: [ master ]
+    paths:
       - 'demo/android/Activity/picovoice-activity-demo-app/build.gradle'
       - '.github/workflows/android-appcenter.yml'
 
 defaults:
   run:
     working-directory: demo/android/Activity
-    
+
 jobs:
   build:
     name: Run Android Tests on AppCenter
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout repository and submodules
       uses: actions/checkout@v2
@@ -56,13 +56,13 @@ jobs:
       run: ./gradlew assembleAndroidTest
 
     - name: Run tests on AppCenter
-      run: appcenter test run espresso 
+      run: appcenter test run espresso
         --token ${{secrets.APPCENTERAPITOKEN}}
-        --app "Picovoice/Picovoice-Android-Activity" 
-        --devices "Picovoice/android-min-max" 
-        --app-path picovoice-activity-demo-app/build/outputs/apk/debug/picovoice-activity-demo-app-debug.apk 
-        --test-series "porcupine-android" 
-        --locale "en_US" 
+        --app "Picovoice/Picovoice-Android-Activity"
+        --devices "Picovoice/android-min-max"
+        --app-path picovoice-activity-demo-app/build/outputs/apk/debug/picovoice-activity-demo-app-debug.apk
+        --test-series "porcupine-android"
+        --locale "en_US"
         --build-dir picovoice-activity-demo-app/build/outputs/apk/androidTest/debug
-    
-  
+
+
