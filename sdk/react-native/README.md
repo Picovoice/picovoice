@@ -16,7 +16,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 This binding is for running Picovoice on **React Native 0.62.2+** on the following platforms:
 
-- Android 4.4+ (API 19+)
+- Android 5.0+ (API 21+)
 - iOS 10.0+
 
 ## Installation
@@ -125,11 +125,11 @@ this._picovoiceManager = PicovoiceManager.create(
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```javascript
-wakeWordCallback(){
+wakeWordCallback() {
     // wake word detected!
 }
 
-inferenceCallback(inference){
+inferenceCallback(inference) {
     if (inference.isUnderstood) {
         // do something with:
         // inference.intent - string representing intent
@@ -137,18 +137,16 @@ inferenceCallback(inference){
     }
 }
 ```
-You can override the default model file and/or the inference sensitivity. There is also a `requireEndpoint` parameter to
-false if you do not wish to wait for silence before Rhino infers context. There is an optional `processErrorCallback`
-that is called if there is a problem encountered while processing audio.
 
-These optional parameters can be passed in like so:
+Picovoice accepts the following optional parameters:
+- `porcupineSensitivity`: overrides the default wake word sensitivity.
+- `rhinoSensitivity`: overrides the default inference sensitivity.
+- `processErrorCallback`: called if there is a problem encountered while processing audio.
+- `endpointDurationSec`: sets how much silence is required after a spoken command.
+- `requireEndpoint`: indicates whether Rhino should wait for silence before returning an inference.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
-
-let porcupineSensitivity = 0.7
-let rhinoSensitivity = 0.6
-let requireEndpoint = false
 
 this._picovoiceManager = PicovoiceManager.create(
             accessKey,
@@ -161,6 +159,7 @@ this._picovoiceManager = PicovoiceManager.create(
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
+            endpointDurationSec,
             requireEndpoint);
 ```
 
@@ -193,14 +192,14 @@ who want to incorporate it into an already existing audio processing pipeline.
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-async createPicovoice(){
+async createPicovoice() {
     let porcupineSensitivity = 0.7
     let rhinoSensitivity = 0.6
     let requireEndpoint = false
 
     try{
         this._picovoice = await Picovoice.create(
-            accessKey
+            accessKey,
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
             '/path/to/context/file.rhn',
@@ -209,17 +208,18 @@ async createPicovoice(){
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
+            1.5,
             false)
     } catch (err) {
         // handle error
     }
 }
 
-wakeWordCallback(){
+wakeWordCallback() {
     // wake word detected!
 }
 
-inferenceCallback(inference){
+inferenceCallback(inference) {
     if (inference.isUnderstood) {
         // do something with:
         // inference.intent - string representing intent
