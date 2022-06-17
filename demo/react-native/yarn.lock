@@ -1050,9 +1050,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@picovoice/picovoice-react-native@file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.1.3.tgz":
+"@picovoice/picovoice-react-native@^2.1.3":
   version "2.1.3"
-  resolved "file:../../sdk/react-native/pkg/picovoice-picovoice-react-native-2.1.3.tgz#22be32ed0c63085eb02187adb1e0c0e2c9c3d710"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-2.1.3.tgz#2dbd4891934993ee51a234323da3c38cd745f6be"
+  integrity sha512-snAsfRr66e5oqZSv+NSW2D5jE1LPk3RVfIG31Xc8QFiOEhEErnJXSAV8uxScqc1aG0wjx52PBwPxEFBvymsbxQ==
 
 "@picovoice/porcupine-react-native@^2.1.2":
   version "2.1.2"
