@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
-import {PermissionsAndroid, Platform, TouchableOpacity} from 'react-native';
-import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceManager, PicovoiceErrors} from '@picovoice/picovoice-react-native';
-import {RhinoInference} from '@picovoice/rhino-react-native';
+import React, { Component } from 'react';
+import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import {
+  PicovoiceManager,
+  PicovoiceErrors,
+} from '@picovoice/picovoice-react-native';
+import { RhinoInference } from '@picovoice/rhino-react-native';
 
 type Props = {};
 type State = {
@@ -15,7 +18,7 @@ type State = {
 };
 
 export default class App extends Component<Props, State> {
-  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+  readonly _accessKey = '${YOUR_ACCESS_KEY_HERE}'; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
   _picovoiceManager: PicovoiceManager | undefined;
   _timeoutRef = null;
@@ -35,7 +38,7 @@ export default class App extends Component<Props, State> {
   async componentDidMount() {
     let wakeWordPath = `porcupine_${Platform.OS}.ppn`;
     let contextPath = `smart_lighting_${Platform.OS}.rhn`;
-    
+
     this._picovoiceManager = PicovoiceManager.create(
       this._accessKey,
       wakeWordPath,
@@ -44,8 +47,8 @@ export default class App extends Component<Props, State> {
       this._inferenceCallback.bind(this),
       (error: PicovoiceErrors.PicovoiceError) => {
         this._errorCallback(error.message);
-      }
-    );    
+      },
+    );
   }
 
   componentWillUnmount() {
@@ -61,7 +64,7 @@ export default class App extends Component<Props, State> {
     }
     this.setState({
       picovoiceText: 'Wake word detected! Listening for intent...',
-    });  
+    });
   }
 
   _inferenceCallback(inference: RhinoInference) {
@@ -98,12 +101,11 @@ export default class App extends Component<Props, State> {
     this._picovoiceManager?.stop();
     this.setState({
       isError: true,
-      errorMessage: error
+      errorMessage: error,
     });
   }
 
   async _startProcessing() {
-    
     this.setState({
       buttonDisabled: true,
     });
@@ -124,8 +126,8 @@ export default class App extends Component<Props, State> {
           buttonDisabled: false,
         });
         return;
-      }      
-      try{
+      }
+      try {
         const didStart = await this._picovoiceManager?.start();
         if (didStart) {
           this.setState({
@@ -135,18 +137,24 @@ export default class App extends Component<Props, State> {
             isListening: true,
           });
         }
-      } catch(err){
+      } catch (err) {
         let errorMessage = '';
         if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
           errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
         } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
-          errorMessage = "AccessKey activation error";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
-          errorMessage = "AccessKey reached its device limit";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationRefusedError) {
-          errorMessage = "AccessKey refused";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationThrottledError) {
-          errorMessage = "AccessKey has been throttled";
+          errorMessage = 'AccessKey activation error';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationLimitError
+        ) {
+          errorMessage = 'AccessKey reached its device limit';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
+        ) {
+          errorMessage = 'AccessKey refused';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
+        ) {
+          errorMessage = 'AccessKey has been throttled';
         } else {
           errorMessage = err.toString();
         }
@@ -177,8 +185,11 @@ export default class App extends Component<Props, State> {
   }
 
   _toggleListening() {
-    if (this.state.isListening) this._stopProcessing();
-    else this._startProcessing();
+    if (this.state.isListening) {
+      this._stopProcessing();
+    } else {
+      this._startProcessing();
+    }
   }
 
   async _requestRecordAudioPermission() {
@@ -203,10 +214,7 @@ export default class App extends Component<Props, State> {
 
   render() {
     return (
-      <View
-        style={[
-          styles.container,
-        ]}>
+      <View style={[styles.container]}>
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Picovoice</Text>
         </View>
@@ -231,7 +239,7 @@ export default class App extends Component<Props, State> {
             <Text style={styles.buttonText}>{this.state.buttonText}</Text>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, padding: 20}}>
+        <View style={{ flex: 1, padding: 20 }}>
           <View
             style={{
               flex: 1,
@@ -243,18 +251,19 @@ export default class App extends Component<Props, State> {
             <Text style={styles.picovoiceText}>{this.state.picovoiceText}</Text>
           </View>
         </View>
-        {this.state.isError &&
+        {this.state.isError && (
           <View style={styles.errorBox}>
-            <Text style={{
-              color: 'white',
-              fontSize: 16
-            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+              }}>
               {this.state.errorMessage}
             </Text>
           </View>
-        }
+        )}
         <View
-          style={{flex: 0.08, justifyContent: 'flex-end', paddingBottom: 25}}>
+          style={{ flex: 0.08, justifyContent: 'flex-end', paddingBottom: 25 }}>
           <Text style={styles.instructions}>
             Made in Vancouver, Canada by Picovoice
           </Text>
@@ -318,6 +327,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 20,
     padding: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });
