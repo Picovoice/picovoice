@@ -187,7 +187,7 @@ module to capture frames of audio and automatically pass it to Picovoice.
 [Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec` and `requireEndpoint` are optional.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
@@ -195,6 +195,7 @@ const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://co
 async createPicovoice() {
     let porcupineSensitivity = 0.7
     let rhinoSensitivity = 0.6
+    let endpointDurationSec = 1.5
     let requireEndpoint = false
 
     try{
@@ -208,7 +209,7 @@ async createPicovoice() {
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            1.5,
+          endpointDurationSec,
             false)
     } catch (err) {
         // handle error
