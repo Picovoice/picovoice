@@ -16,3 +16,6 @@
 
 ## [2.1.2] - 2022-05-13
 * Android/iOS lib patch
+
+## [2.1.3] - 2022-06-17
+* Updated Rhino engine method for endpoint handling while inferring context.
