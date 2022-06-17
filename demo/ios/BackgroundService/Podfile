@@ -3,6 +3,7 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PicovoiceBackgroundServiceDemo' do
-    pod 'Picovoice-iOS', '~> 2.1.1'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/lib-update/sdk/ios/Picovoice-iOS.podspec'
+    pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec'
     pod 'SwiftySound'
 end

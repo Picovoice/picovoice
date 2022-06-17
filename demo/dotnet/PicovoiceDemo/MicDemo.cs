@@ -22,14 +22,14 @@ namespace PicovoiceDemo
     /// <summary>
     /// Microphone Demo for Picovoice end-to-end platform. It creates an input audio stream from a microphone, monitors it, and
     /// prints when it detects a keyword or makes an inference. It optionally saves the recorded audio into a file for further debugging.
-    /// </summary>                
+    /// </summary>
     public class MicDemo
     {
 
         /// <summary>
         /// Reads through input audio file and prints to the console when it encounters the specified keyword or makes an
         /// inference in the given context.
-        /// </summary>      
+        /// </summary>
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to a Porcupine keyword model file.</param>
         /// <param name="contextPath">Absolute path to file containing Rhino context parameters.</param>
@@ -37,11 +37,19 @@ namespace PicovoiceDemo
         /// <param name="porcupineSensitivity">Wake word detection sensitivity.</param>
         /// <param name="rhinoModelPath">Absolute path to the file containing Rhino's model parameters.</param>
         /// <param name="rhinoSensitivity">Inference sensitivity.</param>
-        /// <param name="requireEndpoint">
-        /// If set to `true`, Rhino requires an endpoint (chunk of silence) before finishing inference.
+        /// <param name="endpointDurationSec">
+        /// Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+        /// utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+        /// duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+        /// pre-emptively in case the user pauses before finishing the request.
         /// </param>
-        /// <param name="audioDeviceIndex">Audio is recorded from this input device.</param>        
-        /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>                
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+        /// If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+        /// to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
+        /// </param>
+        /// <param name="audioDeviceIndex">Audio is recorded from this input device.</param>
+        /// <param name="outputPath">Optional argument. If provided, recorded audio will be stored in this location at the end of the run.</param>
         public static void RunDemo(
             string accessKey,
             string keywordPath,
@@ -50,6 +58,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity,
             string rhinoModelPath,
             float rhinoSensitivity,
+            float endpointDurationSec,
             bool requireEndpoint,
             int audioDeviceIndex,
             string outputPath = null)
@@ -85,6 +94,7 @@ namespace PicovoiceDemo
                 porcupineSensitivity,
                 rhinoModelPath,
                 rhinoSensitivity,
+                endpointDurationSec,
                 requireEndpoint);
 
             BinaryWriter outputFileWriter = null;
@@ -141,8 +151,8 @@ namespace PicovoiceDemo
         /// Writes the RIFF header for a file in WAV format
         /// </summary>
         /// <param name="writer">Output stream to WAV file</param>
-        /// <param name="channelCount">Number of channels</param>     
-        /// <param name="bitDepth">Number of bits per sample</param>     
+        /// <param name="channelCount">Number of channels</param>
+        /// <param name="bitDepth">Number of bits per sample</param>
         /// <param name="sampleRate">Sampling rate in Hz</param>
         /// <param name="totalSampleCount">Total number of samples written to the file</param>
         private static void WriteWavHeader(BinaryWriter writer, ushort channelCount, ushort bitDepth, int sampleRate, int totalSampleCount)
@@ -195,6 +205,7 @@ namespace PicovoiceDemo
             float porcupineSensitivity = 0.5f;
             string rhinoModelPath = null;
             float rhinoSensitivity = 0.5f;
+            float endpointDurationSec = 1.0f;
             bool requireEndpoint = true;
             string outputPath = null;
             int audioDeviceIndex = -1;
@@ -250,6 +261,14 @@ namespace PicovoiceDemo
                 else if (args[argIndex] == "--rhino_sensitivity")
                 {
                     if (++argIndex < args.Length && float.TryParse(args[argIndex], out rhinoSensitivity))
+                    {
+                        argIndex++;
+                    }
+                }
+                else if (args[argIndex] == "--endpoint_duration")
+                {
+                    argIndex++;
+                    if (argIndex < args.Length && float.TryParse(args[argIndex], out endpointDurationSec))
                     {
                         argIndex++;
                     }
@@ -320,6 +339,7 @@ namespace PicovoiceDemo
                 porcupineSensitivity,
                 rhinoModelPath,
                 rhinoSensitivity,
+                endpointDurationSec,
                 requireEndpoint,
                 audioDeviceIndex,
                 outputPath);
@@ -342,6 +362,7 @@ namespace PicovoiceDemo
             "\t--rhino_model_path: Absolute path to Rhino's model file.\n" +
             "\t--rhino_sensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity \n" +
             "\t\tvalue results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.\n" +
+            "\t--endpoint_duration: Endpoint duration in seconds. It should be a positive number within [0.5, 5].\n" +
             "\t--require_endpoint: ['true'|'false'] If set to 'false', Rhino does not require an endpoint (chunk of silence) before finishing inference.\n" +
             "\t--audio_device_index: Index of input audio device.\n" +
             "\t--output_path: Absolute path to recorded audio for debugging.\n" +

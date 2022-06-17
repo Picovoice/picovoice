@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -18,24 +18,26 @@ import { Picovoice, WakeWordCallback, InferenceCallback } from './picovoice';
 import { EventSubscription, NativeEventEmitter } from 'react-native';
 import type * as PicovoiceErrors from './picovoice_errors';
 
-export type ProcessErrorCallback = (error: PicovoiceErrors.PicovoiceError) => void;
+export type ProcessErrorCallback = (
+  error: PicovoiceErrors.PicovoiceError
+) => void;
 
 class PicovoiceManager {
   private _voiceProcessor?: VoiceProcessor;
   private _picovoice?: Picovoice;
 
-  private _accessKey: string;
-  private _keywordPath: string;
-  private _wakeWordCallback: WakeWordCallback;
-  private _contextPath: string;
-  private _inferenceCallback: InferenceCallback;
-  private _processErrorCallback?: ProcessErrorCallback;
-  private _porcupineSensitivity: number = 0.5;
-  private _rhinoSensitivity: number = 0.5;
-  private _porcupineModelPath?: string;
-  private _rhinoModelPath?: string;
-  private _requireEndpoint: boolean = true;
-
+  private readonly _accessKey: string;
+  private readonly _keywordPath: string;
+  private readonly _wakeWordCallback: WakeWordCallback;
+  private readonly _contextPath: string;
+  private readonly _inferenceCallback: InferenceCallback;
+  private readonly _processErrorCallback?: ProcessErrorCallback;
+  private readonly _porcupineSensitivity: number = 0.5;
+  private readonly _rhinoSensitivity: number = 0.5;
+  private readonly _porcupineModelPath?: string;
+  private readonly _rhinoModelPath?: string;
+  private readonly _endpointDurationSec: number = 1.0;
+  private readonly _requireEndpoint: boolean = true;
 
   private _bufferListener?: EventSubscription;
   private _bufferEmitter?: NativeEventEmitter;
@@ -59,7 +61,13 @@ class PicovoiceManager {
    * @param rhinoModelPath Absolute path to the file containing Rhino's model parameters.
    * @param rhinoSensitivity It should be a number within [0, 1]. A higher sensitivity value
    * results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
-   * @param requireEndpoint If true, Rhino requires an endpoint (chunk of silence) before finishing inference.
+   * @param endpointDurationSec Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+   * utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+   * duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+   * pre-emptively in case the user pauses before finishing the request.
+   * @param requireEndpoint If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+   * If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+   * to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
    * @returns an instance of the Picovoice end-to-end platform.
    */
   static create(
@@ -73,20 +81,23 @@ class PicovoiceManager {
     rhinoSensitivity: number = 0.5,
     porcupineModelPath?: string,
     rhinoModelPath?: string,
+    endpointDurationSec: number = 1.0,
     requireEndpoint: boolean = true
-  ) {    
+  ) {
     return new PicovoiceManager(
       accessKey,
-      keywordPath, 
-      wakeWordCallback, 
-      contextPath, 
-      inferenceCallback, 
+      keywordPath,
+      wakeWordCallback,
+      contextPath,
+      inferenceCallback,
       processErrorCallback,
-      porcupineSensitivity, 
-      rhinoSensitivity, 
-      porcupineModelPath, 
+      porcupineSensitivity,
+      rhinoSensitivity,
+      porcupineModelPath,
       rhinoModelPath,
-      requireEndpoint);
+      endpointDurationSec,
+      requireEndpoint
+    );
   }
 
   /**
@@ -103,25 +114,28 @@ class PicovoiceManager {
     rhinoSensitivity: number = 0.5,
     porcupineModelPath?: string,
     rhinoModelPath?: string,
-    requireEndpoint: boolean = true) {
-      this._accessKey = accessKey;
-      this._keywordPath = keywordPath;
-      this._wakeWordCallback = wakeWordCallback;
-      this._contextPath = contextPath;
-      this._inferenceCallback = inferenceCallback;
-      this._processErrorCallback = processErrorCallback;
-      this._porcupineSensitivity = porcupineSensitivity;
-      this._rhinoSensitivity = rhinoSensitivity;
-      this._porcupineModelPath = porcupineModelPath;
-      this._rhinoModelPath = rhinoModelPath;
-      this._requireEndpoint = requireEndpoint;
+    endpointDurationSec: number = 1.0,
+    requireEndpoint: boolean = true
+  ) {
+    this._accessKey = accessKey;
+    this._keywordPath = keywordPath;
+    this._wakeWordCallback = wakeWordCallback;
+    this._contextPath = contextPath;
+    this._inferenceCallback = inferenceCallback;
+    this._processErrorCallback = processErrorCallback;
+    this._porcupineSensitivity = porcupineSensitivity;
+    this._rhinoSensitivity = rhinoSensitivity;
+    this._porcupineModelPath = porcupineModelPath;
+    this._rhinoModelPath = rhinoModelPath;
+    this._endpointDurationSec = endpointDurationSec;
+    this._requireEndpoint = requireEndpoint;
   }
 
   /**
    * Opens audio input stream and sends audio frames to Picovoice
    */
   async start() {
-    if(this._picovoice !== undefined){
+    if (this._picovoice !== undefined) {
       return;
     }
 
@@ -135,9 +149,11 @@ class PicovoiceManager {
       this._rhinoSensitivity,
       this._porcupineModelPath,
       this._rhinoModelPath,
-      this._requireEndpoint)
+      this._endpointDurationSec,
+      this._requireEndpoint
+    );
 
-    if(this._voiceProcessor === undefined) {
+    if (this._voiceProcessor === undefined) {
       this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
         this._picovoice.frameLength,
         this._picovoice.sampleRate
@@ -146,14 +162,16 @@ class PicovoiceManager {
     }
 
     const bufferProcess = async (buffer: number[]) => {
-      if (this._picovoice === undefined) return;      
+      if (this._picovoice === undefined) return;
       try {
         await this._picovoice.process(buffer);
       } catch (e) {
-        if (this._processErrorCallback !== undefined &&
-            this._processErrorCallback !== null &&
-            typeof(this._processErrorCallback) === 'function') {
-            this._processErrorCallback(e as PicovoiceErrors.PicovoiceError);
+        if (
+          this._processErrorCallback !== undefined &&
+          this._processErrorCallback !== null &&
+          typeof this._processErrorCallback === 'function'
+        ) {
+          this._processErrorCallback(e as PicovoiceErrors.PicovoiceError);
         } else {
           console.error(e);
         }
@@ -166,14 +184,14 @@ class PicovoiceManager {
         await bufferProcess(buffer);
       }
     );
-    
+
     return this._voiceProcessor.start();
   }
 
   /**
    * Closes audio stream
    */
-  async stop() {    
+  async stop() {
     this._bufferListener?.remove();
     this._picovoice?.delete();
     this._picovoice = undefined;

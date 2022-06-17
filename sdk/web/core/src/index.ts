@@ -25,6 +25,7 @@ export type PicovoiceWorkerArgs = {
   accessKey: string
   porcupineKeyword: PorcupineKeyword
   rhinoContext: RhinoContext
+  endpointDurationSec?: number
   requireEndpoint?: boolean
   start?: boolean
 }
@@ -35,6 +36,7 @@ export type PicovoiceEngineArgs = {
   rhinoContext: RhinoContext
   porcupineCallback: (keywordLabel: string) => void
   rhinoCallback: (inference: RhinoInference) => void
+  endpointDurationSec?: number
   requireEndpoint?: boolean
 }
 

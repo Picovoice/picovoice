@@ -3,7 +3,7 @@ name: Go
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'
@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/go.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, lib-update ]
     paths:
       - 'sdk/go/**'
       - '!sdk/go/README.md'

@@ -55,6 +55,17 @@ program
     parseFloat,
     0.5
   )
+    .option(
+    "-d, --endpoint_duration_sec <bool>",
+    "Endpoint duration in seconds. " +
+    "An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command. " +
+    "It should be a positive number within [0.5, 5]. " +
+    "A lower endpoint duration reduces delay and improves responsiveness. " +
+    "A higher endpoint duration assures Rhino doesn't return inference pre-emptively " +
+    "in case the user pauses before finishing the request." ,
+    parseFloat,
+    1.0
+  )
   .option(
     "-e, --requires_endpoint <bool>",
     "If set to `false`, Rhino does not require an endpoint (chunk of silence) before finishing inference.",
@@ -86,7 +97,8 @@ function fileDemo() {
   let keyword = program["keyword"];
   let contextPath = program["context_file_path"];
   let sensitivity = program["sensitivity"];
-  let requiresEndpoint = program["requires_endpoint"].toLowerCase() === 'false' ? false : true;
+  let endpointDurationSec = program["endpoint_duration_sec"];
+  let requiresEndpoint = program["requires_endpoint"].toLowerCase() !== 'false';
   let porcupineLibraryFilePath = program["porcupine_library_file_path"];
   let porcupineModelFilePath = program["porcupine_model_file_path"];
   let rhinoLibraryFilePath = program["rhino_library_file_path"];
@@ -131,6 +143,11 @@ function fileDemo() {
     return;
   }
 
+  if (isNaN(endpointDurationSec) || endpointDurationSec < 0.5 || endpointDurationSec > 5.0) {
+    console.error("--endpointDurationSec must be a number in the range [0.5, 5.0]");
+    return;
+  }
+
   if (!fs.existsSync(contextPath)) {
     throw new PicovoiceInvalidArgumentError(
       `File not found at 'contextPath': ${contextPath}`
@@ -159,6 +176,7 @@ function fileDemo() {
     inferenceCallback,
     sensitivity,
     sensitivity,
+    endpointDurationSec,
     requiresEndpoint,
     porcupineModelFilePath,
     rhinoModelFilePath,

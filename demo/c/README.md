@@ -33,7 +33,7 @@ Running the executable without any commandline arguments prints the usage info t
 usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
                                           -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
                                           --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
-                                          --require_endpoint "true"|"false" ]
+                                          --endpoint_duration_sec --require_endpoint "true"|"false" ]
         ./demo/c/build/picovoice_demo_mic --show_audio_devices
 ```
 
@@ -44,7 +44,7 @@ usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWO
 usage : .\\demo\\c\\build\\picovoice_demo_mic.exe -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
                                                   -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
                                                   --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
-                                                  --require_endpoint "true"|"false" ]
+                                                  --endpoint_duration_sec --require_endpoint "true"|"false" ]
         .\\demo\\c\\build\\picovoice_demo_mic.exe --show_audio_devices
 ```
 
@@ -169,7 +169,7 @@ Running the executable without any commandline arguments prints the usage info t
 ./demo/c/build/picovoice_demo_file
 usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
                                      -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
-                                     --rhino_sensitivity RHN_SENSITIVITY --require_endpoint "true"|"false" ]
+                                     --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint "true"|"false" ]
 ```
 
 #### Windows
@@ -178,7 +178,7 @@ usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PA
 .\\demo\\c\\build\\picovoice_demo_file
 usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
                                                -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
-                                               --rhino_sensitivity RHN_SENSITIVITY --require_endpoint "true"|"false" ]
+                                               --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint "true"|"false" ]
 ```
 
 ### Wake Phrase and Follow-on Commands

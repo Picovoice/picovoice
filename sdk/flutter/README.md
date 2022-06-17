@@ -111,9 +111,14 @@ void _infererenceCallback(RhinoInference inference){
 }
 ```
 
-You can override the default model files and sensitivities.You can set `requireEndpoint` parameter to false if 
-you do not wish to wait for silence before Rhino infers context. There is also an optional `processErrorCallback` 
-that is called if there is a problem encountered while processing audio. These optional parameters can be passed in like so:
+Picovoice accepts the following optional parameters:
+- `porcupineSensitivity`: overrides the default wake word sensitivity.
+- `rhinoSensitivity`: overrides the default inference sensitivity.
+- `processErrorCallback`: called if there is a problem encountered while processing audio.
+- `endpointDurationSec`: sets how much silence is required after a spoken command.
+- `requireEndpoint`: indicates whether Rhino should wait for silence before returning an inference.
+
+ These optional parameters can be passed in like so:
 
 ```dart
 String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
@@ -131,6 +136,7 @@ void createPicovoiceManager() {
         rhinoSensitivity: rhinoSensitivity,
         porcupineModelPath: "/path/to/porcupine/model.pv",
         rhinoModelPath: "/path/to/rhino/model.pv",
+        endpointDurationSec: 1.5,
         requireEndpoint: false,
         errorCallback: _errorCallback);    
 }
@@ -165,7 +171,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 [Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, and requireEndpoint are optional.
+`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec`, and `requireEndpoint` are optional.
 
 ```dart
 import 'package:picovoice/picovoice_manager.dart';
@@ -176,6 +182,9 @@ String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
+    double endpointDurationSec = 1.5;
+    bool requireEndpoint = false;
+
     try{
         _picovoice = await Picovoice.create(
             accessKey,
@@ -187,6 +196,7 @@ void createPicovoice() async {
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
+            endpointDurationSec
             requireEndpoint);
     } on PicovoiceException catch (err) {
         // handle picovoice init error

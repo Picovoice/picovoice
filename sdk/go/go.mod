@@ -4,6 +4,5 @@ go 1.16
 
 require (
 	github.com/Picovoice/porcupine/binding/go/v2 v2.1.3
-	github.com/Picovoice/rhino/binding/go/v2 v2.1.3
-	golang.org/x/sys v0.0.0-20210521090106-6ca3eb03dfc2 // indirect
+	github.com/Picovoice/rhino/binding/go/v2 v2.1.4-0.20220615000518-ba50c8789b2a
 )

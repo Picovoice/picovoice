@@ -32,13 +32,14 @@ namespace Pv.Unity
         private readonly float _porcupineSensitivity = 0.5f;
         private readonly string _rhinoModelPath;
         private readonly float _rhinoSensitivity = 0.5f;
+        private readonly float _endpointDurationSec = 1.0f;
         private readonly bool _requireEndpoint = true;
 
 
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to Porcupine's keyword model file.</param>
         /// <param name="wakeWordCallback">
-        /// User-defined callback invoked upon detection of the wake phrase. 
+        /// User-defined callback invoked upon detection of the wake phrase.
         /// The callback accepts no input arguments.
         /// </param>
         /// <param name="contextPath">
@@ -62,10 +63,18 @@ namespace Pv.Unity
         /// Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
         /// results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
         /// </returns>
-        /// <param name="requireEndpoint">
-        /// Boolean variable to indicate if Rhino should wait for a chunk of silence before finishing inference.
+        /// <param name="endpointDurationSec">
+        /// Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+        /// utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+        /// duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+        /// pre-emptively in case the user pauses before finishing the request.
         /// </param>
-        /// <param name="processErrorCallback">Reports errors that are encountered while the engine is processing audio.</returns> 
+        /// <param name="requireEndpoint">
+        /// If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+        /// If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+        /// to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
+        /// </param>
+        /// <param name="processErrorCallback">Reports errors that are encountered while the engine is processing audio.</returns>
         public static PicovoiceManager Create(
             string accessKey,
             string keywordPath,
@@ -76,6 +85,7 @@ namespace Pv.Unity
             float porcupineSensitivity = 0.5f,
             string rhinoModelPath = null,
             float rhinoSensitivity = 0.5f,
+            float endpointDurationSec = 1.0f,
             bool requireEndpoint = false,
             Action<PicovoiceException> processErrorCallback = null)
         {
@@ -89,6 +99,7 @@ namespace Pv.Unity
                 porcupineSensitivity: porcupineSensitivity,
                 rhinoModelPath: rhinoModelPath,
                 rhinoSensitivity: rhinoSensitivity,
+                endpointDurationSec: endpointDurationSec,
                 requireEndpoint: requireEndpoint,
                 processErrorCallback: processErrorCallback);
         }
@@ -96,7 +107,7 @@ namespace Pv.Unity
 
         /// <summary>
         /// PicovoiceManager constructor
-        /// </summary>       
+        /// </summary>
         private PicovoiceManager(
             string accessKey,
             string keywordPath,
@@ -107,6 +118,7 @@ namespace Pv.Unity
             float porcupineSensitivity,
             string rhinoModelPath,
             float rhinoSensitivity,
+            float endpointDurationSec,
             bool requireEndpoint,
             Action<PicovoiceException> processErrorCallback)
         {
@@ -119,6 +131,7 @@ namespace Pv.Unity
             _porcupineSensitivity = porcupineSensitivity;
             _rhinoModelPath = rhinoModelPath;
             _rhinoSensitivity = rhinoSensitivity;
+            _endpointDurationSec = endpointDurationSec;
             _requireEndpoint = requireEndpoint;
             _processErrorCallback = processErrorCallback;
 
@@ -127,8 +140,8 @@ namespace Pv.Unity
 
         /// <summary>
         /// Action to catch audio frames as voice processor produces them
-        /// </summary>        
-        /// <param name="pcm">Frame of pcm audio</param>        
+        /// </summary>
+        /// <param name="pcm">Frame of pcm audio</param>
         private void OnFrameCaptured(short[] pcm)
         {
             try
@@ -154,7 +167,7 @@ namespace Pv.Unity
         /// Checks to see whether there are any audio capture devices available
         /// </summary>
         /// <returns>whether there are any audio capture devices available</returns>
-        public bool IsAudioDeviceAvailable() 
+        public bool IsAudioDeviceAvailable()
         {
             _voiceProcessor.UpdateDevices();
             return _voiceProcessor.CurrentDeviceIndex >= 0;
@@ -166,18 +179,19 @@ namespace Pv.Unity
         public void Start()
         {
             if (_picovoice != null)
-                return;            
+                return;
 
             _picovoice = Picovoice.Create(
                 _accessKey,
                 _keywordPath,
                 _wakeWordCallback,
-                _contextPath, 
+                _contextPath,
                 _inferenceCallback,
                 _porcupineModelPath,
                 _porcupineSensitivity,
                 _rhinoModelPath,
                 _rhinoSensitivity,
+                _endpointDurationSec,
                 _requireEndpoint);
 
             _voiceProcessor.OnFrameCaptured += OnFrameCaptured;

@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,21 +10,25 @@
 //
 
 import { Porcupine, PorcupineErrors } from '@picovoice/porcupine-react-native';
-import { Rhino, RhinoErrors, RhinoInference } from '@picovoice/rhino-react-native';
+import {
+  Rhino,
+  RhinoErrors,
+  RhinoInference,
+} from '@picovoice/rhino-react-native';
 import * as PicovoiceErrors from './picovoice_errors';
 
-type WakeWordCallback = () => void;
-type InferenceCallback = (inference: RhinoInference) => void;
+export type WakeWordCallback = () => void;
+export type InferenceCallback = (inference: RhinoInference) => void;
 
 class Picovoice {
   private _porcupine: Porcupine | null;
-  private _wakeWordCallback: WakeWordCallback;
+  private readonly _wakeWordCallback: WakeWordCallback;
   private _rhino: Rhino | null;
-  private _inferenceCallback: InferenceCallback;
+  private readonly _inferenceCallback: InferenceCallback;
 
-  private _frameLength: number;
-  private _sampleRate: number;
-  private _version: string;
+  private readonly _frameLength: number;
+  private readonly _sampleRate: number;
+  private readonly _version: string;
   private _isWakeWordDetected = false;
 
   /**
@@ -47,7 +51,13 @@ class Picovoice {
    * @param rhinoModelPath Absolute path to the file containing Rhino's model parameters.
    * @param rhinoSensitivity It should be a number within [0, 1]. A higher sensitivity value
    * results in fewer misses at the cost of(potentially) increasing the erroneous inference rate.
-   * @param requireEndpoint If true, Rhino requires an endpoint (chunk of silence) before finishing inference.
+   * @param endpointDurationSec Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
+   * utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
+   * duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+   * pre-emptively in case the user pauses before finishing the request.
+   * @param requireEndpoint If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
+   * If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
+   * to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
    * @returns an instance of the Picovoice end-to-end platform.
    */
   public static async create(
@@ -60,6 +70,7 @@ class Picovoice {
     rhinoSensitivity: number = 0.5,
     porcupineModelPath?: string,
     rhinoModelPath?: string,
+    endpointDurationSec: number = 1.0,
     requireEndpoint: boolean = true
   ) {
     try {
@@ -74,32 +85,48 @@ class Picovoice {
         contextPath,
         rhinoModelPath,
         rhinoSensitivity,
+        endpointDurationSec,
         requireEndpoint
       );
-  
-      if (wakeWordCallback === undefined || 
-          wakeWordCallback === null ||
-          typeof(wakeWordCallback) !== 'function') {
-          throw new PicovoiceErrors.PicovoiceInvalidArgumentError("'wakeWordCallback' must be set.");
+
+      if (
+        wakeWordCallback === undefined ||
+        wakeWordCallback === null ||
+        typeof wakeWordCallback !== 'function'
+      ) {
+        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+          "'wakeWordCallback' must be set."
+        );
       }
-  
-      if (inferenceCallback === undefined || 
-          inferenceCallback === null ||
-          typeof(inferenceCallback) !== 'function') {
-          throw new PicovoiceErrors.PicovoiceInvalidArgumentError("'inferenceCallback' must be set.");
+
+      if (
+        inferenceCallback === undefined ||
+        inferenceCallback === null ||
+        typeof inferenceCallback !== 'function'
+      ) {
+        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+          "'inferenceCallback' must be set."
+        );
       }
-  
+
       if (porcupine.frameLength !== rhino.frameLength) {
         throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          `Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.`);
+          `Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.`
+        );
       }
-  
+
       if (porcupine.sampleRate !== rhino.sampleRate) {
         throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          `Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.`);
+          `Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.`
+        );
       }
-  
-      return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
+
+      return new Picovoice(
+        porcupine,
+        wakeWordCallback,
+        rhino,
+        inferenceCallback
+      );
     } catch (e) {
       throw this.mapToPicovoiceError(e as Error);
     }
@@ -130,16 +157,21 @@ class Picovoice {
    */
   async process(frame: number[]) {
     if (this._porcupine === null || this._rhino === null) {
-      throw new PicovoiceErrors.PicovoiceInvalidStateError('Cannot process frame - resources have been released.');
+      throw new PicovoiceErrors.PicovoiceInvalidStateError(
+        'Cannot process frame - resources have been released.'
+      );
     }
 
     if (frame === undefined || frame === null) {
-      throw new PicovoiceErrors.PicovoiceInvalidArgumentError('Passed null frame to Picovoice process.');
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+        'Passed null frame to Picovoice process.'
+      );
     }
 
     if (frame.length !== this._frameLength) {
       throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-        `Picovoice process requires frames of length ${this._frameLength}. Received frame of size ${frame.length}.`);
+        `Picovoice process requires frames of length ${this._frameLength}. Received frame of size ${frame.length}.`
+      );
     }
 
     if (!this._isWakeWordDetected) {
@@ -220,35 +252,73 @@ class Picovoice {
    * Gets the exception type given a code.
    * @param e Error to covert to picovoice exception
    */
-   private static mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
-    if (e instanceof PorcupineErrors.PorcupineActivationError || e instanceof RhinoErrors.RhinoActivationError) {
-        return new PicovoiceErrors.PicovoiceActivationError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineActivationLimitError || e instanceof RhinoErrors.RhinoActivationLimitError) {
-        return new PicovoiceErrors.PicovoiceActivationLimitError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
-        return new PicovoiceErrors.PicovoiceActivationRefusedError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
-        return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
-        return new PicovoiceErrors.PicovoiceInvalidArgumentError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
-        return new PicovoiceErrors.PicovoiceInvalidStateError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
-        return new PicovoiceErrors.PicovoiceIOError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineKeyError || e instanceof RhinoErrors.RhinoKeyError) {
-        return new PicovoiceErrors.PicovoiceKeyError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineMemoryError || e instanceof RhinoErrors.RhinoMemoryError) {
-        return new PicovoiceErrors.PicovoiceMemoryError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
-        return new PicovoiceErrors.PicovoiceRuntimeError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
-        return new PicovoiceErrors.PicovoiceStopIterationError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineError || e instanceof RhinoErrors.RhinoError) {
-        return new PicovoiceErrors.PicovoiceError(e.message);
+  private static mapToPicovoiceError(
+    e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError
+  ) {
+    if (
+      e instanceof PorcupineErrors.PorcupineActivationError ||
+      e instanceof RhinoErrors.RhinoActivationError
+    ) {
+      return new PicovoiceErrors.PicovoiceActivationError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineActivationLimitError ||
+      e instanceof RhinoErrors.RhinoActivationLimitError
+    ) {
+      return new PicovoiceErrors.PicovoiceActivationLimitError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineActivationRefusedError ||
+      e instanceof RhinoErrors.RhinoActivationRefusedError
+    ) {
+      return new PicovoiceErrors.PicovoiceActivationRefusedError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineActivationThrottledError ||
+      e instanceof RhinoErrors.RhinoActivationThrottledError
+    ) {
+      return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineInvalidArgumentError ||
+      e instanceof RhinoErrors.RhinoInvalidArgumentError
+    ) {
+      return new PicovoiceErrors.PicovoiceInvalidArgumentError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineInvalidStateError ||
+      e instanceof RhinoErrors.RhinoInvalidStateError
+    ) {
+      return new PicovoiceErrors.PicovoiceInvalidStateError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineIOError ||
+      e instanceof RhinoErrors.RhinoIOError
+    ) {
+      return new PicovoiceErrors.PicovoiceIOError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineKeyError ||
+      e instanceof RhinoErrors.RhinoKeyError
+    ) {
+      return new PicovoiceErrors.PicovoiceKeyError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineMemoryError ||
+      e instanceof RhinoErrors.RhinoMemoryError
+    ) {
+      return new PicovoiceErrors.PicovoiceMemoryError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineRuntimeError ||
+      e instanceof RhinoErrors.RhinoRuntimeError
+    ) {
+      return new PicovoiceErrors.PicovoiceRuntimeError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineStopIterationError ||
+      e instanceof RhinoErrors.RhinoStopIterationError
+    ) {
+      return new PicovoiceErrors.PicovoiceStopIterationError(e.message);
+    } else if (
+      e instanceof PorcupineErrors.PorcupineError ||
+      e instanceof RhinoErrors.RhinoError
+    ) {
+      return new PicovoiceErrors.PicovoiceError(e.message);
     } else {
-        return new PicovoiceErrors.PicovoiceError(e);
+      return new PicovoiceErrors.PicovoiceError(e);
     }
   }
 }
 
-export { Picovoice, WakeWordCallback, InferenceCallback };
+export { Picovoice };
