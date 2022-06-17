@@ -3,20 +3,20 @@ name: iOS AppCenter Tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master, lib-update ]
-    paths: 
+    branches: [ master ]
+    paths:
       - 'sdk/ios/PicovoiceAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
   pull_request:
-    branches: [ master, lib-update ]
-    paths: 
+    branches: [ master ]
+    paths:
       - 'sdk/ios/PicovoiceAppTest/Podfile.lock'
       - '.github/workflows/ios-appcenter.yml'
-      
+
 defaults:
   run:
     working-directory: sdk/ios/PicovoiceAppTest
-    
+
 jobs:
   build:
     name: Run iOS Tests on AppCenter
@@ -42,25 +42,25 @@ jobs:
 
       - name: Run Cocoapods
         run: pod install
-      
+
       - name: Inject AppID
         run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
           PicovoiceAppTestUITests/PicovoiceAppTestUITests.swift
 
       - name: XCode Build
-        run: xcrun xcodebuild build-for-testing 
-          -configuration Debug 
-          -workspace PicovoiceAppTest.xcworkspace 
-          -sdk iphoneos 
+        run: xcrun xcodebuild build-for-testing
+          -configuration Debug
+          -workspace PicovoiceAppTest.xcworkspace
+          -sdk iphoneos
           -scheme PicovoiceAppTest
-          -derivedDataPath ddp 
+          -derivedDataPath ddp
           CODE_SIGNING_ALLOWED=NO
-          
+
       - name: Run Tests on AppCenter
-        run: appcenter test run xcuitest 
+        run: appcenter test run xcuitest
           --token ${{secrets.APPCENTERAPITOKEN}}
-          --app "Picovoice/Picovoice-iOS" 
-          --devices "Picovoice/ios-min-max" 
-          --test-series "picovoice-ios" 
-          --locale "en_US" 
+          --app "Picovoice/Picovoice-iOS"
+          --devices "Picovoice/ios-min-max"
+          --test-series "picovoice-ios"
+          --locale "en_US"
           --build-dir ddp/Build/Products/Debug-iphoneos

@@ -3,7 +3,7 @@ name: Python
 on:
   workflow_dispatch:
   push:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - '.github/workflows/python.yml'
       - 'sdk/python/**'
@@ -12,7 +12,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/python.yml'
   pull_request:
-    branches: [ master, lib-update ]
+    branches: [ master ]
     paths:
       - 'sdk/python/**'
       - '!sdk/python/README.md'
@@ -65,15 +65,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodules: recursive      
+        submodules: recursive
 
     - name: Pre-build dependencies
       run: |
         python3 -m pip install --upgrade pip
-        pip3 install wheel 
+        pip3 install wheel
 
     - name: Install dependencies
       run: pip3 install -r requirements.txt
-        
+
     - name: Test
       run: python3 test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
