@@ -3,12 +3,10 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '9.0'
 
 target 'PicovoiceAppTest' do
-    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/ios-update/sdk/ios/Picovoice-iOS.podspec'
-    pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec'
+    pod 'Picovoice-iOS', '2.1.2'
 end
 
 target 'PicovoiceAppTestUITests' do    
-    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/ios-update/sdk/ios/Picovoice-iOS.podspec'
-    pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec'
+    pod 'Picovoice-iOS', '2.1.2'
 end
 
