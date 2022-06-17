@@ -74,12 +74,14 @@ let manager = PicovoiceManager(
     accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     porcupineSensitivity: 0.4,
-    porcupineModelPath: "/path/to/porcupine/model.pv"
+    porcupineModelPath: "/path/to/porcupine/model.pv",
     onWakeWordDetection: wakeWordCallback,
     contextPath: "/path/to/context.rhn",
     rhinoSensitivity: 0.7,
-    rhinoModelPath: "/path/to/rhino/model.pv"
-    onInference: inferenceCallback)
+    rhinoModelPath: "/path/to/rhino/model.pv",
+    onInference: inferenceCallback,
+    endpointDurationSec: 1.5,
+    requireEndpoint: false)
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
@@ -115,13 +117,15 @@ do {
         accessKey: accessKey,
         keywordPath: "/path/to/keyword.ppn",
         porcupineSensitivity: 0.4,
-        porcupineModelPath: "/path/to/porcupine/model.pv"
+        porcupineModelPath: "/path/to/porcupine/model.pv",
         onWakeWordDetection: { 
             // logic to execute upon deletection of wake word
         },
         contextPath: "/path/to/context.rhn",
         rhinoSensitivity: 0.7,
-        rhinoModelPath: "/path/to/rhino/model.pv"
+        rhinoModelPath: "/path/to/rhino/model.pv",
+        endpointDurationSec: 1.5,
+        requireEndpoint: false,
         onInference: { inference in 
             // logic to execute upon completion of intent inference
         })
