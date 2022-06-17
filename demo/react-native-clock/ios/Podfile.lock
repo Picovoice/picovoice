@@ -295,7 +295,6 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec`)
   - "rhino-react-native (from `../node_modules/@picovoice/rhino-react-native`)"
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -305,6 +304,7 @@ SPEC REPOS:
     - boost-for-react-native
     - ios-voice-processor
     - Porcupine-iOS
+    - Rhino-iOS
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -363,19 +363,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  Rhino-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/lib-update/binding/ios/Rhino-iOS.podspec
   rhino-react-native:
     :path: "../node_modules/@picovoice/rhino-react-native"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
-
-CHECKOUT OPTIONS:
-  Rhino-iOS:
-    :commit: ddd25aa993e721ef488ce8f461be3441fece2cbb
-    :git: https://github.com/Picovoice/rhino.git
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -409,11 +402,11 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  Rhino-iOS: 075a258d07fc55c316a86a5ec84667e015a2ddaf
+  Rhino-iOS: 334035c5c9883123d0ff776b634b227e5664c65b
   rhino-react-native: b3dc9090528c96a1b5eb0b8925c62222eda4871f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 7d81df875248bb09d41d0219c8aaf68b8b2cc9ac
+PODFILE CHECKSUM: 5b0f0528c70284cf4aa3eeee6b9f31792b3694b2
 
 COCOAPODS: 1.11.2
