@@ -88,7 +88,7 @@ class PicovoiceManager {
       double rhinoSensitivity = 0.5,
       String? porcupineModelPath,
       String? rhinoModelPath,
-      double, endpointDurationSec = 1.0,
+      double endpointDurationSec = 1.0,
       bool requireEndpoint = true,
       ProcessErrorCallback? processErrorCallback}) {
     return PicovoiceManager._(
