@@ -106,29 +106,7 @@ export function usePicovoice(
   useEffect(() => {
     porcupineCallback.current = keywordCallback;
     rhinoCallback.current = inferenceCallback;
-
-    if (picovoiceWorker !== null) {
-      picovoiceWorker.onmessage = (
-        message: MessageEvent<PicovoiceWorkerResponse>
-      ): void => {
-        switch (message.data.command) {
-          case 'ppn-keyword':
-            porcupineCallback.current(message.data.keywordLabel);
-            setEngine('rhn');
-            break;
-          case 'rhn-inference':
-            rhinoCallback.current(message.data.inference);
-            setEngine('ppn');
-            break;
-          case 'rhn-info':
-            setContextInfo(message.data.info);
-            break;
-          default:
-            break;
-        }
-      };
-    }
-  }, [keywordCallback, inferenceCallback, picovoiceWorker]);
+  }, [keywordCallback, inferenceCallback]);
 
   useEffect(() => {
     if (
@@ -222,17 +200,19 @@ export function usePicovoice(
       });
 
     return (): void => {
-      startPicovoicePromise.then(({ webVp, pvWorker }) => {
-        if (webVp !== undefined && webVp !== null) {
-          webVp.release();
-        }
-        if (pvWorker !== undefined && pvWorker !== undefined) {
-          pvWorker.postMessage({ command: 'release' });
-          pvWorker.terminate();
-        }
-      }).catch(() => {
-        // do nothing
-      });
+      startPicovoicePromise
+        .then(({ webVp, pvWorker }) => {
+          if (webVp !== undefined && webVp !== null) {
+            webVp.release();
+          }
+          if (pvWorker !== undefined && pvWorker !== undefined) {
+            pvWorker.postMessage({ command: 'release' });
+            pvWorker.terminate();
+          }
+        })
+        .catch(() => {
+          // do nothing
+        });
     };
   }, [
     picovoiceWorkerFactory,
@@ -253,6 +233,6 @@ export function usePicovoice(
     webVoiceProcessor,
     start,
     pause,
-    stop
+    stop,
   };
 }
