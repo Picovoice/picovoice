@@ -5,12 +5,14 @@ on:
   push:
     branches: [ master ]
     paths:
+      - 'sdk/c/**'
       - 'demo/c/**'
       - '!demo/c/README.md'
       - '.github/workflows/c-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
+      - 'sdk/c/**'
       - 'demo/c/**'
       - '!demo/c/README.md'
       - '.github/workflows/c-demos.yml'
