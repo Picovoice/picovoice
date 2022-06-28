@@ -68,7 +68,7 @@ class PicovoiceTestCase(unittest.TestCase):
             ('de', 'beleuchtung', 'heuschrecke'),
             ('fr', 'éclairage_intelligent', 'mon chouchou'),
             ('it', 'illuminazione', 'cameriere'),
-            ('ja', 'sumāto_shōmei', 'ringo'),
+            ('ja', 'sumāto_shōmei', 'ninja'),
             ('ko', 'seumateu_jomyeong', 'koppulso'),
             ('pt', 'luz_inteligente', 'abacaxi')]
 
@@ -162,6 +162,16 @@ class PicovoiceTestCase(unittest.TestCase):
 
     def test_it_again(self):
         self.test_it()
+
+    def test_ja(self):
+        self.run_picovoice(
+            language='ja',
+            audio_file_name='ninja-sumāto-shōmei_ja.wav',
+            intent='色変更',
+            slots=dict(色='オレンジ'))
+
+    def test_ja_again(self):
+        self.test_ja()
 
     def test_ko(self):
         self.run_picovoice(
