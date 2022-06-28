@@ -15,8 +15,6 @@ import sys
 import unittest
 import wave
 
-import pvporcupine
-
 from picovoice import Picovoice
 from test_util import *
 
@@ -67,7 +65,8 @@ class PicovoiceTestCase(unittest.TestCase):
         models = [
             ('en', 'coffee_maker', 'picovoice'),
             ('es', 'iluminación_inteligente', 'manzana'),
-            ('de', 'beleuchtung', 'heuschrecke')]
+            ('de', 'beleuchtung', 'heuschrecke'),
+            ('fr', 'éclairage_intelligent', 'mon chouchou')]
 
         cls._pvTestDataDictionary = dict()
         for model in models:
@@ -130,6 +129,9 @@ class PicovoiceTestCase(unittest.TestCase):
             intent='changeColor',
             slots=dict(location='habitación', color='rosado'))
 
+    def test_es_again(self):
+        self.test_es()
+
     def test_de(self):
         self.run_picovoice(
             language='de',
@@ -139,12 +141,20 @@ class PicovoiceTestCase(unittest.TestCase):
             intent='changeState',
             slots=dict(state='aus'))
 
-    def test_es_again(self):
-        self.test_es()
-
     def test_de_again(self):
         self.test_de()
 
+    def test_fr(self):
+        self.run_picovoice(
+            language='fr',
+            context='éclairage_intelligent',
+            keyword='mon chouchou',
+            audio_file_name='mon-intelligent_fr.wav',
+            intent='changeColor',
+            slots=dict(color='violet'))
+
+    def test_fr_again(self):
+        self.test_fr()
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
