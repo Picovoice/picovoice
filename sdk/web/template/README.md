@@ -68,6 +68,10 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 - @picovoice/picovoice-web-en-worker
 - @picovoice/picovoice-web-es-worker
 - @picovoice/picovoice-web-fr-worker
+- @picovoice/picovoice-web-it-worker
+- @picovoice/picovoice-web-ja-worker
+- @picovoice/picovoice-web-ko-worker
+- @picovoice/picovoice-web-pt-worker
 
 ### Factories
 
@@ -75,6 +79,10 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 - @picovoice/picovoice-web-en-factory
 - @picovoice/picovoice-web-es-factory
 - @picovoice/picovoice-web-fr-factory
+- @picovoice/picovoice-web-it-factory
+- @picovoice/picovoice-web-ja-factory
+- @picovoice/picovoice-web-ko-factory
+- @picovoice/picovoice-web-pt-factory
 
 ### Worker
 
