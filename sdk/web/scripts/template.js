@@ -6,11 +6,11 @@ import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const PORCUPINE_VERSION = "2.1.6";
-const RHINO_VERSION = "2.1.7";
+const PORCUPINE_VERSION = "2.1.7";
+const RHINO_VERSION = "2.1.8";
 const CORE_VERSION = "2.1.2";
 
-for (const language of ["en", "de", "es", "fr"]) {
+for (const language of ["en", "de", "es", "fr", "it", "ja", "ko", "pt"]) {
   for (const flavour of ["factory", "worker"]) {
     console.log(`Template: ${language} ${flavour}`);
     createProject(language, flavour);
