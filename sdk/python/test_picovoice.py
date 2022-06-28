@@ -66,7 +66,11 @@ class PicovoiceTestCase(unittest.TestCase):
             ('en', 'coffee_maker', 'picovoice'),
             ('es', 'iluminación_inteligente', 'manzana'),
             ('de', 'beleuchtung', 'heuschrecke'),
-            ('fr', 'éclairage_intelligent', 'mon chouchou')]
+            ('fr', 'éclairage_intelligent', 'mon chouchou'),
+            ('it', 'illuminazione', 'cameriere'),
+            ('ja', 'sumāto_shōmei', 'ringo'),
+            ('ko', 'seumateu_jomyeong', 'koppulso'),
+            ('pt', 'luz_inteligente', 'abacaxi')]
 
         cls._pvTestDataDictionary = dict()
         for model in models:
@@ -83,15 +87,16 @@ class PicovoiceTestCase(unittest.TestCase):
                 inference_callback=pvTestData.inference_callback)
 
             pvTestData.picovoiceInstance = _picovoiceInstance
-            cls._pvTestDataDictionary[cls._concatenate(language, context, keyword)] = pvTestData
+            cls._pvTestDataDictionary[language] = pvTestData
+
 
     @classmethod
     def tearDownClass(cls):
         for pvTestData in cls._pvTestDataDictionary.values():
             pvTestData.picovoiceInstance.delete()
 
-    def run_picovoice(self, language, context, keyword, audio_file_name, intent, slots):
-        _pvTestData = self._pvTestDataDictionary[self._concatenate(language, context, keyword)]
+    def run_picovoice(self, language, audio_file_name, intent, slots):
+        _pvTestData = self._pvTestDataDictionary[language]
         _pvTestData.reset()
         _picovoiceInstance = _pvTestData.picovoiceInstance
 
@@ -111,8 +116,6 @@ class PicovoiceTestCase(unittest.TestCase):
     def test(self):
         self.run_picovoice(
             language='en',
-            context='coffee_maker',
-            keyword='picovoice',
             audio_file_name='picovoice-coffee.wav',
             intent='orderBeverage',
             slots=dict(size='large', beverage='coffee'))
@@ -123,8 +126,6 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_es(self):
         self.run_picovoice(
             language='es',
-            context='iluminación_inteligente',
-            keyword='manzana',
             audio_file_name='manzana-luz_es.wav',
             intent='changeColor',
             slots=dict(location='habitación', color='rosado'))
@@ -135,8 +136,6 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_de(self):
         self.run_picovoice(
             language='de',
-            context='beleuchtung',
-            keyword='heuschrecke',
             audio_file_name='heuschrecke-beleuchtung_de.wav',
             intent='changeState',
             slots=dict(state='aus'))
@@ -147,14 +146,42 @@ class PicovoiceTestCase(unittest.TestCase):
     def test_fr(self):
         self.run_picovoice(
             language='fr',
-            context='éclairage_intelligent',
-            keyword='mon chouchou',
             audio_file_name='mon-intelligent_fr.wav',
             intent='changeColor',
             slots=dict(color='violet'))
 
     def test_fr_again(self):
         self.test_fr()
+
+    def test_it(self):
+        self.run_picovoice(
+            language='it',
+            audio_file_name='cameriere-luce_it.wav',
+            intent='spegnereLuce',
+            slots=dict(luogo='bagno'))
+
+    def test_it_again(self):
+        self.test_it()
+
+    def test_ko(self):
+        self.run_picovoice(
+            language='ko',
+            audio_file_name='koppulso-seumateu-jomyeong_ko.wav',
+            intent='changeColor',
+            slots=dict(color='파란색'))
+
+    def test_ko_again(self):
+        self.test_ko()
+
+    def test_pt(self):
+        self.run_picovoice(
+            language='pt',
+            audio_file_name='abaxi-luz_pt.wav',
+            intent='ligueLuz',
+            slots=dict(lugar='cozinha'))
+
+    def test_pt_again(self):
+        self.test_pt()    
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
