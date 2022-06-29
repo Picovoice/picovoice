@@ -49,7 +49,7 @@ public class BaseTest {
             inferenceResult = inference;
         }
     };
-    
+
     Context testContext;
     Context appContext;
     AssetManager assetManager;
