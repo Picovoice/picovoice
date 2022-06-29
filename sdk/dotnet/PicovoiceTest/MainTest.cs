@@ -137,96 +137,37 @@ namespace PicovoiceTest
         }
 
         [TestMethod]
-        public void TestTwice()
+        [DataRow("en", "picovoice", "coffee_maker", "orderBeverage", new string[] {"beverage", "size"}, new string[] {"coffee", "large"}, "picovoice-coffee.wav")]
+        [DataRow("de", "heuschrecke", "beleuchtung", "changeState", new string[] {"state"}, new string[] {"aus"}, "heuschrecke-beleuchtung_de.wav")]
+        [DataRow("es", "manzana", "iluminación_inteligente", "changeColor", new string[] {"location", "color"}, new string[] {"habitación", "rosado"}, "manzana-luz_es.wav")]
+        [DataRow("fr", "mon chouchou", "éclairage_intelligent", "changeColor", new string[] {"color"}, new string[] {"violet"}, "mon-intelligent_fr.wav")]
+        [DataRow("it", "cameriere", "illuminazione", "spegnereLuce", new string[] {"luogo"}, new string[] {"bagno"}, "cameriere-luce_it.wav")]
+        [DataRow("ja", "ninja", "sumāto_shōmei", "色変更", new string[] {"色"}, new string[] {"オレンジ"}, "ninja-sumāto-shōmei_ja.wav")]
+        [DataRow("ko", "koppulso", "seumateu_jomyeong", "changeColor", new string[] {"color"}, new string[] {"파란색"}, "koppulso-seumateu-jomyeong_ko.wav")]
+        [DataRow("pt", "abacaxi", "luz_inteligente", "ligueLuz", new string[] {"lugar"}, new string[] {"cozinha"}, "abaxi-luz_pt.wav")]
+        public void TestTwice(
+            string language,
+            string keywordName,
+            string contextName,
+            string expectedIntent,
+            string[] slotKeys,
+            string[] slotValues,
+            string audioFileName)
         {
-            string language = "en";
             _picovoice = Picovoice.Create(
                 ACCESS_KEY,
-                GetKeywordPath(language, "picovoice"),
+                GetKeywordPath(language, keywordName),
                 _wakeWordCallback,
-                GetContextPath(language, "coffee_maker"),
-                _inferenceCallback);
-
-            string audioFileName = "picovoice-coffee.wav";
-            string expectedIntent = "orderBeverage";
-            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
-            {
-                {"size", "large"},
-                {"beverage", "coffee"}
-            };
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            ResetCallbacks();
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-        }
-
-        [TestMethod]
-        public void TestTwiceDe()
-        {
-            string language = "de";
-            _picovoice = Picovoice.Create(
-                ACCESS_KEY,
-                GetKeywordPath(language, "heuschrecke"),
-                _wakeWordCallback,
-                GetContextPath(language, "beleuchtung"),
+                GetContextPath(language, contextName),
                 _inferenceCallback,
                 porcupineModelPath: GetPorcupineModelPath(language),
                 rhinoModelPath: GetRhinoModelPath(language));
 
-            string audioFileName = "heuschrecke-beleuchtung_de.wav";
-            string expectedIntent = "changeState";
-            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
-            {
-                {"state", "aus"}
-            };
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            ResetCallbacks();
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-        }
+            Dictionary<string, string> expectedSlots = new Dictionary<string, string>();
+            for (int i = 0; i < slotKeys.Length; i++) {
+                expectedSlots[slotKeys[i]] = slotValues[i];
+            }
 
-        [TestMethod]
-        public void TestTwiceEs()
-        {
-            string language = "es";
-            _picovoice = Picovoice.Create(
-                ACCESS_KEY,
-                GetKeywordPath(language, "manzana"),
-                _wakeWordCallback,
-                GetContextPath(language, "iluminación_inteligente"),
-                _inferenceCallback,
-                porcupineModelPath: GetPorcupineModelPath(language),
-                rhinoModelPath: GetRhinoModelPath(language));
-
-            string audioFileName = "manzana-luz_es.wav";
-            string expectedIntent = "changeColor";
-            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
-            {
-                {"location", "habitación"},
-                {"color", "rosado"}
-            };
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-            ResetCallbacks();
-            RunTestCase(audioFileName, expectedIntent, expectedSlots);
-        }
-
-        [TestMethod]
-        public void TestTwiceFr()
-        {
-            string language = "fr";
-            _picovoice = Picovoice.Create(
-                ACCESS_KEY,
-                GetKeywordPath(language, "mon chouchou"),
-                _wakeWordCallback,
-                GetContextPath(language, "éclairage_intelligent"),
-                _inferenceCallback,
-                porcupineModelPath: GetPorcupineModelPath(language),
-                rhinoModelPath: GetRhinoModelPath(language));
-
-            string audioFileName = "mon-intelligent_fr.wav";
-            string expectedIntent = "changeColor";
-            Dictionary<string, string> expectedSlots = new Dictionary<string, string>()
-            {
-                {"color", "violet"}
-            };
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
             ResetCallbacks();
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
