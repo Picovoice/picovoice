@@ -44,3 +44,11 @@ dependencies {
 
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
 }
+
+task copyPorcupineResources(type: Copy) {
+    from("$projectDir/../../../../resources/porcupine/resources/keyword_files/android/porcupine_android.ppn")
+    from("$projectDir/../../../../resources/rhino/resources/contexts/android/smart_lighting_android.rhn")
+    into "$projectDir/src/main/assets"
+}
+
+preBuild.dependsOn(copyPorcupineResources)
