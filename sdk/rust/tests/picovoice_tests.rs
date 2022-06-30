@@ -34,7 +34,10 @@ mod tests {
         format!(
             "{}{}{}",
             env!("CARGO_MANIFEST_DIR"),
-            append_lang("/../../resources/porcupine/lib/common/porcupine_params", language),
+            append_lang(
+                "/../../resources/porcupine/lib/common/porcupine_params",
+                language
+            ),
             ".pv"
         )
     }
@@ -52,7 +55,10 @@ mod tests {
         format!(
             "{}{}/{}/{}_{}.ppn",
             env!("CARGO_MANIFEST_DIR"),
-            append_lang("/../../resources/porcupine/resources/keyword_files", language),
+            append_lang(
+                "/../../resources/porcupine/resources/keyword_files",
+                language
+            ),
             pv_platform(),
             keyword_file,
             pv_platform()
@@ -143,51 +149,88 @@ mod tests {
         assert_eq!(inference.slots, slots);
     }
 
-    #[test]
-    fn test_en() {
-        let mut expected_slot_values = HashMap::new();
-        expected_slot_values.insert(String::from("beverage"), String::from("coffee"));
-        expected_slot_values.insert(String::from("size"), String::from("large"));
+    macro_rules! picovoice_tests {
+        ($($test_name:ident: $values:expr,)*) => {
+        $(
+            #[test]
+            fn $test_name() {
+                let (language, keyword, context, intent, slots, audio_file_name):
+                    (&str, &str, &str, &str, HashMap<&str, &str>, &str) = $values;
+                let mut string_slots = HashMap::new();
+                for (key, value) in slots {
+                    string_slots.insert(String::from(key), String::from(value));
+                }
+                run_picovoice_test(language, keyword, context, intent, string_slots, audio_file_name);
+            }
+        )*
+        }
+    }
 
-        run_picovoice_test(
+    picovoice_tests! {
+        en: (
             "en",
             "picovoice",
             "coffee_maker",
             "orderBeverage",
-            expected_slot_values,
+            HashMap::from([("beverage", "coffee"), ("size", "large")]),
             "picovoice-coffee.wav",
-        ) 
-    }
-
-    #[test]
-    fn test_es() {
-        let mut expected_slot_values = HashMap::new();
-        expected_slot_values.insert(String::from("location"), String::from("habitación"));
-        expected_slot_values.insert(String::from("color"), String::from("rosado"));
-
-        run_picovoice_test(
+        ),
+        es: (
             "es",
             "manzana",
             "iluminación_inteligente",
             "changeColor",
-            expected_slot_values,
+            HashMap::from([("location", "habitación"), ("color", "rosado")]),
             "manzana-luz_es.wav",
-        ) 
-    }
-
-    #[test]
-    fn test_de() {
-        let mut expected_slot_values = HashMap::new();
-        expected_slot_values.insert(String::from("state"), String::from("aus"));
-
-        run_picovoice_test(
+        ),
+        de: (
             "de",
             "heuschrecke",
             "beleuchtung",
             "changeState",
-            expected_slot_values,
+            HashMap::from([("state", "aus")]),
             "heuschrecke-beleuchtung_de.wav",
-        ) 
+        ),
+        fr: (
+            "fr",
+            "mon chouchou",
+            "éclairage_intelligent",
+            "changeColor",
+            HashMap::from([("color", "violet")]),
+            "mon-intelligent_fr.wav",
+        ),
+        it: (
+            "it",
+            "cameriere",
+            "illuminazione",
+            "spegnereLuce",
+            HashMap::from([("luogo", "bagno")]),
+            "cameriere-luce_it.wav",
+        ),
+        ja: (
+            "ja",
+            "ninja",
+            "sumāto_shōmei",
+            "色変更",
+            HashMap::from([("色", "オレンジ")]),
+            "ninja-sumāto-shōmei_ja.wav",
+        ),
+        ko: (
+            "ko",
+            "koppulso",
+            "seumateu_jomyeong",
+            "changeColor",
+            HashMap::from([("color", "파란색")]),
+            "koppulso-seumateu-jomyeong_ko.wav",
+        ),
+        pt: (
+            "pt",
+            "abacaxi",
+            "luz_inteligente",
+            "ligueLuz",
+            HashMap::from([("lugar", "cozinha")]),
+            "abaxi-luz_pt.wav",
+        ),
     }
 
     fn do_test<W: FnMut(), I: FnMut(RhinoInference)>(
@@ -237,7 +280,7 @@ mod tests {
     }
 
     #[test]
-    fn test_process() {
+    fn test_process_multiple() {
         let access_key = env::var("PV_ACCESS_KEY")
             .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
         let keyword_path = format!(
