@@ -15,16 +15,28 @@ import sys
 import unittest
 import wave
 
-import pvporcupine
+from parameterized import parameterized
 
 from picovoice import Picovoice
 from test_util import *
+
+PARAMETERS = [
+    ['en', 'picovoice', 'coffee_maker', 'picovoice-coffee.wav', 'orderBeverage', dict(size='large', beverage='coffee')],
+    ['es', 'manzana', 'iluminación_inteligente', 'manzana-luz_es.wav', 'changeColor', dict(location='habitación', color='rosado')],
+    ['de', 'heuschrecke', 'beleuchtung', 'heuschrecke-beleuchtung_de.wav', 'changeState', dict(state='aus')],
+    ['fr', 'mon chouchou', 'éclairage_intelligent', 'mon-intelligent_fr.wav', 'changeColor', dict(color='violet')],
+    ['it', 'cameriere', 'illuminazione', 'cameriere-luce_it.wav', 'spegnereLuce', dict(luogo='bagno')],
+    ['ja', 'ninja', 'sumāto_shōmei', 'ninja-sumāto-shōmei_ja.wav', '色変更', dict(色='オレンジ')],
+    ['ko', 'koppulso', 'seumateu_jomyeong', 'koppulso-seumateu-jomyeong_ko.wav', 'changeColor', dict(color='파란색')],
+    ['pt', 'abacaxi', 'luz_inteligente', 'abaxi-luz_pt.wav', 'ligueLuz', dict(lugar='cozinha')],
+]
 
 
 class PicovoiceTestData:
     def __init__(self):
         self.picovoiceInstance = None
-        self.reset()
+        self.is_wake_word_detected = False
+        self.inference = None
 
     def reset(self):
         self.is_wake_word_detected = False
@@ -62,88 +74,41 @@ class PicovoiceTestCase(unittest.TestCase):
 
         return frames[::channels]
 
-    @classmethod
-    def setUpClass(cls):
-        models = [
-            ('en', 'coffee_maker', 'picovoice'),
-            ('es', 'iluminación_inteligente', 'manzana'),
-            ('de', 'beleuchtung', 'heuschrecke')]
-
-        cls._pvTestDataDictionary = dict()
-        for model in models:
-            language, context, keyword = model
-            pvTestData = PicovoiceTestData()
-
-            _picovoiceInstance = Picovoice(
-                access_key=sys.argv[1],
-                keyword_path=pv_keyword_paths_by_language(language)[keyword],
-                context_path=context_path(context, language),
-                porcupine_model_path=pv_porcupine_model_path_by_language(language),
-                rhino_model_path=pv_rhino_model_path_by_language(language),
-                wake_word_callback=pvTestData.wake_word_callback,
-                inference_callback=pvTestData.inference_callback)
-
-            pvTestData.picovoiceInstance = _picovoiceInstance
-            cls._pvTestDataDictionary[cls._concatenate(language, context, keyword)] = pvTestData
-
-    @classmethod
-    def tearDownClass(cls):
-        for pvTestData in cls._pvTestDataDictionary.values():
-            pvTestData.picovoiceInstance.delete()
-
-    def run_picovoice(self, language, context, keyword, audio_file_name, intent, slots):
-        _pvTestData = self._pvTestDataDictionary[self._concatenate(language, context, keyword)]
-        _pvTestData.reset()
-        _picovoiceInstance = _pvTestData.picovoiceInstance
+    def run_picovoice(self, language, keyword, context, audio_file_name, intent, slots):
+        test_data = PicovoiceTestData()
+        picovoice = Picovoice(
+            access_key=sys.argv[1],
+            keyword_path=pv_keyword_paths_by_language(language)[keyword],
+            context_path=context_path(context, language),
+            porcupine_model_path=pv_porcupine_model_path_by_language(language),
+            rhino_model_path=pv_rhino_model_path_by_language(language),
+            wake_word_callback=test_data.wake_word_callback,
+            inference_callback=test_data.inference_callback)
 
         audio = \
             self.__read_file(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
-                _picovoiceInstance.sample_rate)
+                picovoice.sample_rate)
 
-        for i in range(len(audio) // _picovoiceInstance.frame_length):
-            frame = audio[i * _picovoiceInstance.frame_length:(i + 1) * _picovoiceInstance.frame_length]
-            _picovoiceInstance.process(frame)
+        for _ in range(2):
+            test_data.reset()
+            for i in range(len(audio) // picovoice.frame_length):
+                frame = audio[i * picovoice.frame_length:(i + 1) * picovoice.frame_length]
+                picovoice.process(frame)
 
-        self.assertTrue(_pvTestData.is_wake_word_detected)
-        self.assertEqual(_pvTestData.inference.intent, intent)
-        self.assertEqual(_pvTestData.inference.slots, slots)
+            self.assertTrue(test_data.is_wake_word_detected)
+            self.assertEqual(test_data.inference.intent, intent)
+            self.assertEqual(test_data.inference.slots, slots)
 
-    def test(self):
+    @parameterized.expand(PARAMETERS)
+    def test_picovoice(self, language, keyword, context, audio_file_name, intent, slots):
         self.run_picovoice(
-            language='en',
-            context='coffee_maker',
-            keyword='picovoice',
-            audio_file_name='picovoice-coffee.wav',
-            intent='orderBeverage',
-            slots=dict(size='large', beverage='coffee'))
-
-    def test_again(self):
-        self.test()
-
-    def test_es(self):
-        self.run_picovoice(
-            language='es',
-            context='iluminación_inteligente',
-            keyword='manzana',
-            audio_file_name='manzana-luz_es.wav',
-            intent='changeColor',
-            slots=dict(location='habitación', color='rosado'))
-
-    def test_de(self):
-        self.run_picovoice(
-            language='de',
-            context='beleuchtung',
-            keyword='heuschrecke',
-            audio_file_name='heuschrecke-beleuchtung_de.wav',
-            intent='changeState',
-            slots=dict(state='aus'))
-
-    def test_es_again(self):
-        self.test_es()
-
-    def test_de_again(self):
-        self.test_de()
+            language=language,
+            keyword=keyword,
+            context=context,
+            audio_file_name=audio_file_name,
+            intent=intent,
+            slots=slots)
 
 
 if __name__ == '__main__':

@@ -1,2 +1,3 @@
-pvporcupine==2.1.3
-pvrhino==2.1.6
+pvporcupine==2.1.4
+pvrhino==2.1.7
+parameterized

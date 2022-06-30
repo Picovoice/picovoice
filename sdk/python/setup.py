@@ -33,7 +33,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="picovoice",
-    version="2.1.4",
+    version="2.1.5",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice is an end-to-end platform for building voice products on your terms.",
@@ -41,7 +41,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
-    install_requires=["pvporcupine==2.1.3", "pvrhino==2.1.6"],
+    install_requires=["pvporcupine==2.1.4", "pvrhino==2.1.7"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
