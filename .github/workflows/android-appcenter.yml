@@ -31,6 +31,9 @@ jobs:
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.4.0
 
+    - name: Install types
+      run : npm install -g @types/eslint@8.4.3
+
     - name: Install AppCenter CLI
       run: npm install -g appcenter-cli
 
