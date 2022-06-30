@@ -17,6 +17,7 @@ echo "Copying test keyword files..."
 cp ../../../resources/porcupine/resources/keyword_files/android/picovoice_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/picovoice_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/alexa_linux.ppn
 cp ../../../resources/porcupine/resources/keyword_files_de/android/heuschrecke_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/heuschrecke_android.ppn
+cp ../../../resources/porcupine/resources/keyword_files_es/android/murciélago_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/murciélago_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files_es/android/manzana_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/manzana_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files_fr/android/mon\ chouchou_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/mon\ chouchou_android.ppn
 cp ../../../resources/porcupine/resources/keyword_files_it/android/cameriere_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/cameriere_android.ppn

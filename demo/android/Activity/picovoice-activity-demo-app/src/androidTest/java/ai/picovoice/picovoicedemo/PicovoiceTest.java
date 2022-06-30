@@ -25,7 +25,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitSuccessSimple() throws PicovoiceException {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             Picovoice p = new Picovoice.Builder()
                     .setAccessKey(accessKey)
@@ -45,7 +45,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitSuccessCustomModelPaths() throws PicovoiceException {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params.pv");
             File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params.pv");
@@ -66,7 +66,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitSuccessCustomSensitivities() throws PicovoiceException {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             Picovoice p = new Picovoice.Builder()
                     .setAccessKey(accessKey)
@@ -85,7 +85,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitSuccessCustomEndpointSettings() throws PicovoiceException {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             Picovoice p = new Picovoice.Builder()
                     .setAccessKey(accessKey)
@@ -125,7 +125,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithMismatchedRhinoLanguage() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/test_de_android.rhn");
 
             boolean didFail = false;
@@ -168,7 +168,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithInvalidContextPath() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "bad_path/bad_path.rhn");
             boolean didFail = false;
             try {
@@ -189,7 +189,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithInvalidPorcupineModelPath() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             File porcupineModelPath = new File(testResourcesPath, "bad_path/bad_path.pv");
 
@@ -213,7 +213,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithInvalidRhinoModelPath() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
             File rhinoModelPath = new File(testResourcesPath, "bad_path/bad_path.pv");
 
@@ -237,7 +237,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithInvalidPorcupineSensitivity() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
 
             boolean didFail = false;
@@ -260,7 +260,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithInvalidRhinoSensitivity() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
 
             boolean didFail = false;
@@ -283,7 +283,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithWrongPorcupinePlatform() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/alexa_linux.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/alexa_linux.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_android.rhn");
 
             boolean didFail = false;
@@ -305,7 +305,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitFailWithWrongRhinoPlatform() {
-            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/coffee_maker_linux.rhn");
 
             boolean didFail = false;
@@ -327,7 +327,7 @@ public class PicovoiceTest {
 
         @Test
         public void testInitWithNonAsciiModelName() throws PicovoiceException {
-            File keywordPath = new File(testResourcesPath, "keyword_files/es/murciélago_android.ppn");
+            File keywordPath = new File(testResourcesPath, "keyword_files/murciélago_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/iluminación_inteligente_android.rhn");
             File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_es.pv");
             File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_es.pv");
@@ -488,6 +488,8 @@ public class PicovoiceTest {
             File testAudio = new File(testResourcesPath, testAudioFile);
 
             processTestAudio(p, testAudio);
+            Thread.sleep(500);
+
             assertTrue(isWakeWordDetected);
             assertNotNull(inferenceResult);
             assertTrue(inferenceResult.getIsUnderstood());
@@ -499,6 +501,8 @@ public class PicovoiceTest {
 
             // test again
             processTestAudio(p, testAudio);
+            Thread.sleep(500);
+
             assertTrue(isWakeWordDetected);
             assertNotNull(inferenceResult);
             assertTrue(inferenceResult.getIsUnderstood());
