@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-node",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Picovoice SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
@@ -38,8 +38,8 @@
     "test": "jest --no-cache"
   },
   "dependencies": {
-    "@picovoice/porcupine-node": "2.1.6",
-    "@picovoice/rhino-node": "2.1.9"
+    "@picovoice/porcupine-node": "2.1.7",
+    "@picovoice/rhino-node": "2.1.10"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
