@@ -19,3 +19,6 @@
 
 ## [2.1.3] - 2022-06-17
 * Updated Rhino engine method for endpoint handling while inferring context.
+
+## [2.1.4] - 2022-06-17
+* Added additional language support (it, ja, ko, pt)
