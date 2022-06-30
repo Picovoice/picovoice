@@ -693,15 +693,15 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@picovoice/porcupine-node@2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.6.tgz#5c8d66325412fc4e13b7fdf09fe9184405b98c8f"
-  integrity sha512-J3nVdvcWHt8UALW/OnXQWjrBhDnABA+W9CeeZsPM9TvK3ljS8tuHdsY1Oz6/3FREJj191sdr73r4R/iZdx55nw==
+"@picovoice/porcupine-node@2.1.7":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.1.7.tgz#19768a9463d21e117839d9579e86d4bb070155f1"
+  integrity sha512-w1HKXhIJs2w3piZOmDPR6V0hPVeAwtJLV2Oix+O0rZDPvDPlTTmORSBAAoa/3vV1RaElNyWzhQKzrKaY4hBd9w==
 
-"@picovoice/rhino-node@2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.9.tgz#03d32246b0b465d6dccd1c4e10a903fc33db52d1"
-  integrity sha512-sAsOTdCHdJG2LcnpispfKEW5tOY0zNpG3TiMRRnj/NZ5PBH7vcIPhiMgSPHyyQrANvV5HQFk03iLtMFjeG6cwQ==
+"@picovoice/rhino-node@2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.1.10.tgz#9c7d66559a12627c8288e7593f22a83d097c59e1"
+  integrity sha512-RhUF2pDXE+694NFo6sY/vedhUqek8fGS731D7TqKek4ozc53tWKBNr3UIu6p2CYis3iiBj76SwtpskiWlMnoGQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
