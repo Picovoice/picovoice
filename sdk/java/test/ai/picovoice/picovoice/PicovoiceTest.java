@@ -16,10 +16,10 @@ import ai.picovoice.rhino.RhinoInference;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,6 +29,10 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -162,117 +166,53 @@ public class PicovoiceTest {
         assertEquals(inferenceResult.getSlots(), expectedSlots);
     }
 
-    @Test
-    void test() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "en";
+    @ParameterizedTest(name = "testIntentDetection for ''{0}''")
+    @MethodSource("intentDetectionProvider")
+    void testIntentDetection(String language, String keyword, String context, String audioFileName, String expectedIntent, Map<String, String> expectedSlots) throws PicovoiceException, IOException, UnsupportedAudioFileException {
         picovoice = new Picovoice.Builder()
                 .setAccessKey(accessKey)
                 .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
+                .setKeywordPath(getTestKeywordPath(language, keyword))
                 .setWakeWordCallback(wakeWordCallback)
                 .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "coffee_maker"))
+                .setContextPath(getTestContextPath(language, context))
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
-        final String audioFileName = "picovoice-coffee.wav";
-        final String expectedIntent = "orderBeverage";
-        final Map<String, String> expectedSlots = new HashMap<>() {{
-            put("size", "large");
-            put("beverage", "coffee");
-        }};
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-    }
-
-    @Test
-    void testTwice() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "en";
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "picovoice"))
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "coffee_maker"))
-                .setInferenceCallback(inferenceCallback)
-                .build();
-
-        final String audioFileName = "picovoice-coffee.wav";
-        final String expectedIntent = "orderBeverage";
-        final Map<String, String> expectedSlots = new HashMap<>() {{
-            put("size", "large");
-            put("beverage", "coffee");
-        }};
         runTestCase(audioFileName, expectedIntent, expectedSlots);
         runTestCase(audioFileName, expectedIntent, expectedSlots);
     }
 
-    @Test
-    void testTwiceDe() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "de";
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "heuschrecke"))
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "beleuchtung"))
-                .setInferenceCallback(inferenceCallback)
-                .build();
-
-        final String audioFileName = "heuschrecke-beleuchtung_de.wav";
-        final String expectedIntent = "changeState";
-        final Map<String, String> expectedSlots = new HashMap<>() {{
-            put("state", "aus");
-        }};
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
+    private static Stream<Arguments> intentDetectionProvider() {
+        return Stream.of(
+                Arguments.of("en", "picovoice", "coffee_maker", "picovoice-coffee.wav", "orderBeverage", new HashMap<String, String>() {{
+                    put("size", "large");
+                    put("beverage", "coffee");
+                }}),
+                Arguments.of("de", "heuschrecke", "beleuchtung", "heuschrecke-beleuchtung_de.wav", "changeState", new HashMap<>() {{
+                    put("state", "aus");
+                }}),
+                Arguments.of("es", "manzana", "iluminación_inteligente", "manzana-luz_es.wav", "changeColor", new HashMap<>() {{
+                    put("location", "habitación");
+                    put("color", "rosado");
+                }}),
+                Arguments.of("fr", "mon chouchou", "éclairage_intelligent", "mon-intelligent_fr.wav", "changeColor", new HashMap<>() {{
+                    put("color", "violet");
+                }}),
+                Arguments.of("it", "cameriere", "illuminazione", "cameriere-luce_it.wav", "spegnereLuce", new HashMap<>() {{
+                    put("luogo", "bagno");
+                }}),
+                Arguments.of("ja", "ninja", "sumāto_shōmei", "ninja-sumāto-shōmei_ja.wav", "色変更", new HashMap<>() {{
+                    put("色", "オレンジ");
+                }}),
+                Arguments.of("ko", "koppulso", "seumateu_jomyeong", "koppulso-seumateu-jomyeong_ko.wav", "changeColor", new HashMap<>() {{
+                    put("color", "파란색");
+                }}),
+                Arguments.of("pt", "abacaxi", "luz_inteligente", "abaxi-luz_pt.wav", "ligueLuz", new HashMap<String, String>() {{
+                    put("lugar", "cozinha");
+                }})
+        );
     }
-
-    @Test
-    void testTwiceEs() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "es";
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "manzana"))
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "iluminación_inteligente"))
-                .setInferenceCallback(inferenceCallback)
-                .build();
-
-        final String audioFileName = "manzana-luz_es.wav";
-        final String expectedIntent = "changeColor";
-        final Map<String, String> expectedSlots = new HashMap<>() {{
-            put("location", "habitación");
-            put("color", "rosado");
-        }};
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-    }
-
-    @Test
-    void testTwiceFr() throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        final String language = "fr";
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(getTestPorcupineModelPath(language))
-                .setKeywordPath(getTestKeywordPath(language, "mon chouchou"))
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(getTestRhinoModelPath(language))
-                .setContextPath(getTestContextPath(language, "éclairage_intelligent"))
-                .setInferenceCallback(inferenceCallback)
-                .build();
-
-        final String audioFileName = "mon-intelligent_fr.wav";
-        final String expectedIntent = "changeColor";
-        final Map<String, String> expectedSlots = new HashMap<>() {{
-            put("color", "violet");
-        }};
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-        runTestCase(audioFileName, expectedIntent, expectedSlots);
-    }        
 
     private static String getEnvironmentName() throws RuntimeException {
         String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
