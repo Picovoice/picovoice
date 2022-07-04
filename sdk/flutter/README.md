@@ -70,7 +70,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/flutter/lib/picovoice_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PicovoiceManager](https://github.com/Picovoice/picovoice/tree/master/sdk/flutter/lib/picovoice_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 The constructor `PicovoiceManager.create` will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
 ```dart
@@ -168,7 +168,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 
 #### Low-Level API
 
-[Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
+[Picovoice](https://github.com/Picovoice/picovoice/tree/master/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec`, and `requireEndpoint` are optional.
@@ -275,4 +275,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demo App
 
-Check out the [Picovoice Flutter demo](/demo/flutter) to see what it looks like to use Picovoice in a cross-platform app!
+Check out the [Picovoice Flutter demo](https://github.com/Picovoice/picovoice/tree/master/demo/flutter) to see what it looks like to use Picovoice in a cross-platform app!
