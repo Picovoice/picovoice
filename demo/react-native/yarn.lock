@@ -1050,15 +1050,15 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@picovoice/picovoice-react-native@^2.1.3":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-2.1.3.tgz#2dbd4891934993ee51a234323da3c38cd745f6be"
-  integrity sha512-snAsfRr66e5oqZSv+NSW2D5jE1LPk3RVfIG31Xc8QFiOEhEErnJXSAV8uxScqc1aG0wjx52PBwPxEFBvymsbxQ==
+"@picovoice/picovoice-react-native@=2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react-native/-/picovoice-react-native-2.1.4.tgz#f6d51e6c337989eec5d456c378b8982392bbeb0c"
+  integrity sha512-CC2Fq/33fmQEPMTSxlz2wj33n+dC4dNcpP+f0uwTDJlK2EA04TEj3fJK2+SEoYojhn3hzTeiK93PDHJdXbqyMA==
 
-"@picovoice/porcupine-react-native@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.1.2.tgz#8b8c85620542c9cf6ef979f48c6bb3d0f7cf6ec2"
-  integrity sha512-p65S9XTMmBxTdT/SC6JyPgcrfyproznRCx7DOi3g181dG5wojgVOzpUAwkhH7tnILe6Ivs95fRSqQZLoqOVtpw==
+"@picovoice/porcupine-react-native@=2.1.3":
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-2.1.3.tgz#837120ef4a1a8c2a84a692c418f422948a756a8a"
+  integrity sha512-AsT3PlJYVAXzU/pv447MLSFMsBE1h2h++npG21dH8PgNYxKiSwdLuZqR5X+uD+qMj7mX3xHTvzJ+yypm60hk8A==
 
 "@picovoice/react-native-voice-processor@^1.0.4":
   version "1.0.4"
