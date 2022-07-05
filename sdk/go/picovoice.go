@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2022 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -128,12 +128,18 @@ type Picovoice struct {
 	// Function to be called once Rhino has an inference ready
 	InferenceCallback InferenceCallbackType
 
+	// Path to Porcupine dynamic library file (.so/.dylib/.dll)
+	PorcupineLibraryPath string
+
 	// Path to Porcupine model file (.pv)
 	PorcupineModelPath string
 
 	// Sensitivity value for detecting keyword. The value should be a number within [0, 1]. A
 	// higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
 	PorcupineSensitivity float32
+
+	// Path to Rhino dynamic library file (.so/.dylib/.dll)
+	RhinoLibraryPath string
 
 	// Path to Rhino model file (.pv)
 	RhinoModelPath string
@@ -180,19 +186,19 @@ func NewPicovoice(
 
 var (
 	// Required number of audio samples per frame.
-	FrameLength = ppn.FrameLength
+	FrameLength int
 
 	// Required sample rate of input audio
-	SampleRate = ppn.SampleRate
+	SampleRate int
 
 	// Version of Porcupine being used
-	PorcupineVersion = ppn.Version
+	PorcupineVersion string
 
 	// Version of Rhino being used
-	RhinoVersion = rhn.Version
+	RhinoVersion string
 
 	// Picovoice version
-	Version = fmt.Sprintf("2.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
+	Version string
 )
 
 // Init function for Picovoice. Must be called before attempting process.
@@ -234,6 +240,7 @@ func (picovoice *Picovoice) Init() error {
 
 	picovoice.porcupine = ppn.Porcupine{
 		AccessKey:     picovoice.AccessKey,
+		LibraryPath:   picovoice.PorcupineLibraryPath,
 		ModelPath:     picovoice.PorcupineModelPath,
 		KeywordPaths:  []string{picovoice.KeywordPath},
 		Sensitivities: []float32{picovoice.PorcupineSensitivity},
@@ -247,6 +254,7 @@ func (picovoice *Picovoice) Init() error {
 
 	picovoice.rhino = rhn.Rhino{
 		AccessKey:           picovoice.AccessKey,
+		LibraryPath:         picovoice.RhinoLibraryPath,
 		ModelPath:           picovoice.RhinoModelPath,
 		ContextPath:         picovoice.ContextPath,
 		Sensitivity:         picovoice.RhinoSensitivity,
@@ -259,6 +267,12 @@ func (picovoice *Picovoice) Init() error {
 			InnerError: err,
 		}
 	}
+
+	FrameLength = ppn.FrameLength
+	SampleRate = ppn.SampleRate
+	PorcupineVersion = ppn.Version
+	RhinoVersion = rhn.Version
+	Version = fmt.Sprintf("2.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
 
 	picovoice.ContextInfo = picovoice.rhino.ContextInfo
 	picovoice.initialized = true

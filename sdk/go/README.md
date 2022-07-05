@@ -38,8 +38,8 @@ Depending on your setup you also may need to run `go mod tidy` after in order to
 To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function. You must then make a call to `Init()`.
 
 ```go
-. "github.com/Picovoice/picovoice/sdk/go"
-rhn "github.com/Picovoice/rhino/binding/go"
+. "github.com/Picovoice/picovoice/sdk/go/v2"
+rhn "github.com/Picovoice/rhino/binding/go/v2"
 
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
@@ -61,9 +61,9 @@ inferenceCallback := func(inference rhn.RhinoInference){
 
 picovoice := NewPicovoice(
     accessKey,
-    keywordPath, 
-    wakeWordCallback, 
-    contextPath, 
+    keywordPath,
+    wakeWordCallback,
+    contextPath,
     inferenceCallback)
 
 err := picovoice.Init()
@@ -104,6 +104,6 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-Check out the Picovoice Go demos [here](/demo/go)
+Check out the Picovoice Go demos [here](https://github.com/Picovoice/picovoice/tree/master/demo/go)
 
 

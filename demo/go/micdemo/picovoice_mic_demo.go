@@ -29,18 +29,20 @@ func main() {
 	accessKeyArg := flag.String("access_key", "", "AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)")
 	keywordPathArg := flag.String("keyword_path", "", "Path to Porcupine keyword file (.ppn)")
 	contextPathArg := flag.String("context_path", "", "Path to Rhino context file (.rhn)")
+	porcupineLibraryPathArg := flag.String("porcupine_library_path", "", "Path to Porcupine dynamic library file (.so/.dylib/.dll)")
 	porcupineModelPathArg := flag.String("porcupine_model_path", "", "(optional) Path to Porcupine's model file (.pv)")
 	porcupineSensitivityArg := flag.Float64("porcupine_sensitivity", 0.5, "(optional) Sensitivity for detecting wake word. "+
 		"Each value should be a number within [0, 1]. A higher "+
 		"sensitivity results in fewer misses at the cost of increasing the false alarm rate. "+
 		"If not set, 0.5 will be used.")
+	rhinoLibraryPathArg := flag.String("rhino_library_path", "", "Path to Rhino dynamic library file (.so/.dylib/.dll)")
 	rhinoModelPathArg := flag.String("rhino_model_path", "", "(optional) Path to Rhino's model file (.pv)")
 	rhinoSensitivityArg := flag.Float64("rhino_sensitivity", 0.5, "(optional) Inference sensitivity. "+
 		"The value should be a number within [0, 1]. A higher sensitivity value results in "+
 		"fewer misses at the cost of (potentially) increasing the erroneous inference rate. "+
 		"If not set, 0.5 will be used.")
-	endpointDurationArg := flag.Float64("endpoint_duration", 1.0, "Endpoint duration in seconds. " +
-		"An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command. " +
+	endpointDurationArg := flag.Float64("endpoint_duration", 1.0, "Endpoint duration in seconds. "+
+		"An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command. "+
 		"It should be a positive number within [0.5, 5]. If not set, 1.0 will be used.")
 	requireEndpointArg := flag.String("require_endpoint", "true",
 		"If set, Rhino requires an endpoint (chunk of silence) before finishing inference.")
@@ -52,19 +54,6 @@ func main() {
 	if *showAudioDevices {
 		printAudioDevices()
 		return
-	}
-
-	var outputWav *wav.Encoder
-	if *outputPathArg != "" {
-		outputFilePath, _ := filepath.Abs(*outputPathArg)
-		outputFile, err := os.Create(outputFilePath)
-		if err != nil {
-			log.Fatalf("Failed to create output audio at path %s", outputFilePath)
-		}
-		defer outputFile.Close()
-
-		outputWav = wav.NewEncoder(outputFile, SampleRate, 16, 1, 1)
-		defer outputWav.Close()
 	}
 
 	p := Picovoice{
@@ -97,6 +86,26 @@ func main() {
 		}
 
 		p.ContextPath = contextPath
+	}
+
+	// validate Porcupine libary
+	if *porcupineLibraryPathArg != "" {
+		porcupineLibraryPath, _ := filepath.Abs(*porcupineLibraryPathArg)
+		if _, err := os.Stat(porcupineLibraryPath); os.IsNotExist(err) {
+			log.Fatalf("Could not find Porcupine library file at %s", porcupineLibraryPath)
+		}
+
+		p.PorcupineLibraryPath = porcupineLibraryPath
+	}
+
+	// validate Rhino libary
+	if *rhinoLibraryPathArg != "" {
+		rhinoLibraryPath, _ := filepath.Abs(*rhinoLibraryPathArg)
+		if _, err := os.Stat(rhinoLibraryPath); os.IsNotExist(err) {
+			log.Fatalf("Could not find Rhino library file at %s", rhinoLibraryPath)
+		}
+
+		p.RhinoLibraryPath = rhinoLibraryPath
 	}
 
 	// validate Porcupine model
@@ -161,6 +170,19 @@ func main() {
 		log.Fatal(err)
 	}
 	defer p.Delete()
+
+	var outputWav *wav.Encoder
+	if *outputPathArg != "" {
+		outputFilePath, _ := filepath.Abs(*outputPathArg)
+		outputFile, err := os.Create(outputFilePath)
+		if err != nil {
+			log.Fatalf("Failed to create output audio at path %s", outputFilePath)
+		}
+		defer outputFile.Close()
+
+		outputWav = wav.NewEncoder(outputFile, SampleRate, 16, 1, 1)
+		defer outputWav.Close()
+	}
 
 	recorder := pvrecorder.PvRecorder{
 		DeviceIndex:    *audioDeviceIndex,
