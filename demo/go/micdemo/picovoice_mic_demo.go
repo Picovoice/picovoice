@@ -131,16 +131,6 @@ func main() {
 		p.PorcupineModelPath = porcupineModelPath
 	}
 
-	// validate Porcupine model
-	if *porcupineModelPathArg != "" {
-		porcupineModelPath, _ := filepath.Abs(*porcupineModelPathArg)
-		if _, err := os.Stat(porcupineModelPath); os.IsNotExist(err) {
-			log.Fatalf("Could not find Porcupine model file at %s", porcupineModelPath)
-		}
-
-		p.PorcupineModelPath = porcupineModelPath
-	}
-
 	// validate Rhino model
 	if *rhinoModelPathArg != "" {
 		rhinoModelPath, _ := filepath.Abs(*rhinoModelPathArg)
