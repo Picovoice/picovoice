@@ -276,6 +276,7 @@ int main(int argc, char *argv[]) {
             const char *,
             const char *,
             float,
+            float,
             bool,
             void (*)(pv_inference_t *),
             pv_picovoice_t **) = NULL;
@@ -326,6 +327,7 @@ int main(int argc, char *argv[]) {
             rhino_model_path,
             context_path,
             rhino_sensitivity,
+            1.0f,
             require_endpoint,
             inference_callback,
             &handle);
