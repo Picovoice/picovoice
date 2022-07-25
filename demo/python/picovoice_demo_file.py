@@ -127,23 +127,23 @@ def main():
             endpoint_duration_sec=args.endpoint_duration_sec,
             require_endpoint=require_endpoint)
     except PicovoiceInvalidArgumentError as e:
-        print(f"One or more arguments provided to Picovoice is invalid: {args}")
-        print(f"If all other arguments seem valid, ensure that '{args.access_key}' is a valid AccessKey")
+        print("One or more arguments provided to Picovoice is invalid: ", args)
+        print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % args.access_key)
         raise e
     except PicovoiceActivationError as e:
         print("AccessKey activation error")
         raise e
     except PicovoiceActivationLimitError as e:
-        print(f"AccessKey '{args.access_key}' has reached it's temporary device limit")
+        print("AccessKey '%s' has reached it's temporary device limit" % args.access_key)
         raise e
     except PicovoiceActivationRefusedError as e:
-        print(f"AccessKey '{args.access_key}' refused")
+        print("AccessKey '%s' refused" % args.access_key)
         raise e
     except PicovoiceActivationThrottledError as e:
-        print(f"AccessKey '{args.access_key}' has been throttled")
+        print("AccessKey '%s has been throttled" % args.access_key)
         raise e
     except PicovoiceError as e:
-        print(f"Failed to initialize Picovoice")
+        print("Failed to initialize Picovoice")
         raise e
 
     audio = read_file(args.input_audio_path, pv.sample_rate)

@@ -16,7 +16,6 @@ import struct
 import wave
 from threading import Thread
 
-import numpy as np
 from picovoice import *
 from pvrecorder import PvRecorder
 
@@ -55,34 +54,35 @@ class PicovoiceDemo(Thread):
                 endpoint_duration_sec=endpoint_duration_sec,
                 require_endpoint=require_endpoint)
         except PicovoiceInvalidArgumentError as e:
-            print("One or more arguments provided to Picovoice is invalid: {\n" +
-                  f"\t{access_key=}\n" +
-                  f"\t{keyword_path=}\n" +
-                  f"\t{self._wake_word_callback=}\n" +
-                  f"\t{context_path=}\n" +
-                  f"\t{self._inference_callback=}\n" +
-                  f"\t{porcupine_library_path=}\n" +
-                  f"\t{porcupine_model_path=}\n" +
-                  f"\t{porcupine_sensitivity=}\n" +
-                  f"\t{rhino_library_path=}\n" +
-                  f"\t{rhino_model_path=}\n" +
-                  f"\t{rhino_sensitivity=}\n" +
-                  f"\t{endpoint_duration_sec=}\n" +
-                  f"\t{require_endpoint=}\n" +
-                  "}")
-            print(f"If all other arguments seem valid, ensure that '{access_key}' is a valid AccessKey")
+            args = (
+                access_key,
+                keyword_path,
+                self._wake_word_callback,
+                context_path,
+                self._inference_callback,
+                porcupine_library_path,
+                porcupine_model_path,
+                porcupine_sensitivity,
+                rhino_library_path,
+                rhino_model_path,
+                rhino_sensitivity,
+                endpoint_duration_sec,
+                require_endpoint
+            )
+            print("One or more arguments provided to Picovoice is invalid: ", args)
+            print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % access_key)
             raise e
         except PicovoiceActivationError as e:
             print("AccessKey activation error")
             raise e
         except PicovoiceActivationLimitError as e:
-            print(f"AccessKey '{access_key}' has reached it's temporary device limit")
+            print("AccessKey '%s' has reached it's temporary device limit" % access_key)
             raise e
         except PicovoiceActivationRefusedError as e:
-            print(f"AccessKey '{access_key}' refused")
+            print("AccessKey '%s' refused" % access_key)
             raise e
         except PicovoiceActivationThrottledError as e:
-            print(f"AccessKey '{access_key}' has been throttled")
+            print("AccessKey '%s' has been throttled" % access_key)
             raise e
         except PicovoiceError as e:
             print("Failed to initialize Picovoice")
@@ -120,7 +120,7 @@ class PicovoiceDemo(Thread):
                 wav_file = wave.open(self.output_path, "w")
                 wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
-            print(f"Using device: {recorder.selected_device}")
+            print("Using device: %s" % recorder.selected_device)
             print('[Listening ...]')
 
             while True:
@@ -147,7 +147,7 @@ class PicovoiceDemo(Thread):
         devices = PvRecorder.get_audio_devices()
 
         for i in range(len(devices)):
-            print(f'index: {i}, device name: {devices[i]}')
+            print('index: %d, device name: %s' % (i, devices[i]))
 
 
 def main():
