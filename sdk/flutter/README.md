@@ -5,7 +5,7 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. 
+similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
@@ -25,17 +25,17 @@ This binding is for running Picovoice on **Flutter 2.8.1+** on the following pla
 
 ## Installation
 
-To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements. 
+To start, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements.
 
 To add the Picovoice package to your app project, you can reference it in your pub.yaml:
 ```yaml
-dependencies:  
+dependencies:
   picovoice_flutter: ^<version>
 ```
 
 If you prefer to clone the repo and use it locally, you can reference the local binding location:
 ```yaml
-dependencies:  
+dependencies:
   picovoice:
     path: /path/to/picovoice/flutter/binding
 ```
@@ -70,7 +70,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](https://github.com/Picovoice/picovoice/tree/master/sdk/flutter/lib/picovoice_manager.dart) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PicovoiceManager](https://picovoice.ai/docs/api/picovoice-flutter/#picovoicemanager) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 The constructor `PicovoiceManager.create` will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
 ```dart
@@ -95,8 +95,8 @@ The `inferenceCallback` callback function takes a parameter of `RhinoInference` 
 - slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
 
 ```dart
-void _wakeWordCallback(){    
-    // wake word detected    
+void _wakeWordCallback(){
+    // wake word detected
 }
 
 void _infererenceCallback(RhinoInference inference){
@@ -107,7 +107,7 @@ void _infererenceCallback(RhinoInference inference){
     }
     else{
         // add code to handle unsupported commands
-    }    
+    }
 }
 ```
 
@@ -138,7 +138,7 @@ void createPicovoiceManager() {
         rhinoModelPath: "/path/to/rhino/model.pv",
         endpointDurationSec: 1.5,
         requireEndpoint: false,
-        errorCallback: _errorCallback);    
+        errorCallback: _errorCallback);
 }
 
 void _errorCallback(PicovoiceException error){
@@ -168,7 +168,7 @@ Flutter plugin to capture frames of audio and automatically pass it to the Picov
 
 #### Low-Level API
 
-[Picovoice](https://github.com/Picovoice/picovoice/tree/master/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
+[Picovoice](https://picovoice.ai/docs/api/picovoice-flutter/#picovoice) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec`, and `requireEndpoint` are optional.
@@ -203,7 +203,7 @@ void createPicovoice() async {
     }
 }
 
-void wakeWordCallback() {    
+void wakeWordCallback() {
     // wake word detected
 }
 
@@ -215,7 +215,7 @@ void inferenceCallback(RhinoInference inference) {
     }
     else{
         // add code to handle unsupported commands
-    }    
+    }
 }
 ```
 

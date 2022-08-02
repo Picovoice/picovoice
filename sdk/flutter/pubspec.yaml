@@ -1,7 +1,9 @@
 name: picovoice_flutter
 description: A Flutter package for Picovoice's end-to-end voice platform.
-version: 2.1.4
+version: 2.1.5
 homepage: https://picovoice.ai/
+repository: https://github.com/Picovoice/picovoice/
+documentation: https://picovoice.ai/docs/picovoice/
 
 environment:
   sdk: ">=2.14.0 <3.0.0"
