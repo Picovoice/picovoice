@@ -29,7 +29,7 @@ export default {
   input: [path.resolve(__dirname, pkg.entry)],
   output: [
     {
-      file: path.resolve(__dirname, pkg['module']),
+      file: path.resolve(__dirname, pkg.module),
       format: 'esm',
       sourcemap: false,
     },

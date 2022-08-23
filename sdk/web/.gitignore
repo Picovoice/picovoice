@@ -1,1 +1,2 @@
-picovoice-web-*
+node_modules
+dist
