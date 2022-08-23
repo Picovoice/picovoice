@@ -1,2 +1,6 @@
 node_modules
 dist
+test/porcupine_params.js
+test/porcupine_params.pv
+test/rhino_params.js
+test/rhino_params.pv
