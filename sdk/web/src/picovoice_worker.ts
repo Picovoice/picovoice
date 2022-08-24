@@ -29,6 +29,9 @@ import {
   RhinoContext,
   RhinoModel,
 } from '@picovoice/rhino-web';
+import { keywordsProcess } from '@picovoice/porcupine-web/dist/types/utils';
+import { loadModel } from '@picovoice/web-utils';
+import { loadPicovoiceArgs } from './utils';
 
 export class PicovoiceWorker {
   private readonly _worker: Worker;
@@ -187,15 +190,17 @@ export class PicovoiceWorker {
       }
     );
 
+    const picovoiceArgs = await loadPicovoiceArgs(
+      keyword,
+      porcupineModel,
+      context,
+      rhinoModel
+    );
     worker.postMessage({
       command: 'init',
-      keyword: accessKey,
-      wakeWordCallback: wakeWordCallback,
-      porcupineModel: porcupineModel,
-      context: rhinoModel,
-      inferenceCallback: inferenceCallback,
-      rhinoModel: rhinoModel,
+      accessKey: accessKey,
       options: options,
+      ...picovoiceArgs,
     });
 
     return returnPromise;

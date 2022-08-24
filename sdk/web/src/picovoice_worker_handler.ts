@@ -20,16 +20,14 @@ import { PicovoiceWorkerRequest } from './types';
 
 function wakeWordCallback(detection: PorcupineDetection): void {
   self.postMessage({
-    command: 'ok',
-    engine: 'ppn',
+    command: 'detection',
     detection: detection,
   });
 }
 
 function inferenceCallback(inference: RhinoInference): void {
   self.postMessage({
-    command: 'ok',
-    engine: 'rhn',
+    command: 'inference',
     inference: inference,
   });
 }
@@ -58,14 +56,16 @@ self.onmessage = async function (
         return;
       }
       try {
-        picovoice = await Picovoice.create(
+        picovoice = await Picovoice._init(
           event.data.accessKey,
-          event.data.keyword,
+          event.data.keywordPath,
+          event.data.porcupineSensitivity,
           wakeWordCallback,
-          event.data.porcupineModel,
-          event.data.context,
+          event.data.porcupineModelPath,
+          event.data.contextPath,
+          event.data.rhinoSensitivity,
           inferenceCallback,
-          event.data.rhinoModel,
+          event.data.rhinoModelPath,
           { ...event.data.options, processErrorCallback }
         );
         self.postMessage({

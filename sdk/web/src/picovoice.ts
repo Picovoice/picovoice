@@ -27,6 +27,10 @@ import {
   RhinoModel,
 } from '@picovoice/rhino-web';
 
+import { keywordsProcess } from '@picovoice/porcupine-web/dist/types/utils';
+import { loadModel } from '@picovoice/web-utils';
+import { loadPicovoiceArgs } from './utils';
+
 export class Picovoice {
   private _porcupine: Porcupine | null = null;
   private _rhino: Rhino | null = null;
@@ -60,6 +64,41 @@ export class Picovoice {
     rhinoModel: RhinoModel,
     options: PicovoiceOptions = {}
   ): Promise<Picovoice> {
+    const {
+      keywordPath,
+      porcupineSensitivity,
+      porcupineModelPath,
+      contextPath,
+      rhinoSensitivity,
+      rhinoModelPath,
+    } = await loadPicovoiceArgs(keyword, porcupineModel, context, rhinoModel);
+
+    return this._init(
+      accessKey,
+      keywordPath,
+      porcupineSensitivity,
+      wakeWordCallback,
+      porcupineModelPath,
+      contextPath,
+      rhinoSensitivity,
+      inferenceCallback,
+      rhinoModelPath,
+      options
+    );
+  }
+
+  public static async _init(
+    accessKey: string,
+    keywordPath: string,
+    porcupineSensitivity: number,
+    wakeWordCallback: DetectionCallback,
+    porcupineModelPath: string,
+    contextPath: string,
+    rhinoSensitivity: number,
+    inferenceCallback: InferenceCallback,
+    rhinoModelPath: string,
+    options: PicovoiceOptions = {}
+  ): Promise<Picovoice> {
     const { processErrorCallback, endpointDurationSec, requireEndpoint } =
       options;
 
@@ -69,23 +108,27 @@ export class Picovoice {
       picovoice._isWakeWordDetected = true;
       wakeWordCallback(detection);
     };
-    picovoice._porcupine = await Porcupine.create(
+    picovoice._porcupine = await Porcupine._init(
       accessKey,
-      keyword,
+      [keywordPath],
       porcupineCallback,
-      porcupineModel,
+      new Float32Array(porcupineSensitivity),
+      porcupineModelPath,
       { processErrorCallback }
     );
 
     const rhinoCallback = (inference: RhinoInference): void => {
-      picovoice._isWakeWordDetected = false;
-      inferenceCallback(inference);
+      if (inference.isFinalized) {
+        picovoice._isWakeWordDetected = false;
+        inferenceCallback(inference);
+      }
     };
-    picovoice._rhino = await Rhino.create(
+    picovoice._rhino = await Rhino._init(
       accessKey,
-      context,
+      contextPath,
+      rhinoSensitivity,
       rhinoCallback,
-      rhinoModel,
+      rhinoModelPath,
       { processErrorCallback, endpointDurationSec, requireEndpoint }
     );
 
@@ -129,6 +172,17 @@ export class Picovoice {
       await this._rhino.release();
     }
     this._rhino = null;
+  }
+
+  async onmessage(e: MessageEvent): Promise<void> {
+    switch (e.data.command) {
+      case 'process':
+        await this.process(e.data.inputFrame);
+        break;
+      default:
+        // eslint-disable-next-line no-console
+        console.warn(`Unrecognized command: ${e.data.command}`);
+    }
   }
 
   get version(): string {

@@ -43,7 +43,7 @@
     "setup-test": "node scripts/setup_test.js && yarn base64-ppn-params && yarn base64-rhn-params"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.3",
+    "@picovoice/porcupine-web": "=2.1.4",
     "@picovoice/rhino-web": "=2.1.1",
     "@picovoice/web-utils": "=1.2.5"
   },

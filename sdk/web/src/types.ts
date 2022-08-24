@@ -10,18 +10,21 @@
 */
 
 import {
-  DetectionCallback,
   PorcupineDetection,
   PorcupineKeyword,
   PorcupineModel,
 } from '@picovoice/porcupine-web';
 
-import {
-  InferenceCallback,
-  RhinoContext,
-  RhinoInference,
-  RhinoModel,
-} from '@picovoice/rhino-web';
+import { RhinoContext, RhinoInference, RhinoModel } from '@picovoice/rhino-web';
+
+export type PicovoiceArgs = {
+  keywordPath: string;
+  porcupineSensitivity: number;
+  porcupineModelPath: string;
+  contextPath: string;
+  rhinoSensitivity: number;
+  rhinoModelPath: string;
+};
 
 export type PicovoiceOptions = {
   processErrorCallback?: (error: string) => void;
@@ -34,12 +37,12 @@ export type PicovoiceOptions = {
 export type PicovoiceWorkerInitRequest = {
   command: 'init';
   accessKey: string;
-  keyword: PorcupineKeyword;
-  wakeWordCallback: DetectionCallback;
-  porcupineModel: PorcupineModel;
-  context: RhinoContext;
-  inferenceCallback: InferenceCallback;
-  rhinoModel: RhinoModel;
+  keywordPath: string;
+  porcupineSensitivity: number;
+  porcupineModelPath: string;
+  contextPath: string;
+  rhinoSensitivity: number;
+  rhinoModelPath: string;
   options: PicovoiceOptions;
 };
 

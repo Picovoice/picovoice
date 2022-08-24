@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="node_modules/@picovoice/picovoice-web-en-worker/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/picovoice-web/dist/iife/index.js"></script>
+    <script src="node_modules/@picovoice/porcupine-web/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
     <script type="application/javascript">
       const CLOCK_CONTEXT_64 =
@@ -15,53 +16,47 @@
         document.getElementById("messages").appendChild(p);
       }
 
+      function wakeWordCallback(detection) {
+        writeMessage(
+                "Wake word detected: " + JSON.stringify(detection.label)
+        );
+      }
+      function inferenceCallback(inference) {
+        writeMessage(
+                "Inference detected: " + JSON.stringify(inference)
+        );
+      }
       async function startPicovoice(accessKey) {
         try {
           writeMessage("Picovoice is loading. Please wait...");
-          picovoiceWorker = await PicovoiceWebEnWorker.PicovoiceWorkerFactory.create(
-            {
-              accessKey: accessKey,
-              porcupineKeyword: { builtin: "Picovoice" },
-              rhinoContext: { base64: CLOCK_CONTEXT_64 },
-              start: true,
-            }
+          const porcupineModel = {
+            publicPath: "porcupine_params.pv",
+            forceWrite: true
+          }
+          const rhinoModel = {
+            publicPath: "rhino_params.pv",
+            forceWrite: true
+          }
+          let picovoiceWorker = await PicovoiceWeb.PicovoiceWorker.create(
+              accessKey,
+              PorcupineWeb.BuiltInKeyword.Picovoice,
+              wakeWordCallback,
+              porcupineModel,
+              {base64: CLOCK_CONTEXT_64},
+              inferenceCallback,
+              rhinoModel
           );
-
-          picovoiceWorker.postMessage({ command: "info" });
           writeMessage("Picovoice worker ready!");
 
-          picovoiceWorker.onmessage = (msg) => {
-            switch (msg.data.command) {
-              case "ppn-keyword": {
-                writeMessage(
-                  "Wake word detected: " + JSON.stringify(msg.data.keywordLabel)
-                );
-                break;
-              }
-              case "rhn-inference": {
-                writeMessage(
-                  "Inference detected: " + JSON.stringify(msg.data.inference)
-                );
-                break;
-              }
-              case "rhn-info": {
-                writeMessage("Context info YAML received.");
-                document.getElementById("rhn-context-yaml").innerText =
-                  msg.data.info;
-                break;
-              }
-            }
-          };
+          writeMessage("Context info YAML received.");
+          document.getElementById("rhn-context-yaml").innerText = picovoiceWorker.contextInfo
 
           writeMessage(
             "WebVoiceProcessor initializing. Microphone permissions requested ..."
           );
 
           try {
-            let webVp = await WebVoiceProcessor.WebVoiceProcessor.init({
-              engines: [picovoiceWorker],
-              start: true,
-            });
+            WebVoiceProcessor.WebVoiceProcessor.subscribe(picovoiceWorker);
             writeMessage(
               "WebVoiceProcessor ready! Say 'Picovoice' to start the interaction."
             );
@@ -70,7 +65,6 @@
           }
         } catch (e) {
           writeMessage("Picovoice failed to initialize: " + e);
-          return;
         }
       }
     </script>
