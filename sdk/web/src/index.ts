@@ -2,6 +2,7 @@ import { Picovoice } from './picovoice';
 import { PicovoiceWorker } from './picovoice_worker';
 
 import {
+  BuiltInKeyword,
   DetectionCallback,
   PorcupineDetection,
   PorcupineKeyword,
@@ -33,6 +34,7 @@ import {
 } from './types';
 
 export {
+  BuiltInKeyword,
   DetectionCallback,
   InferenceCallback,
   Picovoice,
