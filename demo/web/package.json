@@ -5,6 +5,9 @@
   "description": "A basic demo to show how to use Picovoice for web browsers, using the IIFE version of the library",
   "main": "index.js",
   "scripts": {
+    "ppn-cp": "cp ../../resources/porcupine/lib/common/porcupine_params.pv ./ && cp ../../resources/porcupine/resources/keyword_files/wasm/picovoice_wasm.ppn ./",
+    "rhn-cp": "cp ../../resources/rhino/lib/common/rhino_params.pv ./ && cp ../../resources/rhino/resources/contexts/wasm/clock_wasm.rhn ./",
+    "postinstall": "yarn ppn-cp && yarn rhn-cp",
     "start": "yarn run http-server -a localhost -p 5000"
   },
   "keywords": [
@@ -26,8 +29,8 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web-en-worker": "^2.1.7",
-    "@picovoice/web-voice-processor": "^2.2.2"
+    "@picovoice/picovoice-web": "^2.1.0",
+    "@picovoice/web-voice-processor": "^4.0.0"
   },
   "devDependencies": {
     "http-server": "^14.0.0"

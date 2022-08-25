@@ -1,1 +1,10 @@
-picovoice-web-*
+node_modules
+dist
+test/porcupine_params.js
+test/porcupine_params.pv
+test/picovoice_wasm.js
+test/picovoice_wasm.ppn
+test/rhino_params.js
+test/rhino_params.pv
+test/coffee_maker_wasm.js
+test/coffee_maker_wasm.rhn
