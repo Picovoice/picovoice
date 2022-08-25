@@ -1,10 +1,33 @@
-# Cobra Binding for Web
+# Rhino Binding for Web
 
-## Cobra Voice Activity Detection Engine
+## Rhino Speech-to-Intent engine
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Cobra is a highly accurate and lightweight voice activity detection (VAD) engine.
+Rhino is Picovoice's Speech-to-Intent engine. It directly infers intent from spoken commands within a given context of
+interest, in real-time. For example, given a spoken command:
+
+> Can I have a small double-shot espresso?
+
+Rhino infers that the user would like to order a drink and emits the following inference result:
+
+```json
+{
+  "isUnderstood": "true",
+  "intent": "orderBeverage",
+  "slots": {
+    "beverage": "espresso",
+    "size": "small",
+    "numberOfShots": "2"
+  }
+}
+```
+
+Rhino is:
+
+* using deep neural networks trained in real-world environments.
+* compact and computationally-efficient, making it perfect for IoT.
+* self-service. Developers and designers can train custom models using [Picovoice Console](https://console.picovoice.ai/).
 
 ## Compatibility
 
@@ -14,102 +37,203 @@ Cobra is a highly accurate and lightweight voice activity detection (VAD) engine
 
 ## Installation
 
-Using `yarn`:
+### Package
+
+Using `Yarn`:
 
 ```console
-yarn add @picovoice/cobra-web
+yarn add @picovoice/rhino-web
 ```
 
 or using `npm`:
 
 ```console
-npm install --save @picovoice/cobra-web
+npm install --save @picovoice/rhino-web
 ```
 
 ### AccessKey
 
-Cobra requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Cobra SDKs.
+Rhino requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
+Rhino SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
-### Usage
+## Usage
 
-#### Initialization
+There are two methods to initialize Rhino:
 
-Create a `voiceProbabilityCallback` function to get voice probability results
-from the engine:
+### Public Directory
+
+**NOTE**: Due to modern browser limitations of using a file URL, this method does __not__ work if used without hosting a server.
+
+This method fetches [the model file](https://github.com/Picovoice/rhino/blob/master/lib/common/rhino_params.pv) from the public directory and feeds it to Rhino. Copy the model file into the public directory:
+
+```console
+cp ${RHINO_MODEL_FILE} ${PATH_TO_PUBLIC_DIRECTORY}
+```
+
+The same procedure can be used for the [Rhino context](https://github.com/Picovoice/rhino/tree/master/resources/contexts) (`.rhn`) files.
+
+### Base64
+
+**NOTE**: This method works without hosting a server, but increases the size of the model file roughly by 33%.
+
+This method uses a base64 string of the model file and feeds it to Rhino. Use the built-in script `pvbase64` to base64 your model file:
+
+```console
+npx pvbase64 -i ${RHINO_MODEL_FILE} -o ${OUTPUT_DIRECTORY}/${MODEL_NAME}.js
+```
+
+The output will be a js file which you can import into any file of your project. For detailed information about `pvbase64`,
+run:
+
+```console
+npx pvbase64 -h
+```
+
+The same procedure can be used for the [Rhino context](https://github.com/Picovoice/rhino/tree/master/resources/contexts) (`.rhn`) files.
+
+### Rhino Model
+
+Rhino saves and caches your model (`.pv`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
+Use a different `customWritePath` variable to hold multiple model values and set the `forceWrite` value to true to force an overwrite of the model file.
+If the model (`.pv`) or context (`.rhn`) files change, `version` should be incremented to force the cached model to be updated. Either `base64` or `publicPath` must be set to instantiate Rhino. If both are set, Rhino will use the `base64` parameter.
 
 ```typescript
+// Context (.rhn)
+const rhinoContext = {
+  publicPath: ${CONTEXT_RELATIVE_PATH},
+  // or
+  base64: ${CONTEXT_BASE64_STRING},
 
-function voiceProbabilityCallback(voiceProbability: number) {
+  // Optionals
+  customWritePath: 'custom_context',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.5,
+}
 
+// Model (.pv)
+const rhinoModel = {
+  publicPath: ${MODEL_RELATIVE_PATH},
+  // or
+  base64: ${MODEL_BASE64_STRING},
+
+  // Optionals
+  customWritePath: 'custom_model',
+  forceWrite: true,
+  version: 1,
 }
 ```
 
-Add a `processErrorCallback` function to the `options` object if you would like
-to catch errors that occur while processing audio:
+Additional engine options are provided via the `options` parameter.
+Set `processErrorCallback` to handle errors if an error occurs while processing audio.
+Use `endpointDurationSec` and `requireEndpoint` to control the engine's endpointing behaviour.
+An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command.
+
+```typescript
+// Optional. These are the default values
+const options = {
+  endpointDurationSec: 1.0,
+  requireEndpoint: true,
+  processErrorCallback: (error) => {},
+}
+```
+
+### Initialize Rhino
+
+Create a `inferenceCallback` function to get the results from the engine:
+
+```typescript
+function inferenceCallback(inference) {
+  if (inference.isFinalized) {
+    if (inference.isUnderstood) {
+      console.log(inference.intent)
+      console.log(inference.slots)
+    }
+  }
+}
+```
+
+Create an `options` object and add a `processErrorCallback` function if you would like to catch errors:
 
 ```typescript
 function processErrorCallback(error: string) {
-
+...
 }
-
 options.processErrorCallback = processErrorCallback;
 ```
 
-Use `Cobra` to initialize the engine on the main thread:
+Initialize an instance of `Rhino` in the main thread:
 
 ```typescript
-const cobra = await Cobra.create(
-    ${ACCESS_KEY},
-    voiceProbabilityCallback,
-    options
-);
-```
-
-Use `CobraWorker` to initialize the engine on a worker thread:
-
-```typescript
-const cobra = await CobraWorker.create(
+const handle = await Rhino.create(
   ${ACCESS_KEY},
-  voiceProbabilityCallback,
-  options
+  rhinoContext,
+  inferenceCallback,
+  rhinoModel,
+  options // optional options
 );
 ```
 
-#### Process Audio
+Or initialize an instance of `Rhino` in a worker thread:
 
-The `process` function will send the input frames to the engine.
-The engine results are received via the `voiceProbabilityCallback` that's passed in during initialization.
+```typescript
+const handle = await RhinoWorker.create(
+  ${ACCESS_KEY},
+  rhinoContext,
+  inferenceCallback,
+  rhinoModel,
+  options // optional options
+);
+```
+
+### Process Audio Frames
+
+The result is received from `inferenceCallback` as defined above.
 
 ```typescript
 function getAudioData(): Int16Array {
-  ... // function to get audio data
+... // function to get audio data
   return new Int16Array();
 }
-
-for (;;) {
-  cobra.process(getAudioData());
+for (; ;) {
+  await handle.process(getAudioData());
   // break on some condition
 }
 ```
 
-#### Clean Up
+### Clean Up
 
-Clean up used resources by `Cobra` or `CobraWorker`:
-
-```typescript
-await cobra.release();
-```
-
-#### Terminate (Worker only)
-
-Terminate `CobraWorker` instance:
+Clean up used resources by `Rhino` or `RhinoWorker`:
 
 ```typescript
-await cobra.terminate();
+await handle.release();
 ```
+
+### Terminate
+
+Terminate `RhinoWorker` instance:
+
+```typescript
+await handle.terminate();
+```
+
+## Contexts
+
+Create custom contexts using the [Picovoice Console](https://console.picovoice.ai/).
+Train the Rhino context model for the target platform WebAssembly (WASM).
+Inside the downloaded `.zip` file, there will be a `.rhn` file which is the context model file in binary format.
+
+Similar to the model file (`.pv`), keyword files (`.rhn`) are saved in IndexedDB to be used by Web Assembly.
+Either `base64` or `publicPath` must be set to instantiate Rhino. If both are set, Rhino will use
+the `base64` model.
+
+## Non-English Languages
+
+In order to detect non-English inferences you need to use the corresponding model file (`.pv`). The model files for all
+supported languages are available [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
 
 ## Demo
 
-For example usage refer to our [Web demo application](https://github.com/Picovoice/cobra/tree/master/demo/web).
+For example usage refer to our [Web demo application](https://github.com/Picovoice/rhino/tree/master/demo/web).

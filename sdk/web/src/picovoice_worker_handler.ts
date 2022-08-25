@@ -40,7 +40,7 @@ function processErrorCallback(error: string): void {
 }
 
 /**
- * Rhino worker handler.
+ * Picovoice worker handler.
  */
 let picovoice: Picovoice | null = null;
 self.onmessage = async function (

@@ -43,8 +43,8 @@
     "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "file:../../resources/porcupine/binding/web",
-    "@picovoice/rhino-web": "file:../../resources/rhino/binding/web",
+    "@picovoice/porcupine-web": "=2.1.4",
+    "@picovoice/rhino-web": "=2.1.1",
     "@picovoice/web-utils": "=1.2.5"
   },
   "devDependencies": {

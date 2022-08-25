@@ -132,7 +132,6 @@
 
         async function startTest() {
             document.getElementById('testComplete').style.display = 'none';
-            let hasFailed = undefined;
 
             writeMessage('Starting test...');
 
@@ -144,11 +143,8 @@
             }
 
             try {
-                let handle = null;
-                let inference = null;
-
                 writeMessage("Checking Picovoice using base64 models");
-                handle = await PicovoiceWeb.Picovoice.create(
+                let handle = await PicovoiceWeb.Picovoice.create(
                     accessKey,
                     {label: "picovoice", base64: picovoiceKeywordBase64, forceWrite: true},
                     wakeWordCallback,
@@ -158,7 +154,7 @@
                     {base64: rhinoModelBase64, forceWrite: true},
                 );
 
-                inference = await picovoiceProcess(handle, testPcm);
+                let inference = await picovoiceProcess(handle, testPcm);
                 checkInference(inference);
 
                 writeMessage("Processing again ...");
@@ -236,38 +232,6 @@
                 writeMessage('Test failed!');
             } finally {
                 document.getElementById('testComplete').style.display = 'block';
-            }
-        }
-
-        const numIterations = 15;
-
-        async function performanceTest() {
-            document.getElementById('testComplete').style.display = 'none';
-
-            const accessKey = document.getElementById("accessKey").value;
-            try {
-                const picovoice = await PicovoiceWeb.PicovoiceWorker.create(
-                    accessKey,
-                    {label: "picovoice", publicPath: "picovoice_wasm.ppn", forceWrite: true},
-                    wakeWordCallback,
-                    {publicPath: "porcupine_params.pv", forceWrite: true},
-                    {publicPath: "coffee_maker_wasm.rhn", forceWrite: true},
-                    inferenceCallback,
-                    {publicPath: "rhino_params.pv", forceWrite: true},
-                );
-                writeMessage("Starting process performance test!");
-                let start = Date.now();
-                for (let i = 0; i < numIterations; i++) {
-                    await picovoiceProcess(picovoice, testPcm);
-                }
-                let end = Date.now();
-                writeMessage(`Performance: ${((end - start) / 1000) / numIterations}`);
-                picovoice.release();
-            } catch (e) {
-                console.log(e)
-                writeMessage("Test failed!")
-            } finally {
-                document.getElementById("testComplete").style.display = "block";
             }
         }
     </script>
