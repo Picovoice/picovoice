@@ -58,6 +58,9 @@ jobs:
 
     - name: build
       run: yarn build
+    
+    - name: Prepare Test
+      run: yarn setup-test
 
     - name: Test
       run: python test/selenium_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --test_audio_file ../../resources/audio_samples/picovoice-coffee.wav
