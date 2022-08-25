@@ -122,7 +122,7 @@ export class PicovoiceWorker {
     rhinoModel: RhinoModel,
     options: PicovoiceOptions = {}
   ): Promise<PicovoiceWorker> {
-    const { processErrorCallback } = options;
+    const { processErrorCallback, ...rest } = options;
 
     const worker = new PvWorker();
     const returnPromise: Promise<PicovoiceWorker> = new Promise(
@@ -188,10 +188,11 @@ export class PicovoiceWorker {
       context,
       rhinoModel
     );
+
     worker.postMessage({
       command: 'init',
       accessKey: accessKey,
-      options: options,
+      options: rest,
       ...picovoiceArgs,
     });
 

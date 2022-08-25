@@ -23,6 +23,12 @@
                 "Inference detected: " + JSON.stringify(inference)
         );
       }
+
+      function processErrorCallback(error) {
+        writeMessage(
+                "Process error: " + JSON.stringify(error)
+        );
+      }
       async function startPicovoice(accessKey) {
         try {
           writeMessage("Picovoice is loading. Please wait...");
@@ -44,6 +50,7 @@
             publicPath: "rhino_params.pv",
             forceWrite: true
           }
+
           let picovoiceWorker = await PicovoiceWeb.PicovoiceWorker.create(
               accessKey,
               porcupineKeyword,
@@ -51,7 +58,8 @@
               porcupineModel,
               rhinoContext,
               inferenceCallback,
-              rhinoModel
+              rhinoModel,
+              { processErrorCallback }
           );
           writeMessage("Picovoice worker ready!");
 
