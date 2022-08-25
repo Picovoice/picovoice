@@ -27,17 +27,28 @@ jobs:
 
     strategy:
       matrix:
+        python-version: [3.8]
         node-version: [14.x, 16.x]
 
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
-
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Install system dependencies
+      run: |
+        pip install selenium
+        pip install webdriver-manager
 
     - name: Pre-build dependencies
       run: npm install yarn
@@ -45,7 +56,8 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Build
-      run: |
-        yarn build
-        for i in picovoice-web*; do pushd $i; yarn && yarn build || exit 1; popd; done
+    - name: build
+      run: yarn build
+
+    - name: Test
+      run: python test/selenium_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --audio_file ../../resources/audio_samples/picovoice-coffee.wav
