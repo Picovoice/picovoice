@@ -22,11 +22,39 @@ const modelFiles = [
       '..',
       '..',
       'resources',
+      'porcupine',
+      'resources',
+      'keyword_files',
+      'wasm'
+    ),
+    file: 'picovoice_wasm.ppn',
+  },
+  {
+    sourceDirectory: join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'resources',
       'rhino',
       'lib',
       'common'
     ),
     file: 'rhino_params.pv',
+  },
+  {
+    sourceDirectory: join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      'resources',
+      'rhino',
+      'resources',
+      'contexts',
+      'wasm'
+    ),
+    file: 'coffee_maker_wasm.rhn',
   },
 ];
 

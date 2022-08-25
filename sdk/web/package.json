@@ -38,13 +38,13 @@
     "start": "cross-env TARGET='debug' rollup --config --watch",
     "watch": "rollup --config --watch",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "base64-ppn-params": "npx pvbase64 -i ./test/porcupine_params.pv -o ./test/porcupine_params.js",
-    "base64-rhn-params": "npx pvbase64 -i ./test/rhino_params.pv -o ./test/rhino_params.js",
-    "setup-test": "node scripts/setup_test.js && yarn base64-ppn-params && yarn base64-rhn-params"
+    "base64-ppn-files": "npx pvbase64 -i ./test/porcupine_params.pv -o ./test/porcupine_params.js -n porcupineModelBase64 && npx pvbase64 -i ./test/picovoice_wasm.ppn -o ./test/picovoice_wasm.js -n picovoiceKeywordBase64",
+    "base64-rhn-files": "npx pvbase64 -i ./test/rhino_params.pv -o ./test/rhino_params.js -n rhinoModelBase64 && npx pvbase64 -i ./test/coffee_maker_wasm.rhn -o ./test/coffee_maker_wasm.js -n coffeeMakerContextBase64",
+    "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.4",
-    "@picovoice/rhino-web": "=2.1.1",
+    "@picovoice/porcupine-web": "file:../../resources/porcupine/binding/web",
+    "@picovoice/rhino-web": "file:../../resources/rhino/binding/web",
     "@picovoice/web-utils": "=1.2.5"
   },
   "devDependencies": {

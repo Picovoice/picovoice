@@ -41,7 +41,7 @@ class SimpleHttpServer(threading.Thread):
         print(f'stopping server on port {self._server.server_port}')
 
 
-def run_unit_test_selenium(url, access_key, absolute_ic_audio_file, absolute_ooc_audio_file):
+def run_unit_test_selenium(url, access_key, absolute_test_audio_file):
     desired_capabilities = DesiredCapabilities.CHROME
     desired_capabilities['goog:loggingPrefs'] = {'browser': 'ALL'}
     opts = Options()
@@ -53,11 +53,8 @@ def run_unit_test_selenium(url, access_key, absolute_ic_audio_file, absolute_ooc
 
     wait = WebDriverWait(driver, 3600)
 
-    driver.find_element(By.ID, "inContextAudioFile").send_keys(absolute_ic_audio_file)
-    wait.until(EC.visibility_of_element_located((By.ID, "inContextAudioLoaded")))
-
-    driver.find_element(By.ID, "oocAudioFile").send_keys(absolute_ooc_audio_file)
-    wait.until(EC.visibility_of_element_located((By.ID, "oocAudioLoaded")))
+    driver.find_element(By.ID, "testAudioFile").send_keys(absolute_test_audio_file)
+    wait.until(EC.visibility_of_element_located((By.ID, "testAudioFileLoaded")))
 
     driver.find_element(By.ID, "accessKey").send_keys(access_key)
     driver.find_element(By.ID, "submit").click()
@@ -83,16 +80,12 @@ def main():
         '--access_key',
         required=True)
     parser.add_argument(
-        '--audio_file_in_context',
-        required=True)
-    parser.add_argument(
-        '--audio_file_out_context',
+        '--test_audio_file',
         required=True)
 
     args = parser.parse_args()
 
-    absolute_ic_audio_file = os.path.abspath(args.audio_file_in_context)
-    absolute_ooc_audio_file = os.path.abspath(args.audio_file_out_context)
+    absolute_test_audio_file = os.path.abspath(args.test_audio_file)
 
     simple_server = SimpleHttpServer(port=4005, path=os.path.join(os.path.dirname(__file__), '..'))
     test_url = f'{simple_server.base_url}/test/index.html'
@@ -103,8 +96,7 @@ def main():
     try:
         result = run_unit_test_selenium(test_url,
                                         args.access_key,
-                                        absolute_ic_audio_file,
-                                        absolute_ooc_audio_file)
+                                        absolute_test_audio_file)
     except Exception as e:
         print(e)
         result = 1

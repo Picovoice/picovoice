@@ -27,8 +27,6 @@ import {
   RhinoModel,
 } from '@picovoice/rhino-web';
 
-import { keywordsProcess } from '@picovoice/porcupine-web/dist/types/utils';
-import { loadModel } from '@picovoice/web-utils';
 import { loadPicovoiceArgs } from './utils';
 
 export class Picovoice {

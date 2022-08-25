@@ -43,10 +43,8 @@ class SimpleHttpServer(threading.Thread):
 
 def run_perf_test_selenium(url,
                            access_key,
-                           absolute_ic_audio_file,
-                           absolute_ooc_audio_file,
-                           init_performance_threshold_sec,
-                           proc_performance_threshold_sec):
+                           absolute_test_audio_file,
+                           performance_threshold_sec):
     desired_capabilities = DesiredCapabilities.CHROME
     desired_capabilities['goog:loggingPrefs'] = {'browser': 'ALL'}
     opts = Options()
@@ -58,11 +56,8 @@ def run_perf_test_selenium(url,
 
     wait = WebDriverWait(driver, 3600)
 
-    driver.find_element(By.ID, "inContextAudioFile").send_keys(absolute_ic_audio_file)
-    wait.until(EC.visibility_of_element_located((By.ID, "inContextAudioLoaded")))
-
-    driver.find_element(By.ID, "oocAudioFile").send_keys(absolute_ooc_audio_file)
-    wait.until(EC.visibility_of_element_located((By.ID, "oocAudioLoaded")))
+    driver.find_element(By.ID, "testAudioFile").send_keys(absolute_test_audio_file)
+    wait.until(EC.visibility_of_element_located((By.ID, "testAudioFileLoaded")))
 
     driver.find_element(By.ID, "accessKey").send_keys(access_key)
     driver.find_element(By.ID, "perfTest").click()
@@ -71,21 +66,16 @@ def run_perf_test_selenium(url,
     test_result = 1
     test_message = "Tests failed"
 
-    init_test = False
-    proc_test = False
+    perf_passed = False
 
     for entry in driver.get_log('browser'):
         print(entry['message'])
-        if 'Init Performance' in entry['message']:
+        if 'Performance' in entry['message']:
             time = float(entry['message'].replace('"', '').split()[-1])
-            if time < init_performance_threshold_sec:
-                init_test = True
-        if 'Process Performance' in entry['message']:
-            time = float(entry['message'].replace('"', '').split()[-1])
-            if time < proc_performance_threshold_sec:
-                proc_test = True
+            if time < performance_threshold_sec:
+                perf_passed = True
 
-    if init_test and proc_test:
+    if perf_passed:
         test_message = "Tests passed"
         test_result = 0
 
@@ -101,25 +91,17 @@ def main():
         '--access_key',
         required=True)
     parser.add_argument(
-        '--audio_file_in_context',
+        '--test_audio_file',
         required=True)
     parser.add_argument(
-        '--audio_file_out_context',
-        required=True)
-    parser.add_argument(
-        '--init_performance_threshold_sec',
-        type=float,
-        required=True)
-    parser.add_argument(
-        '--proc_performance_threshold_sec',
+        '--performance_threshold_sec',
         type=float,
         required=True)
 
 
     args = parser.parse_args()
 
-    absolute_ic_audio_file = os.path.abspath(args.audio_file_in_context)
-    absolute_ooc_audio_file = os.path.abspath(args.audio_file_out_context)
+    absolute_test_audio_file = os.path.abspath(args.test_audio_file)
 
     simple_server = SimpleHttpServer(port=4005, path=os.path.join(os.path.dirname(__file__), '..'))
     test_url = f'{simple_server.base_url}/test/index.html'
@@ -130,10 +112,8 @@ def main():
     try:
         result = run_perf_test_selenium(test_url,
                                         args.access_key,
-                                        absolute_ic_audio_file,
-                                        absolute_ooc_audio_file,
-                                        args.init_performance_threshold_sec,
-                                        args.proc_performance_threshold_sec)
+                                        absolute_test_audio_file,
+                                        args.performance_threshold_sec)
     except Exception as e:
         print(e)
         result = 1
