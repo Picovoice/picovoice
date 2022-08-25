@@ -9,47 +9,39 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
+  PicovoiceOptions,
   PicovoiceWorker,
-  PicovoiceWorkerFactory,
-  PicovoiceWorkerResponse,
-} from '@picovoice/picovoice-web-core';
+  PorcupineDetection,
+  PorcupineKeyword,
+  PorcupineModel,
+  RhinoContext,
+  RhinoInference,
+  RhinoModel,
+} from '@picovoice/picovoice-web';
 
-import { PorcupineKeyword } from '@picovoice/porcupine-web-core';
-
-import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
-
-export type PicovoiceHookArgs = {
-  accessKey: string;
-  porcupineKeyword: PorcupineKeyword;
-  rhinoContext: RhinoContext;
-  endpointDurationSec?: number;
-  requireEndpoint?: boolean;
-  start?: boolean;
-};
-
-type EngineControlType = 'ppn' | 'rhn';
-
-export function usePicovoice(
-  picovoiceWorkerFactory: PicovoiceWorkerFactory | null,
-  picovoiceHookArgs: PicovoiceHookArgs | null,
-  keywordCallback: (keywordLabel: string) => void,
-  inferenceCallback: (inference: RhinoInference) => void
-): {
+export function usePicovoice(): {
+  wakeWordDetection: PorcupineDetection | null;
+  inference: RhinoInference | null;
   contextInfo: string | null;
   isLoaded: boolean;
   isListening: boolean;
-  isError: boolean | null;
-  errorMessage: string | null;
-  engine: EngineControlType;
-  webVoiceProcessor: WebVoiceProcessor | null;
+  error: string | null;
+  init: (
+    accessKey: string,
+    keyword: PorcupineKeyword,
+    porcupineModel: PorcupineModel,
+    context: RhinoContext,
+    rhinoModel: RhinoModel,
+    options: PicovoiceOptions
+  ) => Promise<void>;
   start: () => void;
-  pause: () => void;
   stop: () => void;
+  release: () => void;
 } {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [contextInfo, setContextInfo] = useState<string | null>(null);
@@ -68,38 +60,31 @@ export function usePicovoice(
   const porcupineCallback = useRef(keywordCallback);
   const rhinoCallback = useRef(inferenceCallback);
 
-  const start = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.start().then(() => {
-        setIsListening(true);
-        return true;
-      });
-    }
-    return false;
-  };
+  const wakeWordCallback = useCallback(
+    (detection: PorcupineDetection): void => {},
+    []
+  );
 
-  const pause = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.pause();
-      setIsListening(false);
-      return true;
-    }
-    return false;
-  };
+  const inferenceCallback = useCallback((inference: RhinoInference): void => {},
+  []);
 
-  const stop = (): boolean => {
-    if (webVoiceProcessor !== null) {
-      webVoiceProcessor.stop().then(() => {
-        setIsListening(false);
-        setEngine('ppn');
-        if (picovoiceWorker !== null) {
-          picovoiceWorker.postMessage({ command: 'reset' });
-        }
-        return true;
-      });
-    }
-    return false;
-  };
+  const init = useCallback(
+    async (
+      accessKey: string,
+      keyword: PorcupineKeyword,
+      porcupineModel: PorcupineModel,
+      context: RhinoContext,
+      rhinoModel: RhinoModel,
+      options: PicovoiceOptions = {}
+    ): Promise<void> => {},
+    [wakeWordCallback, inferenceCallback]
+  );
+
+  const start = useCallback(async (): Promise<void> => {}, []);
+
+  const stop = useCallback(async (): Promise<void> => {}, []);
+
+  const release = useCallback(async (): Promise<void> => {}, []);
 
   /** Refresh the keyword and inference callbacks
    * when they change (avoid stale closure) */

@@ -879,23 +879,35 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-web-core@^2.1.0":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web-core/-/picovoice-web-core-2.1.2.tgz#a1e6fbc0a6545946cabfa5f65b8050dc3212731d"
-  integrity sha512-GYJ4zD4JkuQkXXMLBir0Gx6GlwQHLLFNu2F1bW202ZOVmvTrChzFP5xUC5KYdPTxkKMN3zwhwN5CNaZHpFt3Ew==
-  dependencies:
-    "@picovoice/porcupine-web-core" "^2.1.0"
-    "@picovoice/rhino-web-core" "^2.1.2"
-
-"@picovoice/porcupine-web-core@^2.1.0":
+"@picovoice/picovoice-web@^2.1.0":
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web-core/-/porcupine-web-core-2.1.0.tgz#00d4137870364f6072d10e76dceb849a61c5b2af"
-  integrity sha512-/Xpkn62G7BqMHLR4ZrQAK0W7FD25X4g39eTLKmWW+fDBlGn5PhnapqX43miuNKLooZ64XkR4RgNPwFHsDTykJg==
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.0.tgz#f54940026999a5e044bc7cc930934e00f8032a8b"
+  integrity sha512-l9WGY+DCKA04GT0cL/X0/CTWX3Y4slhG2VtGky7Xrhd3bVvSMd9mo5zc3a34m89O62bKhDWQT6gG++kJ8JduOA==
+  dependencies:
+    "@picovoice/porcupine-web" "=2.1.4"
+    "@picovoice/rhino-web" "=2.1.1"
+    "@picovoice/web-utils" "=1.2.5"
 
-"@picovoice/rhino-web-core@^2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web-core/-/rhino-web-core-2.1.2.tgz#ef5e21f47e9973bbb11e6e4b21ff75fb44bf0e5a"
-  integrity sha512-svWBeS5vmUQIEq4zV08bjhL82mTtV3+ia8IJaZ3uAK3PAHtYI0vZrP2DY7ErG+aTWEAZkIrkoqdoz2+qXJ35mg==
+"@picovoice/porcupine-web@=2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.4.tgz#ce765a2b8c07c7324421f6c037567cfe3441101a"
+  integrity sha512-HfFhrd7xn9nRTqwhYnnYbRTMWQsOeFC2kJhq74j445UkgmZd+73K0CMtY5T1XYE26pO4CJy+kVrIvIsWPyBEYg==
+  dependencies:
+    "@picovoice/web-utils" "=1.2.5"
+
+"@picovoice/rhino-web@=2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.1.1.tgz#693bca6bb075fa38c88c76f0043f810f4674afdd"
+  integrity sha512-XTwB/CaDrLHJw7ibwJhgOy8meuZsM3FUP7M6lpAPfGdtIzwJPmkz1h9WHBAq63a7t9PuY19+TTwIawqNuTXfuQ==
+  dependencies:
+    "@picovoice/web-utils" "=1.2.5"
+
+"@picovoice/web-utils@=1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-utils/-/web-utils-1.2.5.tgz#55461fb78ddfe8b8b755cba2caf863e262988dd0"
+  integrity sha512-3eoGSewOO2vllsYs/Q9FVHMzFQqy2Mg1mBJTbRChuZMpDG2wCv+AB3vD34w4bb++wwGpo/iS7PB1SwP0vBzYig==
+  dependencies:
+    commander "^9.2.0"
 
 "@picovoice/web-voice-processor@^2.2.2":
   version "2.2.3"
@@ -1265,6 +1277,11 @@ commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
+
+commander@^9.2.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.0.tgz#bc4a40918fefe52e22450c111ecd6b7acce6f11c"
+  integrity sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==
 
 commondir@^1.0.1:
   version "1.0.1"
