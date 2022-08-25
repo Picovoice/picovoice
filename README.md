@@ -1458,143 +1458,53 @@ picovoice.delete();
 
 ### Web
 
-The Picovoice SDK for Web is available on modern web browsers (i.e. not Internet Explorer) via [WebAssembly](https://webassembly.org/). Microphone audio is handled via the [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) and is abstracted by the WebVoiceProcessor, which also handles downsampling to the correct format. Picovoice is provided pre-packaged as a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers).
-
-Each spoken language is available as a dedicated npm package (e.g. @picovoice/picovoice-web-en-worker). These packages can be used with the @picovoice/web-voice-processor. They can also be used with the Angular, React, and Vue bindings, which abstract and hide the web worker communication details.
-
-#### Vanilla JavaScript and HTML (CDN Script Tag)
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <script src="https://unpkg.com/@picovoice/picovoice-web-en-worker/dist/iife/index.js"></script>
-    <script src="https://unpkg.com/@picovoice/web-voice-processor/dist/iife/index.js"></script>
-    <script type="application/javascript">
-      const RHINO_CONTEXT_BASE64 = /* Base64 representation of Rhino .rhn file */;
-
-      async function startPicovoice() {
-        console.log("Picovoice is loading. Please wait...");
-        picovoiceWorker = await PicovoiceWebEnWorker.PicovoiceWorkerFactory.create(
-          {
-            porcupineKeyword: { builtin: "Picovoice" },
-            rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
-            start: true,
-          }
-        );
-
-        console.log("Picovoice worker ready!");
-
-        picovoiceWorker.onmessage = (msg) => {
-          switch (msg.data.command) {
-            case "ppn-keyword": {
-              console.log(
-                "Wake word detected: " + JSON.stringify(msg.data.keywordLabel)
-              );
-              break;
-            }
-            case "rhn-inference":
-              {
-                console.log(
-                  "Inference detected: " + JSON.stringify(msg.data.inference)
-                );
-                break;
-              }
-
-              writeMessage(msg);
-          }
-        };
-
-        console.log("WebVoiceProcessor initializing. Microphone permissions requested ...");
-
-        try {
-          let webVp = await WebVoiceProcessor.WebVoiceProcessor.init({
-            engines: [picovoiceWorker],
-            start: true,
-          });
-          console.log("WebVoiceProcessor ready! Say 'Picovoice' to start the interaction.");
-        } catch (e) {
-          console.log("WebVoiceProcessor failed to initialize: " + e);
-        }
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        startPicovoice();
-      });
-    </script>
-  </head>
-  <body>
-  </body>
-</html>
-
-```
-
-#### Vanilla JavaScript and HTML (ES Modules)
+Install the Web SDK using yarn:
 
 ```console
-yarn add @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+yarn add @picovoice/picovoice-web
 ```
 
-(or)
+or using npm:
 
 ```console
-npm install @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+npm install --save @picovoice/picovoice-web
 ```
 
-```javascript
-import { WebVoiceProcessor } from "@picovoice/web-voice-processor"
-import { PicovoiceWorkerFactory } from "@picovoice/picovoice-web-en-worker";
- 
-async function startPicovoice() {
-  // Create a Picovoice Worker (English language) to listen for
-  // the built-in keyword "Picovoice" and follow-on commands in the given Rhino context.
-  // Note: you receive a Web Worker object, _not_ an individual Picovoice instance
-  const picovoiceWorker = await PicovoiceWorkerFactory.create(
-    {
-      porcupineKeyword: { builtin: "Picovoice" },
-      rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
-      start: true,
-    }
-  );
- 
-  // The worker will send a message with data.command = "ppn-keyword" upon a detection event
-  // And data.command = "rhn-inference" when the follow-on inference concludes.
-  // Here, we tell it to log it to the console:
-  picovoiceWorker.onmessage = (msg) => {
-    switch (msg.data.command) {
-      case 'ppn-keyword':
-        // Wake word detection
-        console.log("Wake word: " + msg.data.keywordLabel);
-        break;
-      case 'rhn-inference:
-        // Follow-on command inference concluded
-        console.log("Inference: " + msg.data.inference)
-      default:
-        break;
-    }
-  };
- 
-  // Start up the web voice processor. It will request microphone permission
-  // and immediately (start: true) start listening.
-  // It downsamples the audio to voice recognition standard format (16-bit 16kHz linear PCM, single-channel)
-  // The incoming microphone audio frames will then be forwarded to the Picovoice Worker
-  // n.b. This promise will reject if the user refuses permission! Make sure you handle that possibility.
-  const webVp = await WebVoiceProcessor.init({
-    engines: [picovoiceWorker],
-    start: true,
-  });
+Create an instance of the engine using `PicovoiceWorker` and run on an audio input stream:
+
+```typescript
+import { PicovoiceWorker } from "@picovoice/picovoice-web";
+
+function wakeWordCallback(detection: PorcupineDetection) {
 }
- 
-startPicovoice()
- 
-...
- 
-// Finished with Picovoice? Release the WebVoiceProcessor and the worker.
-if (done) {
-  webVp.release()
-  picovoiceWorker.sendMessage({command: "release"})
+
+function inferenceCallback(inference: RhinoInference) {
+}
+
+function getAudioData(): Int16Array {
+  ... // function to get audio data
+  return new Int16Array();
+}
+
+const picovoice = await PicovoiceWorker.create(
+  "${ACCESS_KEY}", 
+  keyword,
+  wakeWordCallback,
+  porcupineModel,
+  context,
+  inferenceCallback,
+  rhinoModel      
+);
+
+for (; ;) {
+  picovoice.process(getAudioData());
+  // break on some condition
 }
 ```
+
+Replace `${ACCESS_KEY}` with yours obtained from [Picovoice Console]((https://console.picovoice.ai/)).
+
+When done, release the resources allocated to Picovoice using `picovoice.release()`.
 
 #### Angular
 

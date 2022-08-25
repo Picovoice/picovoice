@@ -1,33 +1,18 @@
-# Rhino Binding for Web
+# Picovoice Binding for Web
 
-## Rhino Speech-to-Intent engine
+# Picovoice
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Rhino is Picovoice's Speech-to-Intent engine. It directly infers intent from spoken commands within a given context of
-interest, in real-time. For example, given a spoken command:
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-> Can I have a small double-shot espresso?
-
-Rhino infers that the user would like to order a drink and emits the following inference result:
-
-```json
-{
-  "isUnderstood": "true",
-  "intent": "orderBeverage",
-  "slots": {
-    "beverage": "espresso",
-    "size": "small",
-    "numberOfShots": "2"
-  }
-}
-```
-
-Rhino is:
-
-* using deep neural networks trained in real-world environments.
-* compact and computationally-efficient, making it perfect for IoT.
-* self-service. Developers and designers can train custom models using [Picovoice Console](https://console.picovoice.ai/).
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+  [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Compatibility
 
@@ -39,10 +24,10 @@ Rhino is:
 
 ### Package
 
-Using `Yarn`:
+Using `yarn`:
 
 ```console
-yarn add @picovoice/rhino-web
+yarn add @picovoice/picovoice-web
 ```
 
 or using `npm`:
@@ -53,53 +38,61 @@ npm install --save @picovoice/rhino-web
 
 ### AccessKey
 
-Rhino requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
-Rhino SDKs.
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey` acts as your credentials when using
+Picovocie SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
-There are two methods to initialize Rhino:
+Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`). 
+
+Each file offers two options on how to provide it to Picovoice:
 
 ### Public Directory
 
 **NOTE**: Due to modern browser limitations of using a file URL, this method does __not__ work if used without hosting a server.
 
-This method fetches [the model file](https://github.com/Picovoice/rhino/blob/master/lib/common/rhino_params.pv) from the public directory and feeds it to Rhino. Copy the model file into the public directory:
-
-```console
-cp ${RHINO_MODEL_FILE} ${PATH_TO_PUBLIC_DIRECTORY}
-```
-
-The same procedure can be used for the [Rhino context](https://github.com/Picovoice/rhino/tree/master/resources/contexts) (`.rhn`) files.
+This method fetches the given file from the public directory and uses it to initialize Picovoice. Set the `publicPath` string to use this method.
 
 ### Base64
 
 **NOTE**: This method works without hosting a server, but increases the size of the model file roughly by 33%.
 
-This method uses a base64 string of the model file and feeds it to Rhino. Use the built-in script `pvbase64` to base64 your model file:
+This method uses a base64 string of the given file and uses it to initialize Picovoice.
+
+Use the built-in script `pvbase64` to base64 your `.ppn`, `.rhn` or `.pv` file:
 
 ```console
-npx pvbase64 -i ${RHINO_MODEL_FILE} -o ${OUTPUT_DIRECTORY}/${MODEL_NAME}.js
+npx pvbase64 -i ${PICOVOICE_FILE} -o ${BASE64_FILENAME}.js
 ```
 
-The output will be a js file which you can import into any file of your project. For detailed information about `pvbase64`,
-run:
+The output will be a js file containing a string which you can import into any file of your project. 
+Set the `base64` string with the imported js string use this method.
 
-```console
-npx pvbase64 -h
-```
+### Picovoice Initialization Files
 
-The same procedure can be used for the [Rhino context](https://github.com/Picovoice/rhino/tree/master/resources/contexts) (`.rhn`) files.
+Picovoice saves and caches your model (`.pv`), keyword (`.ppn`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
+Use a different `customWritePath` variable choose the name the file will have in storage and set the `forceWrite` value to true to force an overwrite of the file.
+If the file changes, `version` should be incremented to force the cached file to be updated. 
 
-### Rhino Model
-
-Rhino saves and caches your model (`.pv`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
-Use a different `customWritePath` variable to hold multiple model values and set the `forceWrite` value to true to force an overwrite of the model file.
-If the model (`.pv`) or context (`.rhn`) files change, `version` should be incremented to force the cached model to be updated. Either `base64` or `publicPath` must be set to instantiate Rhino. If both are set, Rhino will use the `base64` parameter.
+Either `base64` or `publicPath` must be set for each file to instantiate Picovoice. If both are set for a particular file, Picovoice will use the `base64` parameter.
 
 ```typescript
+// Custom keyword (.ppn)
+const porcupineKeyword = {
+  publicPath: ${KEYWORD_RELATIVE_PATH},
+  // or
+  base64: ${KEYWORD_BASE64_STRING},
+  label: ${KEYWORD_LABEL},
+  
+  // Optional
+  customWritePath: 'custom_keyword',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.6
+}
+
 // Context (.rhn)
 const rhinoContext = {
   publicPath: ${CONTEXT_RELATIVE_PATH},
@@ -110,11 +103,11 @@ const rhinoContext = {
   customWritePath: 'custom_context',
   forceWrite: true,
   version: 1,
-  sensitivity: 0.5,
+  sensitivity: 0.3,
 }
 
 // Model (.pv)
-const rhinoModel = {
+const porcupineOrRhinoModel = {
   publicPath: ${MODEL_RELATIVE_PATH},
   // or
   base64: ${MODEL_BASE64_STRING},
@@ -140,11 +133,15 @@ const options = {
 }
 ```
 
-### Initialize Rhino
+### Initialize Picovoice
 
-Create a `inferenceCallback` function to get the results from the engine:
+Create `wakeWordCallback` and `inferenceCallback` functions to capture results from the engine:
 
 ```typescript
+function wakeWordCallback(keyword) {
+  console.log(`Porcupine detected keyword: ${keyword.label}`);
+}
+
 function inferenceCallback(inference) {
   if (inference.isFinalized) {
     if (inference.isUnderstood) {
@@ -164,33 +161,40 @@ function processErrorCallback(error: string) {
 options.processErrorCallback = processErrorCallback;
 ```
 
-Initialize an instance of `Rhino` in the main thread:
+Initialize an instance of `Picovoice` in the main thread:
 
 ```typescript
-const handle = await Rhino.create(
+const picovoice = await Picovoice.create(
   ${ACCESS_KEY},
+  porcupineKeyword,
+  wakeWordCallback,
+  porcupineModel,
   rhinoContext,
   inferenceCallback,
   rhinoModel,
-  options // optional options
+  options // optional parameters
 );
 ```
 
-Or initialize an instance of `Rhino` in a worker thread:
+Or initialize an instance of `Picovoice` in a worker thread:
 
 ```typescript
-const handle = await RhinoWorker.create(
+const picovoice = await PicovoiceWorker.create(
   ${ACCESS_KEY},
+  porcupineKeyword,
+  wakeWordCallback,
+  porcupineModel,
   rhinoContext,
   inferenceCallback,
   rhinoModel,
-  options // optional options
+  options // optional parameters
 );
 ```
 
 ### Process Audio Frames
 
-The result is received from `inferenceCallback` as defined above.
+Feed audio into the `process()` function. To start listening for the wake word and follow-on command. 
+The result is received via `wakeWordCallback` and `inferenceCallback` as defined above.
 
 ```typescript
 function getAudioData(): Int16Array {
@@ -198,42 +202,42 @@ function getAudioData(): Int16Array {
   return new Int16Array();
 }
 for (; ;) {
-  await handle.process(getAudioData());
+  await picovoice.process(getAudioData());
   // break on some condition
 }
 ```
 
 ### Clean Up
 
-Clean up used resources by `Rhino` or `RhinoWorker`:
+Clean up used resources by `Picovoice` or `PicovoiceWorker`:
 
 ```typescript
-await handle.release();
+await picovoice.release();
 ```
 
-### Terminate
+### Terminate (Worker Only)
 
-Terminate `RhinoWorker` instance:
+Terminate `PicovoiceWorker` instance:
 
 ```typescript
-await handle.terminate();
+await picovoice.terminate();
 ```
 
-## Contexts
+## Custom Keyword and Contexts
 
-Create custom contexts using the [Picovoice Console](https://console.picovoice.ai/).
-Train the Rhino context model for the target platform WebAssembly (WASM).
-Inside the downloaded `.zip` file, there will be a `.rhn` file which is the context model file in binary format.
+Create custom keywords and contexts using the [Picovoice Console](https://console.picovoice.ai/).
+To use them with the Web SDK, train the keywords and contexts for the target platform WebAssembly (WASM).
+Inside the downloaded `.zip` file, there will be a `.ppn` or `.rhn` file which is the keyword or context file in binary format.
 
-Similar to the model file (`.pv`), keyword files (`.rhn`) are saved in IndexedDB to be used by Web Assembly.
-Either `base64` or `publicPath` must be set to instantiate Rhino. If both are set, Rhino will use
+Similar to the model file (`.pv`), these files are saved in IndexedDB to be used by Web Assembly.
+Either `base64` or `publicPath` must be set for each file to initialize Picovoice. If both are set, Picovoice will use
 the `base64` model.
 
 ## Non-English Languages
 
-In order to detect non-English inferences you need to use the corresponding model file (`.pv`). The model files for all
-supported languages are available [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
+In order to use Picovoice with non-English you need to use the corresponding model file (`.pv`). The model files for all
+supported languages are available in the [Porcupine](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [Rhino](https://github.com/Picovoice/rhino/tree/master/lib/common) GitHub repositories. 
 
 ## Demo
 
-For example usage refer to our [Web demo application](https://github.com/Picovoice/rhino/tree/master/demo/web).
+For example usage refer to our [Web demo application](https://github.com/Picovoice/picovoice/tree/master/demo/web).
