@@ -1476,9 +1476,16 @@ Create an instance of the engine using `PicovoiceWorker` and run on an audio inp
 import { PicovoiceWorker } from "@picovoice/picovoice-web";
 
 function wakeWordCallback(detection: PorcupineDetection) {
+  console.log(`Porcupine detected keyword: ${detection.label}`);
 }
 
 function inferenceCallback(inference: RhinoInference) {
+  if (inference.isFinalized) {
+    if (inference.isUnderstood) {
+      console.log(inference.intent)
+      console.log(inference.slots)
+    }
+  }
 }
 
 function getAudioData(): Int16Array {

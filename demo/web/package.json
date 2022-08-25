@@ -5,7 +5,9 @@
   "description": "A basic demo to show how to use Picovoice for web browsers, using the IIFE version of the library",
   "main": "index.js",
   "scripts": {
-    "postinstall": "cp ../../resources/porcupine/lib/common/porcupine_params.pv ./  && cp ../../resources/rhino/lib/common/rhino_params.pv ./",
+    "ppn-cp": "cp ../../resources/porcupine/lib/common/porcupine_params.pv ./ && cp ../../resources/porcupine/resources/keyword_files/wasm/picovoice_wasm.ppn ./",
+    "rhn-cp": "cp ../../resources/rhino/lib/common/rhino_params.pv ./ && cp ../../resources/rhino/resources/contexts/wasm/clock_wasm.rhn ./",
+    "postinstall": "yarn ppn-cp && yarn rhn-cp",
     "start": "yarn run http-server -a localhost -p 5000"
   },
   "keywords": [

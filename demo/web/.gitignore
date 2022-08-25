@@ -4,5 +4,6 @@ node_modules
 dist/
 *.log
 .DS_Store
-porcupine_params.pv
-rhino_params.pv
+*.ppn
+*.pv
+*.rhn
