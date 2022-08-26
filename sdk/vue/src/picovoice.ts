@@ -13,18 +13,8 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-core';
 import { PorcupineKeyword } from '@picovoice/porcupine-web-core';
 import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
+import {InferenceCallback, PicovoiceOptions, PorcupineModel, RhinoModel} from "@picovoice/picovoice-web";
 
-/**
- * Type alias for PicovoiceWorkerFactory arguments.
- */
- export type PicovoiceWorkerFactoryArgs = {
-  accessKey: string;
-  porcupineKeyword: PorcupineKeyword;
-  rhinoContext: RhinoContext;
-  endpointDurationSec?: number;
-  requireEndpoint?: boolean;
-  start?: boolean;
-}
 
 /**
  * Type alias for Picovoice Vue Mixin.
@@ -34,17 +24,19 @@ import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
   $_pvWorker_: Worker | null;
   $_webVp_: WebVoiceProcessor | null;
   init: (
-    picovoiceFactoryArgs: PicovoiceWorkerFactoryArgs,
-    picovoiceFactory: PicovoiceWorkerFactory,
-    keywordCallback: (label: string) => void,
-    inferenceCallback: (inference: RhinoInference) => void,
-    contextCallback: (info: string) => void,
-    readyCallback: () => void,
-    errorCallback: (error: Error) => void) => void;
-    start: () => Promise<boolean>;
-    stop: () => Promise<boolean>;
-    pause: () => boolean;
-    delete: () => void;
+      accessKey: string,
+      keyword: PorcupineKeyword,
+      porcupineModel: PorcupineModel,
+      context: RhinoContext,
+      rhinoModel: RhinoModel,
+      options: PicovoiceOptions,
+      contextCallback: (info: string) => void,
+      isLoadedCallback: (isLoaded: boolean) => void,
+      isListeningCallback: (isListening: boolean) => void,
+      errorCallback: (error: Error) => void) => void;
+    start: () => Promise<void>;
+    stop: () => Promise<void>;
+    release: () => Promise<void>;
 }
 
 export default {
@@ -58,23 +50,27 @@ export default {
         $_webVp_: null as WebVoiceProcessor | null,
         /**
          * Init function for Picovoice.
-         * 
-         * @param picovoiceFactoryArgs Arguments for PicovoiceWorkerFactory.
-         * @param picovoiceFactory The language-specific worker factory
-         * @param keywordCallback A method invoked when keyword is detected.
-         * @param inferenceCallback A method invoked upon completion of intent inference.
+         *
+         * @param keyword
+         * @param porcupineModel
+         * @param context
+         * @param rhinoModel
+         * @param options
          * @param contextCallback A method invoked after context information is ready.
-         * @param readyCallback A method invoked after Picovoice has initialized.
+         * @param isLoadedCallback
+         * @param isListeningCallback
          * @param errorCallback A method invoked if an error occurs within `PorcupineWorkerFactory`.
          */
         async init(
-          picovoiceFactoryArgs,
-          picovoiceFactory,
-          keywordCallback = (_: string) => {},
-          inferenceCallback = (_: RhinoInference) => {},
-          contextCallback = (_: string) => {},
-          readyCallback = () => {},
-          errorCallback = (error: Error) => {console.error(error)}
+            keyword: PorcupineKeyword,
+            porcupineModel: PorcupineModel,
+            context: RhinoContext,
+            rhinoModel: RhinoModel,
+            options: PicovoiceOptions = {},
+            contextCallback: (info: string) => void = (info: string) => {},
+            isLoadedCallback: (isLoaded: boolean) => void = (isLoaded: boolean) => {},
+            isListeningCallback: (isListening: boolean) => void = (isListening: boolean) => {},
+            errorCallback: (error: Error) => void = (error: Error) => {})
         ) {
           try {
             const {
@@ -97,7 +93,7 @@ export default {
               engines: [this.$_pvWorker_],
               start: startWebVp,
             });
-    
+
             this.$_pvWorker_.onmessage = messageEvent => {
               switch (messageEvent.data.command) {
                 case 'ppn-keyword':
@@ -121,39 +117,29 @@ export default {
          * Start processing audio.
          */
         async start() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.start();
-            return true;
-          }
-          return false;
+          // if (this.$_webVp_ !== null) {
+          //   await this.$_webVp_.start();
+          //   return true;
+          // }
+          // return false;
         },
         /**
          * Stop processing audio.
          */
          async stop() {
-          if (this.$_webVp_ !== null) {
-            await this.$_webVp_.stop();
-            if (this.$_pvWorker_ !== null) {
-              this.$_pvWorker_.postMessage({ command: 'reset' });
-            }
-            return true;
-          }
-          return false;
-        },
-        /**
-         * Pause processing audio.
-         */
-        pause() {
-          if (this.$_webVp_ !== null) {
-            this.$_webVp_.pause();
-            return true;
-          }
-          return false;
+          // if (this.$_webVp_ !== null) {
+          //   await this.$_webVp_.stop();
+          //   if (this.$_pvWorker_ !== null) {
+          //     this.$_pvWorker_.postMessage({ command: 'reset' });
+          //   }
+          //   return true;
+          // }
+          // return false;
         },
         /**
          * Delete used resources.
          */
-        delete() {
+        async release() {
           this.$_webVp_?.release();
           this.$_pvWorker_?.postMessage({ command: 'release' });
           this.$_pvWorker_?.terminate();
