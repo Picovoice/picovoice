@@ -22,135 +22,72 @@ import type {
 import type { PorcupineKeyword } from '@picovoice/porcupine-web-core';
 
 import type { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
-
-export type PicovoiceServiceArgs = {
-  accessKey: string;
-  porcupineKeyword: PorcupineKeyword;
-  rhinoContext: RhinoContext;
-  endpointDurationSec?: number;
-  requireEndpoint?: boolean;
-  start?: boolean;
-};
+import {PicovoiceOptions, PorcupineDetection, PorcupineModel, RhinoModel} from '@picovoice/picovoice-web';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PicovoiceService implements OnDestroy {
-  public webVoiceProcessor: WebVoiceProcessor | null = null;
-  public isInit = false;
   public contextInfo: string | null = null;
-  public keyword$: Subject<string> = new Subject<string>();
+  public wakeWordDetection$: Subject<PorcupineDetection> = new Subject<PorcupineDetection>();
   public inference$: Subject<RhinoInference> = new Subject<RhinoInference>();
-  public isError$: Subject<boolean> = new Subject<boolean>();
-  public listening$: Subject<boolean> = new Subject<boolean>();
-  public engine$: Subject<string> = new Subject<string>();
-  public error$: Subject<Error | string | null> = new Subject<
-    Error | string | null
-  >();
-  private picovoiceWorker: PicovoiceWorker | null = null;
+  public isLoaded: Subject<boolean> = new Subject<boolean>();
+  public isListening: Subject<boolean> = new Subject<boolean>();
+  public error$: Subject<Error | string | null> = new Subject<Error | string | null>();
 
   constructor() {}
 
-  public pause(): boolean {
-    if (this.webVoiceProcessor !== null) {
-      this.webVoiceProcessor.pause();
-      this.listening$.next(false);
-      return true;
-    }
-    return false;
+  private wakeWordCallback(detection: PorcupineDetection): void {
+    this.wakeWordDetection$.next(detection)
   }
 
-  public async start(): Promise<boolean> {
-    if (this.webVoiceProcessor !== null) {
-      await this.webVoiceProcessor.start();
-      this.listening$.next(true);
-      return true;
-    }
-    return false;
-  }
-
-  public async stop(): Promise<boolean> {
-    if (this.webVoiceProcessor !== null) {
-      await this.webVoiceProcessor.stop();
-      if (this.picovoiceWorker !== null) {
-        this.picovoiceWorker.postMessage({ command: 'reset' });
-        this.engine$.next('ppn');
-      }
-      this.listening$.next(false);
-      return true;
-    }
-    return false;
-  }
-
-  public async release(): Promise<void> {
-    if (this.picovoiceWorker !== null) {
-      this.picovoiceWorker.postMessage({ command: 'release' });
-      this.picovoiceWorker = null;
-    }
-    if (this.webVoiceProcessor !== null) {
-      await this.webVoiceProcessor.release();
-      this.webVoiceProcessor = null;
-    }
-    this.isInit = false;
+  private inferenceCallback(inference: RhinoInference): void {
+    this.inference$.next(inference)
   }
 
   public async init(
-    picovoiceWorkerFactory: PicovoiceWorkerFactory,
-    picovoiceServiceArgs: PicovoiceServiceArgs
+    accessKey: string,
+    keyword: PorcupineKeyword,
+    porcupineModel: PorcupineModel,
+    context: RhinoContext,
+    rhinoModel: RhinoModel,
+    options: PicovoiceOptions = {}
   ): Promise<void> {
-    if (this.isInit) {
-      throw new Error('Picovoice is already initialized');
-    }
-    this.isInit = true;
 
-    try {
-      this.picovoiceWorker = await picovoiceWorkerFactory.create({
-        ...picovoiceServiceArgs,
-        start: true,
-      });
-      this.picovoiceWorker.onmessage = (
-        message: MessageEvent<PicovoiceWorkerResponse>
-      ) => {
-        switch (message.data.command) {
-          case 'ppn-keyword': {
-            this.keyword$.next(message.data.keywordLabel);
-            this.engine$.next('rhn');
-            break;
-          }
-          case 'rhn-inference': {
-            this.inference$.next(message.data.inference as RhinoInference);
-            this.engine$.next('ppn');
-            break;
-          }
-          case 'rhn-info': {
-            this.contextInfo = message.data.info;
-            break;
-          }
-        }
-      };
-      this.picovoiceWorker.postMessage({ command: 'info' });
-    } catch (error) {
-      this.isInit = false;
-      this.isError$.next(true);
-      this.error$.next(error as Error);
-      throw error;
-    }
+  }
 
-    try {
-      this.webVoiceProcessor = await WebVoiceProcessor.init({
-        engines: [this.picovoiceWorker],
-        start: picovoiceServiceArgs.start,
-      });
-      this.listening$.next(picovoiceServiceArgs.start ?? true);
-    } catch (error) {
-      this.picovoiceWorker.postMessage({ command: 'release' });
-      this.picovoiceWorker.terminate();
-      this.picovoiceWorker = null;
-      this.isInit = false;
-      this.isError$.next(true);
-      this.error$.next(error as Error);
-      throw error;
-    }
+  public async start(): Promise<void> {
+    // if (this.webVoiceProcessor !== null) {
+    //   await this.webVoiceProcessor.start();
+    //   this.listening$.next(true);
+    //   return true;
+    // }
+    // return false;
+  }
+
+  public async stop(): Promise<void> {
+    // if (this.webVoiceProcessor !== null) {
+    //   await this.webVoiceProcessor.stop();
+    //   if (this.picovoiceWorker !== null) {
+    //     this.picovoiceWorker.postMessage({ command: 'reset' });
+    //     this.engine$.next('ppn');
+    //   }
+    //   this.listening$.next(false);
+    //   return true;
+    // }
+    // return false;
+  }
+
+  public async release(): Promise<void> {
+    // if (this.picovoiceWorker !== null) {
+    //   this.picovoiceWorker.postMessage({ command: 'release' });
+    //   this.picovoiceWorker = null;
+    // }
+    // if (this.webVoiceProcessor !== null) {
+    //   await this.webVoiceProcessor.release();
+    //   this.webVoiceProcessor = null;
+    // }
+    // this.isInit = false;
   }
 
   async ngOnDestroy() {
