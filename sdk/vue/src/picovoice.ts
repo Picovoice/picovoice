@@ -13,7 +13,13 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-core';
 import { PorcupineKeyword } from '@picovoice/porcupine-web-core';
 import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
-import {InferenceCallback, PicovoiceOptions, PorcupineModel, RhinoModel} from "@picovoice/picovoice-web";
+import {
+  DetectionCallback,
+  InferenceCallback,
+  PicovoiceOptions,
+  PorcupineModel,
+  RhinoModel
+} from "@picovoice/picovoice-web";
 
 
 /**
@@ -26,14 +32,16 @@ import {InferenceCallback, PicovoiceOptions, PorcupineModel, RhinoModel} from "@
   init: (
       accessKey: string,
       keyword: PorcupineKeyword,
+      wakeWordCallback: DetectionCallback,
       porcupineModel: PorcupineModel,
       context: RhinoContext,
+      inferenceCallback: InferenceCallback,
       rhinoModel: RhinoModel,
       options: PicovoiceOptions,
       contextCallback: (info: string) => void,
       isLoadedCallback: (isLoaded: boolean) => void,
       isListeningCallback: (isListening: boolean) => void,
-      errorCallback: (error: Error) => void) => void;
+      errorCallback: (error: Error) => void) => Promise<void>;
     start: () => Promise<void>;
     stop: () => Promise<void>;
     release: () => Promise<void>;
@@ -52,8 +60,10 @@ export default {
          * Init function for Picovoice.
          *
          * @param keyword
+         * @param wakeWordCallback
          * @param porcupineModel
          * @param context
+         * @param inferenceCallback
          * @param rhinoModel
          * @param options
          * @param contextCallback A method invoked after context information is ready.
@@ -63,8 +73,10 @@ export default {
          */
         async init(
             keyword: PorcupineKeyword,
+            wakeWordCallback: DetectionCallback,
             porcupineModel: PorcupineModel,
             context: RhinoContext,
+            inferenceCallback: InferenceCallback,
             rhinoModel: RhinoModel,
             options: PicovoiceOptions = {},
             contextCallback: (info: string) => void = (info: string) => {},
