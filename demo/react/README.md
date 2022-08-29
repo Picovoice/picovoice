@@ -1,8 +1,8 @@
-# picovoice-web-react-demo
+# Picovoice React Hook Demo
 
-This demo application includes a `VoiceWidget` React function component which includes the `usePicovoice` react hook to allow keyword (hotword / wake word / wake up word) detection and follow-on naturally spoken commands inference. Keyword  detection is handled with the `keywordEventHandler` callback function; inference is handled via the `inferenceEventHandler` callback function.
+This demo application includes a `VoiceWidget` React function component which includes the `usePicovoice` react hook to allow wake word detection and follow-on command inference.
 
-If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
+If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, an error will be displayed.
 
 The widget shows the various loading and error states, as well as mounting/unmounting the `VoiceWidget` with a toggle button, demonstrating the complete lifecycle of the Picovoice SDK within a React app.
 
@@ -27,17 +27,16 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Try voice commands
 
-The demo uses "Bumblebee" as the Porcupine wake word and "Alarm Clock" as the Rhino context for follow-on commands.
+The demo uses "Picovoice" as the Porcupine wake word and a "Clock" Rhino context for follow-on commands.
 
 When the demo is loaded, and you have granted microphone permissions, say the following e.g.:
 
-> "Bumblebee, set a timer for five minutes"
+> "Picovoice, set a timer for five minutes"
 
 The output should look similar to below:
 
 ```json
-Keyword Detections:
-Bumblebee
+Wake word detected!
 
 Inference:
 {
@@ -50,15 +49,14 @@ Inference:
 }
 ```
 
-You can see that when the wake word "Bumblebee" is detected, internally Picovoice SDK switches control to the Rhino ('rhn') engine for naturally-spoken command inference. Rhino operates on a specific domain for dramatic efficiency and performance gains over generic Speech-to-Text transcription approaches. In this instance, it understands commands in the domain of "Alarm Clock".
+When the wake word "Picovoice" is detected, internally Picovoice SDK switches control to the Rhino ('rhn') engine for command inference.
 
-The voice engine control will return to Porcupine ('ppn'), which will once again be listening for "Bumblebee" to start the voice interaction again.
+After inference, the control will return to wake word detection, which will once again be listening for "Picovoice" to start the voice interaction again.
 
-> "Bumblebee, what's the meaning of life?"
+> "Picovoice, what's the meaning of life?"
 
 ```json
-Keyword Detections:
-Bumblebee
+Wake word detected!
 
 Inference:
 {
@@ -69,9 +67,9 @@ Inference:
 }
 ```
 
-This command falls outside the domain of "Alarm Clock" and is therefore not understood.
+This command falls outside the domain of "Clock" and is therefore not understood.
 
-The Alarm Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file.
+The Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file.
 
 ```yaml
 context:
@@ -98,4 +96,3 @@ context:
     resume:
       - "resume (the) (timer)"
 ```
-

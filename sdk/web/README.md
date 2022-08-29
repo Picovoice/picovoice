@@ -1,4 +1,4 @@
-# Picovoice Binding for Web
+# Picovoice SDK for Web
 
 # Picovoice
 
@@ -33,7 +33,7 @@ yarn add @picovoice/picovoice-web
 or using `npm`:
 
 ```console
-npm install --save @picovoice/rhino-web
+npm install --save @picovoice/picovoice-web
 ```
 
 ### AccessKey
