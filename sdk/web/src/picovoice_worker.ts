@@ -16,6 +16,7 @@ import {
   PicovoiceWorkerInitResponse,
   PicovoiceWorkerProcessResponse,
   PicovoiceWorkerReleaseResponse,
+  PicovoiceWorkerResetResponse,
 } from './types';
 
 import {
@@ -135,9 +136,13 @@ export class PicovoiceWorker {
           switch (event.data.command) {
             case 'ok':
               worker.onmessage = (
-                ev: MessageEvent<PicovoiceWorkerProcessResponse>
+                ev: MessageEvent<
+                  PicovoiceWorkerProcessResponse | PicovoiceWorkerResetResponse
+                >
               ): void => {
                 switch (ev.data.command) {
+                  case 'ok':
+                    break;
                   case 'detection':
                     wakeWordCallback(ev.data.detection);
                     break;
@@ -154,10 +159,16 @@ export class PicovoiceWorker {
                     }
                     break;
                   default:
-                    // @ts-ignore
-                    processErrorCallback(
-                      `Unrecognized command: ${event.data.command}`
-                    );
+                    if (processErrorCallback) {
+                      processErrorCallback(
+                        `Unrecognized command: ${event.data.command}`
+                      );
+                    } else {
+                      // eslint-disable-next-line no-console
+                      console.error(
+                        `Unrecognized command: ${event.data.command}`
+                      );
+                    }
                 }
               };
               resolve(

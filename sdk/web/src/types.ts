@@ -9,13 +9,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {
-  PorcupineDetection,
-  PorcupineKeyword,
-  PorcupineModel,
-} from '@picovoice/porcupine-web';
+import { PorcupineDetection } from '@picovoice/porcupine-web';
 
-import { RhinoContext, RhinoInference, RhinoModel } from '@picovoice/rhino-web';
+import { RhinoInference } from '@picovoice/rhino-web';
 
 export type PicovoiceArgs = {
   keywordPath: string;
