@@ -10,41 +10,43 @@
 */
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
-import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-core';
-import { PorcupineKeyword } from '@picovoice/porcupine-web-core';
-import { RhinoContext, RhinoInference } from '@picovoice/rhino-web-core';
 import {
   DetectionCallback,
   InferenceCallback,
   PicovoiceOptions,
+  PicovoiceWorker,
+  PorcupineKeyword,
   PorcupineModel,
-  RhinoModel
-} from "@picovoice/picovoice-web";
-
+  RhinoContext,
+  RhinoModel,
+} from '@picovoice/picovoice-web';
 
 /**
  * Type alias for Picovoice Vue Mixin.
  * Use with `Vue as VueConstructor extends {$picovoice: PicovoiceVue}` to get types in typescript.
  */
- export interface PicovoiceVue {
-  $_pvWorker_: Worker | null;
-  $_webVp_: WebVoiceProcessor | null;
+export interface PicovoiceVue {
+  $_picovoice_: PicovoiceWorker | null;
   init: (
-      accessKey: string,
-      keyword: PorcupineKeyword,
-      wakeWordCallback: DetectionCallback,
-      porcupineModel: PorcupineModel,
-      context: RhinoContext,
-      inferenceCallback: InferenceCallback,
-      rhinoModel: RhinoModel,
-      options: PicovoiceOptions,
-      contextCallback: (info: string) => void,
-      isLoadedCallback: (isLoaded: boolean) => void,
-      isListeningCallback: (isListening: boolean) => void,
-      errorCallback: (error: Error) => void) => Promise<void>;
-    start: () => Promise<void>;
-    stop: () => Promise<void>;
-    release: () => Promise<void>;
+    accessKey: string,
+    keyword: PorcupineKeyword,
+    wakeWordCallback: DetectionCallback,
+    porcupineModel: PorcupineModel,
+    context: RhinoContext,
+    inferenceCallback: InferenceCallback,
+    rhinoModel: RhinoModel,
+    contextCallback: (info: string) => void,
+    isLoadedCallback: (isLoaded: boolean) => void,
+    isListeningCallback: (isListening: boolean) => void,
+    errorCallback: (error: string | null) => void,
+    options?: PicovoiceOptions
+  ) => Promise<void>;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+  release: () => Promise<void>;
+  isLoadedCallback: (isLoaded: boolean) => void;
+  isListeningCallback: (isListening: boolean) => void;
+  errorCallback: (error: string | null) => void;
 }
 
 export default {
@@ -54,117 +56,146 @@ export default {
      */
     $picovoice(): PicovoiceVue {
       return {
-        $_pvWorker_: null as Worker | null,
-        $_webVp_: null as WebVoiceProcessor | null,
+        $_picovoice_: null as PicovoiceWorker | null,
+        isLoadedCallback: function (): void {
+          return;
+        },
+        isListeningCallback: function (): void {
+          return;
+        },
+        errorCallback: function (): void {
+          return;
+        },
+
         /**
          * Init function for Picovoice.
          *
-         * @param keyword
-         * @param wakeWordCallback
-         * @param porcupineModel
-         * @param context
-         * @param inferenceCallback
-         * @param rhinoModel
-         * @param options
-         * @param contextCallback A method invoked after context information is ready.
-         * @param isLoadedCallback
-         * @param isListeningCallback
-         * @param errorCallback A method invoked if an error occurs within `PorcupineWorkerFactory`.
+         * @param accessKey AccessKey obtained from Picovoice Console.
+         * @param keyword A Porcupine keyword. Can be provided as a built-in, base64 or a hosted `.ppn` file.
+         * @param wakeWordCallback User-defined callback to run after a keyword is detected.
+         * @param porcupineModel Contains the model parameters that are used to initialize the Porcupine engine.
+         * Model can be encoded in base64 or can be stored in a `.pv` file in a public directory.
+         * @param context A Rhino context. Can be provided as a base64 or a hosted `.rhn` file.
+         * @param inferenceCallback User-defined callback invoked when Rhino has made an inference.
+         * @param rhinoModel Contains the model parameters that are used to initialize the Rhino engine.
+         * Model can be encoded in base64 or can be stored in a `.pv` file in a public directory.
+         * @param options Optional configuration arguments.
+         * @param options.endpointDurationSec Endpoint duration in seconds.
+         * An endpoint is a chunk of silence at the end of an utterance that marks
+         * the end of spoken command. It should be a positive number within [0.5, 5].
+         * A lower endpoint duration reduces delay and improves responsiveness. A higher endpoint duration
+         * assures Rhino doesn't return inference pre-emptively in case the user pauses before finishing the request.
+         * @param options.requireEndpoint If set to `true`, Rhino requires an endpoint (a chunk of silence)
+         * after the spoken command. If set to `false`, Rhino tries to detect silence, but if it cannot,
+         * it still will provide inference regardless. Set to `false` only if operating in an
+         * environment with overlapping speech (e.g. people talking in the background).
+         * @param contextCallback A method invoked after Rhino context information is ready.
+         * @param isLoadedCallback A method invoked once Picovoice has successfully initialized.
+         * @param isListeningCallback A method invoked once audio processing has begun.
+         * @param errorCallback A method invoked if an error occurs within Picovoice.
          */
         async init(
-            keyword: PorcupineKeyword,
-            wakeWordCallback: DetectionCallback,
-            porcupineModel: PorcupineModel,
-            context: RhinoContext,
-            inferenceCallback: InferenceCallback,
-            rhinoModel: RhinoModel,
-            options: PicovoiceOptions = {},
-            contextCallback: (info: string) => void = (info: string) => {},
-            isLoadedCallback: (isLoaded: boolean) => void = (isLoaded: boolean) => {},
-            isListeningCallback: (isListening: boolean) => void = (isListening: boolean) => {},
-            errorCallback: (error: Error) => void = (error: Error) => {})
-        ) {
-          try {
-            const {
-              accessKey,
-              porcupineKeyword,
-              rhinoContext,
-              endpointDurationSec,
-              requireEndpoint,
-              start: startWebVp = true,
-            } = picovoiceFactoryArgs;
-            this.$_pvWorker_ = await picovoiceFactory.create({
-              accessKey,
-              porcupineKeyword: JSON.parse(JSON.stringify(porcupineKeyword)),
-              rhinoContext: JSON.parse(JSON.stringify(rhinoContext)),
-              endpointDurationSec,
-              requireEndpoint,
-              start: true,
-            });
-            this.$_webVp_ = await WebVoiceProcessor.init({
-              engines: [this.$_pvWorker_],
-              start: startWebVp,
-            });
+          accessKey: string,
+          keyword: PorcupineKeyword,
+          wakeWordCallback: DetectionCallback,
+          porcupineModel: PorcupineModel,
+          context: RhinoContext,
+          inferenceCallback: InferenceCallback,
+          rhinoModel: RhinoModel,
+          contextCallback: (info: string) => void,
+          isLoadedCallback: (isLoaded: boolean) => void,
+          isListeningCallback: (isListening: boolean) => void,
+          errorCallback: (error: string | null) => void,
+          options: PicovoiceOptions = {}
+        ): Promise<void> {
+          if (options.processErrorCallback) {
+            // eslint-disable-next-line no-console
+            console.warn(
+              "'processErrorCallback' is only supported in the Porcupine Web SDK. " +
+                "Use the 'errorCallback' state to monitor for errors in the Vue SDK."
+            );
+          }
 
-            this.$_pvWorker_.onmessage = messageEvent => {
-              switch (messageEvent.data.command) {
-                case 'ppn-keyword':
-                  keywordCallback(messageEvent.data.keywordLabel);
-                  break;
-                case 'rhn-inference':
-                  inferenceCallback(messageEvent.data.inference);
-                  break;
-                case 'rhn-info':
-                  contextCallback(messageEvent.data.info);
-                  break;
-              }
-            };
-            this.$_pvWorker_.postMessage({ command: 'info' });
-            readyCallback();
-          } catch (error) {
-            errorCallback(error as Error);
+          try {
+            if (!this.$_picovoice_) {
+              this.$_picovoice_ = await PicovoiceWorker.create(
+                accessKey,
+                keyword,
+                wakeWordCallback,
+                porcupineModel,
+                context,
+                inferenceCallback,
+                rhinoModel,
+                { ...options, processErrorCallback: errorCallback }
+              );
+
+              this.isListeningCallback = isListeningCallback;
+              this.isLoadedCallback = isLoadedCallback;
+              this.errorCallback = errorCallback;
+              isLoadedCallback(true);
+              errorCallback(null);
+            }
+          } catch (error: any) {
+            errorCallback(error.toString());
           }
         },
         /**
          * Start processing audio.
          */
-        async start() {
-          // if (this.$_webVp_ !== null) {
-          //   await this.$_webVp_.start();
-          //   return true;
-          // }
-          // return false;
+        async start(): Promise<void> {
+          try {
+            if (!this.$_picovoice_) {
+              this.errorCallback(
+                'Picovoice has not been initialized or has been released'
+              );
+              return;
+            }
+            await WebVoiceProcessor.subscribe(this.$_picovoice_);
+            this.isListeningCallback(true);
+            this.errorCallback(null);
+          } catch (error: any) {
+            this.errorCallback(error.toString());
+          }
         },
         /**
          * Stop processing audio.
          */
-         async stop() {
-          // if (this.$_webVp_ !== null) {
-          //   await this.$_webVp_.stop();
-          //   if (this.$_pvWorker_ !== null) {
-          //     this.$_pvWorker_.postMessage({ command: 'reset' });
-          //   }
-          //   return true;
-          // }
-          // return false;
+        async stop(): Promise<void> {
+          try {
+            if (!this.$_picovoice_) {
+              this.errorCallback(
+                'Picovoice has not been initialized or has been released'
+              );
+              return;
+            }
+            await WebVoiceProcessor.unsubscribe(this.$_picovoice_);
+            this.isListeningCallback(false);
+            this.errorCallback(null);
+          } catch (error: any) {
+            this.errorCallback(error.toString());
+          }
         },
         /**
-         * Delete used resources.
+         * Release allocated resources.
          */
-        async release() {
-          this.$_webVp_?.release();
-          this.$_pvWorker_?.postMessage({ command: 'release' });
-          this.$_pvWorker_?.terminate();
-        }
-      }
-    }
+        async release(): Promise<void> {
+          if (this.$_picovoice_) {
+            await this.stop();
+            this.$_picovoice_.terminate();
+            this.$_picovoice_ = null;
+
+            this.isLoadedCallback(false);
+          }
+        },
+      };
+    },
   },
   // Vue 3 method to clean resources.
-  beforeUnmount(this: any) {
-    this.$picovoice.delete();
+  beforeUnmount(this: any): void {
+    this.$picovoice.release();
   },
   // Vue 2 method to clean resources.
-  beforeDestory(this: any) {
-    this.$picovoice.delete();
-  }
+  beforeDestory(this: any): void {
+    this.$picovoice.release();
+  },
 };
