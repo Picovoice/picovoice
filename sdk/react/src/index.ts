@@ -1,6 +1,3 @@
-import { usePicovoice, PicovoiceHookArgs } from './use_picovoice';
+import { usePicovoice } from './use_picovoice';
 
-export {
-  usePicovoice,
-  PicovoiceHookArgs,
-};
+export { usePicovoice };

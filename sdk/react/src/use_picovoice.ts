@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -37,36 +37,48 @@ export function usePicovoice(): {
     porcupineModel: PorcupineModel,
     context: RhinoContext,
     rhinoModel: RhinoModel,
-    options: PicovoiceOptions
+    options?: PicovoiceOptions
   ) => Promise<void>;
-  start: () => void;
-  stop: () => void;
-  release: () => void;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+  release: () => Promise<void>;
 } {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const picovoiceRef = useRef<PicovoiceWorker | null>(null);
+  const [
+    wakeWordDetection,
+    setWakeWordDetection,
+  ] = useState<PorcupineDetection | null>(null);
+  const [inference, setInference] = useState<RhinoInference | null>(null);
   const [contextInfo, setContextInfo] = useState<string | null>(null);
-  const [isError, setIsError] = useState<boolean | null>(false);
-  const [isListening, setIsListening] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [engine, setEngine] = useState<EngineControlType>('ppn');
-  const [
-    picovoiceWorker,
-    setPicovoiceWorker,
-  ] = useState<PicovoiceWorker | null>(null);
-  const [
-    webVoiceProcessor,
-    setWebVoiceProcessor,
-  ] = useState<WebVoiceProcessor | null>(null);
-  const porcupineCallback = useRef(keywordCallback);
-  const rhinoCallback = useRef(inferenceCallback);
+  const [isListening, setIsListening] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const wakeWordCallback = useCallback(
-    (detection: PorcupineDetection): void => {},
+    (newDetection: PorcupineDetection): void => {
+      if (newDetection) {
+        setWakeWordDetection(newDetection);
+        setInference(null);
+      }
+    },
     []
   );
 
-  const inferenceCallback = useCallback((inference: RhinoInference): void => {},
-  []);
+  const inferenceCallback = useCallback(
+    (newInference: RhinoInference): void => {
+      if (newInference) {
+        setInference(newInference);
+        setWakeWordDetection(null);
+      }
+    },
+    []
+  );
+
+  const errorCallback = useCallback((newError: string): void => {
+    if (newError) {
+      setError(newError);
+    }
+  }, []);
 
   const init = useCallback(
     async (
@@ -76,148 +88,102 @@ export function usePicovoice(): {
       context: RhinoContext,
       rhinoModel: RhinoModel,
       options: PicovoiceOptions = {}
-    ): Promise<void> => {},
-    [wakeWordCallback, inferenceCallback]
+    ): Promise<void> => {
+      try {
+        if (!picovoiceRef.current) {
+          if (options.processErrorCallback) {
+            // eslint-disable-next-line no-console
+            console.warn(
+              'processErrorCallback is only supported in Picovoice Web SDK. ' +
+                "Use the 'error' state to monitor for errors in the React SDK."
+            );
+          }
+          picovoiceRef.current = await PicovoiceWorker.create(
+            accessKey,
+            keyword,
+            wakeWordCallback,
+            porcupineModel,
+            context,
+            inferenceCallback,
+            rhinoModel,
+            { ...options, processErrorCallback: errorCallback }
+          );
+          setContextInfo(picovoiceRef.current.contextInfo);
+          setIsLoaded(true);
+          setError(null);
+        }
+      } catch (e: any) {
+        setError(e.toString());
+      }
+    },
+    [wakeWordCallback, inferenceCallback, errorCallback]
   );
 
-  const start = useCallback(async (): Promise<void> => {}, []);
+  const start = useCallback(async (): Promise<void> => {
+    try {
+      if (!picovoiceRef.current) {
+        setError('Picovoice has not been initialized or has been released');
+        return;
+      }
 
-  const stop = useCallback(async (): Promise<void> => {}, []);
+      if (!isListening) {
+        await WebVoiceProcessor.subscribe(picovoiceRef.current);
+        setIsListening(true);
+        setError(null);
+      }
+    } catch (e: any) {
+      setError(e.toString());
+    }
+  }, [isListening]);
 
-  const release = useCallback(async (): Promise<void> => {}, []);
+  const stop = useCallback(async (): Promise<void> => {
+    try {
+      if (!picovoiceRef.current) {
+        setError('Picovoice has not been initialized or has been released');
+        return;
+      }
 
-  /** Refresh the keyword and inference callbacks
-   * when they change (avoid stale closure) */
+      if (isListening) {
+        await WebVoiceProcessor.unsubscribe(picovoiceRef.current);
+        picovoiceRef.current.reset();
+        setIsListening(false);
+        setError(null);
+      }
+    } catch (e: any) {
+      setError(e.toString());
+    }
+  }, [isListening]);
+
+  const release = useCallback(async (): Promise<void> => {
+    try {
+      if (picovoiceRef.current) {
+        await stop();
+        picovoiceRef.current.release();
+        picovoiceRef.current.terminate();
+        picovoiceRef.current = null;
+        setIsLoaded(false);
+      }
+    } catch (e: any) {
+      setError(e.toString());
+    }
+  }, [stop]);
+
   useEffect(() => {
-    porcupineCallback.current = keywordCallback;
-    rhinoCallback.current = inferenceCallback;
-  }, [keywordCallback, inferenceCallback]);
-
-  useEffect(() => {
-    if (
-      picovoiceWorkerFactory === null ||
-      picovoiceWorkerFactory === undefined
-    ) {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
-    if (picovoiceHookArgs === null || picovoiceHookArgs === undefined) {
-      return (): void => {
-        /* NOOP */
-      };
-    }
-
-    async function startPicovoice(): Promise<{
-      webVp: WebVoiceProcessor;
-      pvWorker: PicovoiceWorker;
-    }> {
-      const { start: startWebVp = true } = picovoiceHookArgs!;
-
-      // Argument checking; the engines will also do checking but we can get
-      // clearer error messages from the hook
-      if (picovoiceHookArgs!.porcupineKeyword === undefined) {
-        throw Error('porcupineKeyword is missing');
-      }
-      if (picovoiceHookArgs!.rhinoContext === undefined) {
-        throw Error('rhinoContext is missing');
-      }
-      if (typeof porcupineCallback.current !== 'function') {
-        throw Error('porcupineCallback is not a function');
-      }
-      if (typeof rhinoCallback.current !== 'function') {
-        throw Error('rhinoCallback is not a function');
-      }
-
-      const pvWorker: PicovoiceWorker = await picovoiceWorkerFactory!.create({
-        ...picovoiceHookArgs!,
-        start: true,
-      });
-
-      pvWorker.onmessage = (
-        message: MessageEvent<PicovoiceWorkerResponse>
-      ): void => {
-        switch (message.data.command) {
-          case 'ppn-keyword':
-            porcupineCallback.current(message.data.keywordLabel);
-            setEngine('rhn');
-            break;
-          case 'rhn-inference':
-            rhinoCallback.current(message.data.inference);
-            setEngine('ppn');
-            break;
-          case 'rhn-info':
-            setContextInfo(message.data.info);
-            break;
-          default:
-            break;
-        }
-      };
-
-      pvWorker.postMessage({ command: 'info' });
-
-      try {
-        const webVp = await WebVoiceProcessor.init({
-          engines: [pvWorker],
-          start: startWebVp,
-        });
-
-        return { webVp, pvWorker };
-      } catch (error) {
-        pvWorker.postMessage({ command: 'release' });
-        throw error;
-      }
-    }
-    const startPicovoicePromise = startPicovoice();
-
-    startPicovoicePromise
-      .then(({ webVp, pvWorker }) => {
-        setIsLoaded(true);
-        setIsListening(webVp.isRecording);
-        setWebVoiceProcessor(webVp);
-        setPicovoiceWorker(pvWorker);
-        setIsError(false);
-      })
-      .catch(error => {
-        setIsError(true);
-        setErrorMessage(error.toString());
-      });
-
-    return (): void => {
-      startPicovoicePromise
-        .then(({ webVp, pvWorker }) => {
-          if (webVp !== undefined && webVp !== null) {
-            webVp.release();
-          }
-          if (pvWorker !== undefined && pvWorker !== undefined) {
-            pvWorker.postMessage({ command: 'release' });
-            pvWorker.terminate();
-          }
-        })
-        .catch(() => {
-          // do nothing
-        });
+    return () => {
+      release();
     };
-  }, [
-    picovoiceWorkerFactory,
-    // https://github.com/facebook/react/issues/14476#issuecomment-471199055
-    // ".... we know our data structure is relatively shallow, doesn't have cycles,
-    // and is easily serializable ... doesn't have functions or weird objects like Dates.
-    // ... it's acceptable to pass [JSON.stringify(variables)] as a dependency."
-    JSON.stringify(picovoiceHookArgs),
-  ]);
+  }, []);
 
   return {
+    wakeWordDetection,
+    inference,
     contextInfo,
     isLoaded,
     isListening,
-    isError,
-    errorMessage,
-    engine,
-    webVoiceProcessor,
+    error,
+    init,
     start,
-    pause,
     stop,
+    release,
   };
 }
