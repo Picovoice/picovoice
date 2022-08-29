@@ -44,10 +44,8 @@ export function usePicovoice(): {
   release: () => Promise<void>;
 } {
   const picovoiceRef = useRef<PicovoiceWorker | null>(null);
-  const [
-    wakeWordDetection,
-    setWakeWordDetection,
-  ] = useState<PorcupineDetection | null>(null);
+  const [wakeWordDetection, setWakeWordDetection] =
+    useState<PorcupineDetection | null>(null);
   const [inference, setInference] = useState<RhinoInference | null>(null);
   const [contextInfo, setContextInfo] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -94,7 +92,7 @@ export function usePicovoice(): {
           if (options.processErrorCallback) {
             // eslint-disable-next-line no-console
             console.warn(
-              'processErrorCallback is only supported in Picovoice Web SDK. ' +
+              'processErrorCallback is only supported in the Picovoice Web SDK. ' +
                 "Use the 'error' state to monitor for errors in the React SDK."
             );
           }
@@ -158,7 +156,6 @@ export function usePicovoice(): {
     try {
       if (picovoiceRef.current) {
         await stop();
-        picovoiceRef.current.release();
         picovoiceRef.current.terminate();
         picovoiceRef.current = null;
         setIsLoaded(false);

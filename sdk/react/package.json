@@ -36,7 +36,7 @@
     "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "dependencies": {
-    "@picovoice/picovoice-web": "^2.1.1"
+    "@picovoice/picovoice-web": "^2.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePicovoice } from "@picovoice/picovoice-react";
 import {
   PorcupineKeyword,
@@ -40,9 +40,14 @@ export default function VoiceWidget() {
     release,
   } = usePicovoice();
 
+  const releaseRef = useRef<() => Promise<void>>();
+  releaseRef.current = release;
+
   useEffect(() => {
     return () => {
-      release();
+      if (releaseRef.current !== undefined) {
+        releaseRef.current();
+      }
     };
   }, []);
 
@@ -71,7 +76,7 @@ export default function VoiceWidget() {
             )
           }
         >
-          Start Picovoice
+          Init Picovoice
         </button>
       </h3>
       <h3>Picovoice Loaded: {JSON.stringify(isLoaded)}</h3>
@@ -94,14 +99,28 @@ export default function VoiceWidget() {
         Stop
       </button>
 
-      {wakeWordDetection ? (
-        <h3>Wake word detected!</h3>
-      ) : (
-        <h3>Listening for the wake word 'Picovoice'...</h3>
-      )}
+      <button
+        onClick={async () => await release()}
+        disabled={error !== null || !isLoaded || isListening}
+      >
+        Release
+      </button>
 
-      <h3>Inference:</h3>
-      {inference && <pre>{JSON.stringify(inference, null, 2)}</pre>}
+      {isListening && (
+        <>
+          {wakeWordDetection ? (
+            <h3>Wake word detected!</h3>
+          ) : (
+            <h3>Listening for the wake word 'Picovoice'...</h3>
+          )}
+        </>
+      )}
+      {isListening && inference && (
+        <>
+          <h3>Inference:</h3>
+          <pre>{JSON.stringify(inference, null, 2)}</pre>
+        </>
+      )}
       <hr />
       <h3>Context info</h3>
       <pre>{contextInfo}</pre>
