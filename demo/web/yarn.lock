@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-web@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.1.tgz#7c8a8c92ad8bda2b25323b3724901a2e9746e037"
-  integrity sha512-do/24niiRuOTzvaMTSLMTBevSLUvpXbHqZogGJ0dfHw7Y3W2yRm5meaOmWpPVemvyzmSbsWWAV/TuJCXxJvDXg==
+"@picovoice/picovoice-web@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.2.tgz#587d9c39f2061257d36602d711a635692e7f0c55"
+  integrity sha512-sZxXGzKd+g/yHz4eAJyRE72MZePdDZwE1dGKuJPlF6u/JDu1NjPLkdRsxwiSRJqz7sMHuDmWEVDNYgEfHOqtCg==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.4"
     "@picovoice/rhino-web" "=2.1.1"
