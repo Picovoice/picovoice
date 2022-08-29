@@ -35,7 +35,7 @@ export interface PicovoiceVue {
     context: RhinoContext,
     inferenceCallback: InferenceCallback,
     rhinoModel: RhinoModel,
-    contextCallback: (info: string) => void,
+    contextInfoCallback: (info: string) => void,
     isLoadedCallback: (isLoaded: boolean) => void,
     isListeningCallback: (isListening: boolean) => void,
     errorCallback: (error: string | null) => void,
@@ -89,7 +89,7 @@ export default {
          * after the spoken command. If set to `false`, Rhino tries to detect silence, but if it cannot,
          * it still will provide inference regardless. Set to `false` only if operating in an
          * environment with overlapping speech (e.g. people talking in the background).
-         * @param contextCallback A method invoked after Rhino context information is ready.
+         * @param contextInfoCallback A method invoked after Rhino context information is ready.
          * @param isLoadedCallback A method invoked once Picovoice has successfully initialized.
          * @param isListeningCallback A method invoked once audio processing has begun.
          * @param errorCallback A method invoked if an error occurs within Picovoice.
@@ -102,7 +102,7 @@ export default {
           context: RhinoContext,
           inferenceCallback: InferenceCallback,
           rhinoModel: RhinoModel,
-          contextCallback: (info: string) => void,
+          contextInfoCallback: (info: string) => void,
           isLoadedCallback: (isLoaded: boolean) => void,
           isListeningCallback: (isListening: boolean) => void,
           errorCallback: (error: string | null) => void,
@@ -128,6 +128,8 @@ export default {
                 rhinoModel,
                 { ...options, processErrorCallback: errorCallback }
               );
+
+              contextInfoCallback(this.$_picovoice_.contextInfo);
 
               this.isListeningCallback = isListeningCallback;
               this.isLoadedCallback = isLoadedCallback;
