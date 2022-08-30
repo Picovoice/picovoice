@@ -1647,13 +1647,13 @@ return (
 #### Vue
 
 ```console
-yarn add @picovoice/picovoice-vue
+yarn add @picovoice/picovoice-vue @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/picovoice-vue
+npm install @picovoice/picovoice-vue @picovoice/web-voice-processor
 ```
 
 ```html
