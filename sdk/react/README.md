@@ -28,13 +28,13 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 Using `yarn`:
 
 ```console
-yarn add @picovoice/picovoice-react
+yarn add @picovoice/picovoice-react @picovoice/web-voice-processor 
 ```
 
 or using `npm`:
 
 ```console
-npm install --save @picovoice/picovoice-react
+npm install --save @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 Picovoice is also available for React Native as a separate package. See [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native).
