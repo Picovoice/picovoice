@@ -1574,7 +1574,7 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
 #### React
 
 ```console
-yarn add @picovoice/picovoice-react
+yarn add @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 (or)
