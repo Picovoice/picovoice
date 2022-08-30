@@ -1580,7 +1580,7 @@ yarn add @picovoice/picovoice-react @picovoice/web-voice-processor
 (or)
 
 ```console
-npm install @picovoice/picovoice-react
+npm install @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 ```javascript
