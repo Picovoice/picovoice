@@ -40,6 +40,10 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn --force
 
+    - name: Build SDK
+      run: yarn install && yarn build
+      working-directory: sdk/angular
+
     - name: Install dependencies
       run: yarn install
 
