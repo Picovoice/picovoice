@@ -233,10 +233,10 @@ Similar to the model file (`.pv`), these files are saved in IndexedDB to be used
 Either `base64` or `publicPath` must be set for each file to initialize Picovoice. If both are set, Picovoice will use
 the `base64` model.
 
-## Non-English Languages
+## Switching Languages
 
-In order to use Picovoice with non-English you need to use the corresponding model file (`.pv`). The model files for all
-supported languages are available in the [Porcupine](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [Rhino](https://github.com/Picovoice/rhino/tree/master/lib/common) GitHub repositories. 
+In order to use Picovoice with different languages you need to use the corresponding model file (`.pv`) for the desired language. The model files for all
+supported languages are available in the [Porcupine](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [Rhino](https://github.com/Picovoice/rhino/tree/master/lib/common) GitHub repositories.
 
 ## Demo
 
