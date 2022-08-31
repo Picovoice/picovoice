@@ -27,8 +27,7 @@ import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
   providedIn: 'root',
 })
 export class PicovoiceService implements OnDestroy {
-  public wakeWordDetection$: Subject<PorcupineDetection> =
-    new Subject<PorcupineDetection>();
+  public wakeWordDetection$: Subject<PorcupineDetection> = new Subject<PorcupineDetection>();
   public inference$: Subject<RhinoInference> = new Subject<RhinoInference>();
 
   public contextInfo$: Subject<string | null> = new Subject<string | null>();
@@ -59,12 +58,13 @@ export class PicovoiceService implements OnDestroy {
         this.picovoice = await PicovoiceWorker.create(
           accessKey,
           keyword,
-          this.wakeWordDetectionCallback,
+          (detection: PorcupineDetection) =>
+            this.wakeWordDetection$.next(detection),
           porcupineModel,
           context,
-          this.inferenceCallback,
+          (inference: RhinoInference) => this.inference$.next(inference),
           rhinoModel,
-          { ...options, processErrorCallback: this.errorCallback }
+          { ...options, processErrorCallback: error => this.error$.next(error) }
         );
         this.contextInfo$.next(this.picovoice.contextInfo);
         this.isLoaded$.next(true);
@@ -123,17 +123,5 @@ export class PicovoiceService implements OnDestroy {
 
   async ngOnDestroy(): Promise<void> {
     await this.release();
-  }
-
-  private wakeWordDetectionCallback(detection: PorcupineDetection): void {
-    this.wakeWordDetection$.next(detection);
-  }
-
-  private inferenceCallback(inference: RhinoInference): void {
-    this.inference$.next(inference);
-  }
-
-  private errorCallback(error: string): void {
-    this.error$.next(error);
   }
 }

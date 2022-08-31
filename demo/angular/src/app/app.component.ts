@@ -6,10 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'picovoice-web-angular-demo-picovoice';
-  show = true
-
-  toggle() {
-    this.show = !this.show
-  }
+  title = 'picovoice-angular-demo-picovoice';
 }
