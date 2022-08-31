@@ -17,9 +17,9 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "porcupine-web-angular": [
-        "dist/porcupine-web-angular/porcupine-web-angular",
-        "dist/porcupine-web-angular"
+      "picovoice-angular": [
+        "dist/picovoice-angular/picovoice-angular",
+        "dist/picovoice-angular"
       ]
     }
   },

@@ -48,7 +48,7 @@ jobs:
       run: yarn install
 
     - name: Build
-      run: yarn build picovoice-web-angular --prod
+      run: yarn build picovoice-angular --prod
 
     - name: Lint
       run: yarn lint

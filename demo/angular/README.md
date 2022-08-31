@@ -1,12 +1,10 @@
-# picovoice-web-angular-demo
+# picovoice-angular-demo
 
-This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService` Angular service to allow naturally spoken commands to be converted to intents. Picovoice keyword detection is handled via the `$keyword` event. Inference is handled via the `inference$` event. Our `VoiceWidget` subscribes to this event and displays the results.
-
-The demo uses dynamic imports to split the Picovoice workers away from the main application bundle. This means that the initial download size of the Angular app will not be impacted by the `~4-6MB` requirement of Picovoice. While small for all-in-one offline Voice AI, the size is large for an initial web app load.
+This demo application includes a sample `VoiceWidget` Angular component which uses the `PicovoiceService`. Picovoice wake word detection is handled via the `wakeWordDetection$` event. Inference is handled via the `inference$` event. The `VoiceWidget` subscribes to these events and displays the results.
 
 If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
 
-The widget shows the various loading and error events, as well as mounting/unmounting the `VoiceWidget` with a toggle, demonstrating the complete lifecycle of Picovoice with in an Angular app.
+The widget shows the various loading and error events, as well as mounting/unmounting the `VoiceWidget` with a toggle, demonstrating the complete lifecycle of Picovoice within an Angular app.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.5.
 
@@ -14,7 +12,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to obtain your `AccessKey`.
 
 ## Install and run
 
@@ -66,9 +64,9 @@ Try a phrase that is out-of-context:
 }
 ```
 
-This command falls outside the domain of "Alarm Clock" and is therefore not understood.
+This command falls outside the "Clock" context and is therefore not understood.
 
-The Alarm Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file for the WebAssembly (WASM) platform.
+The Clock context was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file for the WebAssembly (WASM) platform.
 
 ```yaml
 context:

@@ -12,7 +12,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android?label=maven%20central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Picovoice-iOS)](https://github.com/Picovoice/picovoice/tree/master/sdk/ios)
-[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-angular)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-angular)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
@@ -1516,59 +1516,83 @@ When done, release the resources allocated to Picovoice using `picovoice.release
 #### Angular
 
 ```console
-yarn add @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+yarn add @picovoice/picovoice-angular @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/picovoice-web-angular @picovoice/picovoice-web-en-worker
+npm install @picovoice/picovoice-angular @picovoice/web-voice-processor
 ```
 
 ```typescript
 import { Subscription } from "rxjs"
-import { PicovoiceService } from "@picovoice/picovoice-web-angular"
+import { PicovoiceService } from "@picovoice/picovoice-angular"
  
 ...
  
-  constructor(private picovoiceService: PicovoiceService) {
-    // Subscribe to Picovoice Keyword detections
-    // Store each detection so we can display it in an HTML list
-    this.keywordDetection = picovoiceService.keyword$.subscribe(
-      keywordLabel => this.detections = [...this.detections, keywordLabel])
-    // Subscribe to Rhino Inference events
-    // Show the latest one in the widget
-    this.inferenceDetection = picovoiceService.inference$.subscribe(
-      inference => this.latestInference = inference)
-  }
+constructor(private picovoiceService: PicovoiceService) {
+  this.wakeWordDetectionSubscription = picovoiceService.wakeWordDetection$.subscribe(
+          (wakeWordDetection: PorcupineDetection) => {
+            this.inference = null;
+            this.wakeWordDetection = wakeWordDetection;
+          }
+  );
 
-    async ngOnInit() {
-        // Load Picovoice worker chunk with specific language model (large ~4-6MB chunk; dynamically imported)
-        const pvFactoryEn = (await import('@picovoice/picovoice-web-en-worker')).PicovoiceWorkerFactory
-        // Initialize Picovoice Service
-        try {
-          await this.picovoiceService.init(pvFactoryEn,
-            {
-              // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-              accessKey: "${ACCESS_KEY}",
-              // Built-in wake word
-              porcupineKeyword: {builtin: "Hey Google", sensitivity: 0.6},
-              // Rhino context (Base64 representation of a `.rhn` file)
-              rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
-              start: true
-            }
-          )
-        }
-        catch (error) {
-          console.error(error)
-        }
-    }
+  this.inferenceSubscription = picovoiceService.inference$.subscribe(
+          (inference: RhinoInference) => {
+            this.wakeWordDetection = null;
+            this.inference = inference;
+          }
+  );
 
-    ngOnDestroy() {
-        this.keywordDetection.unsubscribe()
-        this.inferenceDetection.unsubscribe()
-        this.picovoiceService.release()
+  this.contextInfoSubscription = picovoiceService.contextInfo$.subscribe(
+          (contextInfo: string | null) => {
+            this.contextInfo = contextInfo;
+          }
+  );
+
+  this.isLoadedSubscription = picovoiceService.isLoaded$.subscribe(
+          (isLoaded: boolean) => {
+            this.isLoaded = isLoaded;
+          }
+  );
+  this.isListeningSubscription = picovoiceService.isListening$.subscribe(
+          (isListening: boolean) => {
+            this.isListening = isListening;
+          }
+  );
+  this.errorSubscription = picovoiceService.error$.subscribe(
+          (error: string | null) => {
+            this.error = error;
+          }
+  );
+}
+
+async ngOnInit() {     
+    try {
+      await this.picovoiceService.init(
+              accessKey,
+              porcupineKeyword,
+              porcupineModel,
+              rhinoContext,
+              rhinoModel
+      );
     }
+    catch (error) {
+      console.error(error)
+    }
+}
+
+ngOnDestroy() {
+  this.wakeWordDetectionSubscription.unsubscribe();
+  this.inferenceSubscription.unsubscribe();
+  this.contextInfoSubscription.unsubscribe();
+  this.isLoadedSubscription.unsubscribe();
+  this.isListeningSubscription.unsubscribe();
+  this.errorSubscription.unsubscribe();
+  this.picovoiceService.release();
+}
 ```
 
 #### React
