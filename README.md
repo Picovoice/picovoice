@@ -13,7 +13,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-java/)
 [![Cocoapods](https://img.shields.io/cocoapods/v/Picovoice-iOS)](https://github.com/Picovoice/picovoice/tree/master/sdk/ios)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-angular)
-[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-react)
+[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-web-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-web-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 [![Crates.io](https://img.shields.io/crates/v/picovoice)](https://crates.io/crates/picovoice)
@@ -1574,74 +1574,58 @@ import { PicovoiceService } from "@picovoice/picovoice-web-angular"
 #### React
 
 ```console
-yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+yarn add @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 (or)
 
 ```console
-npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker
+npm install @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 ```javascript
-import React, { useState } from 'react';
-import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
-import { usePicovoice } from '@picovoice/picovoice-web-react';
- 
-const RHINO_CONTEXT_BASE64 = /* Base64 representation of English-language `.rhn` file, omitted for brevity */
- 
-export default function VoiceWidget() {
-  const [keywordDetections, setKeywordDetections] = useState([]);
-  const [inference, setInference] = useState(null);
- 
-  const inferenceEventHandler = (rhinoInference) => {
-    console.log(rhinoInference);
-    setInference(rhinoInference);
-  };
- 
-  const keywordEventHandler = (porcupineKeywordLabel) => {
-    console.log(porcupineKeywordLabel);
-    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
-  };
- 
+import { usePicovoice } from '@picovoice/picovoice-react';
+
+function App(props) {
   const {
+    wakeWordDetection,
+    inference,
+    contextInfo,
     isLoaded,
     isListening,
-    isError,
-    errorMessage,
+    error,
+    init,
     start,
-    resume,
-    pause,
-    engine,
-  } = usePicovoice(
-    PicovoiceWorkerFactory,
-    {
-      accessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-      // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
-      // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
-      porcupineKeyword: "Picovoice",
-      rhinoContext: { base64: RHINO_CONTEXT_BASE64 },
-      start: true,
-    },
-    keywordEventHandler,
-    inferenceEventHandler
-  );
- 
-return (
-  <div className="voice-widget">
-    <h3>Engine: {engine}</h3>
-    <h3>Keyword Detections:</h3>
-    {keywordDetections.length > 0 && (
-      <ul>
-        {keywordDetections.map((label, index) => (
-          <li key={index}>{label}</li>
-        ))}
-      </ul>
-    )}
-    <h3>Latest Inference:</h3>
-    {JSON.stringify(inference)}
-  </div>
-)
+    stop,
+    release,
+  } = usePicovoice();
+
+  const initEngine = async () => {
+    await init(
+            ${ACCESS_KEY},
+            porcupineKeyword,
+            porcupineModel,
+            rhinoContext,
+            rhinoModel
+    );
+    await start();
+  }
+
+  useEffect(() => {
+    if (wakeWordDetection !== null) {
+      console.log(`Picovoice detected keyword: ${wakeWordDetection.label}`);
+    }
+  }, [wakeWordDetection])
+  
+  useEffect(() => {
+    if (inference !== null) {
+      if (inference.isUnderstood) {
+        console.log(inference.intent)
+        console.log(inference.slots)
+      }
+    }
+  }, [inference])
+}
 ```
 
 #### Vue
