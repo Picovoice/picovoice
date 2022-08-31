@@ -3,43 +3,43 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "picovoice-web-angular": {
+    "picovoice-angular": {
       "projectType": "library",
-      "root": "projects/picovoice-web-angular",
-      "sourceRoot": "projects/picovoice-web-angular/src",
+      "root": "projects/picovoice-angular",
+      "sourceRoot": "projects/picovoice-angular/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/picovoice-web-angular/tsconfig.lib.json",
-            "project": "projects/picovoice-web-angular/ng-package.json"
+            "tsConfig": "projects/picovoice-angular/tsconfig.lib.json",
+            "project": "projects/picovoice-angular/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/picovoice-web-angular/tsconfig.lib.prod.json"
+              "tsConfig": "projects/picovoice-angular/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/picovoice-web-angular/src/test.ts",
-            "tsConfig": "projects/picovoice-web-angular/tsconfig.spec.json",
-            "karmaConfig": "projects/picovoice-web-angular/karma.conf.js"
+            "main": "projects/picovoice-angular/src/test.ts",
+            "tsConfig": "projects/picovoice-angular/tsconfig.spec.json",
+            "karmaConfig": "projects/picovoice-angular/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/picovoice-web-angular/**/*.ts",
-              "projects/picovoice-web-angular/**/*.html"
+              "projects/picovoice-angular/**/*.ts",
+              "projects/picovoice-angular/**/*.html"
             ]
           }
         }
       }
     }
   },
-  "defaultProject": "picovoice-web-angular"
+  "defaultProject": "picovoice-angular"
 }

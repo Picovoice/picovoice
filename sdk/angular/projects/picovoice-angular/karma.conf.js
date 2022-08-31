@@ -27,7 +27,7 @@ module.exports = function (config) {
     coverageReporter: {
       dir: require('path').join(
         __dirname,
-        '../../coverage/picovoice-web-angular'
+        '../../coverage/porcupine-angular'
       ),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }],

@@ -6,8 +6,8 @@
       "files": ["*.ts"],
       "parserOptions": {
         "project": [
-          "projects/picovoice-web-angular/tsconfig.lib.json",
-          "projects/picovoice-web-angular/tsconfig.spec.json"
+          "projects/picovoice-angular/tsconfig.lib.json",
+          "projects/picovoice-angular/tsconfig.spec.json"
         ],
         "createDefaultProgram": true
       },
