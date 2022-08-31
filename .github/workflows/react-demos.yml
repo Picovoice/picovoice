@@ -40,10 +40,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Build SDK
-      run: yarn install && yarn build
-      working-directory: sdk/react
-      
     - name: Install dependencies
       run: yarn install
 
