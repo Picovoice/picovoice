@@ -1411,8 +1411,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/picovoice-react@file:../../sdk/react":
+"@picovoice/picovoice-react@^2.1.0":
   version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react/-/picovoice-react-2.1.0.tgz#0f386174f27a2759b1b097702f4a31f7adf06504"
+  integrity sha512-JELNsfb05ZX4PTrx6Dfm3ZmCjo9fWo5/M9vnn8LTWoXRiB+4jxedAwKHUn9p3N/SRgXNkIGBJT5lej+AKut8Iw==
   dependencies:
     "@picovoice/picovoice-web" "^2.1.3"
 
