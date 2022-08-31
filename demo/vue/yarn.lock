@@ -1229,8 +1229,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-vue@../../sdk/vue":
+"@picovoice/picovoice-vue@^2.1.0":
   version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-vue/-/picovoice-vue-2.1.0.tgz#bb97f1dbf27e8cb053226c6f9230e9afabd788e3"
+  integrity sha512-DlP7sbIICZf/UAx1/gsISFf4hrzcqpUolTrlVAJ8PoMfOVfYAlv1CTF31KGsQ/AqsDrDYIfDUmgZM1znJQ2E2A==
   dependencies:
     "@picovoice/picovoice-web" "^2.1.3"
 
