@@ -16,7 +16,7 @@ export class VoiceWidget implements OnDestroy {
   error: string | null = null;
   wakeWordDetection: PorcupineDetection | null = null;
   inference: RhinoInference | null = null;
-  private wakeWordSubscription: Subscription;
+  private wakeWordDetectionSubscription: Subscription;
   private inferenceSubscription: Subscription;
   private contextInfoSubscription: Subscription;
   private isLoadedSubscription: Subscription;
@@ -24,7 +24,7 @@ export class VoiceWidget implements OnDestroy {
   private errorSubscription: Subscription;
 
   constructor(private picovoiceService: PicovoiceService) {
-    this.wakeWordSubscription = picovoiceService.wakeWordDetection$.subscribe(
+    this.wakeWordDetectionSubscription = picovoiceService.wakeWordDetection$.subscribe(
       (wakeWordDetection: PorcupineDetection) => {
         this.inference = null;
         this.wakeWordDetection = wakeWordDetection;
@@ -61,7 +61,9 @@ export class VoiceWidget implements OnDestroy {
     );
   }
   ngOnDestroy(): void {
-    this.wakeWordSubscription.unsubscribe();
+    this.wakeWordDetectionSubscription.unsubscribe();
+    this.inferenceSubscription.unsubscribe();
+    this.contextInfoSubscription.unsubscribe();
     this.isLoadedSubscription.unsubscribe();
     this.isListeningSubscription.unsubscribe();
     this.errorSubscription.unsubscribe();
