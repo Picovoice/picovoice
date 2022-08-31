@@ -155,12 +155,10 @@ methods: {
   wakeWordCallback: function(detection) {
     console.log(`Picovoice detected keyword: ${detection.label}`);
   },
-  inferenceCallback: function(inference) {
-    if (inference.isFinalized) {
-      if (inference.isUnderstood) {
-        console.log(inference.intent)
-        console.log(inference.slots)
-      }
+  inferenceCallback: function(inference) {    
+    if (inference.isUnderstood) {
+      console.log(inference.intent)
+      console.log(inference.slots)
     }
   },
   contextInfoCallback: function(contextInfo) {
