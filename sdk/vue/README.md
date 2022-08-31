@@ -47,13 +47,6 @@ or using `npm`:
 npm install --save @picovoice/picovoice-vue @picovoice/web-voice-processor
 ```
 
-### AccessKey
-
-Picovoice requires a valid `AccessKey` at initialization. `AccessKey` acts as your credentials when using
-Picovocie SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
-
 ## Usage
 
 Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`).
