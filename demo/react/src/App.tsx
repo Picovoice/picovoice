@@ -7,7 +7,10 @@ function App() {
   const [show, setShow] = useState(true);
   return (
     <div className="App">
-      <h1>Picovoice SDK for Web + React Hook ("usePicovoice" from @picovoice/picovoice-web-react)</h1>
+      <h1>
+        Picovoice SDK for Web + React Hook ("usePicovoice" from
+        @picovoice/picovoice-react)
+      </h1>
       <button onClick={() => setShow(!show)}>
         Toggle VoiceWidget {show ? "OFF" : "ON"}
       </button>

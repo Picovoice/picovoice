@@ -1,10 +1,10 @@
-import picovoiceMixin, { PicovoiceVue, PicovoiceWorkerFactoryArgs } from './picovoice';
+import picovoiceMixin, { PicovoiceVue } from './picovoice';
 
 // Create module definition for Vue.use()
 const plugin = {
-  install: function(Vue: any) {
+  install: function (Vue: any) {
     Vue.mixin(picovoiceMixin);
-  }
+  },
 };
 
 // Auto-install when vue is found (eg. in browser via <script> tag)
@@ -24,7 +24,4 @@ if (GlobalVue) {
 export default picovoiceMixin;
 
 // export types
-export {
-  PicovoiceWorkerFactoryArgs,
-  PicovoiceVue
-};
+export { PicovoiceVue };

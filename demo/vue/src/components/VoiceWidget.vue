@@ -5,41 +5,41 @@
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
-        <input
-          type="text"
-          name="accessKey"
-          v-on:change="updateInputValue"
-          :disabled="isLoaded"
-        />
+        <input name="accessKey" type="text" v-on:change="updateInputValue" />
       </label>
-      <button class="start-button" v-on:click="initEngine" :disabled="isLoaded">
-          Start Picovoice
+      <button
+        :disabled="isLoaded"
+        class="start-button"
+        v-on:click="initPicovoice"
+      >
+        Init Picovoice
       </button>
     </h3>
-    <h3>Picovoice Loaded: {{ isLoaded }}</h3>
+    <h3>Loaded: {{ isLoaded }}</h3>
     <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ isError }}</h3>
-    <p class="error-message" v-if="isError">
-      {{ JSON.stringify(errorMessage) }}
+    <h3>Error: {{ error !== null }}</h3>
+    <p v-if="error !== null" class="error-message">
+      {{ error.toString() }}
     </p>
-    <h3>Engine: {{ engine }}</h3>
-    <button v-on:click="start" :disabled="!isLoaded || isError || isListening">
+    <button :disabled="!isLoaded || error || isListening" v-on:click="start">
       Start
     </button>
-    <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
-      Pause
-    </button>
-    <button v-on:click="stop" :disabled="!isLoaded || isError || !isListening">
+    <button :disabled="!isLoaded || error || !isListening" v-on:click="stop">
       Stop
     </button>
-    <h3>Keyword Detections (Listening for "Picovoice")</h3>
-    <ul v-if="detections.length > 0">
-      <li v-for="(item, index) in detections" :key="index">
-        {{ item }}
-      </li>
-    </ul>
-    <h3>Inference: (Follow-on commands in "Clock" context)</h3>
-    <pre v-if="inference !== null">{{ JSON.stringify(inference, null, 2) }}</pre>
+    <button :disabled="!isLoaded || error || isListening" v-on:click="release">
+      Release
+    </button>
+    <div v-if="isListening">
+      <h3 v-if="wakeWordDetection !== null">Wake word detected!</h3>
+      <h3 v-else>Listening for 'Picovoice'...</h3>
+    </div>
+    <div v-if="isListening && inference !== null">
+      <h3>Inference:</h3>
+      <pre v-if="inference !== null">{{
+        JSON.stringify(inference, null, 2)
+      }}</pre>
+    </div>
     <hr />
     <div>
       <h3>Context Info:</h3>
@@ -49,104 +49,82 @@
 </template>
 
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue';
+import { defineComponent } from "vue";
 
-type EngineControlType = "ppn" | "rhn";
+import picovoiceMixin from "@picovoice/picovoice-vue";
 
-import picovoiceMixin, {
-  PicovoiceVue,
-} from "@picovoice/picovoice-web-vue";
-import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
-import { RhinoInference } from "@picovoice/rhino-web-core";
+import { PorcupineDetection, RhinoInference } from "@picovoice/picovoice-web";
 
-import { CLOCK_EN_64 } from "../dist/rhn_contexts_base64";
-
-export default (Vue as VueConstructor<Vue & {$picovoice: PicovoiceVue}>).extend({
+const VoiceWidget = defineComponent({
   name: "VoiceWidget",
   mixins: [picovoiceMixin],
-  data: function () {
+  data() {
     return {
       inputValue: "",
+      wakeWordDetection: null as PorcupineDetection | null,
       inference: null as RhinoInference | null,
-      detections: [] as string[],
-      isError: false,
-      errorMessage: '',
       isLoaded: false,
       isListening: false,
-      isTalking: false,
-      context64: CLOCK_EN_64,
+      error: null as string | null,
       info: null as string | null,
-      engine: null as EngineControlType | null,
-      factory: PicovoiceWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: "",
-        start: true,
-        porcupineKeyword: {
-          builtin: 'Picovoice'
-        },
-        rhinoContext: {
-          base64: CLOCK_EN_64,
-        },
-      },
     };
   },
   methods: {
-    initEngine: function (event: any) {
-      this.factoryArgs.accessKey = this.inputValue;
-      this.isError = false;
-      this.isLoaded = false;
-      this.isListening = false;
+    start: function () {
+      this.$picovoice.start();
+    },
+    stop: function () {
+      this.$picovoice.stop();
+    },
+    release: function () {
+      this.$picovoice.release();
+    },
+    initPicovoice: function () {
       this.$picovoice.init(
-        this.factoryArgs,
-        this.factory,
-        this.pvKeywordFn,
-        this.pvInferenceFn,
-        this.pvInfoFn,
-        this.pvReadyFn,
-        this.pvErrorFn
+        this.inputValue,
+        {
+          label: "Picovoice",
+          publicPath: "picovoice_wasm.ppn",
+          forceWrite: true,
+        },
+        this.wakeWordCallback,
+        { publicPath: "porcupine_params.pv", forceWrite: true },
+        { publicPath: "clock_wasm.rhn", forceWrite: true },
+        this.inferenceCallback,
+        { publicPath: "rhino_params.pv", forceWrite: true },
+        this.contextInfoCallback,
+        this.isLoadedCallback,
+        this.isListeningCallback,
+        this.errorCallback
       );
     },
     updateInputValue: function (event: any) {
       this.inputValue = event.target.value;
     },
-    start: function () {
-      if (this.$picovoice.start()) {
-        this.isListening = !this.isListening;
-      }
+    wakeWordCallback: function (wakeWordDetection: PorcupineDetection) {
+      this.inference = null;
+      this.wakeWordDetection = wakeWordDetection;
     },
-    stop: function () {
-      if (this.$picovoice.stop()) {
-        this.isListening = !this.isListening;
-        this.engine = "ppn";
-      }
+    inferenceCallback: function (inference: RhinoInference) {
+      this.wakeWordDetection = null;
+      this.inference = inference;
     },
-    pause: function () {
-      if (this.$picovoice.pause()) {
-        this.isListening = !this.isListening;
-      }
-    },
-    pvReadyFn: function () {
-      this.isLoaded = true;
-      this.isListening = true;
-      this.engine = "ppn";
-    },
-    pvInfoFn: function (info: string) {
+    contextInfoCallback: function (info: string) {
       this.info = info;
     },
-    pvKeywordFn: function (keyword: string) {
-      this.detections = [...this.detections, keyword];
-      this.engine = "rhn";
+    isLoadedCallback: function (isLoaded: boolean) {
+      this.isLoaded = isLoaded;
     },
-    pvInferenceFn: function (inference: RhinoInference) {
-      this.inference = inference;
-      this.engine = "ppn";
+    isListeningCallback: function (isListening: boolean) {
+      this.isListening = isListening;
     },
-    pvErrorFn: function (error: Error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
+    errorCallback: function (error: string | null) {
+      this.error = error;
     },
   },
 });
+
+export default VoiceWidget;
 </script>
 
 <style scoped>
