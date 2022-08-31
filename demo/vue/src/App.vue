@@ -1,33 +1,20 @@
 <template>
   <div>
     <h1>Picovoice Web + Vue ("Picovoice" Renderless Component)</h1>
-    <button v-on:click="toggle">
-      Toggle VoiceWidget <span v-if="show">"OFF"</span><span v-else>"ON"</span>
-    </button>
     <br />
-    <br />
-    <VoiceWidget v-if="show" />
+    <VoiceWidget />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineAsyncComponent, defineComponent } from "vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "App",
   components: {
-    VoiceWidget: Vue.component(
-      'VoiceWidget',
-      async () => await import("./components/VoiceWidget.vue")
+    VoiceWidget: defineAsyncComponent(
+      () => import("./components/VoiceWidget.vue")
     ),
-  },
-  data: function () {
-    return { show: true };
-  },
-  methods: {
-    toggle: function () {
-      this.show = !this.show;
-    },
   },
 });
 </script>

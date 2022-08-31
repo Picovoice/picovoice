@@ -23,3 +23,6 @@ pnpm-debug.log*
 *.sw?
 
 src/dist
+public/*.pv
+public/*.ppn
+public/*.rhn

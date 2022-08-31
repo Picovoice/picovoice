@@ -1,54 +1,29 @@
-# picovoice-web-vue
+# Picovoice SDK for Vue
 
-Vue mixin for Picovoice SDK Web.
+# Picovoice
 
-## Picovoice SDK
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-This library provides a unified wake word and follow-on naturally spoken command engine in-browser, offline. All audio processing occurs in the browser via WebAssembly; no microphone data leaves the device.
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is:
 
-The Picovoice SDK enables a complete Voice AI interaction loop, such as the following:
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+  [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
-> "Picovoice, set a timer for two minutes"
 
-Where "Picovoice" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
-
-```json
-{
-  "isUnderstood": true,
-  "intent": "setTimer",
-  "slots": {
-    "minutes": "2"
-  }
-}
-```
-
-The natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
-
-> "Picovoice, tell me a joke"
-
-```json
-{
-  "isUnderstood": false
-}
-```
-
-This command was outside the domain and therefore not understood.
-
-All processing is done via WebAssembly and Workers in a separate thread. Speech results are converted into inference directly, without intermediate Speech-to-Text.
-
-Underneath, Picovoice SDK wake word and inference detection is powered by the [Porcupine](https://picovoice.ai/platform/porcupine/) and [Rhino](https://picovoice.ai/platform/porcupine/) engines, respectively. If you wish to use those engines individually, you can use the npm packages specific to them.
-
-## Compatibility
-
-This library is compatible with Vue:
+## Framework Compatibility
 - Vue.js 2.6.11+
 - Vue.js 3.0.0+
 
-The Picovoice SDKs for Web are powered by WebAssembly (WASM), the Web Audio API, and Web Workers.
+## Browser Compatibility
 
-All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
-
-Using the Web Audio API requires a secure context (HTTPS connection), except for `localhost`, for local development.
+- Chrome / Edge
+- Firefox
+- Safari
 
 ## AccessKey
 
@@ -58,100 +33,223 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Installation
 
-Install the package using `npm` or `yarn`. You will also need to add the `@picovoice/web-voice-processor` and one of the `@picovoice/picovoice-web-xx-worker` series of packages for the language-specific model:
+### Package
 
-E.g. English:
+Using `yarn`:
 
 ```console
-yarn add @picovoice/picovoice-web-vue @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+yarn add @picovoice/picovoice-vue @picovoice/web-voice-processor
+```
+
+or using `npm`:
+
+```console
+npm install --save @picovoice/picovoice-vue @picovoice/web-voice-processor
 ```
 
 ## Usage
 
-Import the `picovoiceMixin` from the `@picovoice/picovoice-web-vue` package which exposes the variable `$picovoice` to your component. The mixin exposes the following functions:
+Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`).
 
-- `init`: initializes Picovoice.
-- `start`: starts processing audio and either detect wake work or infer context.
-- `pause`: stops processing audio.
-- `delete`: cleans up used resources.
+Each file offers two options on how to provide it to Picovoice:
 
-Use the `init` function and `PicovoiceWorkerFactory` to initialize the instance of Picovoice and start processing audio:
+### Public Directory
+
+**NOTE**: Due to modern browser limitations of using a file URL, this method does __not__ work if used without hosting a server.
+
+This method fetches the given file from the public directory and uses it to initialize Picovoice. Set the `publicPath` string to use this method.
+
+### Base64
+
+**NOTE**: This method works without hosting a server, but increases the size of the model file roughly by 33%.
+
+This method uses a base64 string of the given file and uses it to initialize Picovoice.
+
+Use the built-in script `pvbase64` to base64 your `.ppn`, `.rhn` or `.pv` file:
+
+```console
+npx pvbase64 -i ${PICOVOICE_FILE} -o ${BASE64_FILENAME}.js
+```
+
+The output will be a js file containing a string which you can import into any file of your project.
+Set the `base64` string with the imported js string use this method.
+
+### Picovoice Initialization Files
+
+Picovoice saves and caches your model (`.pv`), keyword (`.ppn`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
+Use a different `customWritePath` variable choose the name the file will have in storage and set the `forceWrite` value to true to force an overwrite of the file.
+If the file changes, `version` should be incremented to force the cached file to be updated.
+
+Either `base64` or `publicPath` must be set for each file to instantiate Picovoice. If both are set for a particular file, Picovoice will use the `base64` parameter.
+
+```typescript
+// Custom keyword (.ppn)
+const porcupineKeyword = {
+  publicPath: ${KEYWORD_RELATIVE_PATH},
+  // or
+  base64: ${KEYWORD_BASE64_STRING},
+  label: ${KEYWORD_LABEL},
+  
+  // Optional
+  customWritePath: 'custom_keyword',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.6
+}
+
+// Context (.rhn)
+const rhinoContext = {
+  publicPath: ${CONTEXT_RELATIVE_PATH},
+  // or
+  base64: ${CONTEXT_BASE64_STRING},
+
+  // Optionals
+  customWritePath: 'custom_context',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.3,
+}
+
+// Model (.pv)
+const porcupineOrRhinoModel = {
+  publicPath: ${MODEL_RELATIVE_PATH},
+  // or
+  base64: ${MODEL_BASE64_STRING},
+
+  // Optionals
+  customWritePath: 'custom_model',
+  forceWrite: true,
+  version: 1,
+}
+```
+
+Additional engine options are provided via the `options` parameter.
+Use `endpointDurationSec` and `requireEndpoint` to control the engine's endpointing behaviour.
+An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command.
+
+```typescript
+// Optional. These are the default values
+const options = {
+  endpointDurationSec: 1.0,
+  requireEndpoint: true
+}
+```
+
+### Initialize Picovoice Mixin
+
+Note: Due to limitations on Vue, a component can only have one instance of Picovoice. 
+If you require multiple instances of Picovoice, check out [Picovoice Web SDK](https://github.com/Picovoice/picovoice/tree/master/sdk/web).
+
+To initialize Picovoice, create the following callback functions:
+
+Create the following functions:
+- `wakeWordCallback` function called when the wake word has been detected
+- `inferenceCallback` function called when a command inference has been made
+- `contextInfoCallback` function that delivers the contents of the Rhino context that has been loaded 
+- `isLoadedCallback` function called when Picovoice has loaded and unloaded
+- `isListeningCallback` function called when Picovoice has started/stopped processing audio
+- `errorCallback` function to catch any errors that occur
+
+```typescript
+methods: {
+  wakeWordCallback: function(detection) {
+    console.log(`Picovoice detected keyword: ${detection.label}`);
+  },
+  inferenceCallback: function(inference) {    
+    if (inference.isUnderstood) {
+      console.log(inference.intent)
+      console.log(inference.slots)
+    }
+  },
+  contextInfoCallback: function(contextInfo) {
+    console.log(contextInfo);
+  },
+  isLoadedCallback: function(isLoaded) {
+    console.log(isLoaded);
+  },
+  isListeningCallback: function(isListening) {
+    console.log(isListening);
+  },
+  errorCallback: function(error) {
+    console.error(error);
+  }
+};
+```
+
+
+Import `Picovoice` mixin, add it to your component and initialize Picovoice with the `init` function:
 
 ```html
 <script lang="ts">
-import picovoiceMixinfrom '@picovoice/picovoice-web-vue';
-import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from '@picovoice/picovoice-web-en-worker';
+  import picovoiceMixin from "@picovoice/picovoice-vue";
 
-export default {
-  name: 'VoiceWidget',
-  mixins: [picovoiceMixin],
-  data: function () {
-    return {
-      inference: null,
-      isError: false,
-      isLoaded: false,
-      isListening: false,
-      isTalking: false,
-      factory: PicovoiceWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: '${ACCESS_KEY}', // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-        porcupineKeyword: { builtin: 'Picovoice', sensitivity: 0.6 },
-        rhinoContext: {
-          base64: 'RHINO_TRAINED_CONTEXT_BASE_64_STRING'
-        },
-      }
-    };
-  },
-  created() {
-    this.$picovoice.init(
-      this.factoryArgs,
-      this.factory,
-      this.pvKeywordFn,
-      this.pvInferenceFn,
-      this.pvInfoFn,
-      this.pvReadyFn,
-      this.pvErrorFn
-    );
-  },
-  methods: {
-    pvReadyFn: function () {
-      this.isLoaded = true;
-      this.isListening = true;
-      this.engine = "ppn";
-    },
-    pvInfoFn: function (info: string) {
-      this.info = info;
-    },
-    pvKeywordFn: function (keyword: string) {
-      this.detections = [...this.detections, keyword];
-      this.engine = "rhn";
-    },
-    pvInferenceFn: function (inference: RhinoInferenceFinalized) {
-      this.inference = inference;
-      this.engine = "ppn";
-    },
-    pvErrorFn: function (error: Error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
-    },
-  },
-};
+  export default {
+    mixins: [picovoiceMixin],
+    mounted() {
+      this.$picovoice.init(
+              ${ACCESS_KEY},
+              porcupineKeyword,
+              wakeWordCallback,
+              porcupineModel,
+              rhinoContext,
+              inferenceCallback,
+              rhinoModel,
+              this.contextInfoCallback,
+              this.isLoadedCallback,
+              this.isListeningCallback,
+              this.errorCallback,
+      );
+    }
+  }
 </script>
 ```
 
-## Custom Wake Words and Contexts
+### Processing Audio
 
-Custom wake words and contexts are generated using [Picovoice Console](https://console.picovoice.ai/). They are trained from text using transfer learning into bespoke Porcupine keyword files with a `.ppn` extension and Rhino context files with a `.rhn` extension. The target platform is WebAssembly (WASM), as that is what backs the Vue library.
-
-The `.zip` file contains a `.ppn` or `.rhn` file and a `_b64.txt` file which contains the binary model encoded with Base64. Copy the base64 and provide it as an argument to Picovoice as below:
+The Picovoice Vue SDK takes care of audio processing internally using our [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
+To start listening for your wake word and follow-on commands, call the `start` function:
 
 ```typescript
-factoryArgs: {
-  accessKey: "${ACCESS_KEY}", // AccessKey obtained from Picovoice Console(https://console.picovoice.ai/)
-  start: true,
-  porcupineKeyword: { custom: base64: '${KEYWORD_FILE_64}', custom: 'Deep Sky Blue', sensitivity: 0.65 },
-  rhinoContext: { base64: '${CONTEXT_FILE_64}' },
-},
+await this.$picovoice.start();
 ```
 
-You may wish to store the base64 string in a separate JavaScript file and export it to keep your application code separate.
+If audio recording has begun, `isListening` will be set to true.
+`wakeWordCallback` and `inferenceCallback` will be called when Picovoice has detected the wake word
+or made an inference.
+
+Run `stop` to stop audio recording:
+
+```typescript
+await this.$picovoice.stop();
+```
+
+`isListening` should be set to false after `stop`.
+
+### Release
+
+Run `release` to clean up all resources used by Picovoice:
+
+```typescript
+await this.$picovoice.release();
+```
+
+This will set `isLoaded` and `isListening` to false.
+
+## Custom Keyword and Contexts
+
+Create custom keywords and contexts using the [Picovoice Console](https://console.picovoice.ai/).
+To use them with the Web SDK, train the keywords and contexts for the target platform WebAssembly (WASM).
+Inside the downloaded `.zip` file, there will be a `.ppn` or `.rhn` file which is the keyword or context file in binary format.
+
+Similar to the model file (`.pv`), these files are saved in IndexedDB to be used by Web Assembly.
+Either `base64` or `publicPath` must be set for each file to initialize Picovoice. If both are set, Picovoice will use
+the `base64` model.
+
+## Switching Languages
+
+In order to use Picovoice with different languages you need to use the corresponding model file (`.pv`) for the desired language. The model files for all
+supported languages are available in the [Porcupine](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [Rhino](https://github.com/Picovoice/rhino/tree/master/lib/common) GitHub repositories.
+
+## Demo
+
+For example usage refer to the [Vue demo application](https://github.com/Picovoice/picovoice/tree/master/demo/vue).
