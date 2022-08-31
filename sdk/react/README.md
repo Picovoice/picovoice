@@ -1,216 +1,235 @@
-# picovoice-web-react
+# Picovoice SDK for React
 
-React Hook for Picovoice SDK for Web.
+# Picovoice
 
-Picovoice is also available for React Native, as a separate package. See [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native).
+Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-To use the Porcupine or Rhino engines individually with React, see [@picovoice/porcupine-web-react](https://www.npmjs.com/package/@picovoice/porcupine-web-react) and [@picovoice/porcupine-rhino-react](https://www.npmjs.com/package/@picovoice/rhino-web-react), respectively.
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
+similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
-## Introduction
+- **Private:** Everything is processed offline. Intrinsically HIPAA and GDPR-compliant.
+- **Reliable:** Runs without needing constant connectivity.
+- **Zero Latency:** Edge-first architecture eliminates unpredictable network delay.
+- **Accurate:** Resilient to noise and reverberation. It outperforms cloud-based alternatives by wide margins
+  [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
+- **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
-This library provides a unified wake word and follow-on naturally spoken command engine in-browser, offline. All audio processing occurs in the browser via WebAssembly; no microphone data leaves the device.
-
-The Picovoice SDK enables a complete Voice AI interaction loop, such as the following:
-
-> "Picovoice, set a timer for two minutes"
-
-Where "Picovoice" is the wake word to start the interaction, and the follow-on command is processed and directly converted from speech into structured data:
-
-```json
-{
-  "isUnderstood": true,
-  "intent": "setTimer",
-  "slots": {
-    "minutes": "2"
-  }
-}
-```
-
-The natural commands are domain-specific. In this case, a clock. It will only understand what you program it to understand, resulting in dramatic efficiency and accuracy improvements over generic Speech-to-Text approaches:
-
-> "Picovoice, tell me a joke"
-
-```json
-{
-  "isUnderstood": false
-}
-```
-
-All processing is done via WebAssembly and Workers in a separate thread. Speech results are converted into inference directly, without intermediate Speech-to-Text.
-
-Underneath, Picovoice SDK wake word and inference detection is powered by the [Porcupine](https://picovoice.ai/platform/porcupine/) and [Rhino](https://picovoice.ai/platform/porcupine/) engines, respectively. If you wish to use those engines individually, you can use the npm packages specific to them.
 
 ## Compatibility
 
-The Picovoice SDK for Web is powered by WebAssembly (WASM), the Web Audio API, and Web Workers.
-
-All modern browsers (Chrome/Edge/Opera, Firefox, Safari) are supported, including on mobile. Internet Explorer is _not_ supported.
-
-Using the Web Audio API requires a secure context (HTTPS connection), except for `localhost`, for local development.
-
-## AccessKey
-
-Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
-You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
-Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
+- Chrome / Edge
+- Firefox
+- Safari
 
 ## Installation
 
-Use `npm` or `yarn` to install the Picovoice React package and its peer dependencies. Each spoken language (e.g. 'en', 'de') is a separate package. For this example we'll use English:
+### Package
+
+Using `yarn`:
 
 ```console
-yarn add @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+yarn add @picovoice/picovoice-react @picovoice/web-voice-processor 
 ```
 
-(or)
+or using `npm`:
 
 ```console
-npm install @picovoice/picovoice-web-react @picovoice/picovoice-web-en-worker @picovoice/web-voice-processor
+npm install --save @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
+
+Picovoice is also available for React Native as a separate package. See [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice/picovoice-react-native).
+
+To use the Porcupine or Rhino engines individually with React, see [@picovoice/porcupine-react](https://www.npmjs.com/package/@picovoice/porcupine-web-react) and [@picovoice/porcupine-rhino-react](https://www.npmjs.com/package/@picovoice/rhino-react).
+
+### AccessKey
+
+Picovoice requires a valid `AccessKey` at initialization. `AccessKey` acts as your credentials when using
+Picovocie SDKs.
+You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
+Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
-The `usePicovoice` hook provides a collection of fields and methods shown below. You can pass the `inferenceEventHandler` to respond to Rhino inference events. This example uses the sample "Clock" Rhino context, with a sensitivity of 0.65.
+Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`).
 
-Make sure you handle the possibility of errors with the `isError` and `errorMessage` fields. Users may not have a working microphone, and they can always decline (and revoke) permissions; your application code should anticipate these scenarios.
+Each file offers two options on how to provide it to Picovoice:
 
-### Static Import
+### Public Directory
 
-Using static imports for the `picovoice-web-xx-worker` packages is straightforward, but will impact your initial bundle size with an additional `~2MB`. Depending on your requirements, this may or may not be feasible. If you require a small bundle size, see dynamic importing below.
+**NOTE**: Due to modern browser limitations of using a file URL, this method does __not__ work if used without hosting a server.
 
-```javascript
-import React, { useState } from 'react';
-// Import the specific PicovoiceWorkerFactory for the spoken language used: in this case, English (en).
-import { PicovoiceWorkerFactory } from '@picovoice/picovoice-web-en-worker';
-import { usePicovoice } from '@picovoice/picovoice-web-react';
+This method fetches the given file from the public directory and uses it to initialize Picovoice. Set the `publicPath` string to use this method.
 
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
-const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
+### Base64
 
-export default function VoiceWidget() {
-  const [keywordDetections, setKeywordDetections] = useState([]);
-  const [inference, setInference] = useState(null);
+**NOTE**: This method works without hosting a server, but increases the size of the model file roughly by 33%.
 
-  const inferenceEventHandler = (rhinoInference) => {
-    console.log(rhinoInference);
-    setInference(rhinoInference);
-  };
+This method uses a base64 string of the given file and uses it to initialize Picovoice.
 
-  const keywordEventHandler = (porcupineKeywordLabel) => {
-    console.log(porcupineKeywordLabel);
-    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
-  };
+Use the built-in script `pvbase64` to base64 your `.ppn`, `.rhn` or `.pv` file:
 
-  const {
-    contextInfo,
-    isLoaded,
-    isListening,
-    isError,
-    errorMessage,
-    start,
-    resume,
-    pause,
-    engine,
-  } = usePicovoice(
-    PicovoiceWorkerFactory,
-    {
-      // "Picovoice" is one of the builtin wake words, so we merely need to ask for it by name.
-      // To use a custom wake word, you supply the `.ppn` files in base64 and provide a label for it.
-      porcupineKeyword: "Picovoice",
-      rhinoContext: { accessKey: ACCESS_KEY, base64: RHN_CONTEXT_CLOCK_64 },
-      start: true,
-    },
-    keywordEventHandler,
-    inferenceEventHandler
-  );
-
-return (
-  <div className="voice-widget">
-    <h3>Engine: {engine}</h3>
-    <h3>Keyword Detections:</h3>
-    {keywordDetections.length > 0 && (
-      <ul>
-        {keywordDetections.map((label, index) => (
-          <li key={index}>{label}</li>
-        ))}
-      </ul>
-    )}
-    <h3>Latest Inference:</h3>
-    {JSON.stringify(inference)}
-  </div>
-)
+```console
+npx pvbase64 -i ${PICOVOICE_FILE} -o ${BASE64_FILENAME}.js
 ```
 
-### Dynamic Import / Code Splitting
+The output will be a js file containing a string which you can import into any file of your project.
+Set the `base64` string with the imported js string use this method.
 
-If you are shipping the Picovoice SDK for Web and wish to avoid adding its `~4-6MB` to your application's initial bundle, you can use dynamic imports. These will split off the porcupine-web-xx-worker packages into separate bundles and load them asynchronously. This means we need additional logic.
+### Picovoice Initialization Files
 
-We add a `useEffect` hook to kick off the dynamic import. We store the result of the dynamically loaded worker chunk into a `useState` hook. When `usePicovoice` receives a non-null/undefined value for the worker factory, it will start up Picovoice.
+Picovoice saves and caches your model (`.pv`), keyword (`.ppn`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
+Use a different `customWritePath` variable choose the name the file will have in storage and set the `forceWrite` value to true to force an overwrite of the file.
+If the file changes, `version` should be incremented to force the cached file to be updated.
 
-See the [Webpack docs](https://webpack.js.org/guides/code-splitting/) for more information about Code Splitting.
+Either `base64` or `publicPath` must be set for each file to instantiate Picovoice. If both are set for a particular file, Picovoice will use the `base64` parameter.
 
-```javascript
-import { useState, useEffect } from "react";
-// Note we are not statically importing "@picovoice/picovoice-web-en-worker" here
-import { usePicovoice } from "@picovoice/picovoice-web-react";
-
-const ACCESS_KEY = /* AccessKey obtained from Picovoice Console (https://console.picovoice.ai/) */
-const RHN_CONTEXT_CLOCK_64 = /* Base64 representation of English-language `clock_wasm.rhn`, omitted for brevity */
-
-export default function VoiceWidget() {
-  const [workerChunk, setWorkerChunk] = useState({ workerFactory: null });
-
-  useEffect(() => {
-    async function loadPorcupineWorkerChunk() {
-      const pvWorkerFactory = (await import("@picovoice/picovoice-web-en-worker")).PicovoiceWorkerFactory; // <-- Dynamically import the worker
-      console.log("Picovoice worker chunk is loaded.");
-      return pvWorkerFactory;
-    }
-    if (workerChunk.workerFactory === null) { // <-- We only want to load once!
-      console.log(4)
-      loadPorcupineWorkerChunk().then((ppnWorkerFactory) => {
-
-        setWorkerChunk({ workerFactory: ppnWorkerFactory });
-      });
-    }
-  }, [workerChunk]);
+```typescript
+// Custom keyword (.ppn)
+const porcupineKeyword = {
+  publicPath: ${KEYWORD_RELATIVE_PATH},
+  // or
+  base64: ${KEYWORD_BASE64_STRING},
+  label: ${KEYWORD_LABEL},
   
-  const [keywordDetections, setKeywordDetections] = useState([]);
-  const [inference, setInference] = useState(null);
+  // Optional
+  customWritePath: 'custom_keyword',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.6
+}
 
-  const inferenceEventHandler = (rhinoInference) => {
-    console.log(rhinoInference);
-    setInference(rhinoInference);
-  };
+// Context (.rhn)
+const rhinoContext = {
+  publicPath: ${CONTEXT_RELATIVE_PATH},
+  // or
+  base64: ${CONTEXT_BASE64_STRING},
 
-  const keywordEventHandler = (porcupineKeywordLabel) => {
-    console.log(porcupineKeywordLabel);
-    setKeywordDetections((x) => [...x, porcupineKeywordLabel]);
-    setInference("...")
-  };
+  // Optionals
+  customWritePath: 'custom_context',
+  forceWrite: true,
+  version: 1,
+  sensitivity: 0.3,
+}
 
-  const {
-    isLoaded,
-    isListening,
-    isError,
-    errorMessage,
-    start,
-    resume,
-    pause,
-    engine,
-  } = usePicovoice(
-    workerChunk.workerFactory, // <-- When this is null/undefined, it's ignored. Otherwise, usePicovoice will start.
-    { 
-      picovoiceHookArgs: 
-      {
-        accessKey: ACCESS_KEY
-        porcupineKeyword: "Picovoice",
-        rhinoContext: { base64: RHN_CONTEXT_CLOCK_64 },
-      }
-    },
-    keywordEventHandler,
-    inferenceEventHandler
-  );
+// Model (.pv)
+const porcupineOrRhinoModel = {
+  publicPath: ${MODEL_RELATIVE_PATH},
+  // or
+  base64: ${MODEL_BASE64_STRING},
+
+  // Optionals
+  customWritePath: 'custom_model',
+  forceWrite: true,
+  version: 1,
+}
 ```
 
-**Important Note**: Internally, `usePicovoice` performs work asynchronously to initialize, as well as asking for microphone permissions. Not until the asynchronous tasks are done and permission given will Picovoice actually be running. Therefore, it makes sense to use the `isLoaded` state to update your UI to let users know your application is actually ready to process voice (and `isError` in case something went wrong). Otherwise, they may start speaking and their audio data will not be processed, leading to a poor/inconsistent experience.
+Additional engine options are provided via the `options` parameter.
+Use `endpointDurationSec` and `requireEndpoint` to control the engine's endpointing behaviour.
+An endpoint is a chunk of silence at the end of an utterance that marks the end of spoken command.
+
+```typescript
+// Optional. These are the default values
+const options = {
+  endpointDurationSec: 1.0,
+  requireEndpoint: true
+}
+```
+
+### Initialize Picovoice Hook
+
+Use `usePicovoice` and `init` to initialize the Picovoice Hook:
+
+```typescript
+import { usePicovoice } from '@picovoice/porcupine-react';
+
+const {
+  wakeWordDetection,
+  inference,
+  contextInfo,
+  isLoaded,
+  isListening,
+  error,
+  init,
+  start,
+  stop,
+  release,
+} = usePicovoice();
+
+await init(
+  ${ACCESS_KEY},
+  porcupineKeyword,
+  porcupineModel,
+  rhinoContext,
+  rhinoModel
+);
+```
+
+In case of any errors, use `error` state to check the error message, else
+use the `isLoaded` variable to check if `Picovoice` has loaded.
+
+### Processing Audio
+
+The Picovoice React SDK takes care of audio processing internally using our [WebVoiceProcessor](https://github.com/Picovoice/web-voice-processor) to record audio.
+To start listening for your wake word and follow-on commands, call the `start` function:
+
+```typescript
+await start();
+```
+
+If audio recording has begun, `isListening` will be set to true.
+Use `wakeWordDetection` and `inference` to get results from Picovoice:
+
+```typescript
+useEffect(() => {
+  if (wakeWordDetection !== null) {
+    console.log(`Picovoice detected keyword: ${wakeWordDetection.label}`);
+  }
+}, [wakeWordDetection])
+
+useEffect(() => {
+  if (inference !== null) {
+    if (inference.isUnderstood) {
+      console.log(inference.intent)
+      console.log(inference.slots)
+    }
+  }
+}, [inference])
+```
+
+Run `stop` to stop audio recording:
+
+```typescript
+await stop();
+```
+
+`isListening` should be set to false after `stop`.
+
+### Release
+
+Run `release` to clean up all resources used by Picovoice:
+
+```typescript
+await release();
+```
+
+This will set `isLoaded` and `isListening` to false.
+
+## Custom Keyword and Contexts
+
+Create custom keywords and contexts using the [Picovoice Console](https://console.picovoice.ai/).
+To use them with the Web SDK, train the keywords and contexts for the target platform WebAssembly (WASM).
+Inside the downloaded `.zip` file, there will be a `.ppn` or `.rhn` file which is the keyword or context file in binary format.
+
+Similar to the model file (`.pv`), these files are saved in IndexedDB to be used by Web Assembly.
+Either `base64` or `publicPath` must be set for each file to initialize Picovoice. If both are set, Picovoice will use
+the `base64` model.
+
+## Switching Languages
+
+In order to use Picovoice with different languages you need to use the corresponding model file (`.pv`) for the desired language. The model files for all
+supported languages are available in the [Porcupine](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [Rhino](https://github.com/Picovoice/rhino/tree/master/lib/common) GitHub repositories.
+
+## Demo
+
+For example usage refer to the [React demo application](https://github.com/Picovoice/picovoice/tree/master/demo/react).
