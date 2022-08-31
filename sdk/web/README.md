@@ -138,16 +138,14 @@ const options = {
 Create `wakeWordCallback` and `inferenceCallback` functions to capture results from the engine:
 
 ```typescript
-function wakeWordCallback(keyword) {
-  console.log(`Porcupine detected keyword: ${keyword.label}`);
+function wakeWordCallback(wakeWordDetection) {
+  console.log(`Picovoice detected keyword: ${wakeWordDetection.label}`);
 }
 
-function inferenceCallback(inference) {
-  if (inference.isFinalized) {
-    if (inference.isUnderstood) {
-      console.log(inference.intent)
-      console.log(inference.slots)
-    }
+function inferenceCallback(inference) {  
+  if (inference.isUnderstood) {
+    console.log(inference.intent)
+    console.log(inference.slots)
   }
 }
 ```
