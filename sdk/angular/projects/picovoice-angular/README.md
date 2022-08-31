@@ -40,6 +40,7 @@ or using `npm`:
 
 ```console
 npm install --save @picovoice/picovoice-angular @picovoice/web-voice-processor
+```
 
 ## Usage
 
