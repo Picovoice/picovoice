@@ -133,7 +133,7 @@ class PicovoiceThread(Thread):
 
     def run(self):
         pv = None
-        recoder = None
+        recorder = None
 
         try:
             pv = Picovoice(
@@ -146,17 +146,17 @@ class PicovoiceThread(Thread):
 
             print(pv.context_info)
 
-            recoder = PvRecorder(device_index=-1, frame_length=pv.frame_length)
+            recorder = PvRecorder(device_index=-1, frame_length=pv.frame_length)
+            recorder.start()
 
             self._is_ready = True
 
             while not self._stop:
-                pcm = recoder.read()
-                pcm = struct.unpack_from("h" * pv.frame_length, pcm)
+                pcm = recorder.read()
                 pv.process(pcm)
         finally:
-            if recoder is not None:
-                recoder.delete()
+            if recorder is not None:
+                recorder.delete()
 
             if pv is not None:
                 pv.delete()
