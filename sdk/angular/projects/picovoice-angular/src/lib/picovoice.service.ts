@@ -64,13 +64,13 @@ export class PicovoiceService implements OnDestroy {
           context,
           (inference: RhinoInference) => this.inference$.next(inference),
           rhinoModel,
-          { ...options, processErrorCallback: error => this.error$.next(error) }
+          { ...options, processErrorCallback: (error: any) => this.error$.next(error) }
         );
         this.contextInfo$.next(this.picovoice.contextInfo);
         this.isLoaded$.next(true);
         this.error$.next(null);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.error$.next(error.toString());
     }
   }

@@ -92,7 +92,7 @@ export class VoiceWidget implements OnDestroy {
         { publicPath: 'assets/rhino_params.pv', forceWrite: true }
       );
       try {
-      } catch (error) {
+      } catch (error: any) {
         this.error = error;
       }
     }
