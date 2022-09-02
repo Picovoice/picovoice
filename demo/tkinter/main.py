@@ -1,5 +1,5 @@
 #
-# Copyright 2020 Picovoice Inc.
+# Copyright 2020-2022 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -17,8 +17,8 @@ import tkinter as tk
 from threading import Thread
 from threading import Timer
 
-import pyaudio
 from picovoice import Picovoice
+from pvrecorder import PvRecorder
 
 
 class PicovoiceThread(Thread):
@@ -133,8 +133,7 @@ class PicovoiceThread(Thread):
 
     def run(self):
         pv = None
-        py_audio = None
-        audio_stream = None
+        recoder = None
 
         try:
             pv = Picovoice(
@@ -147,25 +146,17 @@ class PicovoiceThread(Thread):
 
             print(pv.context_info)
 
-            py_audio = pyaudio.PyAudio()
-            audio_stream = py_audio.open(
-                rate=pv.sample_rate,
-                channels=1,
-                format=pyaudio.paInt16,
-                input=True,
-                frames_per_buffer=pv.frame_length)
+            recoder = PvRecorder(device_index=-1, frame_length=pv.frame_length)
 
             self._is_ready = True
 
             while not self._stop:
-                pcm = audio_stream.read(pv.frame_length)
+                pcm = recoder.read()
                 pcm = struct.unpack_from("h" * pv.frame_length, pcm)
                 pv.process(pcm)
         finally:
-            if audio_stream is not None:
-                audio_stream.close()
-            if py_audio is not None:
-                py_audio.terminate()
+            if recoder is not None:
+                recoder.delete()
 
             if pv is not None:
                 pv.delete()

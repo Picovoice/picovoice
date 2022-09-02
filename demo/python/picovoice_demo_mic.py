@@ -118,6 +118,7 @@ class PicovoiceDemo(Thread):
 
             if self.output_path is not None:
                 wav_file = wave.open(self.output_path, "w")
+                # noinspection PyTypeChecker
                 wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
 
             print("Using device: %s" % recorder.selected_device)
