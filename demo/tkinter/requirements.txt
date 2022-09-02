@@ -1,2 +1,2 @@
-pyaudio
-picovoice==2.1.1
+picovoice==2.1.5
+pvrecorder==1.1.1
