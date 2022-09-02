@@ -12,7 +12,6 @@
 import argparse
 import os
 import platform
-import struct
 import tkinter as tk
 from threading import Thread
 from threading import Timer
