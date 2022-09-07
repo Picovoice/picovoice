@@ -15,5 +15,5 @@ yarn
 To build the project, run:
 
 ```console
-yarn build picovoice-angular --prod
+yarn build
 ```
