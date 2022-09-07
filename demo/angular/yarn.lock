@@ -1647,8 +1647,10 @@
   dependencies:
     esquery "^1.0.1"
 
-"@picovoice/picovoice-angular@../../sdk/angular/dist/picovoice-angular":
+"@picovoice/picovoice-angular@~2.1.2":
   version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-angular/-/picovoice-angular-2.1.2.tgz#e4f8ee03fcd2b577bb9ba163d77f6143022770b8"
+  integrity sha512-7YJqq2GG0BeeuC1+ihLoY37psE+Hf+Y+N4iJO0M180Fo2N9tzfaDjz21xoqm/6q2kRIBfufJ7Tev3w9ipiX2nA==
   dependencies:
     "@picovoice/picovoice-web" "=2.1.5"
     tslib "^2.3.0"
