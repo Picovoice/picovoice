@@ -1693,26 +1693,26 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/picovoice-web@=2.1.6":
+"@picovoice/picovoice-web@=2.1.7":
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.7.tgz#3d8406bae72b952d4412dd3268d0f49f7d563c51"
+  integrity sha512-c2N2L6jsrZ28Ci/kdXutnYMVJpGH0CsTEsybrJgtpzQ+yghQEw3H7VM78+e/zhP/19U+cxGx/gxma3/hZFJzMg==
+  dependencies:
+    "@picovoice/porcupine-web" "=2.1.10"
+    "@picovoice/rhino-web" "=2.1.6"
+    "@picovoice/web-utils" "=1.2.6"
+
+"@picovoice/porcupine-web@=2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.10.tgz#f124a631d8b8cbd2a40647de8675da8c652bb5ea"
+  integrity sha512-E5qC3Y7P2g8TfZvE3YHwtrK265qjlEwEH4tkMCweBwBSeSkxOTILTHrPJ5YAyiY6BAFwqR8+IconFARuVcnFlQ==
+  dependencies:
+    "@picovoice/web-utils" "=1.2.6"
+
+"@picovoice/rhino-web@=2.1.6":
   version "2.1.6"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.6.tgz#0d09fad6350b81bf0dbffb44d72a0a3efc632d9a"
-  integrity sha512-/I5C0WWFW7DHWo+4Ydx2DhjTpXatVO0X0lARaSRJNtbpW8PjHWbNkMlk3qbSEVOpM7NLV3l7P6bXpfRzUa//8w==
-  dependencies:
-    "@picovoice/porcupine-web" "=2.1.9"
-    "@picovoice/rhino-web" "=2.1.5"
-    "@picovoice/web-utils" "=1.2.6"
-
-"@picovoice/porcupine-web@=2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.9.tgz#b4956b5035ddc9e1d7f5db9847fcc82499ad4e7a"
-  integrity sha512-SaJjyUAJKWLUiZtzJj2Y8Jhjx+bbmvqXDAh2jkxCfJCxjZUWdysqGi0DA7EArPLKuiieCucNecrIcxzUQDsW3g==
-  dependencies:
-    "@picovoice/web-utils" "=1.2.6"
-
-"@picovoice/rhino-web@=2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.1.5.tgz#f38d0e38829797fb6a2aa8c406494ea91325594b"
-  integrity sha512-P0AfwCl5MFIwWZ6QaEtOFM6U7oenEuIKsi1F0Q8sYKL/9FTzVjTXyQhI7hb/2LxOm0iCgt2PygDRU8jitf/t/Q==
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.1.6.tgz#33353b9d80b0403c5861e0590a0d07a4cce67032"
+  integrity sha512-5OpkjG3uooZLu67FKzlLMEVvT6DY4mWvq64PWkH/2oWPa/twVxXWHAMC9O8UkC6js1ZVu7o1Dy30aCUfY0Y2Tg==
   dependencies:
     "@picovoice/web-utils" "=1.2.6"
 

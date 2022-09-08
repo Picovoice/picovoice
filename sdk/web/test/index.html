@@ -320,8 +320,22 @@
 
           await handle.release();
           writeMessage("Checking PicovoiceWorker reset... done!");
-          writeMessage('Test passed!');
 
+          writeMessage("Checking UTF-8 paths");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "ヤマアラシ", base64: picovoiceKeywordBase64, customWritePath: "ヤマアラシ_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {base64: porcupineModelBase64, customWritePath: "ヤマアラシ_porcupine_params.pv", forceWrite: true},
+            {base64: coffeeMakerContextBase64, customWritePath: "ヤマアラシ_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {base64: rhinoModelBase64, customWritePath: "ヤマアラシ_rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+          assertEquals(processError, null, JSON.stringify(processError));
+          await handle.release();
+          writeMessage("Checking UTF-8 paths... done!");
+          writeMessage('Test passed!');
 
         } catch (error) {
           writeMessage(error);
