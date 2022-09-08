@@ -103,6 +103,7 @@ export class Picovoice {
   ): Promise<Picovoice> {
     const {
       keywordPath,
+      keywordLabel,
       porcupineSensitivity,
       porcupineModelPath,
       contextPath,
@@ -113,6 +114,7 @@ export class Picovoice {
     return this._init(
       accessKey,
       keywordPath,
+      keywordLabel,
       porcupineSensitivity,
       wakeWordCallback,
       porcupineModelPath,
@@ -127,6 +129,7 @@ export class Picovoice {
   public static async _init(
     accessKey: string,
     keywordPath: string,
+    keywordLabel: string,
     porcupineSensitivity: number,
     wakeWordCallback: DetectionCallback,
     porcupineModelPath: string,
@@ -148,6 +151,7 @@ export class Picovoice {
     picovoice._porcupine = await Porcupine._init(
       accessKey,
       [keywordPath],
+      [keywordLabel],
       porcupineCallback,
       new Float32Array(porcupineSensitivity),
       porcupineModelPath,

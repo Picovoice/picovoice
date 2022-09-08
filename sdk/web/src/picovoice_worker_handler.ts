@@ -59,6 +59,7 @@ self.onmessage = async function (
         picovoice = await Picovoice._init(
           event.data.accessKey,
           event.data.keywordPath,
+          event.data.keywordLabel,
           event.data.porcupineSensitivity,
           wakeWordCallback,
           event.data.porcupineModelPath,
