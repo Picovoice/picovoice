@@ -3,7 +3,7 @@
   "description": "Picovoice SDK for web browsers (via WebAssembly)",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "keywords": [
     "porcupine",
     "rhino",
@@ -43,8 +43,8 @@
     "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "=2.1.9",
-    "@picovoice/rhino-web": "=2.1.5",
+    "@picovoice/porcupine-web": "=2.1.10",
+    "@picovoice/rhino-web": "=2.1.6",
     "@picovoice/web-utils": "=1.2.6"
   },
   "devDependencies": {
