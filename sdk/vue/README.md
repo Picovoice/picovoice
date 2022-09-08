@@ -135,72 +135,151 @@ const options = {
 }
 ```
 
-### Initialize Picovoice Mixin
+### Initialize Picovoice
 
-Note: Due to limitations on Vue, a component can only have one instance of Picovoice. 
-If you require multiple instances of Picovoice, check out [Picovoice Web SDK](https://github.com/Picovoice/picovoice/tree/master/sdk/web).
+Use `usePicovoice` and `init` to initialize `Picovoice`.
 
-To initialize Picovoice, create the following callback functions:
+In case of any errors, watch for `state.error` to check the error message, otherwise watch `state.isLoaded` to check if `Picovoice` has loaded. Also watch for `state.contextInfo` for current context information.
 
-Create the following functions:
-- `wakeWordCallback` function called when the wake word has been detected
-- `inferenceCallback` function called when a command inference has been made
-- `contextInfoCallback` function that delivers the contents of the Rhino context that has been loaded 
-- `isLoadedCallback` function called when Picovoice has loaded and unloaded
-- `isListeningCallback` function called when Picovoice has started/stopped processing audio
-- `errorCallback` function to catch any errors that occur
+#### Picovoice in Vue 2
 
-```typescript
-methods: {
-  wakeWordCallback: function(detection) {
-    console.log(`Picovoice detected keyword: ${detection.label}`);
-  },
-  inferenceCallback: function(inference) {    
-    if (inference.isUnderstood) {
-      console.log(inference.intent)
-      console.log(inference.slots)
+**NOTE**: If you need to call `usePicovoice` outside of `data`, make sure to add observer property via `Vue.set` or `observable`.
+
+```vue
+<script lang='ts'>
+import Vue, { VueConstructor } from 'vue';
+import { Picovoice, usePicovoice } from '@picovoice/picovoice-vue';
+
+// Use Vue.extend for JavaScript
+export default (Vue as VueConstructor<Vue & Picovoice>).extend({
+  data() {
+    const {
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePicovoice();
+    
+    init(
+      ${ACCESS_KEY},
+      porcupineKeyword,
+      porcupineModel,
+      rhinoContext,
+      rhinoModel
+    );
+    
+    return {
+      state,
+      start,
+      stop,
+      release
     }
   },
-  contextInfoCallback: function(contextInfo) {
-    console.log(contextInfo);
+  watch: {
+    "state.wakeWordDetection": function(wakeWord) {
+      if (wakeWord !== null) {
+        console.log(wakeWord)
+      }
+    },
+    "state.inference": function(inference) {
+      if (inference !== null) {
+        console.log(inference)
+      }
+    },
+    "state.contextInfo": function(contextInfo) {
+      if (contextInfo !== null) {
+        console.log(contextInfo)
+      }
+    },
+    "state.isLoaded": function(isLoaded) {
+      console.log(isLoaded)
+    },
+    "state.isListening": function(isListening) {
+      console.log(isListening)
+    },
+    "state.error": function(error) {
+      console.error(error)
+    },
   },
-  isLoadedCallback: function(isLoaded) {
-    console.log(isLoaded);
+  onBeforeDestroy() {
+    this.release();
   },
-  isListeningCallback: function(isListening) {
-    console.log(isListening);
-  },
-  errorCallback: function(error) {
-    console.error(error);
-  }
-};
+});
+</script>
 ```
 
+#### Picovoice in Vue 3
 
-Import `Picovoice` mixin, add it to your component and initialize Picovoice with the `init` function:
+In Vue 3, we take advantage of the [Composition API](https://vuejs.org/api/composition-api-setup.html), especially the use of `reactive`.
 
-```html
-<script lang="ts">
-  import picovoiceMixin from "@picovoice/picovoice-vue";
+```vue
+<script lang='ts'>
+import { defineComponent, onBeforeUnmount, watch } from 'vue';
+import { usePicovoice } from '@picovoice/picovoice-vue';
 
-  export default {
-    mixins: [picovoiceMixin],
-    mounted() {
-      this.$picovoice.init(
-              ${ACCESS_KEY},
-              porcupineKeyword,
-              wakeWordCallback,
-              porcupineModel,
-              rhinoContext,
-              inferenceCallback,
-              rhinoModel,
-              this.contextInfoCallback,
-              this.isLoadedCallback,
-              this.isListeningCallback,
-              this.errorCallback,
-      );
+// Use Vue.extend for JavaScript
+export default defineComponent({
+  setup() {
+    const {
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePicovoice();
+    
+    watch(() => state.isLoaded, (newVal) => {
+      console.log(newVal);
+    });
+    
+    watch(() => state.isListening, (newVal) => {
+      console.log(newVal);
+    });
+    
+    watch(() => state.wakeWordDetection, (wakeWord) => {
+      if (wakeWord !== null) {
+        console.log(wakeWord);
+      }
+    });
+    
+    watch(() => state.inference, (inference) => {
+      if (inference !== null) {
+        console.log(inference);
+      }
+    });
+    
+    watch(() => state.contextInfo, (contextInfo) => {
+      if (contextInfo !== null) {
+        console.log(contextInfo);
+      }
+    });
+    
+    watch(() => state.error, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+    
+    onBeforeUnmount(() => {
+      release();
+    });
+    
+    init(
+      ${ACCESS_KEY},
+      porcupineKeyword,
+      porcupineModel,
+      rhinoContext,
+      rhinoModel
+    );
+    
+    return {
+      start,
+      stop,
+      release
     }
   }
+});
 </script>
 ```
 
@@ -210,30 +289,29 @@ The Picovoice Vue SDK takes care of audio processing internally using our [WebVo
 To start listening for your wake word and follow-on commands, call the `start` function:
 
 ```typescript
-await this.$picovoice.start();
+await this.start();
 ```
 
-If audio recording has begun, `isListening` will be set to true.
-`wakeWordCallback` and `inferenceCallback` will be called when Picovoice has detected the wake word
-or made an inference.
+If audio recording has begun, `state.isListening` will be set to true.
+Use `state.wakeWordDetection` and `state.inference` to get results from Picovoice.
 
 Run `stop` to stop audio recording:
 
 ```typescript
-await this.$picovoice.stop();
+await this.stop();
 ```
 
-`isListening` should be set to false after `stop`.
+`state.isListening` should be set to false after `stop`.
 
 ### Release
 
 Run `release` to clean up all resources used by Picovoice:
 
 ```typescript
-await this.$picovoice.release();
+await this.release();
 ```
 
-This will set `isLoaded` and `isListening` to false.
+This will set `state.isLoaded` and `state.isListening` to false.
 
 ## Custom Keyword and Contexts
 
