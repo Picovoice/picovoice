@@ -198,6 +198,28 @@
           await handle.release();
           writeMessage("Checking Picovoice using publicPath models... done!");
 
+          writeMessage("Checking Picovoice using publicPath models with custom path for keyword");
+          handle = await PicovoiceWeb.Picovoice.create(
+            accessKey,
+            {label: "picovoice", publicPath: "picovoice_wasm.ppn", forceWrite: true, customWritePath: "custom"},
+            wakeWordCallback,
+            {publicPath: "porcupine_params.pv", forceWrite: true},
+            {publicPath: "coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking Picovoice using publicPath models... done!");
+
           writeMessage("Checking Picovoice reset");
           handle = await PicovoiceWeb.Picovoice.create(
             accessKey,

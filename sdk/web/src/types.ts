@@ -15,6 +15,7 @@ import { RhinoInference } from '@picovoice/rhino-web';
 
 export type PicovoiceArgs = {
   keywordPath: string;
+  keywordLabel: string;
   porcupineSensitivity: number;
   porcupineModelPath: string;
   contextPath: string;
@@ -34,6 +35,7 @@ export type PicovoiceWorkerInitRequest = {
   command: 'init';
   accessKey: string;
   keywordPath: string;
+  keywordLabel: string;
   porcupineSensitivity: number;
   porcupineModelPath: string;
   contextPath: string;

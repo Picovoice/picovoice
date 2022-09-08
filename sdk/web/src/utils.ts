@@ -24,7 +24,7 @@ export async function loadPicovoiceArgs(
   context: RhinoContext,
   rhinoModel: RhinoModel
 ): Promise<PicovoiceArgs> {
-  const [keywordPaths, keywordSensitivities] = await keywordsProcess(keyword);
+  const [keywordPaths, keywordLabels, keywordSensitivities] = await keywordsProcess(keyword);
   let customWritePath = porcupineModel.customWritePath
     ? porcupineModel.customWritePath
     : 'porcupine_model';
@@ -47,6 +47,7 @@ export async function loadPicovoiceArgs(
 
   return {
     keywordPath: keywordPaths[0],
+    keywordLabel: keywordLabels[0],
     porcupineSensitivity: keywordSensitivities[0],
     porcupineModelPath: porcupineModelPath,
     contextPath: contextPath,
