@@ -63,6 +63,6 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web": "=2.1.6"
+    "@picovoice/picovoice-web": "=2.1.7"
   }
 }
