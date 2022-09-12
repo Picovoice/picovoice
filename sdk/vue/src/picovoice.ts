@@ -126,7 +126,7 @@ export function usePicovoice(): PicovoiceVue {
           // eslint-disable-next-line no-console
           console.warn(
             'processErrorCallback is only supported in the Picovoice Web SDK. ' +
-            "Use the 'error' state to monitor for errors in the React SDK."
+            "Use the 'error' state to monitor for errors in the Vue SDK."
           );
         }
         picovoiceRef.value = await PicovoiceWorker.create(
