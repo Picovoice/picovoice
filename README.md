@@ -1664,73 +1664,68 @@ yarn add @picovoice/picovoice-vue @picovoice/web-voice-processor
 npm install @picovoice/picovoice-vue @picovoice/web-voice-processor
 ```
 
-```html
-<script lang="ts">
-import picovoiceMixin from '@picovoice/picovoice-vue';
+```vue
+<script lang='ts'>
+import { usePicovoice } from '@picovoice/picovoice-vue';
 
 export default {
-  name: 'App',
-  mixins: [picovoiceMixin],
-  data: function () {
-    return {       
-        wakeWordDetection: null,
-        inference: null,
-        isLoaded: false,
-        isListening: false,
-        error: null,
-        info: null,
-      }
-    };
+  data() {
+    const {
+      state,
+      init,
+      start,
+      stop,
+      release
+    } = usePicovoice();
+
+    init(
+      ${ACCESS_KEY},
+      {
+        label: "Picovoice",
+        publicPath: "picovoice_wasm.ppn",
+      },
+      { publicPath: "porcupine_params.pv" },
+      { publicPath: "clock_wasm.rhn" },
+      { publicPath: "rhino_params.pv" },
+    );
+
+    return {
+      state,
+      start,
+      stop,
+      release
+    }
   },
-  methods: {
-    init: function () {
-      this.$picovoice.init(
-              "${ACCESS_KEY}",
-              {
-                label: "Picovoice",
-                publicPath: "picovoice_wasm.ppn",
-              },
-              this.wakeWordCallback,
-              { publicPath: "porcupine_params.pv" },
-              { publicPath: "clock_wasm.rhn" },
-              this.inferenceCallback,
-              { publicPath: "rhino_params.pv" },
-              this.contextInfoCallback,
-              this.isLoadedCallback,
-              this.isListeningCallback,
-              this.errorCallback
-      );
-      start: function () {
-        this.$picovoice.start();
-      },
-      stop: function () {
-        this.$picovoice.stop();
-      },
-      release: function () {
-        this.$picovoice.release();
-      },
+  watch: {
+    "state.wakeWordDetection": function(wakeWord) {
+      if (wakeWord !== null) {
+        console.log(wakeWord)
+      }
     },
-    wakeWordCallback: function (wakeWordDetection) {
-      this.inference = null;
-      this.wakeWordDetection = wakeWordDetection;
+    "state.inference": function(inference) {
+      if (inference !== null) {
+        console.log(inference)
+      }
     },
-    inferenceCallback: function (inference) {
-      this.wakeWordDetection = null;
-      this.inference = inference;
+    "state.contextInfo": function(contextInfo) {
+      if (contextInfo !== null) {
+        console.log(contextInfo)
+      }
     },
-    contextInfoCallback: function (info) {
-      this.info = info;
+    "state.isLoaded": function(isLoaded) {
+      console.log(isLoaded)
     },
-    isLoadedCallback: function (isLoaded) {
-      this.isLoaded = isLoaded;
+    "state.isListening": function(isListening) {
+      console.log(isListening)
     },
-    isListeningCallback: function (isListening) {
-      this.isListening = isListening;
+    "state.error": function(error) {
+      console.error(error)
     },
-    errorCallback: function (error) {
-      this.error = error;
-    },
-  };
+  },
+  onBeforeDestroy() {
+    this.release();
+  },
+};
 </script>
 ```
 

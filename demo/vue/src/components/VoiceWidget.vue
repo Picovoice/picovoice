@@ -5,122 +5,101 @@
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
-        <input name="accessKey" type="text" v-on:change="updateInputValue" />
+        <input name="accessKey" type="text" v-on:change="updateAccessKey" />
       </label>
       <button
-        :disabled="isLoaded"
+        :disabled="state.isLoaded"
         class="start-button"
         v-on:click="initPicovoice"
       >
         Init Picovoice
       </button>
     </h3>
-    <h3>Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ error !== null }}</h3>
-    <p v-if="error !== null" class="error-message">
-      {{ error.toString() }}
+    <h3>Loaded: {{ state.isLoaded }}</h3>
+    <h3>Listening: {{ state.isListening }}</h3>
+    <h3>Error: {{ state.error !== null }}</h3>
+    <p v-if="state.error !== null" class="error-message">
+      {{ state.error.toString() }}
     </p>
-    <button :disabled="!isLoaded || error || isListening" v-on:click="start">
+    <button
+      :disabled="!state.isLoaded || state.error || state.isListening"
+      v-on:click="start"
+    >
       Start
     </button>
-    <button :disabled="!isLoaded || error || !isListening" v-on:click="stop">
+    <button
+      :disabled="!state.isLoaded || state.error || !state.isListening"
+      v-on:click="stop"
+    >
       Stop
     </button>
-    <button :disabled="!isLoaded || error || isListening" v-on:click="release">
+    <button
+      :disabled="!state.isLoaded || state.error || state.isListening"
+      v-on:click="release"
+    >
       Release
     </button>
-    <div v-if="isListening">
-      <h3 v-if="wakeWordDetection !== null">Wake word detected!</h3>
+    <div v-if="state.isListening">
+      <h3 v-if="state.wakeWordDetection !== null">Wake word detected!</h3>
       <h3 v-else>Listening for 'Picovoice'...</h3>
     </div>
-    <div v-if="isListening && inference !== null">
+    <div v-if="state.isListening && state.inference !== null">
       <h3>Inference:</h3>
-      <pre v-if="inference !== null">{{
-        JSON.stringify(inference, null, 2)
+      <pre v-if="state.inference !== null">{{
+        JSON.stringify(state.inference, null, 2)
       }}</pre>
     </div>
     <hr />
     <div>
       <h3>Context Info:</h3>
-      <pre>{{ info }}</pre>
+      <pre>{{ state.contextInfo }}</pre>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onBeforeUnmount, ref } from "vue";
 
-import picovoiceMixin from "@picovoice/picovoice-vue";
-
-import { PorcupineDetection, RhinoInference } from "@picovoice/picovoice-web";
+import { usePicovoice } from "@picovoice/picovoice-vue";
 
 const VoiceWidget = defineComponent({
   name: "VoiceWidget",
-  mixins: [picovoiceMixin],
-  data() {
-    return {
-      inputValue: "",
-      wakeWordDetection: null as PorcupineDetection | null,
-      inference: null as RhinoInference | null,
-      isLoaded: false,
-      isListening: false,
-      error: null as string | null,
-      info: null as string | null,
+  setup() {
+    const { state, init, start, stop, release } = usePicovoice();
+
+    const accessKey = ref("");
+
+    const updateAccessKey = (event: any) => {
+      accessKey.value = event.target.value;
     };
-  },
-  methods: {
-    start: function () {
-      this.$picovoice.start();
-    },
-    stop: function () {
-      this.$picovoice.stop();
-    },
-    release: function () {
-      this.$picovoice.release();
-    },
-    initPicovoice: function () {
-      this.$picovoice.init(
-        this.inputValue,
+
+    const initPicovoice = () => {
+      init(
+        accessKey.value,
         {
           label: "Picovoice",
           publicPath: "picovoice_wasm.ppn",
           forceWrite: true,
         },
-        this.wakeWordCallback,
         { publicPath: "porcupine_params.pv", forceWrite: true },
         { publicPath: "clock_wasm.rhn", forceWrite: true },
-        this.inferenceCallback,
-        { publicPath: "rhino_params.pv", forceWrite: true },
-        this.contextInfoCallback,
-        this.isLoadedCallback,
-        this.isListeningCallback,
-        this.errorCallback
+        { publicPath: "rhino_params.pv", forceWrite: true }
       );
-    },
-    updateInputValue: function (event: any) {
-      this.inputValue = event.target.value;
-    },
-    wakeWordCallback: function (wakeWordDetection: PorcupineDetection) {
-      this.inference = null;
-      this.wakeWordDetection = wakeWordDetection;
-    },
-    inferenceCallback: function (inference: RhinoInference) {
-      this.wakeWordDetection = null;
-      this.inference = inference;
-    },
-    contextInfoCallback: function (info: string) {
-      this.info = info;
-    },
-    isLoadedCallback: function (isLoaded: boolean) {
-      this.isLoaded = isLoaded;
-    },
-    isListeningCallback: function (isListening: boolean) {
-      this.isListening = isListening;
-    },
-    errorCallback: function (error: string | null) {
-      this.error = error;
-    },
+    };
+
+    onBeforeUnmount(() => {
+      release();
+    });
+
+    return {
+      state,
+      accessKey,
+      updateAccessKey,
+      initPicovoice,
+      start,
+      stop,
+      release,
+    };
   },
 });
 

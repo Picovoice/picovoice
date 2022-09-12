@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Picovoice Web + Vue ("Picovoice" Renderless Component)</h1>
+    <h1>Picovoice Web + Vue ("Picovoice" Component)</h1>
     <br />
     <VoiceWidget />
   </div>
