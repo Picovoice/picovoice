@@ -134,4 +134,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-Check out the Picovoice Rust demos [here](/demo/rust)
+Check out the Picovoice Rust demos [here](../../demo/rust)

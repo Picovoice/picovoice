@@ -6,7 +6,7 @@ You need a C99-compatible compiler to build these demos.
 
 ## Requirements
 - The demo requires [CMake](https://cmake.org/) version 3.13 or higher.
-- **For Windows Only**: [MinGW](http://mingw-w64.org/doku.php) is required to build the demo.
+- **For Windows Only**: [MinGW](https://www.mingw-w64.org/) is required to build the demo.
 
 ## AccessKey
 
@@ -30,9 +30,9 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/picovoice_demo_mic
-usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
-                                          -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
-                                          --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
+usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH
+                                          -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX
+                                          --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY
                                           --endpoint_duration_sec --require_endpoint "true"|"false" ]
         ./demo/c/build/picovoice_demo_mic --show_audio_devices
 ```
@@ -41,9 +41,9 @@ usage : ./demo/c/build/picovoice_demo_mic -l LIBRARY_PATH -a ACCESS_KEY -k KEYWO
 
 ```console
 .\\demo\\c\\build\\picovoice_demo_mic.exe
-usage : .\\demo\\c\\build\\picovoice_demo_mic.exe -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH 
-                                                  -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX 
-                                                  --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY 
+usage : .\\demo\\c\\build\\picovoice_demo_mic.exe -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH
+                                                  -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--audio_device_index AUDIO_DEVICE_INDEX
+                                                  --porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY
                                                   --endpoint_duration_sec --require_endpoint "true"|"false" ]
         .\\demo\\c\\build\\picovoice_demo_mic.exe --show_audio_devices
 ```
@@ -167,8 +167,8 @@ Running the executable without any commandline arguments prints the usage info t
 
 ```console
 ./demo/c/build/picovoice_demo_file
-usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
-                                     -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
+usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH
+                                     -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY
                                      --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint "true"|"false" ]
 ```
 
@@ -176,8 +176,8 @@ usage : ./demo/c/picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PA
 
 ```console
 .\\demo\\c\\build\\picovoice_demo_file
-usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH 
-                                               -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY 
+usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -w WAV_PATH
+                                               -p PPN_MODEL_PATH -r RHN_MODEL_PATH [--porcupine_sensitivity PPN_SENSITIVITY
                                                --rhino_sensitivity RHN_SENSITIVITY --endpoint_duration_sec --require_endpoint "true"|"false" ]
 ```
 
@@ -186,7 +186,7 @@ usage : .\\demo\\c\\build\\picovoice_demo_file -l LIBRARY_PATH -a ACCESS_KEY -k 
 **Note that the demo expects a single-channel WAV file with a sampling rate of 16kHz and 16-bit linear PCM encoding. If you
 provide a file with incorrect format the demo does not perform any format validation and simply outputs incorrect results.**
 
-The following processes a WAV file under the [audio_samples](/resources/audio_samples) directory. It detects the wake word
+The following processes a WAV file under the [audio_samples](../../resources/audio_samples) directory. It detects the wake word
 and infers the intent in the context of a coffee maker system.
 
 #### Linux
@@ -241,7 +241,7 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 -k resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
 -r resources/rhino/lib/common/rhino_params.pv \
 -c resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn \
--w resources/audio_samples/picovoice-coffee.wav 
+-w resources/audio_samples/picovoice-coffee.wav
 ```
 
 #### Windows

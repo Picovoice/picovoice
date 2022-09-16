@@ -5,7 +5,7 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. 
+similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
@@ -47,7 +47,7 @@ There are two possibilities for integrating Picovoice into an Android applicatio
 
 ### High-Level API
 
-[PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
+[PicovoiceManager](./Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
 a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
 input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
 inference completion. The class can be initialized using the PicovoiceManager Builder:
@@ -57,15 +57,15 @@ import ai.picovoice.picovoice.*;
 
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-PicovoiceManager manager = new PicovoiceManager.Builder()    
+PicovoiceManager manager = new PicovoiceManager.Builder()
     .setAccessKey(accessKey)
-    .setKeywordPath("assets_sub_folder/keyword.ppn")    
+    .setKeywordPath("assets_sub_folder/keyword.ppn")
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
             // logic to execute upon deletection of wake word
         }
-    })    
+    })
     .setContextPath("assets_sub_folder/context.rhn")
     .setInferenceCallback(new PicovoiceInferenceCallback() {
         @Override
@@ -86,7 +86,7 @@ final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice C
 PicovoiceManager manager = new PicovoiceManager.Builder()
     .setAccessKey(accessKey)
     .setKeywordPath("assets_sub_folder/keyword.ppn")
-    .setWakeWordCallback(wakeWordCallback)    
+    .setWakeWordCallback(wakeWordCallback)
     .setContextPath("assets_sub_folder/context.rhn")
     .setInferenceCallback(inferenceCallback)
     .setPorcupineModelPath("assets_sub_folder/porcupine_model.pv")
@@ -104,9 +104,9 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .build(appContext);
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
-The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language. This should also be placed in the `assets` folder. 
+The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language. This should also be placed in the `assets` folder.
 
 There is also the option to pass an error callback, which will be invoked if an error is encountered while PicovoiceManager is processing audio.
 
@@ -123,7 +123,7 @@ manager.stop();
 
 ### Low-Level API
 
-[Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
+[Picovoice.java](./Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
 low-level binding for Android. It can be initialized using the Picovoice Builder:
 
 ```java
@@ -154,7 +154,7 @@ try {
         .setContextPath(contextPath)
         .setRhinoSensitivity(rhinoSensitivity)
         .setEndpointDurationSec(1.5f)
-        .setRequireEndpoint(false)        
+        .setRequireEndpoint(false)
         .setInferenceCallback(new PicovoiceInferenceCallback() {
             @Override
             public void invoke(final RhinoInference inference) {
@@ -165,7 +165,7 @@ try {
 } catch(PicovoiceException ex) { }
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 RequireEndpoint is the parameter which indicates if Rhino should wait for a moment of silence before inferring context. Default is set to true.
 
@@ -203,14 +203,14 @@ To add a custom context or model file to your application, add the files to your
 ```java
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-// in this example our files are located at 
+// in this example our files are located at
 // '/assets/picovoice_files/keyword.ppn'
-// '/assets/picovoice_files/context.rhn' 
-try {    
+// '/assets/picovoice_files/context.rhn'
+try {
     Picovoice picovoice = new Picovoice.Builder()
                         .setAccessKey(accessKey)
                         .setKeywordPath("picovoice_files/keyword.ppn")
-                        .setContextPath("picovoice_files/context.rhn")                    
+                        .setContextPath("picovoice_files/context.rhn")
                         .build(appContext);
 } catch (PicovoiceException e) { }
 ```
@@ -222,4 +222,4 @@ In order to detect wake words and run inference in other languages you need to u
 ## Demo Apps
 
 For example usage refer to
-[Activity demo](/demo/android/Activity) or [Service demo](/demo/android/Service).
+[Activity demo](../../demo/android/Activity) or [Service demo](../../demo/android/Service).

@@ -38,7 +38,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Usage
 
-Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/include/pv_picovoice.h](sdk/include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
+Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/include/pv_picovoice.h](./include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
 ```c
 const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
@@ -115,4 +115,4 @@ pv_picovoice_delete(handle);
 
 ## Demos
 
-Check out the [Picovoice demo for C](/demo/c) to see what it looks like to use Picovoice in a C project!
+Check out the [Picovoice demo for C](../../demo/c) to see what it looks like to use Picovoice in a C project!

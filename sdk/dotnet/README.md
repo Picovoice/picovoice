@@ -75,10 +75,10 @@ void inferenceCallback(Inference inference)
 }
 
 Picovoice handle = Picovoice.Create(accessKey,
-                                 keywordPath, 
-                                 wakeWordCallback, 
+                                 keywordPath,
+                                 wakeWordCallback,
                                  contextPath,
-                                 inferenceCallback); 
+                                 inferenceCallback);
 
 ```
 
@@ -101,12 +101,12 @@ short[] GetNextAudioFrame()
 
 while(true)
 {
-    handle.Process(GetNextAudioFrame());    
+    handle.Process(GetNextAudioFrame());
 }
 ```
 
-Picovoice will have its resources freed by the garbage collector, but to have resources freed 
-immediately after use, wrap it in a using statement: 
+Picovoice will have its resources freed by the garbage collector, but to have resources freed
+immediately after use, wrap it in a using statement:
 
 ```csharp
 using(Picovoice handle = Picovoice.Create(accessKey, keywordPath, wakeWordCallback, contextPath, inferenceCallback))
@@ -121,4 +121,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-The [Picovoice dotnet demo](/demo/dotnet) is a .NET Core command line application that allows for processing real-time audio (i.e. microphone) and files using Picovoice.
+The [Picovoice dotnet demo](../../demo/dotnet) is a .NET Core command line application that allows for processing real-time audio (i.e. microphone) and files using Picovoice.

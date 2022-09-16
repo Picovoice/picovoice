@@ -5,7 +5,7 @@ This Go module contains demos for processing real-time audio (i.e. microphone) a
 ## Requirements
 
 - go 1.16+
-- **Windows**: The demos require `cgo`, which means that a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) is required. 
+- **Windows**: The demos require `cgo`, which means that a gcc compiler like [Mingw](https://www.mingw-w64.org/) is required.
 
 ## Compatibility
 
@@ -83,7 +83,7 @@ It provides information about various audio input devices on the box. Here is an
 ```console
 index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
-``` 
+```
 
 You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device
 in the above example, you can invoke the demo application as below:
