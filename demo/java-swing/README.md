@@ -25,7 +25,7 @@ cd picovoice/demo/java-swing
 java -jar build/libs/JavaSwingDemo.jar -a ${ACCESS_KEY}
 ```
 
-For this demo, the wake word is `Javis` and the context is `Smart Lighting`. You can say things like:
+For this demo, the wake word is `Jarvis` and the context is `Smart Lighting`. You can say things like:
 
 > Jarvis, turn off the lights.
 

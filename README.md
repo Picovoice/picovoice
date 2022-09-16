@@ -1240,7 +1240,7 @@ async createPicovoice(){
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            requireEnpoint)
+            requireEndpoint)
     } catch (err) {
         // handle error
     }
@@ -1290,7 +1290,7 @@ PicovoiceManager manager = new PicovoiceManager(
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
-            // logic to execute upon deletection of wake word
+            // logic to execute upon detection of wake word
         }
     })
     .setContextPath("path/to/context/file.rhn")
@@ -1334,7 +1334,7 @@ try {
         .setWakeWordCallback(new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
-                // logic to execute upon deletection of wake word
+                // logic to execute upon detection of wake word
             }
         })
         .setRhinoModelPath("/path/to/rhino/model.pv")
@@ -1395,7 +1395,7 @@ let manager = PicovoiceManager(
     accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     onWakeWordDetection: {
-        // logic to execute upon deletection of wake word
+        // logic to execute upon detection of wake word
     },
     contextPath: "/path/to/context.rhn",
     onInference: { inference in
@@ -1424,7 +1424,7 @@ do {
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv"
         onWakeWordDetection: {
-            // logic to execute upon deletection of wake word
+            // logic to execute upon detection of wake word
         },
         contextPath: "/path/to/context.rhn",
         rhinoSensitivity: 0.7,
@@ -1793,7 +1793,7 @@ Picovoice is implemented in ANSI C and therefore can be directly linked to C app
 ```c
 const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
-const char *pocupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
+const char *porcupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
 const char *keyword_path = ...
 const float porcupine_sensitivity = 0.5f;
 
@@ -1939,7 +1939,7 @@ pv_picovoice_delete(handle);
 
 ### v2.1.0 - January 20th, 2022
 
-- macOS arm64 (Apple Silocon) support added for Java and Unity SDKs
+- macOS arm64 (Apple Silicon) support added for Java and Unity SDKs
 - Various bug fixes and improvements
 
 ### v2.0.0 - November 25th, 2021

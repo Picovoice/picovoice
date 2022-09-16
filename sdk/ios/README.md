@@ -57,7 +57,7 @@ let manager = PicovoiceManager(
     accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
     onWakeWordDetection: {
-        // logic to execute upon deletection of wake word
+        // logic to execute upon detection of wake word
     },
     contextPath: "/path/to/context.rhn",
     onInference: { inference in
@@ -119,7 +119,7 @@ do {
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv",
         onWakeWordDetection: {
-            // logic to execute upon deletection of wake word
+            // logic to execute upon detection of wake word
         },
         contextPath: "/path/to/context.rhn",
         rhinoSensitivity: 0.7,

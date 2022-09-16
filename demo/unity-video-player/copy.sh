@@ -1,18 +1,18 @@
 if [ ! -d "../../resources/porcupine" ]
-then 
+then
     echo "Porcupine folder not found. Ensure you clone Picovoice repo with submodules."
 	echo "Use 'git clone --recurse-submodules'"
 	exit 1
 fi
 
 if [ ! -d "../../resources/rhino" ]
-then 
+then
     echo "Rhino folder not found. Ensure you clone Picovoice repo with submodules."
 	echo "Use 'git clone --recurse-submodules'"
 	exit 1
 fi
 
-echo "Copying Android resouces..."
+echo "Copying Android resources..."
 cp ../../resources/porcupine/lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Picovoice/Plugins/android/arm64-v8a/libpv_porcupine.so
 cp ../../resources/porcupine/lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Picovoice/Plugins/android/armeabi-v7a/libpv_porcupine.so
 cp ../../resources/rhino/lib/android/arm64-v8a/libpv_rhino.so ./Assets/Picovoice/Plugins/android/arm64-v8a/libpv_rhino.so
@@ -40,14 +40,14 @@ cp ../../resources/rhino/lib/common/rhino_params.pv ./Assets/StreamingAssets/rhi
 
 echo "Copying demo files..."
 if [ ! -d "./Assets/Picovoice/Demo" ]
-then 
+then
     mkdir -p ./Assets/Picovoice/Demo
 fi
 cp -rp ../unity/* ./Assets/Picovoice/Demo
 
 echo "Copying Voice Processor..."
 if [ ! -d "./Assets/Picovoice/VoiceProcessor" ]
-then 
+then
     mkdir -p ./Assets/Picovoice/VoiceProcessor
 fi
 cp -rp ../../sdk/unity/Assets/Picovoice/VoiceProcessor/* ./Assets/Picovoice/VoiceProcessor

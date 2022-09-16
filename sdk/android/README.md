@@ -63,7 +63,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
-            // logic to execute upon deletection of wake word
+            // logic to execute upon detection of wake word
         }
     })
     .setContextPath("assets_sub_folder/context.rhn")
@@ -147,7 +147,7 @@ try {
         .setWakeWordCallback(new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
-                // logic to execute upon deletection of wake word
+                // logic to execute upon detection of wake word
             }
         })
         .setRhinoModelPath(rhinoModelPath)

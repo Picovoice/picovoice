@@ -43,7 +43,7 @@ Picovoice is implemented in ANSI C and therefore can be directly linked to C app
 ```c
 const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
-const char *pocupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
+const char *porcupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
 const char *keyword_path = ...
 const float porcupine_sensitivity = 0.5f;
 

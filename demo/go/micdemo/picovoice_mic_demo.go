@@ -88,7 +88,7 @@ func main() {
 		p.ContextPath = contextPath
 	}
 
-	// validate Porcupine libary
+	// validate Porcupine library
 	if *porcupineLibraryPathArg != "" {
 		porcupineLibraryPath, _ := filepath.Abs(*porcupineLibraryPathArg)
 		if _, err := os.Stat(porcupineLibraryPath); os.IsNotExist(err) {
@@ -98,7 +98,7 @@ func main() {
 		p.PorcupineLibraryPath = porcupineLibraryPath
 	}
 
-	// validate Rhino libary
+	// validate Rhino library
 	if *rhinoLibraryPathArg != "" {
 		rhinoLibraryPath, _ := filepath.Abs(*rhinoLibraryPathArg)
 		if _, err := os.Stat(rhinoLibraryPath); os.IsNotExist(err) {

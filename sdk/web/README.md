@@ -39,13 +39,13 @@ npm install --save @picovoice/picovoice-web
 ### AccessKey
 
 Picovoice requires a valid `AccessKey` at initialization. `AccessKey` acts as your credentials when using
-Picovocie SDKs.
+Picovoice SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
-Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`). 
+Picovoice requires a Porcupine keyword file (`.ppn`), a Rhino context file (`.rhn`) and model parameter files for both engines (`.pv`).
 
 Each file offers two options on how to provide it to Picovoice:
 
@@ -67,14 +67,14 @@ Use the built-in script `pvbase64` to base64 your `.ppn`, `.rhn` or `.pv` file:
 npx pvbase64 -i ${PICOVOICE_FILE} -o ${BASE64_FILENAME}.js
 ```
 
-The output will be a js file containing a string which you can import into any file of your project. 
+The output will be a js file containing a string which you can import into any file of your project.
 Set the `base64` string with the imported js string use this method.
 
 ### Picovoice Initialization Files
 
 Picovoice saves and caches your model (`.pv`), keyword (`.ppn`) and context (`.rhn`) files in the IndexedDB to be used by Web Assembly.
 Use a different `customWritePath` variable choose the name the file will have in storage and set the `forceWrite` value to true to force an overwrite of the file.
-If the file changes, `version` should be incremented to force the cached file to be updated. 
+If the file changes, `version` should be incremented to force the cached file to be updated.
 
 Either `base64` or `publicPath` must be set for each file to instantiate Picovoice. If both are set for a particular file, Picovoice will use the `base64` parameter.
 
@@ -85,7 +85,7 @@ const porcupineKeyword = {
   // or
   base64: ${KEYWORD_BASE64_STRING},
   label: ${KEYWORD_LABEL},
-  
+
   // Optional
   customWritePath: 'custom_keyword',
   forceWrite: true,
@@ -142,7 +142,7 @@ function wakeWordCallback(wakeWordDetection) {
   console.log(`Picovoice detected keyword: ${wakeWordDetection.label}`);
 }
 
-function inferenceCallback(inference) {  
+function inferenceCallback(inference) {
   if (inference.isUnderstood) {
     console.log(inference.intent)
     console.log(inference.slots)
@@ -191,7 +191,7 @@ const picovoice = await PicovoiceWorker.create(
 
 ### Process Audio Frames
 
-Feed audio into the `process()` function. To start listening for the wake word and follow-on command. 
+Feed audio into the `process()` function. To start listening for the wake word and follow-on command.
 The result is received via `wakeWordCallback` and `inferenceCallback` as defined above.
 
 ```typescript

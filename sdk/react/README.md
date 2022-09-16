@@ -28,7 +28,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 Using `yarn`:
 
 ```console
-yarn add @picovoice/picovoice-react @picovoice/web-voice-processor 
+yarn add @picovoice/picovoice-react @picovoice/web-voice-processor
 ```
 
 or using `npm`:
@@ -44,7 +44,7 @@ To use the Porcupine or Rhino engines individually with React, see [@picovoice/p
 ### AccessKey
 
 Picovoice requires a valid `AccessKey` at initialization. `AccessKey` acts as your credentials when using
-Picovocie SDKs.
+Picovoice SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
@@ -90,7 +90,7 @@ const porcupineKeyword = {
   // or
   base64: ${KEYWORD_BASE64_STRING},
   label: ${KEYWORD_LABEL},
-  
+
   // Optional
   customWritePath: 'custom_keyword',
   forceWrite: true,
