@@ -6,6 +6,7 @@ on:
     branches: [ master ]
     paths:
       - 'sdk/c/**'
+      - '!sdk/c/README.md'
       - 'demo/c/**'
       - '!demo/c/README.md'
       - '.github/workflows/c-demos.yml'
@@ -13,6 +14,7 @@ on:
     branches: [ master ]
     paths:
       - 'sdk/c/**'
+      - '!sdk/c/README.md'
       - 'demo/c/**'
       - '!demo/c/README.md'
       - '.github/workflows/c-demos.yml'
@@ -39,7 +41,7 @@ jobs:
 
     - name: Build micdemo
       run: cmake --build ./build --target picovoice_demo_mic
-  
+
   build-micdemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
@@ -132,7 +134,7 @@ jobs:
         rhn_model_path: ../../resources/rhino/lib/common/rhino_params_fr.pv
         context_path: ../../resources/rhino/resources/contexts_fr/${{ matrix.platform }}/éclairage_intelligent_${{ matrix.platform }}.rhn
         audio_path: ../../resources/audio_samples/mon-intelligent_fr.wav
-  
+
   build-filedemo-self-hosted:
     runs-on: ${{ matrix.machine }}
 
