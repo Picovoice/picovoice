@@ -16,7 +16,7 @@ using UnityEngine.UI;
 public class VideoController : MonoBehaviour
 {
     VideoPlayer _videoPlayer;
-    PicovoiceManager _picovoiceManager;    
+    PicovoiceManager _picovoiceManager;
     MeshRenderer _screenOverlay;
     MeshRenderer _border;
     TextMeshPro _playbackSpeedText;
@@ -38,27 +38,27 @@ public class VideoController : MonoBehaviour
     private static readonly string _contextPath;
 
     private readonly Color picoBlue = new Color(0.21568627451f, 0.49019607843f, 1f, 0.5f);
-    
+
     static VideoController()
     {
         _platform = GetPlatform();
         _keywordPath = GetKeywordPath();
         _contextPath = GetContextPath();
     }
-    
+
     void Start()
     {
         _voiceProcessor = VoiceProcessor.Instance;
         _voiceProcessor.OnFrameCaptured += AnalyzeMicSignal;
 
         _videoPlayer = gameObject.GetComponentInChildren<VideoPlayer>();
-        
+
         MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
         _border = meshes.First(x=>x.name == "Border");
         _screenOverlay = meshes.First(x => x.name == "ScreenOverlay");
 
         Component[] objs = gameObject.GetComponentsInChildren<Component>();
-        _timeline = objs.First(x => x.name == "TimelinePivot");        
+        _timeline = objs.First(x => x.name == "TimelinePivot");
         _timelineFull = objs.First(x => x.name == "TimelineFullPivot");
         _timeline.transform.localScale = new Vector3(0, 0.2f, 1);
         _timelineFull.transform.localScale = new Vector3(1, 0.2f, 1);
@@ -74,14 +74,14 @@ public class VideoController : MonoBehaviour
         _notificationText.text = "Say 'Porcupine, what can I say?' for help";
         _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
 
-        _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");        
-        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);        
-        
+        _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");
+        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
+
         StartCoroutine(FadeIntroNotification());
     }
 
     IEnumerator FadeIntroNotification()
-    {        
+    {
         yield return new WaitForSeconds(3);
 
         Color _alphaSubtract = new Color(0, 0, 0, 0.008f);
@@ -134,7 +134,7 @@ public class VideoController : MonoBehaviour
     }
 
     private void OnInferenceResult(Inference inference)
-    {        
+    {
         if (inference.IsUnderstood)
         {
             PrintInference(inference);
@@ -150,7 +150,7 @@ public class VideoController : MonoBehaviour
             {
                 ChangeVolume(inference.Slots);
             }
-            else if (inference.Intent == "changePlaybackSpeed") 
+            else if (inference.Intent == "changePlaybackSpeed")
             {
                 ChangePlaybackSpeed(inference.Slots);
             }
@@ -185,7 +185,7 @@ public class VideoController : MonoBehaviour
         }
     }
 
-    private void PrintInference(Inference inference) 
+    private void PrintInference(Inference inference)
     {
         StringBuilder str = new StringBuilder();
         str.Append("{\n");
@@ -206,12 +206,12 @@ public class VideoController : MonoBehaviour
             if (action == "play")
             {
                 if (!_videoPlayer.isPlaying)
-                    _videoPlayer.Play();                
+                    _videoPlayer.Play();
             }
             else if (action == "pause")
             {
                 if (!_videoPlayer.isPaused)
-                    _videoPlayer.Pause();                
+                    _videoPlayer.Pause();
             }
             else if (action == "stop")
             {
@@ -251,8 +251,8 @@ public class VideoController : MonoBehaviour
     {
         Color _alphaSubtract = new Color(0, 0, 0, 0.008f);
         while (icon.color.a > 0)
-        {            
-            icon.color -= _alphaSubtract;            
+        {
+            icon.color -= _alphaSubtract;
             yield return null;
         }
     }
@@ -310,7 +310,7 @@ public class VideoController : MonoBehaviour
         StartCoroutine(ShrinkTimeline());
     }
 
-    IEnumerator ShrinkTimeline() 
+    IEnumerator ShrinkTimeline()
     {
         yield return new WaitForSeconds(3);
         _timeline.transform.localScale = new Vector3(_timeline.transform.localScale.x, 0.2f, _timeline.transform.localScale.z);
@@ -318,7 +318,7 @@ public class VideoController : MonoBehaviour
     }
 
     private void ChangeVolume(Dictionary<string, string> slots)
-    {        
+    {
         if (slots.ContainsKey("volumePercent"))
         {
             float volumePercent = float.Parse(slots["volumePercent"].Replace("%", "")) * 0.01f;
@@ -383,7 +383,7 @@ public class VideoController : MonoBehaviour
         }
     }
 
-    private void ToggleHelp(Dictionary<string, string> slots) 
+    private void ToggleHelp(Dictionary<string, string> slots)
     {
         bool showHelp = true;
         if (slots.ContainsKey("toggleHelp"))
@@ -405,14 +405,14 @@ public class VideoController : MonoBehaviour
         double rmsSum = 0;
         for (int i = 0; i < audio.Length; i++)
             rmsSum += Math.Pow(audio[i], 2);
-        double rms =  Math.Sqrt(rmsSum / audio.Length) / 32767.0f;        
+        double rms =  Math.Sqrt(rmsSum / audio.Length) / 32767.0f;
 
         // average past values for smoothing effect
         if (rmsQueue.Count == 7)
             rmsQueue.Dequeue();
         rmsQueue.Enqueue(rms);
         double rmsAvg = 0;
-        foreach (double rmsVal in rmsQueue) 
+        foreach (double rmsVal in rmsQueue)
         {
             rmsAvg += rmsVal;
         }
@@ -420,9 +420,9 @@ public class VideoController : MonoBehaviour
 
         // convert to dBFS
         double dBFS = 20 * Math.Log10(rmsAvg);
-        float normdBFS = (float)(dBFS + 50) / 50.0f;
+        float normalizedDbfs = (float)(dBFS + 50) / 50.0f;
 
-        _border.material.SetColor("_EmissionColor", picoBlue * normdBFS);
+        _border.material.SetColor("_EmissionColor", picoBlue * normalizedDbfs);
     }
 
     private static string GetPlatform()
