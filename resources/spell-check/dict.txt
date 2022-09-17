@@ -200,6 +200,7 @@ picovoice
 picovoicedemo
 picovoicedemoservice
 picovoicefiledemo
+picovoicemicdemo
 plughw
 podfile
 Podfile

@@ -95,7 +95,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .setRhinoSensitivity(0.35f)
     .setEndpointDurationSec(1.5f)
     .setRequireEndpoint(false)
-    .setProcessErrorCallback(new PicovoiceManangerErrorCallback() {
+    .setProcessErrorCallback(new PicovoiceManagerErrorCallback() {
         @Override
         public void invoke(final PicovoiceException e) {
             // error handling
