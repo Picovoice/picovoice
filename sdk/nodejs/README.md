@@ -86,7 +86,7 @@ while (true) {
 }
 ```
 
-As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the built-in "picovoice" keyword and [sample "coffee maker" context](/resources/rhino/resources/contexts) to the Picovoice class, and then provide it a [test WAV file](/resources/audio_samples/picovoice-coffee.wav) that contains the following utterance:
+As the audio is processed through the Picovoice engines, the callbacks will fire. This is the output when we provide the built-in "picovoice" keyword and [sample "coffee maker" context](https://github.com/Picovoice/rhino/tree/master/resources/contexts) to the Picovoice class, and then provide it a [test WAV file](../../resources/audio_samples/picovoice-coffee.wav) that contains the following utterance:
 
 > "Picovoice, make me a large coffee"
 

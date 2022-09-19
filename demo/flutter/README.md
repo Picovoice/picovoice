@@ -1,6 +1,6 @@
 # Picovoice Flutter Demo
 
-To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
 ## AccessKey
 
@@ -18,7 +18,7 @@ final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Pi
 
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
-Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](.) to build and deploy the demo to your device:
 ```console
 flutter run
 ```

@@ -30,7 +30,7 @@ import (
 	rhn "github.com/Picovoice/rhino/binding/go/v2"
 )
 
-// PvStatus descibes error codes returned from native code
+// PvStatus describes error codes returned from native code
 type PvStatus int
 
 const (
@@ -222,7 +222,7 @@ func (picovoice *Picovoice) Init() error {
 		return &PicovoiceError{
 			StatusCode: INVALID_ARGUMENT,
 			Message: fmt.Sprintf(
-				"Pocupine sample rate (%d) was different than Rhino sample rate (%d)",
+				"Porcupine sample rate (%d) was different than Rhino sample rate (%d)",
 				ppn.SampleRate,
 				rhn.SampleRate),
 		}
@@ -232,7 +232,7 @@ func (picovoice *Picovoice) Init() error {
 		return &PicovoiceError{
 			StatusCode: INVALID_ARGUMENT,
 			Message: fmt.Sprintf(
-				"Pocupine frame length (%d) was different than Rhino frame length (%d)",
+				"Porcupine frame length (%d) was different than Rhino frame length (%d)",
 				ppn.FrameLength,
 				rhn.FrameLength),
 		}
@@ -279,7 +279,7 @@ func (picovoice *Picovoice) Init() error {
 	return nil
 }
 
-// Releases resouces aquired by Picovoice
+// Releases resources acquired by Picovoice
 func (picovoice *Picovoice) Delete() error {
 
 	porcupineErr := picovoice.porcupine.Delete()

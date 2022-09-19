@@ -190,7 +190,7 @@ namespace Pv
         {
             if (pcm == null)
             {
-                throw new PicovoiceInvalidArgumentException($"Null audo frame passed to Picovoice");
+                throw new PicovoiceInvalidArgumentException($"Null audio frame passed to Picovoice");
             }
 
             if (pcm.Length != FrameLength)

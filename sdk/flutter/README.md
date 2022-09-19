@@ -99,7 +99,7 @@ void _wakeWordCallback(){
     // wake word detected
 }
 
-void _infererenceCallback(RhinoInference inference){
+void _inferenceCallback(RhinoInference inference){
     if(inference.isUnderstood!){
         String intent = inference.intent!
         Map<String, String> slots = inference.slots!

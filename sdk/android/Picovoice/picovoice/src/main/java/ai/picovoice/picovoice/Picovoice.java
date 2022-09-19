@@ -332,7 +332,7 @@ public class Picovoice {
         }
 
         /**
-         * Setter for endpintDurationSec
+         * Setter for endpointDurationSec
          *
          * @param endpointDurationSec Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
          *                            utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint

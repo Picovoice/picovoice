@@ -1,4 +1,4 @@
-# Picovoice Unity Demo 
+# Picovoice Unity Demo
 
 The Picovoice demo for Unity is a multi-platform demo that runs on:
 
@@ -22,7 +22,7 @@ Replace your `AccessKey` in [`PicovoiceDemo.cs`](PicovoiceDemo.cs):
 private const string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
 
-The easiest way to run the demo is to simply import the [Picovoice Unity package](/sdk/unity/picovoice-2.0.0.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+The easiest way to run the demo is to simply import the latest [Picovoice Unity package](../../sdk/unity) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 Once the demo launches, you can say "Picovoice" and then give it any command within the smart lighting context:
 

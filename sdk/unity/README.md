@@ -5,7 +5,7 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creation of voice experiences
-similar to Alexa and Google, except it entirely runs 100% on-device. 
+similar to Alexa and Google, except it entirely runs 100% on-device.
 
 Picovoice is:
 
@@ -18,7 +18,7 @@ Picovoice is:
 
 ## Compatibility
 
-[Picovoice unity package](./picovoice-2.1.0.unitypackage) is for running Picovoice on **Unity 2017.4+** on the following platforms:
+[Picovoice unity package](./picovoice-2.1.4.unitypackage) is for running Picovoice on **Unity 2017.4+** on the following platforms:
 
 - Android 4.4+ (API 19+) (ARM only)
 - iOS 9.0+
@@ -26,11 +26,11 @@ Picovoice is:
 - macOS (x86_64)
 - Linux (x86_64)
 
- For running Picovoice on **macOS m1 (arm64)**, use the [Apple silicon](./picovoice-2.1.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+ For running Picovoice on **macOS m1 (arm64)**, use the [Apple silicon](./picovoice-2.1.4-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
 
 ## Installation
 
-The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](./picovoice-1.1.1.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 ## AccessKey
 
@@ -42,11 +42,11 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 To build the package from source, you first have to clone the repo with submodules:
 ```console
 git clone --recurse-submodules git@github.com:Picovoice/picovoice.git
-# or 
+# or
 git clone --recurse-submodules https://github.com/Picovoice/picovoice.git
 ```
 
-You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/sdk/unity](/sdk/unity) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
+You then have to run the `copy.sh` file to copy the package resources from various locations in the repo to the Unity project located at [/sdk/unity](.) (**NOTE:** on Windows, Git Bash or another bash shell is required, or you will have to manually copy the resources into the project.). Then, open the Unity project, right-click the Assets folder and select Export Package. The resulting Unity package can be imported into other Unity projects as desired.
 
 ## Usage
 
@@ -54,7 +54,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/unity/Assets/Picovoice/PicovoiceManager.cs) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
+[PicovoiceManager](./Assets/Picovoice/PicovoiceManager.cs) provides a high-level API that takes care of audio recording. This class is the quickest way to get started.
 
 >**NOTE:** If running on iOS, you must fill in the Microphone Usage Description under Project Settings>Other Settings in order to enable audio recording.
 
@@ -119,7 +119,7 @@ void OnError(PicovoiceException ex){
 
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
 ```csharp
-try 
+try
 {
     _picovoiceManager.Start();
 }
@@ -140,7 +140,7 @@ Unity package to capture frames of audio and automatically pass it to the Picovo
 
 #### Low-Level API
 
-[Picovoice](/sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
+[Picovoice](./Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `Create` static constructor.
@@ -151,21 +151,21 @@ using Pv.Unity;
 string accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 try
-{    
+{
     Picovoice _picovoice = Picovoice.Create(
                                 accessKey,
                                 "path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "path/to/context/file.rhn",
                                 OnInferenceResult);
-} 
-catch (PicovoiceException ex) 
+}
+catch (PicovoiceException ex)
 {
     // handle Picovoice init error
 }
 
 private void OnWakeWordDetected()
-{    
+{
     // wake word detected!
 }
 
@@ -194,14 +194,14 @@ short[] GetNextAudioFrame()
 }
 
 short[] buffer = GetNextAudioFrame();
-try 
+try
 {
     _picovoice.Process(buffer);
 }
 catch (PicovoiceException ex)
 {
     Debug.LogError(ex.ToString());
-}  
+}
 ```
 
 For process to work correctly, the audio data must be in the audio format required by Picovoice.
@@ -228,4 +228,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demo
 
-The Picovoice Unity demo can be imported along with the SDK when you import the Picovoice Unity package. Browse the source of the demo [here](/demo/unity).
+The Picovoice Unity demo can be imported along with the SDK when you import the Picovoice Unity package. Browse the source of the demo [here](../../demo/unity).

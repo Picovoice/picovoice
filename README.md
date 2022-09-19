@@ -329,7 +329,7 @@ For more information about the Java demos go to [demo/java](/demo/java/README.md
 
 ### Go Demos
 
-The demos require `cgo`, which means that a gcc compiler like [Mingw](http://mingw-w64.org/doku.php) is required.
+The demos require `cgo`, which means that a gcc compiler like [Mingw](https://www.mingw-w64.org/) is required.
 
 From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
@@ -368,7 +368,7 @@ To browse the demo source go to [demo/unity](/demo/unity).
 
 ### Flutter Demos
 
-To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device. 
+To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
@@ -560,7 +560,7 @@ The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
 The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
-**Windows Requires [MinGW](http://mingw-w64.org/doku.php) to build the demo.**
+**Windows Requires [MinGW](https://www.mingw-w64.org/) to build the demo.**
 
 #### Microphone Demo
 
@@ -611,7 +611,7 @@ Run the demo using:
 
 Replace `${AUDIO_DEVICE_INDEX}` with the index of your audio device.
 
-The demo opens an audio stream and waits for the wake word "Picovoice" to be detected. Once it is detected, it infers 
+The demo opens an audio stream and waits for the wake word "Picovoice" to be detected. Once it is detected, it infers
 your intent from spoken commands in the context of a smart lighting system. For example, you can say:
 
 > "Turn on the lights in the bedroom."
@@ -674,7 +674,7 @@ Create a new instance of Picovoice:
 from picovoice import Picovoice
 
 access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
- 
+
 keyword_path = ...
 
 def wake_word_callback():
@@ -803,10 +803,10 @@ void inferenceCallback(Inference inference)
 }
 
 Picovoice handle = Picovoice.Create(accessKey,
-                                 keywordPath, 
-                                 wakeWordCallback, 
+                                 keywordPath,
+                                 wakeWordCallback,
                                  contextPath,
-                                 inferenceCallback); 
+                                 inferenceCallback);
 ```
 
 `handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
@@ -854,7 +854,7 @@ import ai.picovoice.picovoice.*;
 String keywordPath = "/absolute/path/to/keyword.ppn"
 
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
-        
+
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
 String contextPath = "/absolute/path/to/context.rhn"
@@ -941,9 +941,9 @@ inferenceCallback := func(inference rhn.RhinoInference){
 
 picovoice := NewPicovoice(
     accessKey,
-    keywordPath, 
-    wakeWordCallback, 
-    contextPath, 
+    keywordPath,
+    wakeWordCallback,
+    contextPath,
     inferenceCallback)
 
 err := picovoice.Init()
@@ -1001,7 +1001,7 @@ PicovoiceManager _picovoiceManager = new PicovoiceManager(
 
 Once you have instantiated a PicovoiceManager, you can start/stop audio capture and processing by calling:
 ```csharp
-try 
+try
 {
     _picovoiceManager.Start();
 }
@@ -1030,14 +1030,14 @@ who want to incorporate it into an already existing audio processing pipeline.
 using Pv.Unity;
 
 try
-{    
+{
     Picovoice _picovoice = Picovoice.Create(
                                 "path/to/keyword/file.ppn",
                                 OnWakeWordDetected,
                                 "path/to/context/file.rhn",
                                 OnInferenceResult);
-} 
-catch (Exception ex) 
+}
+catch (Exception ex)
 {
     // handle Picovoice init error
 }
@@ -1053,14 +1053,14 @@ short[] GetNextAudioFrame()
 }
 
 short[] buffer = GetNextAudioFrame();
-try 
+try
 {
     _picovoice.Process(buffer);
 }
 catch (Exception ex)
 {
     Debug.LogError(ex.ToString());
-}  
+}
 ```
 
 For `Process` to work correctly, the provided audio must be single-channel and 16-bit linearly-encoded.
@@ -1075,7 +1075,7 @@ _picovoice.Dispose();
 
 Add the [Picovoice Flutter package](https://pub.dev/packages/picovoice) to your pub.yaml.
 ```yaml
-dependencies:  
+dependencies:
   picovoice: ^<version>
 ```
 The SDK provides two APIs:
@@ -1092,13 +1092,13 @@ import 'package:picovoice/picovoice_error.dart';
 
 String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-void createPicovoiceManager() {  
+void createPicovoiceManager() {
   _picovoiceManager = PicovoiceManager.create(
       accessKey,
       "/path/to/keyword/file.ppn",
       _wakeWordCallback,
       "/path/to/context/file.rhn",
-      _inferenceCallback);    
+      _inferenceCallback);
 }
 ```
 
@@ -1187,7 +1187,7 @@ The [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
-```javascript    
+```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 this._picovoiceManager = PicovoiceManager.create(
@@ -1240,7 +1240,7 @@ async createPicovoice(){
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            requireEnpoint)
+            requireEndpoint)
     } catch (err) {
         // handle error
     }
@@ -1285,14 +1285,14 @@ inference completion. The class can be initialized as follows:
 ```java
 import ai.picovoice.picovoice.*;
 
-PicovoiceManager manager = new PicovoiceManager(    
-    .setKeywordPath("path/to/keyword/file.ppn")    
+PicovoiceManager manager = new PicovoiceManager(
+    .setKeywordPath("path/to/keyword/file.ppn")
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
-            // logic to execute upon deletection of wake word
+            // logic to execute upon detection of wake word
         }
-    })    
+    })
     .setContextPath("path/to/context/file.rhn")
     .setInferenceCallback(new PicovoiceInferenceCallback() {
         @Override
@@ -1304,7 +1304,7 @@ PicovoiceManager manager = new PicovoiceManager(
 );
 ```
 
-The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. 
+The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK.
 
 When initialized, input audio can be processed using:
 
@@ -1334,7 +1334,7 @@ try {
         .setWakeWordCallback(new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
-                // logic to execute upon deletection of wake word
+                // logic to execute upon detection of wake word
             }
         })
         .setRhinoModelPath("/path/to/rhino/model.pv")
@@ -1372,7 +1372,7 @@ picovoice.delete();
 
 ### iOS
 
-The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile: 
+The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile:
 
 ```ruby
 pod 'Picovoice-iOS'
@@ -1394,11 +1394,11 @@ let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://cons
 let manager = PicovoiceManager(
     accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
-    onWakeWordDetection: { 
-        // logic to execute upon deletection of wake word
+    onWakeWordDetection: {
+        // logic to execute upon detection of wake word
     },
     contextPath: "/path/to/context.rhn",
-    onInference: { inference in 
+    onInference: { inference in
         // logic to execute upon completion of intent inference
     })
 ```
@@ -1408,7 +1408,7 @@ when initialized input audio can be processed using `manager.start()`. The proce
 
 #### Low-Level API
 
-[Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
+[Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference.
 
 o construct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
@@ -1423,13 +1423,13 @@ do {
         keywordPath: "/path/to/keyword.ppn",
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv"
-        onWakeWordDetection: { 
-            // logic to execute upon deletection of wake word
+        onWakeWordDetection: {
+            // logic to execute upon detection of wake word
         },
         contextPath: "/path/to/context.rhn",
         rhinoSensitivity: 0.7,
         rhinoModelPath: "/path/to/rhino/model.pv"
-        onInference: { inference in 
+        onInference: { inference in
             // logic to execute upon completion of intent inference
         })
 } catch { }
@@ -1494,13 +1494,13 @@ function getAudioData(): Int16Array {
 }
 
 const picovoice = await PicovoiceWorker.create(
-  "${ACCESS_KEY}", 
+  "${ACCESS_KEY}",
   keyword,
   wakeWordCallback,
   porcupineModel,
   context,
   inferenceCallback,
-  rhinoModel      
+  rhinoModel
 );
 
 for (; ;) {
@@ -1528,9 +1528,9 @@ npm install @picovoice/picovoice-angular @picovoice/web-voice-processor
 ```typescript
 import { Subscription } from "rxjs"
 import { PicovoiceService } from "@picovoice/picovoice-angular"
- 
+
 ...
- 
+
 constructor(private picovoiceService: PicovoiceService) {
   this.wakeWordDetectionSubscription = picovoiceService.wakeWordDetection$.subscribe(
           (wakeWordDetection: PorcupineDetection) => {
@@ -1569,7 +1569,7 @@ constructor(private picovoiceService: PicovoiceService) {
   );
 }
 
-async ngOnInit() {     
+async ngOnInit() {
     try {
       await this.picovoiceService.init(
               accessKey,
@@ -1640,7 +1640,7 @@ function App(props) {
       console.log(`Picovoice detected keyword: ${wakeWordDetection.label}`);
     }
   }, [wakeWordDetection])
-  
+
   useEffect(() => {
     if (inference !== null) {
       if (inference.isUnderstood) {
@@ -1793,7 +1793,7 @@ Picovoice is implemented in ANSI C and therefore can be directly linked to C app
 ```c
 const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
 
-const char *pocupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
+const char *porcupine_model_path = ... // Available at resources/porcupine/lib/common/porcupine_params.pv
 const char *keyword_path = ...
 const float porcupine_sensitivity = 0.5f;
 
@@ -1939,7 +1939,7 @@ pv_picovoice_delete(handle);
 
 ### v2.1.0 - January 20th, 2022
 
-- macOS arm64 (Apple Silocon) support added for Java and Unity SDKs
+- macOS arm64 (Apple Silicon) support added for Java and Unity SDKs
 - Various bug fixes and improvements
 
 ### v2.0.0 - November 25th, 2021

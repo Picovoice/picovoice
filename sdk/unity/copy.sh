@@ -1,4 +1,4 @@
-echo "Copying Android resouces..."
+echo "Copying Android resources..."
 cp ../../resources/porcupine/lib/android/arm64-v8a/libpv_porcupine.so ./Assets/Picovoice/Plugins/android/arm64-v8a/libpv_porcupine.so
 cp ../../resources/porcupine/lib/android/armeabi-v7a/libpv_porcupine.so ./Assets/Picovoice/Plugins/android/armeabi-v7a/libpv_porcupine.so
 cp ../../resources/rhino/lib/android/arm64-v8a/libpv_rhino.so ./Assets/Picovoice/Plugins/android/arm64-v8a/libpv_rhino.so
@@ -30,7 +30,7 @@ cp ../../resources/rhino/lib/common/rhino_params.pv ./Assets/StreamingAssets/rhi
 
 echo "Copying demo files..."
 if [ ! -d "./Assets/Picovoice/Demo" ]
-then 
+then
     mkdir -p ./Assets/Picovoice/Demo
 fi
 cp -rp ../../demo/unity/* ./Assets/Picovoice/Demo

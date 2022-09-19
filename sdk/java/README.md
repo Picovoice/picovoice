@@ -2,7 +2,7 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
-Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device. 
+Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google, but it runs entirely on-device.
 
 Picovoice is:
 
@@ -82,7 +82,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
     // ..
 };
 
-try{        
+try{
     Picovoice handle = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
@@ -113,7 +113,7 @@ short[] getNextAudioFrame()
 
 while(true)
 {
-    handle.process(getNextAudioFrame());    
+    handle.process(getNextAudioFrame());
 }
 ```
 
@@ -129,5 +129,5 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-The [Picovoice Java demo](/demo/java) is a Java command-line application that allows for 
+The [Picovoice Java demo](../../demo/java) is a Java command-line application that allows for
 processing real-time audio (i.e. microphone) and files using Picovoice.

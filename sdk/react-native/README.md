@@ -107,7 +107,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](./src/picovoice_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -184,7 +184,7 @@ module to capture frames of audio and automatically pass it to Picovoice.
 
 #### Low-Level API
 
-[Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
+[Picovoice](./src/picovoice.tsx) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec` and `requireEndpoint` are optional.
@@ -298,5 +298,5 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demo App
 
-Check out the [Picovoice React Native demo](/demo/react-native) to see what it looks like to use Picovoice in a cross-platform app!
+Check out the [Picovoice React Native demo](../../demo/react-native) to see what it looks like to use Picovoice in a cross-platform app!
 

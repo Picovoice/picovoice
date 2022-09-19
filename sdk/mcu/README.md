@@ -10,7 +10,7 @@ Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` 
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
-## Usage 
+## Usage
 
 Picovoice is implemented in ANSI C and therefore can be directly linked to embedded C projects. Its public header file contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
@@ -90,4 +90,4 @@ pv_picovoice_delete(handle);
 
 ## Demos
 
-Check out the [Picovoice demo for microcontrollers](/demo/mcu) to see what it looks like to use Picovoice in an embedded project!
+Check out the [Picovoice demo for microcontrollers](../../demo/mcu) to see what it looks like to use Picovoice in an embedded project!

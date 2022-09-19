@@ -5,7 +5,7 @@
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
-similar to Alexa and Google. But it entirely runs 100% on-device. 
+similar to Alexa and Google. But it entirely runs 100% on-device.
 
 Picovoice is:
 
@@ -18,7 +18,7 @@ Picovoice is:
 
 ## Installation
 
-The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile: 
+The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile:
 
 ```ruby
 pod 'Picovoice-iOS'
@@ -44,7 +44,7 @@ There are two possibilities for integrating Picovoice into an iOS application.
 
 ### High-Level API
 
-[PicovoiceManager](/sdk/ios/PicovoiceManager.swift) provides
+[PicovoiceManager](./PicovoiceManager.swift) provides
 a high-level API for integrating Picovoice into iOS applications. It manages all activities related to creating an input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
 inference completion. To construct a PicovoiceManager you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn) and a Rhino context file (.rhn).
 
@@ -56,11 +56,11 @@ let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://cons
 let manager = PicovoiceManager(
     accessKey: accessKey,
     keywordPath: "/path/to/keyword.ppn",
-    onWakeWordDetection: { 
-        // logic to execute upon deletection of wake word
+    onWakeWordDetection: {
+        // logic to execute upon detection of wake word
     },
     contextPath: "/path/to/context.rhn",
-    onInference: { inference in 
+    onInference: { inference in
         // logic to execute upon completion of intent inference
     })
 ```
@@ -84,7 +84,7 @@ let manager = PicovoiceManager(
     requireEndpoint: false)
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
@@ -103,7 +103,7 @@ manager.stop();
 
 ### Low-Level API
 
-[Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference. 
+[Picovoice.swift](./Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference.
 
 To construct an instance, you'll need to provide a Picovoice `AccessKey`, a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
@@ -118,21 +118,21 @@ do {
         keywordPath: "/path/to/keyword.ppn",
         porcupineSensitivity: 0.4,
         porcupineModelPath: "/path/to/porcupine/model.pv",
-        onWakeWordDetection: { 
-            // logic to execute upon deletection of wake word
+        onWakeWordDetection: {
+            // logic to execute upon detection of wake word
         },
         contextPath: "/path/to/context.rhn",
         rhinoSensitivity: 0.7,
         rhinoModelPath: "/path/to/rhino/model.pv",
         endpointDurationSec: 1.5,
         requireEndpoint: false,
-        onInference: { inference in 
+        onInference: { inference in
             // logic to execute upon completion of intent inference
         })
 } catch { }
 ```
 
-Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate. 
+Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
 The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language.
 
@@ -179,4 +179,4 @@ Copy your `AccessKey` into the `accessKey` variable in [`PicovoiceAppTestUITests
 
 ## Demo Apps
 
-For example usage refer to our [iOS demo application](/demo/ios).
+For example usage refer to our [iOS demo application](../../demo/ios).

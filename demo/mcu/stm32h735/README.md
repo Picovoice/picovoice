@@ -11,9 +11,9 @@ This package contains a demo project for the STM32H735G Discovery kit using Pico
 
 ## Installation
 
-For this demo, you need to: 
+For this demo, you need to:
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-1. Download [STM32Cube middleware for audio PDM to PCM conversion](https://www.st.com/en/licensed-software/audiopdm-mw.html) and copy it to the project folder. A more detailed guide can be found on [STM32CubeH7's GitHub repository](https://github.com/STMicroelectronics/STM32CubeH7/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
+1. Download `STM32Cube middleware for audio PDM to PCM conversion` and copy it to the project folder. A more detailed guide can be found on [STM32CubeH7's GitHub repository](https://github.com/STMicroelectronics/STM32CubeH7/tree/master/Middlewares/ST/STM32_Audio/Addons/PDM).
 1. Install a serial port monitor on your system to be able to communicate with the board. [Arduino environment's built-in serial monitor](https://www.arduino.cc/en/software) and [Coolterm](https://freeware.the-meiers.org/) are two free options available on all platforms (Windows, Linux, and macOS).
 
 ## AccessKey
