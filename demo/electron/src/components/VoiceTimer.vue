@@ -1,5 +1,5 @@
 <template>
-  <div class="voice-timer" v-bind:class="{ active: engine === 'rhn' }">
+  <div class="voice-timer" v-bind:class="{ active: state.wakeWordDetection !== null }">
     <h1>Voice Timer</h1>
     <div v-if="!state.isLoaded">
       <label>
@@ -50,7 +50,6 @@ const VoiceTimer = defineComponent({
     const { state, init, start, release } = usePicovoice();
 
     const accessKey = ref("");
-    const engine = ref<"ppn" | "rhn">("ppn");
     const interval = ref<any>(null);
     const timeInitial = ref(0);
     const timeRemaining = ref(0);
@@ -111,21 +110,11 @@ const VoiceTimer = defineComponent({
     };
 
     watch(
-      () => state.wakeWordDetection,
-      (wakeWordDetection) => {
-        if (wakeWordDetection !== null) {
-          engine.value = "rhn";
-        }
-      }
-    );
-
-    watch(
       () => state.inference,
       (inference) => {
         if (inference === null) {
           return;
         }
-        engine.value = "ppn";
 
         let hours = 0,
           minutes = 0,
@@ -166,7 +155,6 @@ const VoiceTimer = defineComponent({
     return {
       state,
       accessKey,
-      engine,
       timeRemaining,
       timeRemainingDisplay,
       updateAccessKey,
