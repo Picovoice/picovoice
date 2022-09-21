@@ -1509,7 +1509,7 @@ for (; ;) {
 }
 ```
 
-Replace `${ACCESS_KEY}` with yours obtained from [Picovoice Console]((https://console.picovoice.ai/)).
+Replace `${ACCESS_KEY}` with yours obtained from [Picovoice Console](https://console.picovoice.ai/).
 
 When done, release the resources allocated to Picovoice using `picovoice.release()`.
 
@@ -1788,7 +1788,7 @@ loop {
 
 ### C
 
-Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/include/pv_picovoice.h](sdk/include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
+Picovoice is implemented in ANSI C and therefore can be directly linked to C applications. Its public header file ([sdk/c/include/pv_picovoice.h](sdk/c/include/pv_picovoice.h)) contains relevant information. An instance of the Picovoice object can be constructed as follows.
 
 ```c
 const char* ACCESS_KEY = "${ACCESS_KEY}"; // AccessKey string obtained from [Picovoice Console](https://console.picovoice.ai/)
