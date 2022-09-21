@@ -21,7 +21,7 @@ import ai.picovoice.rhino.*;
 
 /**
  * Android binding for Picovoice end-to-end platform. Picovoice enables building voice experiences
- * similar to Alexa but runs entirely on-device (offline).
+ * similar to Alexa but processes audio entirely on-device (offline).
  * <p>
  * Picovoice detects utterances of a customizable wake word (phrase) within an incoming stream of
  * audio in real-time. After detection of wake word, it begins to infer the user's intent from the
@@ -131,7 +131,7 @@ public class Picovoice {
                 }
             }
         } catch (PorcupineException | RhinoException e) {
-            throw new PicovoiceException(e);
+            throw mapToPicovoiceException(e);
         }
     }
 
@@ -167,8 +167,12 @@ public class Picovoice {
      *
      * @return Rhino context
      */
-    public String getContextInformation() {
-        return rhino != null ? rhino.getContextInformation() : "";
+    public String getContextInformation() throws PicovoiceException {
+        try {
+            return rhino != null ? rhino.getContextInformation() : "";
+        } catch (RhinoException e) {
+            throw mapToPicovoiceException(e);
+        }
     }
 
     /**
