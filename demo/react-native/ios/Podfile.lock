@@ -12,10 +12,10 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (2.1.1):
+  - Porcupine-iOS (2.1.2):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.1.2):
-    - Porcupine-iOS (~> 2.1.1)
+  - porcupine-react-native (2.1.4):
+    - Porcupine-iOS (~> 2.1.2)
     - React
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -282,11 +282,11 @@ PODS:
     - React-jsi (= 0.67.4)
     - React-logger (= 0.67.4)
     - React-perflogger (= 0.67.4)
-  - Rhino-iOS (2.1.2):
+  - Rhino-iOS (2.1.3):
     - ios-voice-processor (~> 1.0.2)
-  - rhino-react-native (2.1.4):
+  - rhino-react-native (2.1.6):
     - React
-    - Rhino-iOS (~> 2.1.2)
+    - Rhino-iOS (~> 2.1.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -409,8 +409,8 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: afcb0d0c2369e9bdd1a9a9cf3e2318f152dcddb1
-  porcupine-react-native: c80bbe3adc459f27ae72542fb1c608e3fc1fba04
+  Porcupine-iOS: 884f40edadf4b72fac6fae768d3247bdb48841f7
+  porcupine-react-native: 08b9c7fba702ea5068f490c66d4d51ccc18c4333
   RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: 0aa6c1c27e1d65920df35ceea5341a5fe76bdb79
   RCTTypeSafety: d76a59d00632891e11ed7522dba3fd1a995e573a
@@ -436,8 +436,8 @@ SPEC CHECKSUMS:
   React-RCTVibration: 3b52a7dced19cdb025b4f88ab26ceb2d85f30ba2
   React-runtimeexecutor: a9d3c82ddf7ffdad9fbe6a81c6d6f8c06385464d
   ReactCommon: 07d0c460b9ba9af3eaf1b8f5abe7daaad28c9c4e
-  Rhino-iOS: 334035c5c9883123d0ff776b634b227e5664c65b
-  rhino-react-native: b3dc9090528c96a1b5eb0b8925c62222eda4871f
+  Rhino-iOS: a211c1c9da37d4c9187e1ce5bba6a2c06c6ce4b0
+  rhino-react-native: 05c458c7c872fe6c3eaa085f3c520dc0243d90b0
   Yoga: d6b6a80659aa3e91aaba01d0012e7edcbedcbecd
 
 PODFILE CHECKSUM: 01013a1f5997e930862476da5284b4ac9e764646

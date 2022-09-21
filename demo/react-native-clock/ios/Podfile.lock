@@ -20,10 +20,10 @@ PODS:
     - glog
   - glog (0.3.5)
   - ios-voice-processor (1.0.3)
-  - Porcupine-iOS (2.1.1):
+  - Porcupine-iOS (2.1.2):
     - ios-voice-processor (~> 1.0.2)
-  - porcupine-react-native (2.1.2):
-    - Porcupine-iOS (~> 2.1.1)
+  - porcupine-react-native (2.1.4):
+    - Porcupine-iOS (~> 2.1.2)
     - React
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
@@ -255,11 +255,11 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - Rhino-iOS (2.1.2):
+  - Rhino-iOS (2.1.3):
     - ios-voice-processor (~> 1.0.2)
-  - rhino-react-native (2.1.4):
+  - rhino-react-native (2.1.6):
     - React
-    - Rhino-iOS (~> 2.1.2)
+    - Rhino-iOS (~> 2.1.3)
   - RNVectorIcons (8.1.0):
     - React-Core
   - Yoga (1.14.0)
@@ -378,8 +378,8 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
-  Porcupine-iOS: afcb0d0c2369e9bdd1a9a9cf3e2318f152dcddb1
-  porcupine-react-native: c80bbe3adc459f27ae72542fb1c608e3fc1fba04
+  Porcupine-iOS: 884f40edadf4b72fac6fae768d3247bdb48841f7
+  porcupine-react-native: 08b9c7fba702ea5068f490c66d4d51ccc18c4333
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -402,8 +402,8 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  Rhino-iOS: 334035c5c9883123d0ff776b634b227e5664c65b
-  rhino-react-native: b3dc9090528c96a1b5eb0b8925c62222eda4871f
+  Rhino-iOS: a211c1c9da37d4c9187e1ce5bba6a2c06c6ce4b0
+  rhino-react-native: 05c458c7c872fe6c3eaa085f3c520dc0243d90b0
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 

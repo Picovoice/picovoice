@@ -14,10 +14,10 @@
     "android-install": "yarn && yarn copy"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "=2.1.4",
-    "@picovoice/porcupine-react-native": "=2.1.3",
+    "@picovoice/picovoice-react-native": "=2.1.5",
+    "@picovoice/porcupine-react-native": "=2.1.4",
     "@picovoice/react-native-voice-processor": "^1.0.4",
-    "@picovoice/rhino-react-native": "^2.1.4",
+    "@picovoice/rhino-react-native": "=2.1.6",
     "react": "^17.0.2",
     "react-native": "^0.67.3"
   },
