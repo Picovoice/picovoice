@@ -16,7 +16,9 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
+<!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/picovoice)](https://crates.io/crates/picovoice)
+<!-- markdown-link-check-enable -->
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
@@ -131,8 +133,6 @@ platform.
     - [Android](#android)
     - [iOS](#ios)
     - [Web](#web)
-      - [Vanilla JavaScript and HTML (CDN Script Tag)](#vanilla-javascript-and-html-cdn-script-tag)
-      - [Vanilla JavaScript and HTML (ES Modules)](#vanilla-javascript-and-html-es-modules)
       - [Angular](#angular)
       - [React](#react)
       - [Vue](#vue)
@@ -219,7 +219,7 @@ Upon success, the demo prints the following into the terminal:
 }
 ```
 
-For more information regarding Python demos refer to their [documentation](/demo/python/README.md).
+For more information regarding Python demos refer to their [documentation](demo/python/README.md).
 
 ### NodeJS Demos
 
@@ -258,7 +258,7 @@ Inference:
 }
 ```
 
-Please see the [demo instructions](./demo/nodejs/README.md) for details.
+Please see the [demo instructions](demo/nodejs/README.md) for details.
 
 ### .NET Demos
 
@@ -290,7 +290,7 @@ Upon success the following it printed into the terminal:
 }
 ```
 
-For more information about .NET demos go to [demo/dotnet](/demo/dotnet/README.md).
+For more information about .NET demos go to [demo/dotnet](demo/dotnet/README.md).
 
 ### Java Demos
 
@@ -325,13 +325,13 @@ Upon success the following it printed into the terminal:
 }
 ```
 
-For more information about the Java demos go to [demo/java](/demo/java/README.md).
+For more information about the Java demos go to [demo/java](demo/java/README.md).
 
 ### Go Demos
 
 The demos require `cgo`, which means that a gcc compiler like [Mingw](https://www.mingw-w64.org/) is required.
 
-From [demo/go](/demo/go) run the following command from the terminal to build and run the mic demo:
+From [demo/go](demo/go) run the following command from the terminal to build and run the mic demo:
 ```console
 go run micdemo/picovoice_mic_demo.go \
 -access_key ${ACCESS_KEY} \
@@ -358,13 +358,13 @@ Upon success the following it printed into the terminal:
 }
 ```
 
-For more information about the Go demos go to [demo/go](/demo/go/README.md).
+For more information about the Go demos go to [demo/go](demo/go/README.md).
 
 ### Unity Demos
 
-To run the Picovoice Unity demo, import the [Picovoice Unity package](/sdk/unity/picovoice-1.1.1.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
+To run the Picovoice Unity demo, import the [Picovoice Unity package](sdk/unity/picovoice-1.1.1.unitypackage) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
-To browse the demo source go to [demo/unity](/demo/unity).
+To browse the demo source go to [demo/unity](demo/unity).
 
 ### Flutter Demos
 
@@ -372,7 +372,7 @@ To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flu
 
 Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
 
-Run the following command from [demo/flutter](/demo/flutter) to build and deploy the demo to your device:
+Run the following command from [demo/flutter](demo/flutter) to build and deploy the demo to your device:
 ```console
 flutter run
 ```
@@ -381,7 +381,7 @@ Once the application has been deployed, press the start button and say:
 
 > Picovoice, turn off the lights in the kitchen.
 
-For the full set of supported commands refer to [demo's readme](/demo/flutter/README.md).
+For the full set of supported commands refer to [demo's readme](demo/flutter/README.md).
 
 ### React Native Demos
 To run the React Native Picovoice demo app you'll first need to install yarn and set up your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:
@@ -405,16 +405,16 @@ Once the application has been deployed, press the start button and say
 
 > Porcupine, turn off the lights in the kitchen.
 
-For the full set of supported commands refer to [demo's readme](/demo/react-native/README.md).
+For the full set of supported commands refer to [demo's readme](demo/react-native/README.md).
 
 ### Android Demos
 
-Using Android Studio, open [demo/android/Activity](/demo/android/Activity) as an Android project and then run the
+Using Android Studio, open [demo/android/Activity](demo/android/Activity) as an Android project and then run the
 application. Press the start button and say
 
 > Porcupine, turn off the lights in the kitchen.
 
-For the full set of supported commands refer to [demo's readme](/demo/android/README.md).
+For the full set of supported commands refer to [demo's readme](demo/android/README.md).
 
 ### iOS Demos
 
@@ -423,7 +423,7 @@ The ForegroundApp demo runs **only** when the application is in focus.
 
 #### BackgroundService Demo
 
-To run the demo, go to [demo/ios/BackgroundService](/demo/ios/BackgroundService) and run:
+To run the demo, go to [demo/ios/BackgroundService](demo/ios/BackgroundService) and run:
 
 ```console
 pod install
@@ -433,7 +433,7 @@ Then, using [Xcode](https://developer.apple.com/xcode/), open the generated `Pic
 
 #### ForegroundApp Demo
 
-To run the demo, go to [demo/ios/ForegroundApp](/demo/ios/ForegroundApp) and run:
+To run the demo, go to [demo/ios/ForegroundApp](demo/ios/ForegroundApp) and run:
 
 ```console
 pod install
@@ -447,13 +447,13 @@ After running the demo, press the start button and try saying the following:
 
 > Picovoice, shut of the lights in the living room.
 
-For more details about the iOS demos and full set of supported commands refer to [demo's readme](/demo/ios/README.md).
+For more details about the iOS demos and full set of supported commands refer to [demo's readme](demo/ios/README.md).
 
 ### Web Demos
 
 #### Vanilla JavaScript and HTML
 
-From [demo/web](/demo/web) run the following in the terminal:
+From [demo/web](demo/web) run the following in the terminal:
 
 ```console
 yarn
@@ -467,11 +467,11 @@ npm install
 npm run start
 ```
 
-Open http://localhost:5000 in your browser to try the demo.
+Open `http://localhost:5000` in your browser to try the demo.
 
 #### Angular Demos
 
-From [demo/angular](/demo/angular) run the following in the terminal:
+From [demo/angular](demo/angular) run the following in the terminal:
 
 ```console
 yarn
@@ -485,11 +485,11 @@ npm install
 npm run start
 ```
 
-Open http://localhost:4200 in your browser to try the demo.
+Open `http://localhost:4200` in your browser to try the demo.
 
 #### React Demos
 
-From [demo/react](/demo/react) run the following in the terminal:
+From [demo/react](demo/react) run the following in the terminal:
 
 ```console
 yarn
@@ -503,11 +503,11 @@ npm install
 npm run start
 ```
 
-Open http://localhost:3000 in your browser to try the demo.
+Open `http://localhost:3000` in your browser to try the demo.
 
 #### Vue Demos
 
-From [demo/vue](/demo/vue) run the following in the terminal:
+From [demo/vue](demo/vue) run the following in the terminal:
 
 ```console
 yarn
@@ -521,7 +521,7 @@ npm install
 npm run start
 ```
 
-Open http://localhost:8080 in your browser to try the demo.
+Open `http://localhost:8080` in your browser to try the demo.
 
 ### Rust Demos
 
@@ -552,13 +552,13 @@ Upon success the following it printed into the terminal:
 }
 ```
 
-For more information about the Rust demos go to [demo/rust](/demo/rust/README.md).
+For more information about the Rust demos go to [demo/rust](demo/rust/README.md).
 
 ### C Demos
 
 The C demo requires [CMake](https://cmake.org/) version 3.4 or higher.
 
-The [Microphone demo](/demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
+The [Microphone demo](demo/c/picovoice_demo_mic.c) requires [miniaudio](https://github.com/mackron/miniaudio) for accessing microphone audio data.
 
 **Windows Requires [MinGW](https://www.mingw-w64.org/) to build the demo.**
 
@@ -591,7 +591,7 @@ Run the demo using:
 -i {AUDIO_DEVICE_INDEX}
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [/sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [/sdk/c/lib](sdk/c/lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device.
 
@@ -639,7 +639,7 @@ Run the demo using:
 -w resources/audio_samples/picovoice-coffee.wav
 ```
 
-Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](/sdk/c/lib), `${PLATFORM}` with the
+Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](sdk/c/lib), `${PLATFORM}` with the
 name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`).
 
 #### Windows
@@ -652,11 +652,11 @@ Run the demo using:
 
 The demo opens up the WAV file. It detects the wake word and infers the intent in the context of a coffee maker system.
 
-For more information about C demos go to [demo/c](/demo/c).
+For more information about C demos go to [demo/c](demo/c).
 
 ### Microcontroller Demos
 
-There are several projects for various development boards inside the [mcu demo](./demo/mcu) folder.
+There are several projects for various development boards inside the [mcu demo](demo/mcu) folder.
 
 ## SDKs
 
@@ -980,13 +980,13 @@ picovoice.Delete()
 
 ### Unity
 
-Import the [Picovoice Unity Package](/sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project.
+Import the [Picovoice Unity Package](sdk/unity/picovoice-1.1.1.unitypackage) into your Unity project.
 
 The SDK provides two APIs:
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/unity/Assets/Picovoice/PicovoiceManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
+[PicovoiceManager](sdk/unity/Assets/Picovoice/PicovoiceManager.cs) provides a high-level API that takes care of audio recording. This is the quickest way to get started.
 
 The constructor `PicovoiceManager.Create` will create an instance of the PicovoiceManager using the Porcupine keyword and Rhino context files that you pass to it.
 ```csharp
@@ -1021,7 +1021,7 @@ Unity package to capture frames of audio and automatically pass it to the Picovo
 
 #### Low-Level API
 
-[Picovoice](/sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
+[Picovoice](sdk/unity/Assets/Picovoice/Picovoice.cs) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `Create` static constructor.
@@ -1082,7 +1082,7 @@ The SDK provides two APIs:
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/flutter/lib/picovoice_manager.dart) provides a high-level API that takes care of
+[PicovoiceManager](sdk/flutter/lib/picovoice_manager.dart) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -1122,7 +1122,7 @@ Flutter plugin handles audio capture and passes frames to Picovoice for you.
 
 #### Low-Level API
 
-[Picovoice](/sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
+[Picovoice](sdk/flutter/lib/picovoice.dart) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files and requireEndpoint are optional.
@@ -1183,7 +1183,7 @@ The [@picovoice/picovoice-react-native](https://www.npmjs.com/package/@picovoice
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -1215,7 +1215,7 @@ module handles audio capture and passes frames to Picovoice for you.
 
 #### Low-Level API
 
-[Picovoice](/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
+[Picovoice](sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
@@ -1277,7 +1277,7 @@ There are two possibilities for integrating Picovoice into an Android applicatio
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
+[PicovoiceManager](sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
 a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
 input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
 inference completion. The class can be initialized as follows:
@@ -1320,7 +1320,7 @@ manager.stop();
 
 #### Low-Level API
 
-[Picovoice.java](/sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
+[Picovoice.java](sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/Picovoice.java) provides a
 low-level binding for Android. It can be initialized as follows:
 
 ```java
@@ -1382,7 +1382,7 @@ There are two possibilities for integrating Picovoice into an iOS application.
 
 #### High-Level API
 
-[PicovoiceManager](/sdk/ios/PicovoiceManager.swift) class manages all activities related to creating an audio input
+[PicovoiceManager](sdk/ios/PicovoiceManager.swift) class manages all activities related to creating an audio input
 stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and completion of
 intent inference. The class can be initialized as below:
 
@@ -1408,7 +1408,7 @@ when initialized input audio can be processed using `manager.start()`. The proce
 
 #### Low-Level API
 
-[Picovoice.swift](/sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference.
+[Picovoice.swift](sdk/ios/Picovoice.swift) provides an API for passing audio from your own audio pipeline into the Picovoice Platform for wake word detection and intent inference.
 
 o construct an instance, you'll need to provide a Porcupine keyword file (.ppn), a Rhino context file (.rhn) and callbacks for when the wake word is detected and an inference is made. Sensitivity and model parameters are optional
 
