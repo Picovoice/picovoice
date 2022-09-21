@@ -1,143 +1,221 @@
 <template>
-  <div class="voice-widget">
-    <Picovoice
-      ref="picovoice"
-      v-bind:picovoiceFactoryArgs="factoryArgs"
-      v-bind:picovoiceFactory="factory"
-      v-on:pv-ready="pvReadyFn"
-      v-on:ppn-keyword="pvKeywordFn"
-      v-on:rhn-inference="pvInferenceFn"
-      v-on:rhn-info="pvInfoFn"
-      v-on:pv-error="pvErrorFn"
-    />
-    <h2>VoiceWidget</h2>
-    <h3>
+  <div class="voice-timer" v-bind:class="{ active: engine === 'rhn' }">
+    <h1>Voice Timer</h1>
+    <div v-if="!state.isLoaded">
       <label>
         AccessKey obtained from
         <a href="https://console.picovoice.ai/">Picovoice Console</a>:
         <input
           type="text"
           name="accessKey"
-          v-on:change="initEngine"
-          :disabled="isLoaded"
+          v-on:change="updateAccessKey"
+          :disabled="state.isLoaded"
         />
+        <button
+          class="start-button"
+          v-on:click="initPicovoice"
+          :disabled="accessKey.length === 0 || state.isLoaded"
+        >
+          Init Picovoice
+        </button>
       </label>
-    </h3>
-    <h3>Picovoice Loaded: {{ isLoaded }}</h3>
-    <h3>Listening: {{ isListening }}</h3>
-    <h3>Error: {{ isError }}</h3>
-    <p class="error-message" v-if="isError">
-      {{ JSON.stringify(errorMessage) }}
-    </p>
-    <h3>Engine: {{ engine }}</h3>
-    <button v-on:click="start" :disabled="!isLoaded || isError || isListening">
-      Start
-    </button>
-    <button v-on:click="pause" :disabled="!isLoaded || isError || !isListening">
-      Pause
-    </button>
-    <h3>Keyword Detections (Listening for "Picovoice")</h3>
-    <ul v-if="detections.length > 0">
-      <li v-for="(item, index) in detections" :key="index">
-        {{ item }}
-      </li>
-    </ul>
-    <h3>Inference: (Follow-on commands in "Clock" context)</h3>
-    <pre v-if="inference !== null">{{ JSON.stringify(inference, null, 2) }}</pre>
-    <hr />
-    <div>
-      <h3>Context Info:</h3>
-      <pre>{{ info }}</pre>
+    </div>
+    <div v-if="state.isLoaded">
+      <p>
+        e.g. <i>"Computer, set a timer for one minute thirty two seconds"</i>
+      </p>
+      <p class="error-message" v-if="state.error !== null">
+        {{ state.error }}
+      </p>
+      <p v-if="state.inference?.isUnderstood === false">
+        Didn't understand that command. Please try again.
+      </p>
+    </div>
+    <div class="timer">
+      <div v-if="timeRemaining > 0" class="digits">
+        {{ timeRemainingDisplay }}
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-import Picovoice from "@picovoice/picovoice-web-vue";
-import { PicovoiceWorkerFactory as PicovoiceWorkerFactoryEn } from "@picovoice/picovoice-web-en-worker";
+<script lang="ts">
+import { defineComponent, onBeforeUnmount, ref, watch } from "vue";
+import { usePicovoice } from "@picovoice/picovoice-vue";
+import { BuiltInKeyword } from "@picovoice/porcupine-web";
 
-import { CLOCK_EN_64 } from "../voice/base64";
-
-export default {
+const VoiceTimer = defineComponent({
   name: "VoiceWidget",
-  components: {
-    Picovoice,
-  },
-  data: function () {
+  setup() {
+    const { state, init, start, release } = usePicovoice();
+
+    const accessKey = ref("");
+    const engine = ref<"ppn" | "rhn">("ppn");
+    const interval = ref<any>(null);
+    const timeInitial = ref(0);
+    const timeRemaining = ref(0);
+    const timeRemainingDisplay = ref("");
+
+    const updateAccessKey = (event: any) => {
+      accessKey.value = event.target.value;
+    };
+
+    const initPicovoice = async () => {
+      await init(
+        accessKey.value,
+        { builtin: BuiltInKeyword.Computer },
+        { publicPath: "porcupine_params.pv", forceWrite: true },
+        { publicPath: "clock_wasm.rhn", forceWrite: true },
+        { publicPath: "rhino_params.pv", forceWrite: true }
+      );
+      await start();
+    };
+
+    onBeforeUnmount(() => {
+      release();
+    });
+
+    const startTimer = () => {
+      if (interval.value !== null) {
+        clearInterval(interval.value);
+      }
+      interval.value = setInterval(() => {
+        timeRemaining.value = timeRemaining.value - 1;
+        if (timeRemaining.value <= 0) {
+          clearInterval(interval.value);
+        }
+        const hours = Math.floor(timeRemaining.value / 3600);
+        const minutes = Math.floor((timeRemaining.value - hours * 3600) / 60);
+        const seconds = timeRemaining.value - hours * 3600 - minutes * 60;
+        timeRemainingDisplay.value = `${hours
+          .toString()
+          .padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+      }, 1000);
+    };
+
+    const pauseTimer = () => {
+      if (interval.value !== null) {
+        clearInterval(interval.value);
+        interval.value = null;
+      }
+    };
+
+    const stopTimer = () => {
+      if (interval.value !== null) {
+        clearInterval(interval.value);
+        interval.value = null;
+        timeRemaining.value = 0;
+      }
+    };
+
+    watch(
+      () => state.wakeWordDetection,
+      (wakeWordDetection) => {
+        if (wakeWordDetection !== null) {
+          engine.value = "rhn";
+        }
+      }
+    );
+
+    watch(
+      () => state.inference,
+      (inference) => {
+        if (inference === null) {
+          return;
+        }
+        engine.value = "ppn";
+
+        let hours = 0,
+          minutes = 0,
+          seconds = 0,
+          timerInSeconds = 0;
+        if (inference.isUnderstood) {
+          switch (inference.intent) {
+            case "setAlarm":
+              if (inference.slots?.["hours"] !== undefined) {
+                hours = parseInt(inference.slots["hours"]);
+              }
+              if (inference.slots?.["minutes"] !== undefined) {
+                minutes = parseInt(inference.slots["minutes"]);
+              }
+              if (inference.slots?.["seconds"] !== undefined) {
+                seconds = parseInt(inference.slots["seconds"]);
+              }
+              timerInSeconds = hours * 3600 + minutes * 60 + seconds;
+              timeRemaining.value = timerInSeconds;
+              timeInitial.value = timerInSeconds;
+              startTimer();
+              break;
+            case "pause":
+              pauseTimer();
+              break;
+            case "reset":
+              timeRemaining.value = timeInitial.value;
+              stopTimer();
+              break;
+            case "resume":
+              startTimer();
+              break;
+          }
+        }
+      }
+    );
+
     return {
-      inference: null,
-      detections: [],
-      isError: false,
-      isLoaded: false,
-      isListening: false,
-      isTalking: false,
-      context64: CLOCK_EN_64,
-      info: null,
-      engine: null,
-      factory: PicovoiceWorkerFactoryEn,
-      factoryArgs: {
-        accessKey: "",
-        start: true,
-        porcupineKeyword: 'Picovoice',
-        rhinoContext: {
-          base64: CLOCK_EN_64,
-        },
-      },
+      state,
+      accessKey,
+      engine,
+      timeRemaining,
+      timeRemainingDisplay,
+      updateAccessKey,
+      initPicovoice,
+      release,
     };
   },
-  methods: {
-    initEngine: function (event) {
-      this.factoryArgs.accessKey = event.target.value;
-      this.isError = false;
-      this.isLoaded = false;
-      this.isListening = false;
-      this.$refs.picovoice.initEngine();
-    },
-    start: function () {
-      if (this.$refs.picovoice.start()) {
-        this.isListening = !this.isListening;
-      }
-    },
-    pause: function () {
-      if (this.$refs.picovoice.pause()) {
-        this.isListening = !this.isListening;
-      }
-    },
+});
 
-    pvReadyFn: function () {
-      this.isLoaded = true;
-      this.isListening = true;
-      this.engine = "ppn";
-    },
-    pvInfoFn: function (info) {
-      this.info = info;
-    },
-    pvKeywordFn: function (keyword) {
-      this.detections = [...this.detections, keyword];
-      this.engine = "rhn";
-    },
-    pvInferenceFn: function (inference) {
-      this.inference = inference;
-      this.engine = "ppn";
-    },
-    pvErrorFn: function (error) {
-      this.isError = true;
-      this.errorMessage = error.toString();
-    },
-  },
-};
+export default VoiceTimer;
 </script>
 
 <style scoped>
+
+.voice-timer {
+  border: 20px solid #377dff;
+  border-radius: 0.25rem;
+  height: calc(100% - 6.5rem);
+  padding: 2rem;
+}
+
+.active {
+  border-color: white;
+}
+
 button {
   padding: 1rem;
   font-size: 1.5rem;
   margin-right: 1rem;
 }
 
-.voice-widget {
-  border: 2px double #377dff;
-  padding: 2rem;
+h1 {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.timer {
+  text-align: center;
+}
+
+.digits {
+  font-size: 6rem;
+  font-family: monospace;
+}
+
+.start-button {
+  padding: 0.1rem;
+  font-size: 1rem;
+  margin-left: 0.5rem;
 }
 
 .error-message {

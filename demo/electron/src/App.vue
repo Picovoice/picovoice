@@ -18,6 +18,13 @@ export default defineComponent({
 body {
   background-color: #377dff;
   color: white;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  height: 100vh;
+  margin: 0;
+}
+
+#app {
+  height: 100%;
 }
 </style>
