@@ -136,7 +136,7 @@ public class PicovoiceManager {
      *
      * @return Rhino context
      */
-    public String getContextInformation() {
+    public String getContextInformation() throws PicovoiceException {
         return picovoice != null ? picovoice.getContextInformation() : "";
     }
 

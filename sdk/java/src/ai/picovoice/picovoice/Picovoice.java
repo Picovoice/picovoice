@@ -256,8 +256,12 @@ public class Picovoice {
      *
      * @return Rhino context
      */
-    public String getContextInformation() {
-        return rhino != null ? rhino.getContextInformation() : "";
+    public String getContextInformation() throws PicovoiceException {
+        try {
+            return rhino != null ? rhino.getContextInformation() : "";
+        } catch (RhinoException e) {
+            throw mapToPicovoiceException(e);
+        }
     }
 
     /**

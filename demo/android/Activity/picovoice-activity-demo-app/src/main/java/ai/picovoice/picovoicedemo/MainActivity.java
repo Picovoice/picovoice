@@ -162,7 +162,11 @@ public class MainActivity extends AppCompatActivity {
                 .setProcessErrorCallback(picovoiceManagerErrorCallback)
                 .build(getApplicationContext());
 
-        Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
+        try {
+            Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
+        } catch (PicovoiceException e) {
+            Log.e("PicovoiceManager", "Failed to get context info: \n" + e);
+        }
     }
 
     public void process(View view) {
@@ -201,7 +205,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showContextCheatSheet(View view) {
-        String contextInformation = picovoiceManager.getContextInformation();
+        String contextInformation;
+        try {
+            contextInformation = picovoiceManager.getContextInformation();
+        } catch (PicovoiceException e) {
+            Log.e("PicovoiceManager", "Failed to get context info: \n" + e);
+            return;
+        }
 
         if (contextInformation.equals("")) {
             if (!hasRecordPermission()) {
