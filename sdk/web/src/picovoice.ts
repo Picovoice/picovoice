@@ -153,7 +153,7 @@ export class Picovoice {
       [keywordPath],
       [keywordLabel],
       porcupineCallback,
-      new Float32Array(porcupineSensitivity),
+      new Float32Array([porcupineSensitivity]),
       porcupineModelPath,
       { processErrorCallback }
     );

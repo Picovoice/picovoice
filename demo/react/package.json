@@ -5,8 +5,8 @@
   "type": "module",
   "description": "Picovoice SDK React demo (made with Create React App)",
   "dependencies": {
-    "@picovoice/picovoice-react": "~2.1.3",
-    "@picovoice/web-voice-processor": "~4.0.1",
+    "@picovoice/picovoice-react": "~2.1.6",
+    "@picovoice/web-voice-processor": "~4.0.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "react": "^18.2.0",
