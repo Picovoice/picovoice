@@ -1123,10 +1123,10 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.1.tgz#9a47dcd56efa5431870a25f0c8093f3eee6923ea"
-  integrity sha512-RmzeovecBG7WpxTksqTCDNID1lcbJse8rdp/R+HrriufDgkilNXAfKyIm7VknzHA48Pw9e/eJJPLrntAQwzdcw==
+"@picovoice/web-voice-processor@~4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.2.tgz#e7593e560ce7cbe82bd5bae67259643eb099b852"
+  integrity sha512-6T4sY2mqKNNUWNg+Yov+VY3mhoo1JmyJqJIvxnWbQoHHNKgOAUsq8nDQHdXizFVnpdkg33va3KC0KNaSdP+TXA==
 
 "@rollup/plugin-babel@^5.3.1":
   version "5.3.1"

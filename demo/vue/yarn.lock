@@ -1229,10 +1229,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-vue@~2.1.2":
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-vue/-/picovoice-vue-2.1.2.tgz#b4af06773d0b962d0756095dabf602ab9a7e0b1b"
-  integrity sha512-yDUdPellG8RnY9glyprsi0FFCaIC0nJJy0Vo/iaMMszUqEqtDTkFzlfUUccGUoUCanFcofXXnB+FHyfK2vNkbw==
+"@picovoice/picovoice-vue@~2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-vue/-/picovoice-vue-2.1.4.tgz#cbab5de5491d2bc03b1606aa09a55703819811a7"
+  integrity sha512-a0GlLHhurT5gVlWkYPbOzfhGsan873oO38MInDwRbrEndqKD5gV8kZe0kOkqo8IGpJVDZW4/Gt4IlELUn8WA5w==
   dependencies:
     "@picovoice/picovoice-web" "=2.1.7"
 
@@ -1266,10 +1266,10 @@
   dependencies:
     commander "^9.2.0"
 
-"@picovoice/web-voice-processor@~4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.1.tgz#9a47dcd56efa5431870a25f0c8093f3eee6923ea"
-  integrity sha512-RmzeovecBG7WpxTksqTCDNID1lcbJse8rdp/R+HrriufDgkilNXAfKyIm7VknzHA48Pw9e/eJJPLrntAQwzdcw==
+"@picovoice/web-voice-processor@~4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.2.tgz#e7593e560ce7cbe82bd5bae67259643eb099b852"
+  integrity sha512-6T4sY2mqKNNUWNg+Yov+VY3mhoo1JmyJqJIvxnWbQoHHNKgOAUsq8nDQHdXizFVnpdkg33va3KC0KNaSdP+TXA==
 
 "@polka/url@^1.0.0-next.20":
   version "1.0.0-next.21"

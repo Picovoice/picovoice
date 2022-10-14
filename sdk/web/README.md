@@ -20,6 +20,11 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 - Firefox
 - Safari
 
+### Restrictions
+
+IndexedDB is required to use `Picovoice` in a worker thread. Browsers without IndexedDB support
+(i.e. Firefox Incognito Mode) should use `Picovoice` in the main thread.
+
 ## Installation
 
 ### Package

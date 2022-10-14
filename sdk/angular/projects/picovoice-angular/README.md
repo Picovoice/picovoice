@@ -20,6 +20,11 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is:
 - Firefox
 - Safari
 
+### Restrictions
+
+IndexedDB and WebWorkers are required to use `Picovoice Angular`. Browsers without support (i.e. Firefox Incognito Mode) 
+should use the [`PicovoiceWeb binding`](https://github.com/Picovoice/picovoice/tree/master/sdk/web) main thread method.
+
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
