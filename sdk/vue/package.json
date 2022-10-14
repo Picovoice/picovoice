@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-vue",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "Vue binding for Picovoice Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -42,7 +42,7 @@
     "vue": "^3.2.38"
   },
   "peerDependencies": {
-    "@picovoice/web-voice-processor": "~4.0.1",
+    "@picovoice/web-voice-processor": "~4.0.2",
     "vue": "^2.6.11 || ^3.0.0"
   },
   "keywords": [
@@ -63,6 +63,6 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web": "=2.1.7"
+    "@picovoice/picovoice-web": "=2.1.10"
   }
 }

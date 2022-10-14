@@ -1693,10 +1693,10 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/picovoice-web@=2.1.9":
-  version "2.1.9"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.9.tgz#4f90f9e932ed9803071642c9a6b2178b1c6d85be"
-  integrity sha512-0F7NWoxXHtcQx73nMwBjzv/SMRzxENiwR3AQXu+/3Ij+SgOBLBFqof/5N7TIiZggxdZyrC7UKDguJczUXAuVSw==
+"@picovoice/picovoice-web@=2.1.10":
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.10.tgz#1815724bb25b7e49ec47c8382f09efd2e1fca748"
+  integrity sha512-VaHsoXOJKhAiLCmfeGQzEE/69B9z0oKW6bc772GVOIb7FFPkG6yRiQPgJk/luoA5Ncj39QFAU2IFOmfoEAUKbg==
   dependencies:
     "@picovoice/porcupine-web" "=2.1.11"
     "@picovoice/rhino-web" "=2.1.7"

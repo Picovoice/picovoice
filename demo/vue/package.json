@@ -16,7 +16,7 @@
     "postinstall": "npm-run-all cp:** --parallel"
   },
   "dependencies": {
-    "@picovoice/picovoice-vue": "~2.1.4",
+    "@picovoice/picovoice-vue": "~2.1.5",
     "@picovoice/web-voice-processor": "~4.0.2",
     "core-js": "^3.6.5",
     "vue": "^3.2.38"

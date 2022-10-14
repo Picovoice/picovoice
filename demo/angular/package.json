@@ -23,7 +23,7 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
-    "@picovoice/picovoice-angular": "~2.1.6",
+    "@picovoice/picovoice-angular": "~2.1.7",
     "@picovoice/web-voice-processor": "~4.0.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
