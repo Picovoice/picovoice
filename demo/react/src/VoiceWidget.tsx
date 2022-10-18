@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { usePicovoice } from "@picovoice/picovoice-react";
 import {
   PorcupineKeyword,
@@ -39,17 +39,6 @@ export default function VoiceWidget() {
     stop,
     release,
   } = usePicovoice();
-
-  const releaseRef = useRef<() => Promise<void>>();
-  releaseRef.current = release;
-
-  useEffect(() => {
-    return () => {
-      if (releaseRef.current !== undefined) {
-        releaseRef.current();
-      }
-    };
-  }, []);
 
   return (
     <div className="voice-widget">
