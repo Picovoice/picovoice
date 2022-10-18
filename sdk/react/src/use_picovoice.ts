@@ -9,9 +9,9 @@
   specific language governing permissions and limitations under the License.
 */
 
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import {WebVoiceProcessor} from '@picovoice/web-voice-processor';
+import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
 import {
   PicovoiceOptions,
