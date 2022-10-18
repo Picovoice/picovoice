@@ -107,7 +107,7 @@ The module provides you with two levels of API to choose from depending on your 
 
 #### High-Level API
 
-[PicovoiceManager](./src/picovoice_manager.tsx) provides a high-level API that takes care of
+[PicovoiceManager](https://github.com/Picovoice/picovoice/blob/master/sdk/react-native/src/picovoice_manager.tsx) provides a high-level API that takes care of
 audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
@@ -116,11 +116,13 @@ const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://co
 
 this._picovoiceManager = PicovoiceManager.create(
     accessKey
-    '/path/to/keyword/file.ppn',
+    '/path/to/keyword.ppn',
     wakeWordCallback,
-    '/path/to/context/file.rhn',
+    '/path/to/context.rhn',
     inferenceCallback);
 ```
+
+To use wake word (`.ppn`) and context (`.rhn`) files in your React Native application you'll need to add the files to your platform projects. Android models must be added to `./android/app/src/main/assets/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS (i.e. add via XCode) project. The paths used as initialization arguments are relative to these device-specific directories.
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
@@ -139,26 +141,28 @@ inferenceCallback(inference) {
 ```
 
 Picovoice accepts the following optional parameters:
-- `porcupineSensitivity`: overrides the default wake word sensitivity.
-- `rhinoSensitivity`: overrides the default inference sensitivity.
-- `processErrorCallback`: called if there is a problem encountered while processing audio.
-- `endpointDurationSec`: sets how much silence is required after a spoken command.
-- `requireEndpoint`: indicates whether Rhino should wait for silence before returning an inference.
+- `porcupineModelPath`: path to file containing model parameters for the wake word engine
+- `porcupineSensitivity`: overrides the default wake word sensitivity
+- `rhinoModelPath`: path to file containing model parameters for the speech-to-intent engine
+- `rhinoSensitivity`: overrides the default inference sensitivity
+- `processErrorCallback`: called if there is a problem encountered while processing audio
+- `endpointDurationSec`: sets how much silence is required after a spoken command
+- `requireEndpoint`: indicates whether Rhino should wait for silence before returning an inference
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 this._picovoiceManager = PicovoiceManager.create(
             accessKey,
-            '/path/to/keyword/file.ppn',
+            '/path/to/keyword.ppn',
             wakeWordCallback,
-            '/path/to/context/file.rhn',
+            '/path/to/context.rhn',
             inferenceCallback,
             processErrorCallback,
             porcupineSensitivity,
             rhinoSensitivity,
-            "/path/to/porcupine/model.pv",
-            "/path/to/rhino/model.pv",
+            "/path/to/porcupine_model.pv",
+            "/path/to/rhino_model.pv",
             endpointDurationSec,
             requireEndpoint);
 ```
@@ -177,17 +181,16 @@ And then stop it by calling:
 let didStop = await this._picovoiceManager.stop();
 ```
 
-There is no need to deal with audio capture to enable intent inference with PicovoiceManager.
-This is because it uses our
+With `PicovoiceManager`, the
 [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
-module to capture frames of audio and automatically pass it to Picovoice.
+module handles audio capture and automatically passes it to the inference engine.
 
 #### Low-Level API
 
-[Picovoice](./src/picovoice.tsx) provides low-level access to the Picovoice platform for those
+[Picovoice](https://github.com/Picovoice/picovoice/blob/master/sdk/react-native/src/picovoice.tsx) provides low-level access to the Picovoice platform for those
 who want to incorporate it into an already existing audio processing pipeline.
 
-`Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity, model files, `endpointDurationSec` and `requireEndpoint` are optional.
+`Picovoice` is created by passing a Porcupine keyword file (`.ppn`) and Rhino context file (`.rhn`) to the `create` static constructor. Sensitivity, model files, `endpointDurationSec` and `requireEndpoint` are optional.
 
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
@@ -250,13 +253,13 @@ Finally, once you no longer need the Picovoice, be sure to explicitly release th
 this._picovoice.delete();
 ```
 
-## Custom Model Integration
+## Custom Wake Word & Context Integration
 
-To add a custom models to your React Native application you'll need to add the rhn files to your platform projects.
+To add custom wake words and contexts to your React Native application you'll need to add the model files to your platform projects.
 
 ### Adding Android Models
 
-Android custom models must be added to `./android/app/src/main/assets/`.
+Android models must be added to `./android/app/src/main/assets/`.
 
 ### Adding iOS Models
 
@@ -280,14 +283,10 @@ let wakeWordPath = '';
 let contextPath = '';
 
 if (Platform.OS == 'android') {
-    // for Android, extract resources from APK
     wakeWordPath = `keyword_android.ppn`;
-
     contextPath = `context_android.rhn`;
 } else if (Platform.OS == 'ios') {
     wakeWordPath = `keyword_ios.ppn`;
-
-    contextFilename += '_ios.rhn';
     contextPath = `context_ios.rhn`;
 }
 ```
@@ -298,5 +297,5 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demo App
 
-Check out the [Picovoice React Native demo](../../demo/react-native) to see what it looks like to use Picovoice in a cross-platform app!
+Check out the [Picovoice React Native demo](https://github.com/Picovoice/picovoice/tree/master/demo/react-native) to see what it looks like to use Picovoice in a cross-platform app!
 
