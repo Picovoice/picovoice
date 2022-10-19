@@ -1269,7 +1269,7 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:picovoice-android:1.1.0'
+    implementation 'ai.picovoice:picovoice-android:${LATEST_VERSION}'
 }
 ```
 
@@ -1280,20 +1280,23 @@ There are two possibilities for integrating Picovoice into an Android applicatio
 [PicovoiceManager](sdk/android/Picovoice/picovoice/src/main/java/ai/picovoice/picovoice/PicovoiceManager.java) provides
 a high-level API for integrating Picovoice into Android applications. It manages all activities related to creating an
 input audio stream, feeding it into Picovoice engine, and invoking user-defined callbacks upon wake word detection and
-inference completion. The class can be initialized as follows:
+inference completion.
 
 ```java
-import ai.picovoice.picovoice.*;
+final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String keywordPath = "/path/to/keyword.ppn" // path relative to 'assets' folder
+final String contextPath = "/path/to/context.rhn" // path relative to 'assets' folder
 
-PicovoiceManager manager = new PicovoiceManager(
-    .setKeywordPath("path/to/keyword/file.ppn")
+PicovoiceManager manager = new PicovoiceManager.Builder()
+    .setAccessKey(accessKey)
+    .setKeywordPath(keywordPath)
     .setWakeWordCallback(new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
             // logic to execute upon detection of wake word
         }
     })
-    .setContextPath("path/to/context/file.rhn")
+    .setContextPath(contextPath)
     .setInferenceCallback(new PicovoiceInferenceCallback() {
         @Override
         public void invoke(final RhinoInference inference) {
@@ -1303,6 +1306,8 @@ PicovoiceManager manager = new PicovoiceManager(
     .build(appContext);
 );
 ```
+
+Keyword (`.ppn`) and context (`.rhn`) files should be placed under the Android project assets folder (`src/main/assets/`).
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK.
 
@@ -1349,6 +1354,8 @@ try {
         .build(appContext);
 } catch(PicovoiceException ex) { }
 ```
+
+Keyword (`.ppn`), context (`.rhn`) and model (`.pv`) files should be placed under the Android project assets folder (`src/main/assets/`).
 
 Once initialized, `picovoice` can be used to process incoming audio.
 

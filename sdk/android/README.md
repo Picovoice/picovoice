@@ -16,6 +16,10 @@ Picovoice is:
 [*](https://github.com/Picovoice/speech-to-intent-benchmark#results).
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
+## Compatibility
+
+- Android 5.0+ (API 21+)
+
 ## Installation
 
 Porcupine can be found on Maven Central. To include the package in your Android project, ensure you have included `mavenCentral()` in your top-level `build.gradle` file and then add the following to your app's `build.gradle`:
@@ -23,7 +27,7 @@ Porcupine can be found on Maven Central. To include the package in your Android 
 ```groovy
 dependencies {
     // ...
-    implementation 'ai.picovoice:picovoice-android:1.1.*'
+    implementation 'ai.picovoice:picovoice-android:${LATEST_VERSION}'
 }
 ```
 
@@ -76,7 +80,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .build(appContext);
 ```
 
-The keyword (.ppn) and context (.rhn) file are obtained from the [Picovoice Console](https://console.picovoice.ai/). You can store in your Android assets folder (`src/main/assets`) and pass them into the Picovoice Builder.
+The keyword (`.ppn`) and context (`.rhn`) files are obtained from the [Picovoice Console](https://console.picovoice.ai/). You can store in your Android assets folder (`src/main/assets`) and pass the relative paths into the Picovoice Builder.
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
 
@@ -131,28 +135,21 @@ import ai.picovoice.picovoice.*;
 
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-final String porcupineModelPath = ...
-final String keywordPath = ...
-final float porcupineSensitivity = 0.5f;
-final String rhinoModelPath = ...
-final String contextPath = ...
-final float rhinoSensitivity = 0.5f;
-
 try {
     Picovoice picovoice = new Picovoice.Builder()
         .setAccessKey(accessKey)
-        .setPorcupineModelPath(porcupineModelPath)
-        .setKeywordPath(keywordPath)
-        .setPorcupineSensitivity(porcupineSensitivity)
+        .setKeywordPath("assets_sub_folder/keyword.ppn")
+        .setPorcupineModelPath("assets_sub_folder/porcupine_model.pv")
+        .setPorcupineSensitivity(0.6f)
         .setWakeWordCallback(new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
                 // logic to execute upon detection of wake word
             }
         })
-        .setRhinoModelPath(rhinoModelPath)
-        .setContextPath(contextPath)
-        .setRhinoSensitivity(rhinoSensitivity)
+        .setContextPath("assets_sub_folder/context.rhn")
+        .setRhinoModelPath("assets_sub_folder/rhino_model.pv")
+        .setRhinoSensitivity(0.4f)
         .setEndpointDurationSec(1.5f)
         .setRequireEndpoint(false)
         .setInferenceCallback(new PicovoiceInferenceCallback() {
@@ -195,17 +192,15 @@ for releasing native resources.
 picovoice.delete();
 ```
 
-## Custom Context Integration
+## Custom Wake Word & Context Integration
 
-To add a custom context or model file to your application, add the files to your assets folder (`src/main/assets`) and then pass the path to the Picovoice Builder:
+To add a custom wake word (`.ppn`) or context (`.rhn`) file to your application, add the files to your assets folder (`src/main/assets`) and then pass the relative paths to the Picovoice Builder.
 
+In this example our files are located in the assets folder under subdirectory `picovoice_files`:
 
 ```java
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-// in this example our files are located at
-// '/assets/picovoice_files/keyword.ppn'
-// '/assets/picovoice_files/context.rhn'
 try {
     Picovoice picovoice = new Picovoice.Builder()
                         .setAccessKey(accessKey)
