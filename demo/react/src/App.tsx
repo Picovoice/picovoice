@@ -8,8 +8,7 @@ function App() {
   return (
     <div className="App">
       <h1>
-        Picovoice SDK for Web + React Hook ("usePicovoice" from
-        @picovoice/picovoice-react)
+        Picovoice React Hook ("usePicovoice" from @picovoice/picovoice-react)
       </h1>
       <button onClick={() => setShow(!show)}>
         Toggle VoiceWidget {show ? "OFF" : "ON"}

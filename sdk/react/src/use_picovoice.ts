@@ -9,7 +9,7 @@
   specific language governing permissions and limitations under the License.
 */
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { WebVoiceProcessor } from '@picovoice/web-voice-processor';
 
@@ -42,7 +42,7 @@ export function usePicovoice(): {
   start: () => Promise<void>;
   stop: () => Promise<void>;
   release: () => Promise<void>;
-  } {
+} {
   const picovoiceRef = useRef<PicovoiceWorker | null>(null);
   const [wakeWordDetection, setWakeWordDetection] =
     useState<PorcupineDetection | null>(null);
@@ -165,9 +165,16 @@ export function usePicovoice(): {
     }
   }, [stop]);
 
-  useEffect(() => (): void => {
-    release();
-  }, []);
+  useEffect(
+    () => (): void => {
+      if (picovoiceRef.current) {
+        WebVoiceProcessor.unsubscribe(picovoiceRef.current);
+        picovoiceRef.current.terminate();
+        picovoiceRef.current = null;
+      }
+    },
+    []
+  );
 
   return {
     wakeWordDetection,
