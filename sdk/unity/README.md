@@ -30,7 +30,7 @@ Picovoice is:
 
 ## Installation
 
-The easiest way to install the Picovoice Unity SDK is to import [picovoice.unitypackage](./picovoice-1.1.1.unitypackage) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
+The easiest way to install the Picovoice Unity SDK is to import the latest [Picovoice Unity package](.) into your Unity projects by either dropping it into the Unity editor or going to _Assets>Import Package>Custom Package..._
 
 ## AccessKey
 
