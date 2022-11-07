@@ -57,9 +57,6 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-    - name: Copy libs
-      run: yarn copywasm
-
     - name: build
       run: yarn build
     
