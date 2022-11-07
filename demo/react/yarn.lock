@@ -1411,33 +1411,33 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@picovoice/picovoice-react@~2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react/-/picovoice-react-2.1.7.tgz#ef085ce684559430a263fb907a9464c788b671b1"
-  integrity sha512-UQ2xrX/NV2ntT+KG+CvfSKoXOmhWkivtvIzYgdpz7NIt0ziSw2klumqJiRvYJs9+Fr6tSJo0qew19VKago/tyg==
+"@picovoice/picovoice-react@latest":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react/-/picovoice-react-2.1.8.tgz#463a09f8240dc8a52bcf29ba0e313f74864da3f7"
+  integrity sha512-lpb4np9gvpD7J79Z3FXQ8upsNMkqDzJLAHtXRg7cqhNtb+/KZm6843miMAJ9UwE12z+TtUbbUj0E//jj0R2fBw==
   dependencies:
-    "@picovoice/picovoice-web" "~2.1.10"
+    "@picovoice/picovoice-web" "=2.1.11"
 
-"@picovoice/picovoice-web@~2.1.10":
-  version "2.1.10"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.10.tgz#1815724bb25b7e49ec47c8382f09efd2e1fca748"
-  integrity sha512-VaHsoXOJKhAiLCmfeGQzEE/69B9z0oKW6bc772GVOIb7FFPkG6yRiQPgJk/luoA5Ncj39QFAU2IFOmfoEAUKbg==
-  dependencies:
-    "@picovoice/porcupine-web" "=2.1.11"
-    "@picovoice/rhino-web" "=2.1.7"
-    "@picovoice/web-utils" "=1.2.8"
-
-"@picovoice/porcupine-web@=2.1.11":
+"@picovoice/picovoice-web@=2.1.11":
   version "2.1.11"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.11.tgz#6c4485b8a7d6324fb8530e80cd264756eca7a838"
-  integrity sha512-upf1gFAuQnxLS9JwLjumzVqMIXOaVySwigYzlEcDX71FpKBFNd2cyL6+0jrwO0SV2VMSOMyp2EgKQDRunrg4OQ==
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.1.11.tgz#e1a4b9d30b463c528f840ef5ed5d6c7ec9d113cd"
+  integrity sha512-2j/Wvo0JJzPjwPZfi0MX5BfOxuiprXRdaWJTJBdf8iUIPjhyJ6v+VHSljCflwx4Ty9XxKkMfx/PwTuyqXvzmOg==
+  dependencies:
+    "@picovoice/porcupine-web" "=2.1.12"
+    "@picovoice/rhino-web" "=2.1.8"
+    "@picovoice/web-utils" "=1.2.8"
+
+"@picovoice/porcupine-web@=2.1.12":
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.1.12.tgz#96870bd30dbe44d3a367bceec7109ded06a7ee08"
+  integrity sha512-t3wDW+x9PDpLv9y313bmi78tSZvPG9f++fOfqu0bQyPbLKaA6ZHwqEe6S25o45M/GlTOcIBt/qnq8nKKJtqwIw==
   dependencies:
     "@picovoice/web-utils" "=1.2.8"
 
-"@picovoice/rhino-web@=2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.1.7.tgz#25d415d6c8e89cfe51586e765da8f57ea63298f7"
-  integrity sha512-RC6jYgxIJbLFtvnRuh464Fb97XydIC+dEeAGxf6GQeTZgVvSzTsJTjga2Hn+pPDGbYN9ILhMBZ0xNKefXe5DkA==
+"@picovoice/rhino-web@=2.1.8":
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.1.8.tgz#f38eb598482d4c34ab403019aa0a13d347c9135d"
+  integrity sha512-g6VnEMWcmnc/9IamyRBjj8CuQcJgSBjPC0uqYdVNXphaqTPtMWTvfeO33wN3Nl1zmcSsUJXkGH2gZyCjw337Mg==
   dependencies:
     "@picovoice/web-utils" "=1.2.8"
 

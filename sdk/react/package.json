@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "React component for Picovoice SDK for Web",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -36,7 +36,7 @@
     "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "dependencies": {
-    "@picovoice/picovoice-web": "~2.1.10"
+    "@picovoice/picovoice-web": "=2.1.11"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
