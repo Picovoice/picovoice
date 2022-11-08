@@ -47,6 +47,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
+        pip install packaging
         pip install selenium
         pip install webdriver-manager
 
