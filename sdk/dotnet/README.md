@@ -16,7 +16,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Requirements
 
-- .NET Core 3.1
+- .NET 6.0
 
 ## Compatibility
 
@@ -38,6 +38,10 @@ Platforms compatible with .NET Core 3.1+:
   - 4 (32 and 64 bit)
 - NVIDIA Jetson Nano
 - BeagleBone
+
+Platform compatible with .NET 6.0+:
+
+- macOS (arm64)
 
 ## Installation
 
@@ -121,4 +125,4 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Demos
 
-The [Picovoice dotnet demo](../../demo/dotnet) is a .NET Core command line application that allows for processing real-time audio (i.e. microphone) and files using Picovoice.
+The [Picovoice dotnet demo](https://github.com/Picovoice/picovoice/tree/master/demo/dotnet) is a .NET Core command line application that allows for processing real-time audio (i.e. microphone) and files using Picovoice.
