@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-vue",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "Vue binding for Picovoice Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",
@@ -63,6 +63,6 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web": "=2.1.11"
+    "@picovoice/picovoice-web": "=2.1.12"
   }
 }
