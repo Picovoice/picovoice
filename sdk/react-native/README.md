@@ -124,6 +124,8 @@ this._picovoiceManager = PicovoiceManager.create(
 
 To use wake word (`.ppn`) and context (`.rhn`) files in your React Native application you'll need to add the files to your platform projects. Android models must be added to `./android/app/src/main/assets/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS (i.e. add via XCode) project. The paths used as initialization arguments are relative to these device-specific directories.
 
+Alternatively, if the files are deployed to the device with a different method, the absolute paths to the files on device can be used.
+
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
 
 ```javascript
@@ -275,8 +277,9 @@ This will bundle your models together when the app is built.
 
 ### Using Custom Models
 
-```javascript
+Pass the file paths (relative to the assets/resource) directory:
 
+```javascript
 const accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 let wakeWordPath = '';
@@ -291,6 +294,8 @@ if (Platform.OS == 'android') {
 }
 ```
 
+Alternatively, if the model files are deployed to the device with a different method, the absolute paths to the files on device can be used.
+
 ## Non-English Models
 
 In order to detect wake words and run inference in other languages you need to use the corresponding model file. The model files for all supported languages are available [here](https://github.com/Picovoice/porcupine/tree/master/lib/common) and [here](https://github.com/Picovoice/rhino/tree/master/lib/common).
@@ -298,4 +303,3 @@ In order to detect wake words and run inference in other languages you need to u
 ## Demo App
 
 Check out the [Picovoice React Native demo](https://github.com/Picovoice/picovoice/tree/master/demo/react-native) to see what it looks like to use Picovoice in a cross-platform app!
-

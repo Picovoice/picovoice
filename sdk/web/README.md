@@ -229,12 +229,26 @@ await picovoice.terminate();
 ## Custom Keyword and Contexts
 
 Create custom keywords and contexts using the [Picovoice Console](https://console.picovoice.ai/).
-To use them with the Web SDK, train the keywords and contexts for the target platform WebAssembly (WASM).
-Inside the downloaded `.zip` file, there will be a `.ppn` or `.rhn` file which is the keyword or context file in binary format.
+Train a Porcupine keyword to obtain a keyword file (`.ppn`) and a Rhino context to obtain a context file (`.rhn`).
+To use them with the Web SDK, train the keywords and contexts for the target platform `Web (WASM)`.
+These model files can be used directly with `publicPath`, but, if `base64` is preferable, convert to base64
+JavaScript variable using the built-in `pvbase64` script:
+
+```console
+npx pvbase64 -i ${INPUT_BINARY_FILE}.{ppn/rhn} -o ${OUTPUT_BASE64_FILE}.js -n ${BASE64_VAR_NAME}
+```
 
 Similar to the model file (`.pv`), these files are saved in IndexedDB to be used by Web Assembly.
 Either `base64` or `publicPath` must be set for each file to initialize Picovoice. If both are set, Picovoice will use
 the `base64` model.
+
+```typescript
+const picovoiceFile = {
+  publicPath: "${FILE_RELATIVE_PATH}",
+  // or
+  base64: "${FILE_BASE64_STRING}",
+}
+```
 
 ## Switching Languages
 
