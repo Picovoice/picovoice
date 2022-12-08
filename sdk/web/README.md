@@ -231,7 +231,7 @@ await picovoice.terminate();
 Create custom keywords and contexts using the [Picovoice Console](https://console.picovoice.ai/).
 Train a Porcupine keyword to obtain a keyword file (`.ppn`) and a Rhino context to obtain a context file (`.rhn`).
 To use them with the Web SDK, train the keywords and contexts for the target platform `Web (WASM)`.
-These model files can be used directly with `publicPath`, but, if `base64` is preferable, convert to base64
+These model files can be used directly with `publicPath`, but if `base64` is preferable, convert to base64
 JavaScript variable using the built-in `pvbase64` script:
 
 ```console
