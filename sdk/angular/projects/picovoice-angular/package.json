@@ -1,10 +1,10 @@
 {
   "name": "@picovoice/picovoice-angular",
   "description": "Angular service for Picovoice Web SDK",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "peerDependencies": {
-    "@angular/common": "^13.0.0 || ^14.0.0",
-    "@angular/core": "^13.0.0 || ^14.0.0",
+    "@angular/common": ">=13.0.0",
+    "@angular/core": ">=13.0.0",
     "@picovoice/web-voice-processor": "~4.0.2"
   },
   "keywords": [
