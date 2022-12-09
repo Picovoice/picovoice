@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "React component for Picovoice SDK for Web",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -36,7 +36,7 @@
     "format": "prettier --write \"**/*.{js,ts,json}\""
   },
   "dependencies": {
-    "@picovoice/picovoice-web": "=2.1.11"
+    "@picovoice/picovoice-web": "=2.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
@@ -64,7 +64,7 @@
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
-    "@picovoice/web-voice-processor": ">=4.0.1",
+    "@picovoice/web-voice-processor": "~4.0.2",
     "react": ">=17",
     "react-dom": ">=17"
   }

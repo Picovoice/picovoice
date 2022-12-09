@@ -80,7 +80,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
     .build(appContext);
 ```
 
-The keyword (`.ppn`) and context (`.rhn`) files are obtained from the [Picovoice Console](https://console.picovoice.ai/). You can store in your Android assets folder (`src/main/assets`) and pass the relative paths into the Picovoice Builder.
+The keyword (`.ppn`) and context (`.rhn`) files are obtained from the [Picovoice Console](https://console.picovoice.ai/). You can store these files in the Android assets folder (`src/main/assets`) and pass the relative paths into the Picovoice Builder. Alternatively, if the files are deployed to the device with a different method, the absolute paths to the files on device can be used.
 
 The `appContext` parameter is the Android application context - this is used to extract Picovoice resources from the APK. The Builder also allows you to override the default model files and/or the sensitivities:
 
@@ -110,7 +110,7 @@ PicovoiceManager manager = new PicovoiceManager.Builder()
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
 
-The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language. This should also be placed in the `assets` folder.
+The model file contains the parameters for the associated engine. To change the language that the engine understands you'll have to provide a model file for that language. This should also be placed in the `assets` folder. Alternatively, if the model file is deployed to the device with a different method, the absolute path to the file on device can be used.
 
 There is also the option to pass an error callback, which will be invoked if an error is encountered while PicovoiceManager is processing audio.
 
@@ -209,6 +209,8 @@ try {
                         .build(appContext);
 } catch (PicovoiceException e) { }
 ```
+
+Alternatively, if the files are deployed to the device with a different method, the absolute paths to the files on device can be used.
 
 ## Non-English Models
 
