@@ -214,7 +214,6 @@ ppnrespeakerdemo
 prefs
 Prefs
 println
-psoc
 pthread
 ptrs
 pubspec

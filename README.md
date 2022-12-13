@@ -48,7 +48,7 @@ spoken command:
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR-compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
-  - Arm Cortex-M, STM32, PSoC, Arduino, and i.MX RT
+  - Arm Cortex-M, STM32, Arduino, and i.MX RT
   - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge

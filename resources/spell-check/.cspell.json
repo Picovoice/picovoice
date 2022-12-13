@@ -15,8 +15,6 @@
     "../rhino/**/*",
     "../../demo/c/dr_libs/**/*",
     "../../demo/c/pvrecorder/**/*",
-    "../../demo/mcu/psoc062s2/**/*",
-    "../../lib/mcu/psoc062s2/**/*",
     "**/*.a",
     "**/*.dll",
     "**/*.dylib",
