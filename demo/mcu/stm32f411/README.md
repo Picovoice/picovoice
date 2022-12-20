@@ -11,19 +11,24 @@ This package contains a demo project for the STM32F411 Discovery kit using Picov
 
 ## Installation
 
-For this demo, you need to: 
-1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an all-in-one multi-OS development tool for STM32 microcontrollers.
-2. Follow steps mentioned in [readme](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM/readme.txt) for STM32Cube middleware for audio PDM to PCM conversion.
+For this demo, you need to:
+
+1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an
+   all-in-one multi-OS development tool for STM32 microcontrollers.
+2. Download [STM32Cube MCU Package for STM32F4 series](https://www.st.com/en/embedded-software/stm32cubef4.html) and
+   extract it somewhere on your computer.
 
 ## AccessKey
 
-Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using Picovoice SDKs.
+Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
+Picovoice SDKs.
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
 ## Usage
 
-In the demo project, there is a separate build configuration for each supported languages. In order to activate a specific configuration:
+In the demo project, there is a separate build configuration for each supported languages. In order to activate a
+specific configuration:
 
 1. Click `Project` > `Build Configuration` > `Set Active`
 2. Select the target configuration
@@ -31,27 +36,38 @@ In the demo project, there is a separate build configuration for each supported 
 Then, to compile and run the demo project on a STM32F411 discovery board, perform the following steps:
 
 1. Open STM32CubeIDE
-2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select the [stm32f411e-disco](./stm32f411e-disco) folder from this repository, and then press the `Finish` button.
-3. Copy the `Inc` and `Lib` folders from the downloaded **PCM2PDM** library to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM)
+2. Click `File` > `Open Projects from file system...` to display the `Import Projects` dialog box. Select
+   the [stm32f411e-disco](./stm32f411e-disco) folder from this repository, and then press the `Finish` button.
+3. Go to the folder where you extracted `STM32Cube MCU Package for STM32F4 series`, and then copy the contents of
+   the `/Middlewares/ST/STM32_Audio/Addons/PDM` folder
+   to [/Middlewares/ST/STM32_Audio/Addons/PDM](./stm32f411e-disco/Middlewares/ST/STM32_Audio/Addons/PDM).
 4. Replace `ACCESS_KEY` in `main.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 5. Click `Project` > `Build Project`
 6. Connect the board to the computer and press `Run` > `Debug`.
-  
-> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf), Chapter 7.
+
+> :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer
+> to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
+> , Chapter 7.
 
 The default wake word and context model for all supported languages are listed [here](../README.md)
 
 ## Create Custom Models
 
-1. Copy the UUID of the board printed at the beginning of the session to the  Serial Wire Viewer (SWV).
-1. Go to [Picovoice Console](https://console.picovoice.ai/) to create models for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/) and [Rhino Speech-to-Intent engine](https://picovoice.ai/docs/quick-start/console-rhino/).
-1. Select `Arm Cortex-M` as the platform when training the model.
-1. Select `STM32` as the board type and provide the UUID of the chipset on the board.
+1. Copy the UUID of the board printed at the beginning of the session to the Serial Wire Viewer (SWV).
+2. Go to [Picovoice Console](https://console.picovoice.ai/) to create models
+   for [Porcupine wake word engine](https://picovoice.ai/docs/quick-start/console-porcupine/)
+   and [Rhino Speech-to-Intent engine](https://picovoice.ai/docs/quick-start/console-rhino/).
+3. Select `Arm Cortex-M` as the platform when training the model.
+4. Select `STM32` as the board type and provide the UUID of the chipset on the board.
 
 The model is now being trained. You will be able to download it within a few hours.
 
 ## Import the Custom Models
 
 1. Download your custom voice model(s) from [Picovoice Console](https://console.picovoice.ai/).
-2. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino Speech-to-Intent. Both zip archives also contain a `.h` header file containing the `C` array version of the binary model.
-3. Copy the contents of the arrays inside the `.h` header files and update the `keyword_array` and `context_array` values in [/stm32f411e-disco/Inc/pv_params.h](./stm32f411e-disco/Inc/pv_params.h)  in the language section for which the model is trained.
+2. Decompress the zip file. The model file is either `.ppn` for Porcupine wake word or `.rhn` for Rhino
+   Speech-to-Intent. Both zip archives also contain a `.h` header file containing the `C` array version of the binary
+   model.
+3. Copy the contents of the arrays inside the `.h` header files and update the `keyword_array` and `context_array`
+   values in [/stm32f411e-disco/Inc/pv_params.h](./stm32f411e-disco/Inc/pv_params.h)  in the language section for which
+   the model is trained.
