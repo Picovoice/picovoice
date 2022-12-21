@@ -2,7 +2,6 @@
   "name": "picovoice-react-demo",
   "version": "2.1.0",
   "private": true,
-  "type": "module",
   "description": "Picovoice React SDK demo (made with Create React App)",
   "dependencies": {
     "@picovoice/picovoice-react": "latest",
@@ -11,7 +10,7 @@
     "@types/react-dom": "^18.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "4.0.2",
+    "react-scripts": "5.0.1",
     "typescript": "^4.6.4"
   },
   "devDependencies": {
