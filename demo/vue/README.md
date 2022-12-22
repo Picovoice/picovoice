@@ -1,11 +1,11 @@
 # Picovoice Vue Demo
 
-**NOTE**: Although this demo uses Vue 3, the [Picovoice Vue SDK](https://github.com/Picovoice/picovoice/tree/master/sdk/vue) 
+**NOTE**: Although this demo uses Vue 3, the [Picovoice Vue SDK](https://github.com/Picovoice/picovoice/tree/master/sdk/vue)
 is compatible with both Vue 2 and Vue 3.
 
-This demo application includes a sample `VoiceWidget` Vue component which uses the `picovoiceMixin` service. 
-Wake word events are handled via the `keywordCallback` function. 
-Inference events are handled via the `inferenceCallback` function. 
+This demo application includes a sample `VoiceWidget` Vue component which uses the `picovoiceMixin` service.
+Wake word events are handled via the `keywordCallback` function.
+Inference events are handled via the `inferenceCallback` function.
 Our VoiceWidget subscribes to this event and displays the results.
 
 If you decline microphone permission in the browser, or another such issue prevents Picovoice from starting, the error will be displayed.
