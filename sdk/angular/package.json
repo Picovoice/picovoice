@@ -42,5 +42,8 @@
     "prettier": "^2.7.1",
     "typescript": "~4.6.2"
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
