@@ -33,9 +33,9 @@
     commander "^9.2.0"
 
 "@picovoice/web-voice-processor@~4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.2.tgz#e7593e560ce7cbe82bd5bae67259643eb099b852"
-  integrity sha512-6T4sY2mqKNNUWNg+Yov+VY3mhoo1JmyJqJIvxnWbQoHHNKgOAUsq8nDQHdXizFVnpdkg33va3KC0KNaSdP+TXA==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/web-voice-processor/-/web-voice-processor-4.0.3.tgz#728b1e61ae027f2679796fda27040209ebeadf5b"
+  integrity sha512-4hUKRNMfdqIx74VPi8mwkow8yyLM1NsMWi+Ak2uxK213A+26R5Xr9ms99hkOuPrBMHCGl+Ffuo9QXmkGBjsbnQ==
 
 ansi-styles@^4.1.0:
   version "4.3.0"

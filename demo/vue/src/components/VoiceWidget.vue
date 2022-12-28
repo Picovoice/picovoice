@@ -22,21 +22,18 @@
       {{ state.error.toString() }}
     </p>
     <button
-      :disabled="!state.isLoaded || state.error || state.isListening"
-      v-on:click="start"
+        v-on:click="start"
+        :disabled="!state.isLoaded || !!state.error || state.isListening"
     >
       Start
     </button>
     <button
-      :disabled="!state.isLoaded || state.error || !state.isListening"
-      v-on:click="stop"
+        v-on:click="stop"
+        :disabled="!state.isLoaded || !!state.error || !state.isListening"
     >
       Stop
     </button>
-    <button
-      :disabled="!state.isLoaded || state.error || state.isListening"
-      v-on:click="release"
-    >
+    <button v-on:click="release" :disabled="!state.isLoaded || !!state.error">
       Release
     </button>
     <div v-if="state.isListening">
