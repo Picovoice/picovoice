@@ -90,6 +90,8 @@ class PicovoiceTestCase(unittest.TestCase):
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
                 picovoice.sample_rate)
 
+        print(audio_file_name, len(audio), audio)
+
         for _ in range(2):
             test_data.reset()
             for i in range(len(audio) // picovoice.frame_length):

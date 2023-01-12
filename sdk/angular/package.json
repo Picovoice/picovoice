@@ -7,7 +7,11 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
-    "format": "prettier --write \"**/*.{js,ts,json}\""
+    "format": "prettier --write \"**/*.{js,ts,json}\"",
+    "base64-ppn-files": "npx pvbase64 -i ./static/porcupine/porcupine_params.pv -o ./test/porcupine/porcupine_params.js -n porcupineModelBase64 && npx pvbase64 -i ./static/keyword_files/picovoice_wasm.ppn -o ./test/keyword_files/picovoice_wasm.js -n picovoiceKeywordBase64",
+    "base64-rhn-files": "npx pvbase64 -i ./static/rhino/rhino_params.pv -o ./test/rhino/rhino_params.js -n rhinoModelBase64 && npx pvbase64 -i ./static/contexts/coffee_maker_wasm.rhn -o ./test/contexts/coffee_maker_wasm.js -n coffeeMakerContextBase64",
+    "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files",
+    "test": "cypress run --component"
   },
   "private": true,
   "dependencies": {
@@ -37,9 +41,12 @@
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "copy-webpack-plugin": "^11.0.0",
+    "cypress": "^12.3.0",
     "eslint": "~8.22.0",
     "ng-packagr": "^13.0.0",
     "prettier": "^2.7.1",
+    "ts-loader": "^9.4.2",
     "typescript": "~4.6.2"
   },
   "exclude": [
