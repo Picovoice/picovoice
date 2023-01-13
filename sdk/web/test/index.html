@@ -154,6 +154,11 @@
           i += frameLength
         ) {
           await engineInstance.process(pcm.slice(i, i + frameLength));
+          await new Promise(resolve => {
+            setInterval(() => {
+              resolve()
+            }, 32)
+          });
           if (resetHalfway && i > pcm.byteLength / pcm.BYTES_PER_ELEMENT / 2) {
             await engineInstance.reset();
             break;
@@ -190,187 +195,187 @@
         }
 
         try {
-          // writeMessage("Checking Picovoice using base64 models");
-          // let handle = await PicovoiceWeb.Picovoice.create(
-          //   accessKey,
-          //   {label: "picovoice", base64: picovoiceKeywordBase64, forceWrite: true},
-          //   wakeWordCallback,
-          //   {base64: porcupineModelBase64, forceWrite: true},
-          //   {base64: coffeeMakerContextBase64, forceWrite: true},
-          //   inferenceCallback,
-          //   {base64: rhinoModelBase64, forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // let inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking Picovoice using base64 models... done!");
-          //
-          // writeMessage("Checking Picovoice using publicPath models");
-          // handle = await PicovoiceWeb.Picovoice.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking Picovoice using publicPath models... done!");
-          //
-          // writeMessage("Checking Picovoice using publicPath models with custom path for keyword");
-          // handle = await PicovoiceWeb.Picovoice.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true, customWritePath: "custom"},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking Picovoice using publicPath models... done!");
-          //
-          // writeMessage("Checking Picovoice reset");
-          // handle = await PicovoiceWeb.Picovoice.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          // inference = await picovoiceProcess(handle, testPcm, true);
-          // assertEquals(inference, null);
-          // assertEquals(processError, null, JSON.stringify(processError));
-          //
-          // await handle.release();
-          // writeMessage("Checking Picovoice reset... done!");
-          //
-          // writeMessage("Checking PicovoiceWorker using base64 models");
-          // handle = await PicovoiceWeb.PicovoiceWorker.create(
-          //   accessKey,
-          //   {label: "picovoice", base64: picovoiceKeywordBase64, forceWrite: true},
-          //   wakeWordCallback,
-          //   {base64: porcupineModelBase64, forceWrite: true},
-          //   {base64: coffeeMakerContextBase64, forceWrite: true},
-          //   inferenceCallback,
-          //   {base64: rhinoModelBase64, forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking PicovoiceWorker using base64 models... done!");
-          //
-          // writeMessage("Checking PicovoiceWorker using publicPath models");
-          // handle = await PicovoiceWeb.PicovoiceWorker.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking PicovoiceWorker using publicPath models... done!");
-          //
-          // writeMessage("Checking PicovoiceWorker using publicPath models with custom path for keyword");
-          // handle = await PicovoiceWeb.PicovoiceWorker.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true, customWritePath: "custom2"},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          // writeMessage("Processing again ...");
-          // inference = await picovoiceProcess(handle, testPcm);
-          // checkInference(inference);
-          //
-          // await handle.release();
-          // writeMessage("Checking PicovoiceWorker using publicPath models... done!");
-          //
-          // writeMessage("Checking PicovoiceWorker reset");
-          // handle = await PicovoiceWeb.PicovoiceWorker.create(
-          //   accessKey,
-          //   {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
-          //   wakeWordCallback,
-          //   {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
-          //   {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {publicPath: "rhino/rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          //
-          // inference = await picovoiceProcess(handle, testPcm, true);
-          // assertEquals(inference, null);
-          // assertEquals(processError, null, JSON.stringify(processError));
-          //
-          // await handle.release();
-          // writeMessage("Checking PicovoiceWorker reset... done!");
-          //
-          // writeMessage("Checking UTF-8 paths");
-          // handle = await PicovoiceWeb.PicovoiceWorker.create(
-          //   accessKey,
-          //   {label: "ヤマアラシ", base64: picovoiceKeywordBase64, customWritePath: "ヤマアラシ_wasm.ppn", forceWrite: true},
-          //   wakeWordCallback,
-          //   {base64: porcupineModelBase64, customWritePath: "ヤマアラシ_porcupine_params.pv", forceWrite: true},
-          //   {base64: coffeeMakerContextBase64, customWritePath: "ヤマアラシ_wasm.rhn", forceWrite: true},
-          //   inferenceCallback,
-          //   {base64: rhinoModelBase64, customWritePath: "ヤマアラシ_rhino_params.pv", forceWrite: true},
-          //   {processErrorCallback}
-          // );
-          // assertEquals(processError, null, JSON.stringify(processError));
-          // await handle.release();
-          // writeMessage("Checking UTF-8 paths... done!");
+          writeMessage("Checking Picovoice using base64 models");
+          let handle = await PicovoiceWeb.Picovoice.create(
+            accessKey,
+            {label: "picovoice", base64: picovoiceKeywordBase64, forceWrite: true},
+            wakeWordCallback,
+            {base64: porcupineModelBase64, forceWrite: true},
+            {base64: coffeeMakerContextBase64, forceWrite: true},
+            inferenceCallback,
+            {base64: rhinoModelBase64, forceWrite: true},
+            {processErrorCallback}
+          );
+
+          let inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking Picovoice using base64 models... done!");
+
+          writeMessage("Checking Picovoice using publicPath models");
+          handle = await PicovoiceWeb.Picovoice.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking Picovoice using publicPath models... done!");
+
+          writeMessage("Checking Picovoice using publicPath models with custom path for keyword");
+          handle = await PicovoiceWeb.Picovoice.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true, customWritePath: "custom"},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking Picovoice using publicPath models... done!");
+
+          writeMessage("Checking Picovoice reset");
+          handle = await PicovoiceWeb.Picovoice.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+          inference = await picovoiceProcess(handle, testPcm, true);
+          assertEquals(inference, null);
+          assertEquals(processError, null, JSON.stringify(processError));
+
+          await handle.release();
+          writeMessage("Checking Picovoice reset... done!");
+
+          writeMessage("Checking PicovoiceWorker using base64 models");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "picovoice", base64: picovoiceKeywordBase64, forceWrite: true},
+            wakeWordCallback,
+            {base64: porcupineModelBase64, forceWrite: true},
+            {base64: coffeeMakerContextBase64, forceWrite: true},
+            inferenceCallback,
+            {base64: rhinoModelBase64, forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking PicovoiceWorker using base64 models... done!");
+
+          writeMessage("Checking PicovoiceWorker using publicPath models");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking PicovoiceWorker using publicPath models... done!");
+
+          writeMessage("Checking PicovoiceWorker using publicPath models with custom path for keyword");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true, customWritePath: "custom2"},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+          writeMessage("Processing again ...");
+          inference = await picovoiceProcess(handle, testPcm);
+          checkInference(inference);
+
+          await handle.release();
+          writeMessage("Checking PicovoiceWorker using publicPath models... done!");
+
+          writeMessage("Checking PicovoiceWorker reset");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "picovoice", publicPath: "keyword_files/picovoice_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {publicPath: "porcupine/porcupine_params.pv", forceWrite: true},
+            {publicPath: "contexts/coffee_maker_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {publicPath: "rhino/rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+
+          inference = await picovoiceProcess(handle, testPcm, true);
+          assertEquals(inference, null);
+          assertEquals(processError, null, JSON.stringify(processError));
+
+          await handle.release();
+          writeMessage("Checking PicovoiceWorker reset... done!");
+
+          writeMessage("Checking UTF-8 paths");
+          handle = await PicovoiceWeb.PicovoiceWorker.create(
+            accessKey,
+            {label: "ヤマアラシ", base64: picovoiceKeywordBase64, customWritePath: "ヤマアラシ_wasm.ppn", forceWrite: true},
+            wakeWordCallback,
+            {base64: porcupineModelBase64, customWritePath: "ヤマアラシ_porcupine_params.pv", forceWrite: true},
+            {base64: coffeeMakerContextBase64, customWritePath: "ヤマアラシ_wasm.rhn", forceWrite: true},
+            inferenceCallback,
+            {base64: rhinoModelBase64, customWritePath: "ヤマアラシ_rhino_params.pv", forceWrite: true},
+            {processErrorCallback}
+          );
+          assertEquals(processError, null, JSON.stringify(processError));
+          await handle.release();
+          writeMessage("Checking UTF-8 paths... done!");
 
           const testData = await loadTestData()
           for (const testInfo of testData.tests.parameters) {
@@ -401,7 +406,6 @@
             const testPcm = await loadAudioFile(
               `audio_samples/${testInfo.audio_file}`
             )
-            console.log(testInfo.audio_file, testPcm)
 
             const inference = await picovoiceProcess(handle, testPcm);
             assertEquals(inference.intent, testInfo.inference.intent);
