@@ -3,7 +3,9 @@ const { join } = require('path');
 
 console.log('Copying the porcupine and rhino models...');
 
-const outputDirectory = join(__dirname, '..', 'test');
+const fixturesDirectory = join(__dirname, '..', 'cypress', 'fixtures');
+const staticDirectory = join(__dirname, '..', 'static');
+const testDirectory = join(__dirname, '..', 'test');
 
 const engines = [
   {
@@ -31,12 +33,12 @@ const testDataSource = join(
 );
 
 try {
-  fs.mkdirSync(outputDirectory, { recursive: true });
-  fs.copyFileSync(testDataSource, join(outputDirectory, 'test_data.json'));
+  fs.mkdirSync(testDirectory, { recursive: true });
+  fs.copyFileSync(testDataSource, join(testDirectory, 'test_data.json'));
 
-  fs.mkdirSync(join(outputDirectory, 'audio_samples'), { recursive: true });
+  fs.mkdirSync(join(fixturesDirectory, 'audio_samples'), { recursive: true });
   fs.readdirSync(join(sourceDirectory, 'audio_samples')).forEach(file => {
-    fs.copyFileSync(join(sourceDirectory, 'audio_samples', file), join(outputDirectory, 'audio_samples', file));
+    fs.copyFileSync(join(sourceDirectory, 'audio_samples', file), join(fixturesDirectory, 'audio_samples', file));
   });
 
   for (const engine of engines) {
@@ -53,16 +55,16 @@ try {
       'resources'
     )
 
-    fs.mkdirSync(join(outputDirectory, engine.name), { recursive: true });
+    fs.mkdirSync(join(staticDirectory, engine.name), { recursive: true });
     fs.readdirSync(paramsSourceDirectory).forEach(file => {
-      fs.copyFileSync(join(paramsSourceDirectory, file), join(outputDirectory, engine.name, file));
+      fs.copyFileSync(join(paramsSourceDirectory, file), join(staticDirectory, engine.name, file));
     });
 
-    fs.mkdirSync(join(outputDirectory, engine.dir), { recursive: true });
+    fs.mkdirSync(join(staticDirectory, engine.dir), { recursive: true });
     fs.readdirSync(engineSourceDirectory).forEach(folder => {
       if (folder.includes(engine.dir)) {
         fs.readdirSync(join(engineSourceDirectory, folder, 'wasm')).forEach(file => {
-          fs.copyFileSync(join(engineSourceDirectory, folder, 'wasm', file), join(outputDirectory, engine.dir, file));
+          fs.copyFileSync(join(engineSourceDirectory, folder, 'wasm', file), join(staticDirectory, engine.dir, file));
         });
       }
     });

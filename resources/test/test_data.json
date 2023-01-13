@@ -1,0 +1,104 @@
+{
+  "tests": {
+    "parameters": [
+      {
+        "language": "en",
+        "wakeword": "picovoice",
+        "context_name": "coffee_maker",
+        "audio_file": "picovoice-coffee.wav",
+        "inference": {
+          "intent": "orderBeverage",
+          "slots": {
+            "size": "large",
+            "beverage": "coffee"
+          }
+        }
+      },
+      {
+        "language": "es",
+        "wakeword": "manzana",
+        "context_name": "iluminación_inteligente",
+        "audio_file": "manzana-luz_es.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "location": "habitación",
+            "color": "rosado"
+          }
+        }
+      },
+      {
+        "language": "de",
+        "wakeword": "heuschrecke",
+        "context_name": "beleuchtung",
+        "audio_file": "heuschrecke-beleuchtung_de.wav",
+        "inference": {
+          "intent": "changeState",
+          "slots": {
+            "state": "aus"
+          }
+        }
+      },
+      {
+        "language": "fr",
+        "wakeword": "mon chouchou",
+        "context_name": "éclairage_intelligent",
+        "audio_file": "mon-intelligent_fr.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "color": "violet"
+          }
+        }
+      },
+      {
+        "language": "it",
+        "wakeword": "cameriere",
+        "context_name": "illuminazione",
+        "audio_file": "cameriere-luce_it.wav",
+        "inference": {
+          "intent": "spegnereLuce",
+          "slots": {
+            "luogo": "bagno"
+          }
+        }
+      },
+      {
+        "language": "ja",
+        "wakeword": "ninja",
+        "context_name": "sumāto_shōmei",
+        "audio_file": "ninja-sumāto-shōmei_ja.wav",
+        "inference": {
+          "intent": "色変更",
+          "slots": {
+            "色": "オレンジ"
+          }
+        }
+      },
+      {
+        "language": "ko",
+        "wakeword": "koppulso",
+        "context_name": "seumateu_jomyeong",
+        "audio_file": "koppulso-seumateu-jomyeong_ko.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "color": "파란색"
+          }
+        }
+      },
+      {
+        "language": "pt",
+        "wakeword": "abacaxi",
+        "context_name": "luz_inteligente",
+        "audio_file": "abaxi-luz_pt.wav",
+        "inference": {
+          "intent": "ligueLuz",
+          "slots": {
+            "lugar": "cozinha"
+          }
+        }
+      }
+    ]
+  }
+}

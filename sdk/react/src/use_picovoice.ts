@@ -42,7 +42,7 @@ export function usePicovoice(): {
   start: () => Promise<void>;
   stop: () => Promise<void>;
   release: () => Promise<void>;
-} {
+  } {
   const picovoiceRef = useRef<PicovoiceWorker | null>(null);
   const [wakeWordDetection, setWakeWordDetection] =
     useState<PorcupineDetection | null>(null);
