@@ -7,3 +7,4 @@ sdk/react/** linguist-detectable=false
 sdk/react-native/** linguist-detectable=false
 sdk/unity/** linguist-detectable=false
 sdk/vue/** linguist-detectable=false
+*.py linguist-detectable=true
