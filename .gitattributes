@@ -1,2 +1,7 @@
 demo/** linguist-detectable=false
 resources/** linguist-detectable=false
+sdk/angular/** linguist-detectable=false
+sdk/react/** linguist-detectable=false
+sdk/react-native/** linguist-detectable=false
+sdk/unity/** linguist-detectable=false
+sdk/vue/** linguist-detectable=false

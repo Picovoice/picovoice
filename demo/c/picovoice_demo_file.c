@@ -202,13 +202,13 @@ int picovoice_main(int argc, char *argv[]) {
 
     const char *(*pv_status_to_string_func)(pv_status_t) = load_symbol(picovoice_library, "pv_status_to_string");
     if (!pv_status_to_string_func) {
-        print_dl_error("failed to load 'pv_status_to_string'");
+        print_dl_error("failed to load `pv_status_to_string`");
         exit(1);
     }
 
     int32_t (*pv_sample_rate_func)() = load_symbol(picovoice_library, "pv_sample_rate");
     if (!pv_sample_rate_func) {
-        print_dl_error("failed to load 'pv_sample_rate'");
+        print_dl_error("failed to load `pv_sample_rate`");
         exit(1);
     }
 
@@ -227,7 +227,7 @@ int picovoice_main(int argc, char *argv[]) {
             pv_picovoice_t **) = NULL;
     pv_picovoice_init_func = load_symbol(picovoice_library, "pv_picovoice_init");
     if (!pv_picovoice_init_func) {
-        print_dl_error("failed to load 'pv_picovoice_init'");
+        print_dl_error("failed to load `pv_picovoice_init`");
         exit(1);
     }
 
