@@ -1,61 +1,75 @@
-if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/audio_samples" ]
-then 
+PICOVOICE_RESOURCE_DIR=../../../resources
+
+PORCUPINE_DIR=${PICOVOICE_RESOURCE_DIR}/porcupine
+PORCUPINE_LIB_DIR=${PORCUPINE_DIR}/lib
+PORCUPINE_RESOURCE_DIR=${PORCUPINE_DIR}/resources
+
+RHINO_DIR=${PICOVOICE_RESOURCE_DIR}/rhino
+RHINO_LIB_DIR=${RHINO_DIR}/lib
+RHINO_RESOURCE_DIR=${RHINO_DIR}/resources
+
+ASSET_DIR=./picovoice-activity-demo-app/src/androidTest/assets/test_resources
+
+if [ ! -d "${ASSET_DIR}/audio_samples" ]
+then
     echo "Creating test audio samples directory..."
-    mkdir -p ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/audio_samples
+    mkdir -p ${ASSET_DIR}/audio_samples
 fi
 
 echo "Copying test audio samples..."
-cp ../../../resources/audio_samples/*.wav ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/audio_samples
+cp ${PICOVOICE_RESOURCE_DIR}/audio_samples/*.wav ${ASSET_DIR}/audio_samples
 
-if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files" ]
+if [ ! -d "${ASSET_DIR}/porcupine_model_files" ]
+then
+    echo "Creating test porcupine model files directory..."
+    mkdir -p ${ASSET_DIR}/porcupine_model_files
+fi
+
+if [ ! -d "${ASSET_DIR}/rhino_model_files" ]
+then
+    echo "Creating test rhino model files directory..."
+    mkdir -p ${ASSET_DIR}/rhino_model_files
+fi
+
+echo "Copying test model files..."
+cp ${PORCUPINE_LIB_DIR}/common/*.pv ${ASSET_DIR}/porcupine_model_files
+cp ${RHINO_LIB_DIR}/common/*.pv ${ASSET_DIR}/rhino_model_files
+
+if [ ! -d "${ASSET_DIR}/keyword_files" ]
 then
     echo "Creating test keyword files directory..."
-    mkdir -p ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files
+    mkdir -p ${ASSET_DIR}/keyword_files
 fi
 
 echo "Copying test keyword files..."
-cp ../../../resources/porcupine/resources/keyword_files/android/picovoice_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/picovoice_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/alexa_linux.ppn
-cp ../../../resources/porcupine/resources/keyword_files_de/android/heuschrecke_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/heuschrecke_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_es/android/murciélago_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/murciélago_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_es/android/manzana_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/manzana_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_fr/android/mon\ chouchou_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/mon\ chouchou_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_it/android/cameriere_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/cameriere_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_ja/android/ninja_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/ninja_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_ko/android/koppulso_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/koppulso_android.ppn
-cp ../../../resources/porcupine/resources/keyword_files_pt/android/abacaxi_android.ppn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/keyword_files/abacaxi_android.ppn
+mkdir -p ${ASSET_DIR}/keyword_files/en/
+cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/linux/alexa_linux.ppn ${ASSET_DIR}/keyword_files/en/
+cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/android/*_android.ppn ${ASSET_DIR}/keyword_files/en/
 
-if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files" ]
+for d in ${PORCUPINE_RESOURCE_DIR}/keyword_files_*; do
+    LANGUAGE=$(echo "${d}" | cut -d'_' -f3)
+
+    mkdir -p ${ASSET_DIR}/keyword_files/${LANGUAGE}
+    cp ${PORCUPINE_RESOURCE_DIR}/keyword_files_${LANGUAGE}/android/*_android.ppn ${ASSET_DIR}/keyword_files/${LANGUAGE}/
+done
+
+if [ ! -d "${ASSET_DIR}/context_files" ]
 then
     echo "Creating test context files directory..."
-    mkdir -p ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files
+    mkdir -p ${ASSET_DIR}/context_files
 fi
 
 echo "Copying test context files..."
-cp ../../../resources/rhino/resources/contexts/android/coffee_maker_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/coffee_maker_android.rhn
-cp ../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/coffee_maker_linux.rhn
-cp ../../../resources/rhino/resources/contexts_de/android/beleuchtung_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/beleuchtung_android.rhn
-cp ../../../resources/rhino/resources/contexts_es/android/iluminación_inteligente_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/iluminación_inteligente_android.rhn
-cp ../../../resources/rhino/resources/contexts_fr/android/éclairage_intelligent_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/éclairage_intelligent_android.rhn
-cp ../../../resources/rhino/resources/contexts_it/android/illuminazione_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/illuminazione_android.rhn
-cp ../../../resources/rhino/resources/contexts_ja/android/sumāto_shōmei_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/sumāto_shōmei_android.rhn
-cp ../../../resources/rhino/resources/contexts_ko/android/seumateu_jomyeong_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/seumateu_jomyeong_android.rhn
-cp ../../../resources/rhino/resources/contexts_pt/android/luz_inteligente_android.rhn ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/context_files/luz_inteligente_android.rhn
+mkdir -p ${ASSET_DIR}/context_files/en/
+cp ${RHINO_RESOURCE_DIR}/contexts/linux/coffee_maker_linux.rhn ${ASSET_DIR}/context_files/en/
+cp ${RHINO_RESOURCE_DIR}/contexts/android/*_android.rhn ${ASSET_DIR}/context_files/en/
 
-if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/porcupine_model_files" ]
-then 
-    echo "Creating porcupine test model files directory..."
-    mkdir -p ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/porcupine_model_files
-fi
+for d in ${RHINO_RESOURCE_DIR}/contexts_*; do
+    LANGUAGE=$(echo "${d}" | cut -d'_' -f2)
 
-echo "Copying porcupine test model files..."
-cp ../../../resources/porcupine/lib/common/*.pv ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/porcupine_model_files
+    mkdir -p ${ASSET_DIR}/context_files/${LANGUAGE}
+    cp ${RHINO_RESOURCE_DIR}/contexts_${LANGUAGE}/android/*_android.rhn ${ASSET_DIR}/context_files/${LANGUAGE}/
+done
 
-if [ ! -d "./picovoice-activity-demo-app/src/androidTest/assets/test_resources/rhino_model_files" ]
-then 
-    echo "Creating rhino test model files directory..."
-    mkdir -p ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/rhino_model_files
-fi
-
-echo "Copying rhino test model files..."
-cp ../../../resources/rhino/lib/common/*.pv ./picovoice-activity-demo-app/src/androidTest/assets/test_resources/rhino_model_files
+echo "Copying test data file..."
+cp ${PICOVOICE_RESOURCE_DIR}/test/test_data.json ${ASSET_DIR}/
