@@ -267,6 +267,7 @@ stdlib
 strdup
 struct
 sttdemo
+sublist
 sumāto
 swifty
 séjour
