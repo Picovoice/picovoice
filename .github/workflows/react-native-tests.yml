@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'sdk/react-native/test-app/**'
+      - 'sdk/react-native/**'
       - 'lib/common/**'
       - 'lib/android/**'
       - 'lib/ios/**'
@@ -14,7 +14,7 @@ on:
   pull_request:
     branches: [ master ]
     paths:
-      - 'sdk/react-native/test-app/**'
+      - 'sdk/react-native/**'
       - 'lib/common/**'
       - 'lib/android/**'
       - 'lib/ios/**'
