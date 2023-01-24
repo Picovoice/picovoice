@@ -71,3 +71,6 @@ Assets/Picovoice/VoiceProcessor/**
 Assets/Picovoice/Demo/**
 Assets/Picovoice/Porcupine*.cs
 Assets/Picovoice/Rhino*.cs
+
+Assets/StreamingAssets/test/
+Assets/InitTestScene*

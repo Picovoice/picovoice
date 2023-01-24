@@ -178,9 +178,11 @@ morado
 murciélago
 NETCOREAPP
 netcoreapp
+Newtonsoft
 nklayman
 noncacheable
 NumChans
+nunit
 ocotp
 okhttp
 Okhttp
