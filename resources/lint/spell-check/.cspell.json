@@ -67,6 +67,8 @@
     "**/*.keystore",
     "**/BUCK",
     "**/build_defs.bzl",
+    "**/sdk/react-native/test-app/**/*.xml",
+    "**/sdk/react-native/test-app/**/*.mm",
     "**/Cargo.toml",
     "**/*.unity",
     "**/*.mixer",

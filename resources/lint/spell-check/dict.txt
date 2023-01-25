@@ -203,6 +203,7 @@ picovoicedemo
 picovoicedemoservice
 picovoicefiledemo
 picovoicemicdemo
+picovoicetestapp
 plughw
 podfile
 Podfile
@@ -273,6 +274,8 @@ sublist
 sumāto
 swifty
 séjour
+testcase
+testcases
 testfile
 timecode
 tmpdir
