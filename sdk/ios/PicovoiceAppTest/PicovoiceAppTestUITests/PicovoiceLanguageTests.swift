@@ -12,19 +12,28 @@ import XCTest
 
 import Picovoice
 
+struct TestData : Decodable {
+    var tests: TestDataTests
+}
+
+struct TestDataTests : Decodable {
+    var parameters: [TestDataParametersTest]
+}
+
+struct TestDataParametersTest : Decodable {
+    var language: String
+    var wakeword: String
+    var context_name: String
+    var audio_file: String
+    var inference: TestDataInference
+}
+
+struct TestDataInference : Decodable {
+    var intent: String
+    var slots: [String : String]
+}
+
 class PicovoiceLanguageTests: BaseTest {
-
-    static var testData: [[Any]] = [
-        ["en", "picovoice", "coffee_maker", "picovoice-coffee", "orderBeverage", ["size": "large", "beverage": "coffee"]],
-        ["es", "manzana", "iluminación_inteligente", "manzana-luz_es", "changeColor", ["location": "habitación", "color": "rosado"]],
-        ["de", "heuschrecke", "beleuchtung", "heuschrecke-beleuchtung_de", "changeState", ["state": "aus"]],
-        ["fr", "mon chouchou", "éclairage_intelligent", "mon-intelligent_fr", "changeColor", ["color": "violet"]],
-        ["it", "cameriere", "illuminazione", "cameriere-luce_it", "spegnereLuce", ["luogo": "bagno"]],
-        ["ja", "ninja", "sumāto_shōmei", "ninja-sumāto-shōmei_ja", "色変更", ["色": "オレンジ"]],
-        ["ko", "koppulso", "seumateu_jomyeong", "koppulso-seumateu-jomyeong_ko", "changeColor", ["color": "파란색"]],
-        ["pt", "abacaxi", "luz_inteligente", "abaxi-luz_pt", "ligueLuz", ["lugar": "cozinha"]],
-    ]
-
     var language: String = ""
     var porcupineModelPath: String = ""
     var rhinoModelPath: String = ""
@@ -39,21 +48,28 @@ class PicovoiceLanguageTests: BaseTest {
             let xcTestSuite = XCTestSuite(name: NSStringFromClass(self))
             let bundle = Bundle(for: self)
 
-            for testCase in testData {
-                let suffix = (testCase[0]) as! String == "en" ? "" : "_\(testCase[0])"
-                for invocation in testInvocations {
-                    let newTestCase = PicovoiceLanguageTests(invocation: invocation)
+           let testDataJsonUrl = bundle.url(forResource: "test_data", withExtension: "json", subdirectory: "test_resources")!
+            do {
+                let testDataJsonData = try Data(contentsOf: testDataJsonUrl)
+                let testData = try JSONDecoder().decode(TestData.self, from: testDataJsonData)
 
-                    newTestCase.language = testCase[0] as! String
-                    newTestCase.porcupineModelPath = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv")!
-                    newTestCase.rhinoModelPath = bundle.path(forResource: "rhino_params\(suffix)", ofType: "pv")!
-                    newTestCase.keywordPath = bundle.path(forResource: "\(testCase[1])_ios", ofType: "ppn")!
-                    newTestCase.contextPath = bundle.path(forResource: "\(testCase[2])_ios", ofType: "rhn")!
-                    newTestCase.testAudioPath = bundle.url(forResource: "\(testCase[3])", withExtension: "wav")!
-                    newTestCase.expectedIntent = testCase[4] as! String
-                    newTestCase.expectedSlots = testCase[5] as! [String: String]
-                    xcTestSuite.addTest(newTestCase)
+                for testCase in testData.tests.within_context {
+                    let suffix = testCase.language == "en" ? "" : "_\(testCase.language)"
+                    for invocation in testInvocations {
+                        let newTestCase = RhinoWithinContextTests(invocation: invocation)
+                        newTestCase.language = testCase.language
+                        newTestCase.porcupineModelPath = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv", inDirectory: "test_resources/model_files")!
+                        newTestCase.rhinoModelPath = bundle.path(forResource: "rhino_params\(suffix)", ofType: "pv", inDirectory: "test_resources/model_files")!
+                        newTestCase.keywordPath = bundle.path(forResource: "\(testCase.context_name)_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/\(testCase.language)")!
+                        newTestCase.contextPath = bundle.path(forResource: "\(testCase.context_name)_ios", ofType: "rhn", inDirectory: "test_resources/context_files/\(testCase.language)")!
+                        newTestCase.testAudioPath = bundle.url(forResource: "\(testCase.audio_file)", withExtension: "wav", subdirectory: "test_resources/audio_samples")!
+                        newTestCase.expectedIntent = testCase.inference.intent
+                        newTestCase.expectedSlots = testCase.inference.slots
+                        xcTestSuite.addTest(newTestCase)
+                    }
                 }
+            } catch {
+                return xcTestSuite
             }
 
             return xcTestSuite
