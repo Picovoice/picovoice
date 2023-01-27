@@ -8,7 +8,7 @@ RHINO_DIR=${PICOVOICE_RESOURCE_DIR}/rhino
 RHINO_LIB_DIR=${RHINO_DIR}/lib
 RHINO_RESOURCE_DIR=${RHINO_DIR}/resources
 
-ASSETS_DIR="./RhinoAppTestUITests/test_resources"
+ASSETS_DIR="./PicovoiceAppTestUITests/test_resources"
 
 echo "Creating test resources asset directory"
 mkdir -p ${ASSETS_DIR}
@@ -18,15 +18,15 @@ mkdir -p ${ASSETS_DIR}/audio_samples
 cp ${PICOVOICE_RESOURCE_DIR}/audio_samples/*.wav ${ASSETS_DIR}/audio_samples
 
 echo "Copying test keyword files..."
-mkdir -p ${ASSET_DIR}/keyword_files/en/
-cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/linux/alexa_linux.ppn ${ASSET_DIR}/keyword_files/en/
-cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/ios/*_ios.ppn ${ASSET_DIR}/keyword_files/en/
+mkdir -p ${ASSETS_DIR}/keyword_files/en/
+cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/linux/alexa_linux.ppn ${ASSETS_DIR}/keyword_files/en/
+cp ${PORCUPINE_RESOURCE_DIR}/keyword_files/ios/*_ios.ppn ${ASSETS_DIR}/keyword_files/en/
 
 for d in ${PORCUPINE_RESOURCE_DIR}/keyword_files_*; do
     LANGUAGE=$(echo "${d}" | cut -d'_' -f3)
 
-    mkdir -p ${ASSET_DIR}/keyword_files/${LANGUAGE}
-    cp ${PORCUPINE_RESOURCE_DIR}/keyword_files_${LANGUAGE}/ios/*_ios.ppn ${ASSET_DIR}/keyword_files/${LANGUAGE}/
+    mkdir -p ${ASSETS_DIR}/keyword_files/${LANGUAGE}
+    cp ${PORCUPINE_RESOURCE_DIR}/keyword_files_${LANGUAGE}/ios/*_ios.ppn ${ASSETS_DIR}/keyword_files/${LANGUAGE}/
 done
 
 echo "Copying test context files..."

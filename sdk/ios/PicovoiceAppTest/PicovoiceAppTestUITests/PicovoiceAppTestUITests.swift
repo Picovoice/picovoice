@@ -278,7 +278,7 @@ class PicovoiceAppTestUITests: BaseTest {
     func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = bundle.path(forResource: "manzana_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/es")!
-        let contextPath = bundle.path(forResource: "iluminación_inteligente_ios", ofType: "rhn", inDirectory: "test_resources/keyword_files/es")!
+        let contextPath = bundle.path(forResource: "iluminación_inteligente_ios", ofType: "rhn", inDirectory: "test_resources/context_files/es")!
         let porcupineModelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv", inDirectory: "test_resources/model_files")!
         let rhinoModelPath = bundle.path(forResource: "rhino_params_es", ofType: "pv", inDirectory: "test_resources/model_files")!
 

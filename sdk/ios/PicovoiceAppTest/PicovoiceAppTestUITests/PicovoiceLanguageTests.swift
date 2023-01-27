@@ -53,16 +53,16 @@ class PicovoiceLanguageTests: BaseTest {
                 let testDataJsonData = try Data(contentsOf: testDataJsonUrl)
                 let testData = try JSONDecoder().decode(TestData.self, from: testDataJsonData)
 
-                for testCase in testData.tests.within_context {
+                for testCase in testData.tests.parameters {
                     let suffix = testCase.language == "en" ? "" : "_\(testCase.language)"
                     for invocation in testInvocations {
-                        let newTestCase = RhinoWithinContextTests(invocation: invocation)
+                        let newTestCase = PicovoiceLanguageTests(invocation: invocation)
                         newTestCase.language = testCase.language
                         newTestCase.porcupineModelPath = bundle.path(forResource: "porcupine_params\(suffix)", ofType: "pv", inDirectory: "test_resources/model_files")!
                         newTestCase.rhinoModelPath = bundle.path(forResource: "rhino_params\(suffix)", ofType: "pv", inDirectory: "test_resources/model_files")!
-                        newTestCase.keywordPath = bundle.path(forResource: "\(testCase.context_name)_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/\(testCase.language)")!
+                        newTestCase.keywordPath = bundle.path(forResource: "\(testCase.wakeword)_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/\(testCase.language)")!
                         newTestCase.contextPath = bundle.path(forResource: "\(testCase.context_name)_ios", ofType: "rhn", inDirectory: "test_resources/context_files/\(testCase.language)")!
-                        newTestCase.testAudioPath = bundle.url(forResource: "\(testCase.audio_file)", withExtension: "wav", subdirectory: "test_resources/audio_samples")!
+                        newTestCase.testAudioPath = bundle.url(forResource: "\(testCase.audio_file)", withExtension: "", subdirectory: "test_resources/audio_samples")!
                         newTestCase.expectedIntent = testCase.inference.intent
                         newTestCase.expectedSlots = testCase.inference.slots
                         xcTestSuite.addTest(newTestCase)
