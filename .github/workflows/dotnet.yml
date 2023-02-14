@@ -5,19 +5,23 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/dotnet.yml'
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/dotnet.yml'
+      - 'resources/test/**'
   pull_request:
     branches: [ master ]
     paths:
+      - '.github/workflows/dotnet.yml'
       - 'sdk/dotnet/**'
       - '!sdk/dotnet/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/dotnet.yml'
+      - 'resources/test/**'
 
 defaults:
   run:

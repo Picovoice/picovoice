@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -46,7 +46,7 @@ where
         context_path: P,
         inference_callback: I,
     ) -> Self {
-        return Self {
+        Self {
             access_key: access_key.into(),
             keyword_path: keyword_path.into(),
             wake_word_callback,
@@ -60,51 +60,51 @@ where
             rhino_sensitivity: None,
             rhino_endpoint_duration_sec: None,
             rhino_require_endpoint: true,
-        };
+        }
     }
 
     pub fn porcupine_library_path<P: Into<PathBuf>>(mut self, porcupine_library_path: P) -> Self {
         self.porcupine_library_path = Some(porcupine_library_path.into());
-        return self;
+        self
     }
 
     pub fn porcupine_model_path<P: Into<PathBuf>>(mut self, porcupine_model_path: P) -> Self {
         self.porcupine_model_path = Some(porcupine_model_path.into());
-        return self;
+        self
     }
 
     pub fn porcupine_sensitivity(mut self, porcupine_sensitivity: f32) -> Self {
         self.porcupine_sensitivity = Some(porcupine_sensitivity);
-        return self;
+        self
     }
 
     pub fn rhino_library_path<P: Into<PathBuf>>(mut self, rhino_library_path: P) -> Self {
         self.rhino_library_path = Some(rhino_library_path.into());
-        return self;
+        self
     }
 
     pub fn rhino_model_path<P: Into<PathBuf>>(mut self, rhino_model_path: P) -> Self {
         self.rhino_model_path = Some(rhino_model_path.into());
-        return self;
+        self
     }
 
     pub fn rhino_sensitivity(mut self, rhino_sensitivity: f32) -> Self {
         self.rhino_sensitivity = Some(rhino_sensitivity);
-        return self;
+        self
     }
 
     pub fn rhino_endpoint_duration_sec(mut self, rhino_endpoint_duration_sec: f32) -> Self {
         self.rhino_endpoint_duration_sec = Some(rhino_endpoint_duration_sec);
-        return self;
+        self
     }
 
     pub fn rhino_require_endpoint(mut self, rhino_require_endpoint: bool) -> Self {
         self.rhino_require_endpoint = rhino_require_endpoint;
-        return self;
+        self
     }
 
     pub fn init(self) -> Result<Picovoice<W, I>, PicovoiceError> {
-        return Picovoice::new(
+        Picovoice::new(
             self.access_key,
             self.keyword_path,
             self.wake_word_callback,
@@ -118,7 +118,7 @@ where
             self.rhino_sensitivity,
             self.rhino_endpoint_duration_sec,
             self.rhino_require_endpoint,
-        );
+        )
     }
 }
 
@@ -144,7 +144,7 @@ impl std::fmt::Display for PicovoiceError {
         match &self {
             PicovoiceError::RhinoError(err) => err.fmt(f),
             PicovoiceError::PorcupineError(err) => err.fmt(f),
-            PicovoiceError::LibraryError(err) => write!(f, "Picovoice error: {}", err),
+            PicovoiceError::LibraryError(err) => write!(f, "Picovoice error: {err}"),
         }
     }
 }
@@ -170,6 +170,7 @@ where
     W: FnMut(),
     I: FnMut(rhino::RhinoInference),
 {
+    #[allow(clippy::too_many_arguments)]
     pub fn new<S: Into<String>, P: Into<PathBuf>>(
         access_key: S,
         keyword_path: P,
@@ -204,7 +205,7 @@ where
             .init()
             .map_err(PicovoiceError::from_porcupine)?;
 
-        let mut rhino_builder = rhino::RhinoBuilder::new(access_key.clone(), context_path);
+        let mut rhino_builder = rhino::RhinoBuilder::new(access_key, context_path);
         if let Some(rhino_library_path) = rhino_library_path {
             rhino_builder.library_path(rhino_library_path);
         }
@@ -244,7 +245,7 @@ where
             rhino.version()
         );
 
-        return Ok(Self {
+        Ok(Self {
             porcupine,
             rhino,
             wake_word_callback,
@@ -253,7 +254,7 @@ where
             frame_length,
             version,
             wake_word_detected: false,
-        });
+        })
     }
 
     pub fn process(&mut self, pcm: &[i16]) -> Result<(), PicovoiceError> {
@@ -283,18 +284,18 @@ where
             }
         }
 
-        return Ok(());
+        Ok(())
     }
 
     pub fn frame_length(&self) -> u32 {
-        return self.frame_length as u32;
+        self.frame_length
     }
 
     pub fn sample_rate(&self) -> u32 {
-        return self.sample_rate as u32;
+        self.sample_rate
     }
 
     pub fn version(&self) -> String {
-        return self.version.clone();
+        self.version.clone()
     }
 }

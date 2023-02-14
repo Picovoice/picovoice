@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using Pv;
 
 namespace PicovoiceTest
@@ -29,7 +32,7 @@ namespace PicovoiceTest
         private static string _env;
         private static Architecture _arch;
 
-        private static string ACCESS_KEY;
+        private static string _accessKey;
 
         private static bool _isWakeWordDetected;
         private static void _wakeWordCallback() => _isWakeWordDetected = true;
@@ -44,7 +47,7 @@ namespace PicovoiceTest
         public static void ClassInitialize(TestContext testContext)
         {
 
-            ACCESS_KEY = Environment.GetEnvironmentVariable("ACCESS_KEY");
+            _accessKey = Environment.GetEnvironmentVariable("ACCESS_KEY");
 
             _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             _rootDir = Path.Combine(_cwd, "../../../../../..");
@@ -54,6 +57,47 @@ namespace PicovoiceTest
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && _arch == Architecture.X64 ? "linux" :
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) &&
                                                         (_arch == Architecture.Arm || _arch == Architecture.Arm64) ? PvLinuxEnv() : "";
+        }
+
+        private static JObject LoadJsonTestData()
+        {
+            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/test/test_data.json"));
+            return JObject.Parse(content);
+        }
+
+        [Serializable]
+        private class InferenceJson
+        {
+            public string intent { get; set; }
+            public Dictionary<string, string> slots { get; set; }
+        }
+
+        [Serializable]
+        private class ParametersJson
+        {
+            public string language { get; set; }
+            public string wakeword { get; set; }
+            public string context_name { get; set; }
+            public string audio_file { get; set; }
+            public InferenceJson inference { get; set; }
+        }
+
+        public static IEnumerable<object[]> ParametersTestData
+        {
+            get
+            {
+                JObject testDataJson = LoadJsonTestData();
+                IList<ParametersJson> parametersJson = ((JArray)testDataJson["tests"]["parameters"]).ToObject<IList<ParametersJson>>();
+                return parametersJson
+                    .Select(x => new object[] {
+                        x.language,
+                        x.wakeword,
+                        x.context_name,
+                        x.inference.intent,
+                        x.inference.slots
+                        x.audio_file,
+                    });
+            }
         }
 
         private static string AppendLanguage(string s, string language) => language == "en" ? s : $"{s}_{language}";
@@ -137,36 +181,23 @@ namespace PicovoiceTest
         }
 
         [TestMethod]
-        [DataRow("en", "picovoice", "coffee_maker", "orderBeverage", new string[] {"beverage", "size"}, new string[] {"coffee", "large"}, "picovoice-coffee.wav")]
-        [DataRow("de", "heuschrecke", "beleuchtung", "changeState", new string[] {"state"}, new string[] {"aus"}, "heuschrecke-beleuchtung_de.wav")]
-        [DataRow("es", "manzana", "iluminación_inteligente", "changeColor", new string[] {"location", "color"}, new string[] {"habitación", "rosado"}, "manzana-luz_es.wav")]
-        [DataRow("fr", "mon chouchou", "éclairage_intelligent", "changeColor", new string[] {"color"}, new string[] {"violet"}, "mon-intelligent_fr.wav")]
-        [DataRow("it", "cameriere", "illuminazione", "spegnereLuce", new string[] {"luogo"}, new string[] {"bagno"}, "cameriere-luce_it.wav")]
-        [DataRow("ja", "ninja", "sumāto_shōmei", "色変更", new string[] {"色"}, new string[] {"オレンジ"}, "ninja-sumāto-shōmei_ja.wav")]
-        [DataRow("ko", "koppulso", "seumateu_jomyeong", "changeColor", new string[] {"color"}, new string[] {"파란색"}, "koppulso-seumateu-jomyeong_ko.wav")]
-        [DataRow("pt", "abacaxi", "luz_inteligente", "ligueLuz", new string[] {"lugar"}, new string[] {"cozinha"}, "abaxi-luz_pt.wav")]
+        [DynamicData(nameof(ParametersTestData))]
         public void TestTwice(
             string language,
             string keywordName,
             string contextName,
             string expectedIntent,
-            string[] slotKeys,
-            string[] slotValues,
+            Dictionary<string, string> expectedSlots,
             string audioFileName)
         {
             _picovoice = Picovoice.Create(
-                ACCESS_KEY,
+                _accessKey,
                 GetKeywordPath(language, keywordName),
                 _wakeWordCallback,
                 GetContextPath(language, contextName),
                 _inferenceCallback,
                 porcupineModelPath: GetPorcupineModelPath(language),
                 rhinoModelPath: GetRhinoModelPath(language));
-
-            Dictionary<string, string> expectedSlots = new Dictionary<string, string>();
-            for (int i = 0; i < slotKeys.Length; i++) {
-                expectedSlots[slotKeys[i]] = slotValues[i];
-            }
 
             RunTestCase(audioFileName, expectedIntent, expectedSlots);
             ResetCallbacks();

@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Picovoice Inc.
+# Copyright 2020-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -20,16 +20,8 @@ from parameterized import parameterized
 from picovoice import Picovoice
 from test_util import *
 
-PARAMETERS = [
-    ['en', 'picovoice', 'coffee_maker', 'picovoice-coffee.wav', 'orderBeverage', dict(size='large', beverage='coffee')],
-    ['es', 'manzana', 'iluminación_inteligente', 'manzana-luz_es.wav', 'changeColor', dict(location='habitación', color='rosado')],
-    ['de', 'heuschrecke', 'beleuchtung', 'heuschrecke-beleuchtung_de.wav', 'changeState', dict(state='aus')],
-    ['fr', 'mon chouchou', 'éclairage_intelligent', 'mon-intelligent_fr.wav', 'changeColor', dict(color='violet')],
-    ['it', 'cameriere', 'illuminazione', 'cameriere-luce_it.wav', 'spegnereLuce', dict(luogo='bagno')],
-    ['ja', 'ninja', 'sumāto_shōmei', 'ninja-sumāto-shōmei_ja.wav', '色変更', dict(色='オレンジ')],
-    ['ko', 'koppulso', 'seumateu_jomyeong', 'koppulso-seumateu-jomyeong_ko.wav', 'changeColor', dict(color='파란색')],
-    ['pt', 'abacaxi', 'luz_inteligente', 'abaxi-luz_pt.wav', 'ligueLuz', dict(lugar='cozinha')],
-]
+
+test_parameters = load_test_data()
 
 
 class PicovoiceTestData:
@@ -100,7 +92,7 @@ class PicovoiceTestCase(unittest.TestCase):
             self.assertEqual(test_data.inference.intent, intent)
             self.assertEqual(test_data.inference.slots, slots)
 
-    @parameterized.expand(PARAMETERS)
+    @parameterized.expand(test_parameters)
     def test_picovoice(self, language, keyword, context, audio_file_name, intent, slots):
         self.run_picovoice(
             language=language,
