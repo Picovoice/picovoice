@@ -94,8 +94,8 @@ namespace PicovoiceTest
                         x.wakeword,
                         x.context_name,
                         x.inference.intent,
-                        x.inference.slots
-                        x.audio_file,
+                        x.inference.slots,
+                        x.audio_file
                     });
             }
         }

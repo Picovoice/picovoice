@@ -10,7 +10,6 @@
 #
 
 
-import json
 import struct
 import sys
 import unittest
