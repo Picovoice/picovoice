@@ -27,24 +27,6 @@ import {
     getTestParameters
 } from "./test_utils";
 
-
-const TEST_PARAMETERS: [string, string, string, string, string, Record<string, string>][] = [
-    ['en', 'picovoice', 'coffee_maker', 'picovoice-coffee.wav', 'orderBeverage', {
-        'size': 'large',
-        'beverage': 'coffee'
-    }],
-    ['es', 'manzana', 'iluminación_inteligente', 'manzana-luz_es.wav', 'changeColor', {
-        'location': 'habitación',
-        'color': 'rosado'
-    }],
-    ['de', 'heuschrecke', 'beleuchtung', 'heuschrecke-beleuchtung_de.wav', 'changeState', {'state': 'aus'}],
-    ['fr', 'mon chouchou', 'éclairage_intelligent', 'mon-intelligent_fr.wav', 'changeColor', {'color': 'violet'}],
-    ['it', 'cameriere', 'illuminazione', 'cameriere-luce_it.wav', 'spegnereLuce', {'luogo': 'bagno'}],
-    ['ja', 'ninja', 'sumāto_shōmei', 'ninja-sumāto-shōmei_ja.wav', '色変更', {'色': 'オレンジ'}],
-    ['ko', 'koppulso', 'seumateu_jomyeong', 'koppulso-seumateu-jomyeong_ko.wav', 'changeColor', {'color': '파란색'}],
-    ['pt', 'abacaxi', 'luz_inteligente', 'abaxi-luz_pt.wav', 'ligueLuz', {'lugar': 'cozinha'}],
-]
-
 const TEST_PARAMETERS = getTestParameters();
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
