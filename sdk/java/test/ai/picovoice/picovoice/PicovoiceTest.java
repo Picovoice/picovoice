@@ -67,8 +67,9 @@ public class PicovoiceTest {
     };
 
     private static String appendLanguage(String s, String language) {
-        if (language == "en")
+        if (language.equals("en")) {
             return s;
+        }
         return s + "_" + language;
     }
 
@@ -84,7 +85,7 @@ public class PicovoiceTest {
     private static String getTestPorcupineModelPath(String language) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources/porcupine/lib/common")
-            .resolve(appendLanguage("porcupine_params", language)+".pv")
+            .resolve(appendLanguage("porcupine_params", language) + ".pv")
             .toString();
     }
 
