@@ -5,19 +5,23 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/rust.yml'
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/rust.yml'
+      - 'resources/test/**'
   pull_request:
     branches: [ master ]
     paths:
+      - '.github/workflows/rust.yml'
       - 'sdk/rust/**'
       - '!sdk/rust/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/rust.yml'
+      - 'resources/test/**'
 
 env:
   CARGO_TERM_COLOR: always

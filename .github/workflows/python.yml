@@ -8,17 +8,20 @@ on:
       - '.github/workflows/python.yml'
       - 'sdk/python/**'
       - '!sdk/python/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/python.yml'
+      - 'resources/test/**'
   pull_request:
     branches: [ master ]
     paths:
+      - '.github/workflows/python.yml'
       - 'sdk/python/**'
       - '!sdk/python/README.md'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/python.yml'
+      - 'resources/test/**'
 
 defaults:
   run:

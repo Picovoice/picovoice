@@ -1,4 +1,4 @@
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -12,6 +12,7 @@ package picovoice
 
 import (
 	"encoding/binary"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -34,24 +35,16 @@ var (
 	isWakeWordDetected = false
 	inference          rhn.RhinoInference
 	pvTestAccessKey    string
+	testParameters []TestData
 )
 
-var testParameters = []struct {
+type TestData struct {
 	language       string
 	keyword        string
 	context        string
 	testAudioFile  string
 	expectedIntent string
 	expectedSlots  map[string]string
-}{
-	{"en", "picovoice", "coffee_maker", "picovoice-coffee.wav", "orderBeverage", map[string]string{"size": "large", "beverage": "coffee"}},
-	{"es", "manzana", "iluminación_inteligente", "manzana-luz_es.wav", "changeColor", map[string]string{"location": "habitación", "color": "rosado"}},
-	{"de", "heuschrecke", "beleuchtung", "heuschrecke-beleuchtung_de.wav", "changeState", map[string]string{"state": "aus"}},
-	{"fr", "mon chouchou", "éclairage_intelligent", "mon-intelligent_fr.wav", "changeColor", map[string]string{"color": "violet"}},
-	{"it", "cameriere", "illuminazione", "cameriere-luce_it.wav", "spegnereLuce", map[string]string{"luogo": "bagno"}},
-	{"ja", "ninja", "sumāto_shōmei", "ninja-sumāto-shōmei_ja.wav", "色変更", map[string]string{"色": "オレンジ"}},
-	{"ko", "koppulso", "seumateu_jomyeong", "koppulso-seumateu-jomyeong_ko.wav", "changeColor", map[string]string{"color": "파란색"}},
-	{"pt", "abacaxi", "luz_inteligente", "abaxi-luz_pt.wav", "ligueLuz", map[string]string{"lugar": "cozinha"}},
 }
 
 func TestMain(m *testing.M) {
@@ -59,7 +52,50 @@ func TestMain(m *testing.M) {
 	flag.StringVar(&pvTestAccessKey, "access_key", "", "AccessKey for testing")
 	flag.Parse()
 
+	testParameters = loadTestData()
 	os.Exit(m.Run())
+}
+
+
+func loadTestData() []TestData {
+	content, err := ioutil.ReadFile("../../resources/test/test_data.json")
+	if err != nil {
+		log.Fatalf("Could not read test data json: %v", err)
+	}
+
+	var testData struct {
+		Tests struct {
+			Parameters []struct {
+				Language string `json:"language"`
+				Wakeword  string `json:"wakeword"`
+				ContextName  string `json:"context_name"`
+				AudioFile  string `json:"audio_file"`
+				Inference struct {
+					Intent string `json:"intent"`
+					Slots map[string]string `json:"slots"`
+				} `json:"inference"`
+			} `json:"Parameters"`
+		} `json:"tests"`
+	}
+	err = json.Unmarshal(content, &testData)
+	if err != nil {
+		log.Fatalf("Could not decode test data json: %v", err)
+	}
+
+	for _, x := range testData.Tests.Parameters {
+		testData := TestData{
+			language:      	x.Language,
+			keyword:       	x.Wakeword,
+			context:       	x.ContextName,
+			testAudioFile: 	x.AudioFile,
+			expectedIntent:	x.Inference.Intent,
+			expectedSlots:  x.Inference.Slots,
+		}
+
+		testParameters = append(testParameters, testData)
+	}
+
+	return testParameters
 }
 
 func TestProcess(t *testing.T) {

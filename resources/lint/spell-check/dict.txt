@@ -291,6 +291,7 @@ wakeword
 wargv
 wavefile
 wavspec
+wchars
 webfonts
 webvp
 weiß

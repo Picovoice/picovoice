@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -23,26 +23,11 @@ import {
     getContextPathsByLanguage,
     getKeywordPathsByLanguage,
     getPorcupineModelPathByLanguage,
-    getRhinoModelPathByLanguage
+    getRhinoModelPathByLanguage,
+    getTestParameters
 } from "./test_utils";
 
-
-const TEST_PARAMETERS: [string, string, string, string, string, Record<string, string>][] = [
-    ['en', 'picovoice', 'coffee_maker', 'picovoice-coffee.wav', 'orderBeverage', {
-        'size': 'large',
-        'beverage': 'coffee'
-    }],
-    ['es', 'manzana', 'iluminación_inteligente', 'manzana-luz_es.wav', 'changeColor', {
-        'location': 'habitación',
-        'color': 'rosado'
-    }],
-    ['de', 'heuschrecke', 'beleuchtung', 'heuschrecke-beleuchtung_de.wav', 'changeState', {'state': 'aus'}],
-    ['fr', 'mon chouchou', 'éclairage_intelligent', 'mon-intelligent_fr.wav', 'changeColor', {'color': 'violet'}],
-    ['it', 'cameriere', 'illuminazione', 'cameriere-luce_it.wav', 'spegnereLuce', {'luogo': 'bagno'}],
-    ['ja', 'ninja', 'sumāto_shōmei', 'ninja-sumāto-shōmei_ja.wav', '色変更', {'色': 'オレンジ'}],
-    ['ko', 'koppulso', 'seumateu_jomyeong', 'koppulso-seumateu-jomyeong_ko.wav', 'changeColor', {'color': '파란색'}],
-    ['pt', 'abacaxi', 'luz_inteligente', 'abaxi-luz_pt.wav', 'ligueLuz', {'lugar': 'cozinha'}],
-]
+const TEST_PARAMETERS = getTestParameters();
 
 const ACCESS_KEY = process.argv.filter((x) => x.startsWith('--access_key='))[0].split('--access_key=')[1];
 
@@ -67,7 +52,14 @@ function processWaveFile(handle: Picovoice, waveFilePath: string) {
 
 describe("intent detection", () => {
     it.each(TEST_PARAMETERS)(
-        'testing intent detection for %p with %p and %p', (language, keyword, context, filename, intent, slots) => {
+        'testing intent detection for %p with %p and %p', (
+                language: string,
+                keyword: string,
+                context: string,
+                filename: string,
+                intent: string,
+                slots: Record<string, string>
+            ) => {
             function keywordCallback(keyword: number) {
                 expect(keyword).toEqual(0);
             }
@@ -80,19 +72,19 @@ describe("intent detection", () => {
 
             let handle = new Picovoice(
                 ACCESS_KEY,
-                getKeywordPathsByLanguage("../../..", language, keyword),
+                getKeywordPathsByLanguage(language, keyword),
                 keywordCallback,
-                getContextPathsByLanguage("../../..", language, context),
+                getContextPathsByLanguage(language, context),
                 inferenceCallback,
                 0.5,
                 0.5,
                 1.0,
                 true,
-                getPorcupineModelPathByLanguage("../../..", language),
-                getRhinoModelPathByLanguage("../../..", language),
+                getPorcupineModelPathByLanguage(language),
+                getRhinoModelPathByLanguage(language),
             );
 
-            processWaveFile(handle, getAudioFileByLanguage("../../..", language, filename));
+            processWaveFile(handle, getAudioFileByLanguage(language, filename));
 
             handle.release();
         });
@@ -103,10 +95,10 @@ describe("argument checking", () => {
         expect(() => {
             let handle = new Picovoice(
                 ACCESS_KEY,
-                getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+                getKeywordPathsByLanguage("en", "porcupine"),
                 // @ts-expect-error
                 123,
-                getContextPathsByLanguage("../../..", "en", "coffee_maker"),
+                getContextPathsByLanguage("en", "coffee_maker"),
                 () => {
                 }
             );
@@ -117,10 +109,10 @@ describe("argument checking", () => {
         expect(() => {
             let handle = new Picovoice(
                 ACCESS_KEY,
-                getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+                getKeywordPathsByLanguage("en", "porcupine"),
                 // @ts-expect-error
                 undefined,
-                getContextPathsByLanguage("../../..", "en", "coffee_maker"),
+                getContextPathsByLanguage("en", "coffee_maker"),
                 undefined
             );
         }).toThrow(PicovoiceInvalidArgumentError);
@@ -138,7 +130,7 @@ describe("argument checking", () => {
             // @ts-expect-error
             let handle = new Picovoice(
                 ACCESS_KEY,
-                getKeywordPathsByLanguage("../../..", "en", "porcupine"));
+                getKeywordPathsByLanguage("en", "porcupine"));
         }).toThrow(PicovoiceInvalidArgumentError);
     });
 
@@ -147,10 +139,10 @@ describe("argument checking", () => {
             // @ts-expect-error
             let handle = new Picovoice(
                 ACCESS_KEY,
-                getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+                getKeywordPathsByLanguage("en", "porcupine"),
                 () => {
                 },
-                getContextPathsByLanguage("../../..", "en", "coffee_maker")
+                getContextPathsByLanguage("en", "coffee_maker")
             );
         }).toThrow(PicovoiceInvalidArgumentError);
     });
@@ -160,10 +152,10 @@ describe("state", () => {
     test("contextInfo from Rhino", () => {
         let handle = new Picovoice(
             ACCESS_KEY,
-            getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+            getKeywordPathsByLanguage("en", "porcupine"),
             () => {
             },
-            getContextPathsByLanguage("../../..", "en", "coffee_maker"),
+            getContextPathsByLanguage("en", "coffee_maker"),
             () => {
             }
         );
@@ -178,10 +170,10 @@ describe("getter functions", () => {
     test("contextInfo from Rhino", () => {
         let handle = new Picovoice(
             ACCESS_KEY,
-            getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+            getKeywordPathsByLanguage("en", "porcupine"),
             () => {
             },
-            getContextPathsByLanguage("../../..", "en", "coffee_maker"),
+            getContextPathsByLanguage("en", "coffee_maker"),
             () => {
             }
         );
@@ -201,10 +193,10 @@ describe("getter functions", () => {
     test("version strings", () => {
         let handle = new Picovoice(
             ACCESS_KEY,
-            getKeywordPathsByLanguage("../../..", "en", "porcupine"),
+            getKeywordPathsByLanguage("en", "porcupine"),
             () => {
             },
-            getContextPathsByLanguage("../../..", "en", "coffee_maker"),
+            getContextPathsByLanguage("en", "coffee_maker"),
             () => {
             }
         );

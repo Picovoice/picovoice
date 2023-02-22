@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Picovoice Inc.
+# Copyright 2020-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -9,6 +9,7 @@
 # specific language governing permissions and limitations under the License.
 #
 
+import json
 import logging
 import os
 import platform
@@ -164,3 +165,16 @@ def pv_porcupine_model_path_by_language(language):
     model_path_subdir = __append_language('lib/common/porcupine_params', language)
     model_path_subdir = '%s.pv' % model_path_subdir
     return os.path.join(os.path.dirname(__file__), '../../resources/porcupine', model_path_subdir)
+
+
+def load_test_data():
+    data_file_path = os.path.join(os.path.dirname(__file__), "../../resources/test/test_data.json")
+    with open(data_file_path, encoding="utf8") as data_file:
+        json_test_data = data_file.read()
+    test_data = json.loads(json_test_data)['tests']
+
+    test_parameters = [
+        (t['language'], t['wakeword'], t['context_name'], t['audio_file'], t['inference']['intent'], t['inference']['slots'])
+        for t in test_data['parameters']]
+
+    return test_parameters

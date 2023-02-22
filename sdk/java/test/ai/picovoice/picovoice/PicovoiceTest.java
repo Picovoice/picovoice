@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2020 Picovoice Inc.
+    Copyright 2018-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -13,6 +13,10 @@
 package ai.picovoice.picovoice;
 
 import ai.picovoice.rhino.RhinoInference;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +28,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -60,8 +67,9 @@ public class PicovoiceTest {
     };
 
     private static String appendLanguage(String s, String language) {
-        if (language == "en")
+        if (language.equals("en")) {
             return s;
+        }
         return s + "_" + language;
     }
 
@@ -77,7 +85,7 @@ public class PicovoiceTest {
     private static String getTestPorcupineModelPath(String language) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources/porcupine/lib/common")
-            .resolve(appendLanguage("porcupine_params", language)+".pv")
+            .resolve(appendLanguage("porcupine_params", language) + ".pv")
             .toString();
     }
 
@@ -95,13 +103,21 @@ public class PicovoiceTest {
             .resolve("../../resources/rhino/lib/common")
             .resolve(appendLanguage("rhino_params", language)+".pv")
             .toString();
-    }  
+    }
 
     private static String getTestAudioFilePath(String audioFileName) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources/audio_samples")
             .resolve(audioFileName)
             .toString();
+    }
+
+    private static JsonObject loadTestData() throws IOException {
+        final Path testDataPath = Paths.get(System.getProperty("user.dir"))
+                .resolve("../../resources/test")
+                .resolve("test_data.json");
+        final String testDataContent = new String(Files.readAllBytes(testDataPath), StandardCharsets.UTF_8);
+        return JsonParser.parseString(testDataContent).getAsJsonObject();
     }
 
     @AfterEach
@@ -135,14 +151,14 @@ public class PicovoiceTest {
                 .setRhinoModelPath(getTestRhinoModelPath(language))
                 .setContextPath(getTestContextPath(language, "coffee_maker"))
                 .setInferenceCallback(inferenceCallback)
-                .build();     
+                .build();
         assertTrue(picovoice.getSampleRate() > 0);
     }
 
     void runTestCase(String audioFileName, String expectedIntent, Map<String, String> expectedSlots) throws PicovoiceException, IOException, UnsupportedAudioFileException {
         isWakeWordDetected = false;
         inferenceResult = null;
-        
+
         int frameLen = picovoice.getFrameLength();
         File testAudioPath = new File(getTestAudioFilePath(audioFileName));
 
@@ -183,35 +199,34 @@ public class PicovoiceTest {
         runTestCase(audioFileName, expectedIntent, expectedSlots);
     }
 
-    private static Stream<Arguments> intentDetectionProvider() {
-        return Stream.of(
-                Arguments.of("en", "picovoice", "coffee_maker", "picovoice-coffee.wav", "orderBeverage", new HashMap<String, String>() {{
-                    put("size", "large");
-                    put("beverage", "coffee");
-                }}),
-                Arguments.of("de", "heuschrecke", "beleuchtung", "heuschrecke-beleuchtung_de.wav", "changeState", new HashMap<>() {{
-                    put("state", "aus");
-                }}),
-                Arguments.of("es", "manzana", "iluminación_inteligente", "manzana-luz_es.wav", "changeColor", new HashMap<>() {{
-                    put("location", "habitación");
-                    put("color", "rosado");
-                }}),
-                Arguments.of("fr", "mon chouchou", "éclairage_intelligent", "mon-intelligent_fr.wav", "changeColor", new HashMap<>() {{
-                    put("color", "violet");
-                }}),
-                Arguments.of("it", "cameriere", "illuminazione", "cameriere-luce_it.wav", "spegnereLuce", new HashMap<>() {{
-                    put("luogo", "bagno");
-                }}),
-                Arguments.of("ja", "ninja", "sumāto_shōmei", "ninja-sumāto-shōmei_ja.wav", "色変更", new HashMap<>() {{
-                    put("色", "オレンジ");
-                }}),
-                Arguments.of("ko", "koppulso", "seumateu_jomyeong", "koppulso-seumateu-jomyeong_ko.wav", "changeColor", new HashMap<>() {{
-                    put("color", "파란색");
-                }}),
-                Arguments.of("pt", "abacaxi", "luz_inteligente", "abaxi-luz_pt.wav", "ligueLuz", new HashMap<String, String>() {{
-                    put("lugar", "cozinha");
-                }})
-        );
+    private static Stream<Arguments> intentDetectionProvider() throws IOException {
+        final JsonObject testDataJson = PicovoiceTest.loadTestData();
+        final JsonArray parametersData = testDataJson
+                .getAsJsonObject("tests")
+                .getAsJsonArray("parameters");
+
+        final ArrayList<Arguments> testArgs = new ArrayList<>();
+        for (int i = 0; i < parametersData.size(); i++) {
+            final JsonObject testData = parametersData.get(i).getAsJsonObject();
+            final String language = testData.get("language").getAsString();
+            final String wakeword = testData.get("wakeword").getAsString();
+            final String context = testData.get("context_name").getAsString();
+            final String audioFileName = testData.get("audio_file").getAsString();
+            final String intent = testData.getAsJsonObject("inference").get("intent").getAsString();
+            HashMap<String, String> expectedSlotValues = new HashMap<String, String>();
+            for (Map.Entry<String, JsonElement> entry : testData.getAsJsonObject("inference").getAsJsonObject("slots").asMap().entrySet()) {
+                expectedSlotValues.put(entry.getKey(), entry.getValue().getAsString());
+            }
+            testArgs.add(Arguments.of(
+                    language,
+                    wakeword,
+                    context,
+                    audioFileName,
+                    intent,
+                    expectedSlotValues)
+            );
+        }
+        return testArgs.stream();
     }
 
     private static String getEnvironmentName() throws RuntimeException {
