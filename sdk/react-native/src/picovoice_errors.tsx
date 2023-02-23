@@ -1,5 +1,5 @@
 //
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -10,100 +10,100 @@
 //
 
 class PicovoiceError extends Error {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceError';
+  }
 }
 
 class PicovoiceMemoryError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceMemoryError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceMemoryError';
+  }
 }
 
 class PicovoiceIOError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceIOError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceIOError';
+  }
 }
 
 class PicovoiceInvalidArgumentError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceInvalidArgumentError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceInvalidArgumentError';
+  }
 }
 
 class PicovoiceStopIterationError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceStopIterationError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceStopIterationError';
+  }
 }
 
 class PicovoiceKeyError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceKeyError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceKeyError';
+  }
 }
 
 class PicovoiceInvalidStateError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceInvalidStateError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceInvalidStateError';
+  }
 }
 
 class PicovoiceRuntimeError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceRuntimeError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceRuntimeError';
+  }
 }
 
 class PicovoiceActivationError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceActivationError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceActivationError';
+  }
 }
 
 class PicovoiceActivationLimitError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceActivationLimitError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceActivationLimitError';
+  }
 }
 
 class PicovoiceActivationThrottledError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceActivationThrottledError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceActivationThrottledError';
+  }
 }
 
 class PicovoiceActivationRefusedError extends PicovoiceError {
-    constructor(message: string) {
-        super(message);
-        this.name = "PicovoiceActivationRefusedError";
-    }
+  constructor(message: string) {
+    super(message);
+    this.name = 'PicovoiceActivationRefusedError';
+  }
 }
 
 export {
-    PicovoiceError,
-    PicovoiceMemoryError,
-    PicovoiceIOError,
-    PicovoiceInvalidArgumentError,
-    PicovoiceStopIterationError,
-    PicovoiceKeyError,
-    PicovoiceInvalidStateError,
-    PicovoiceRuntimeError,
-    PicovoiceActivationError,
-    PicovoiceActivationLimitError,
-    PicovoiceActivationThrottledError,
-    PicovoiceActivationRefusedError
+  PicovoiceError,
+  PicovoiceMemoryError,
+  PicovoiceIOError,
+  PicovoiceInvalidArgumentError,
+  PicovoiceStopIterationError,
+  PicovoiceKeyError,
+  PicovoiceInvalidStateError,
+  PicovoiceRuntimeError,
+  PicovoiceActivationError,
+  PicovoiceActivationLimitError,
+  PicovoiceActivationThrottledError,
+  PicovoiceActivationRefusedError,
 };

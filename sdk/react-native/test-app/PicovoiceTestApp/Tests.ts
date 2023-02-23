@@ -1,5 +1,6 @@
 import {Platform} from 'react-native';
 import fs from 'react-native-fs';
+// @ts-ignore
 import {decode as atob} from 'base-64';
 
 import {Picovoice} from '@picovoice/picovoice-react-native';
@@ -15,17 +16,20 @@ export type Result = {
   errorString?: string;
 };
 
-function getPath(filePath) {
-  if (platform === "ios") {
+function getPath(filePath: string) {
+  if (platform === 'ios') {
     return `Assets.bundle/${filePath}`;
   }
   return filePath;
 }
 
-async function getBinaryFile(audioFilePath) {
+async function getBinaryFile(audioFilePath: string) {
   let fileBase64;
-  if (platform === "ios") {
-    fileBase64 = await fs.readFile(`${fs.MainBundlePath}/${audioFilePath}`, 'base64');
+  if (platform === 'ios') {
+    fileBase64 = await fs.readFile(
+      `${fs.MainBundlePath}/${audioFilePath}`,
+      'base64',
+    );
   } else {
     fileBase64 = await fs.readFileAssets(audioFilePath, 'base64');
   }
@@ -38,7 +42,10 @@ async function getBinaryFile(audioFilePath) {
   return bytes;
 }
 
-async function getPcmFromFile(audioFilePath, expectedSampleRate) {
+async function getPcmFromFile(
+  audioFilePath: string,
+  expectedSampleRate: number,
+) {
   const headerSampleRateOffset = 24;
   const headerOffset = 44;
 
@@ -60,7 +67,7 @@ async function getPcmFromFile(audioFilePath, expectedSampleRate) {
   return pcm;
 }
 
-async function processAudio(picovoice, audioFilePath) {
+async function processAudio(picovoice: Picovoice, audioFilePath: string) {
   const pcm = await getPcmFromFile(audioFilePath, picovoice.sampleRate);
   const frameLength = picovoice.frameLength;
   for (let i = 0; i < pcm.length - frameLength; i += frameLength) {
@@ -68,7 +75,7 @@ async function processAudio(picovoice, audioFilePath) {
   }
 }
 
-function inferencesEqual(inference, groundTruth) {
+function inferencesEqual(inference: any, groundTruth: any) {
   if (inference.isUnderstood === false && groundTruth === null) {
     return true;
   }
@@ -93,18 +100,22 @@ function inferencesEqual(inference, groundTruth) {
 }
 
 async function runTestcase(
-  language,
-  keywordName,
-  contextName,
-  audioFile,
-  groundTruth,
-): Result {
-  const result = {testName: '', success: false};
+  language: string,
+  keywordName: string,
+  contextName: string,
+  audioFile: string,
+  groundTruth: any,
+): Promise<Result> {
+  const result: Result = {testName: '', success: false};
   let picovoice = null;
   try {
-    const keywordPath = getPath(`keyword_files/${language}/${keywordName}_${platform}.ppn`)
-    const contextPath = getPath(`context_files/${language}/${contextName}_${platform}.rhn`)
-    const audioFilePath = getPath(`audio_samples/${audioFile}`)
+    const keywordPath = getPath(
+      `keyword_files/${language}/${keywordName}_${platform}.ppn`,
+    );
+    const contextPath = getPath(
+      `context_files/${language}/${contextName}_${platform}.rhn`,
+    );
+    const audioFilePath = getPath(`audio_samples/${audioFile}`);
     const porcupineModelPath =
       language === 'en'
         ? getPath('model_files/porcupine_params.pv')
@@ -114,18 +125,18 @@ async function runTestcase(
         ? getPath('model_files/rhino_params.pv')
         : getPath(`model_files/rhino_params_${language}.pv`);
 
-    let wakewordDetected = false
-    let inference = null
+    let wakewordDetected = false;
+    let inference = null;
 
     const wakeWordCallback = () => {
-      wakewordDetected = true
-    }
+      wakewordDetected = true;
+    };
 
-    const inferenceCallback = (newInference) => {
+    const inferenceCallback = (newInference: any) => {
       if (newInference.isFinalized) {
-        inference = newInference
+        inference = newInference;
       }
-    }
+    };
 
     picovoice = await Picovoice.create(
       accessKey,
@@ -140,7 +151,7 @@ async function runTestcase(
     );
     await processAudio(picovoice, audioFilePath);
 
-    if (wakewordDetected === false) {
+    if (!wakewordDetected) {
       result.success = false;
       result.errorString = 'Wakeword was not detected';
     } else if (!inferencesEqual(inference, groundTruth)) {
@@ -159,12 +170,9 @@ async function runTestcase(
   return result;
 }
 
-async function parametersTest(testcases): Result[] {
+async function parametersTest(testcases: any): Promise<Result[]> {
   const results = [];
   for (const testcase of testcases) {
-    const audioFilePath = testcase.language === 'en'
-        ? getPath('audio_samples/test_within_context.wav')
-        : getPath(`audio_samples/test_within_context_${testcase.language}.wav`);
     const result = await runTestcase(
       testcase.language,
       testcase.wakeword,
@@ -178,9 +186,7 @@ async function parametersTest(testcases): Result[] {
   return results;
 }
 
-export async function runPicovoiceTests(): Result[] {
-  const parameterResults = await parametersTest(
-    testData.tests.parameters,
-  );
+export async function runPicovoiceTests(): Promise<Result[]> {
+  const parameterResults = await parametersTest(testData.tests.parameters);
   return [...parameterResults];
 }

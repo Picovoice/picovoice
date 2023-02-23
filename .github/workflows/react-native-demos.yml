@@ -1,26 +1,23 @@
-name: React Native
+name: React Native Demos
+
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - 'sdk/react-native/**'
-      - '!sdk/react-native/README.md'
-      - 'resources/porcupine'
-      - 'resources/rhino'
-      - '.github/workflows/reaact-native.yml'
+      - 'demo/react-native/**'
+      - '!demo/react-native/README.md'
+      - '.github/workflows/react-native-demos.yml'
   pull_request:
     branches: [ master ]
     paths:
-      - 'sdk/react-native/**'
-      - '!sdk/react-native/README.md'
-      - 'resources/porcupine'
-      - 'resources/rhino'
-      - '.github/workflows/reaact-native.yml'
+      - 'demo/react-native/**'
+      - '!demo/react-native/README.md'
+      - '.github/workflows/react-native-demos.yml'
 
 defaults:
   run:
-    working-directory: sdk/react-native
+    working-directory: demo/react-native
 
 jobs:
   build:
@@ -32,8 +29,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        submodules: recursive
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
@@ -45,6 +40,3 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-
-    - name: Prepare
-      run: yarn prepare
