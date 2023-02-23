@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2021 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -15,4 +15,11 @@ import { Picovoice, WakeWordCallback, InferenceCallback } from './picovoice';
 import PicovoiceManager, { ProcessErrorCallback } from './picovoice_manager';
 import * as PicovoiceErrors from './picovoice_errors';
 
-export { Picovoice, PicovoiceManager, WakeWordCallback, InferenceCallback, ProcessErrorCallback, PicovoiceErrors };
+export {
+  Picovoice,
+  PicovoiceManager,
+  WakeWordCallback,
+  InferenceCallback,
+  ProcessErrorCallback,
+  PicovoiceErrors,
+};

@@ -1,11 +1,17 @@
-import React, {Component} from 'react';
-import {PermissionsAndroid, Platform} from 'react-native';
-import {StyleSheet, Text, View} from 'react-native';
-import {PicovoiceErrors, PicovoiceManager} from '@picovoice/picovoice-react-native';
+import React, { Component } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import {
+  PicovoiceErrors,
+  PicovoiceManager,
+} from '@picovoice/picovoice-react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Moment from 'react-moment';
 import moment from 'moment';
-import NotificationSounds, { playSampleSound, stopSampleSound } from  'react-native-notification-sounds';
+import NotificationSounds, {
+  playSampleSound,
+  stopSampleSound,
+} from 'react-native-notification-sounds';
 import BottomNavigation, {
   FullTab,
 } from 'react-native-material-bottom-navigation';
@@ -27,7 +33,7 @@ type State = {
 };
 
 export default class App extends Component<Props, State> {
-  readonly _accessKey = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+  readonly _accessKey = '${YOUR_ACCESS_KEY_HERE}'; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
   _picovoiceManager;
 
   tabs = [
@@ -98,7 +104,7 @@ export default class App extends Component<Props, State> {
       this._inferenceCallback.bind(this),
       (error) => {
         this._errorCallback(error.message);
-      }
+      },
     );
 
     await this._startProcessing();
@@ -113,7 +119,7 @@ export default class App extends Component<Props, State> {
   _wakeWordCallback() {
     this.setState({
       isListening: true,
-    }); 
+    });
   }
 
   _inferenceCallback(inference: RhinoInference) {
@@ -149,7 +155,7 @@ export default class App extends Component<Props, State> {
     this._picovoiceManager?.stop();
     this.setState({
       isError: true,
-      errorMessage: error
+      errorMessage: error,
     });
   }
 
@@ -163,15 +169,20 @@ export default class App extends Component<Props, State> {
       });
 
       // timer's up
-      if (this.state.timerCurrentTime && this.state.timerCurrentTime.as('seconds') == 0) {        
-        NotificationSounds.getNotifications('ringtone').then(soundsList  => {          
+      if (
+        this.state.timerCurrentTime &&
+        this.state.timerCurrentTime.as('seconds') == 0
+      ) {
+        NotificationSounds.getNotifications('ringtone').then((soundsList) => {
           playSampleSound(soundsList[0]);
-          setTimeout(()=>{stopSampleSound()}, 5000);
+          setTimeout(() => {
+            stopSampleSound();
+          }, 5000);
         });
 
         this.setState({
-          isTimerRunning: false,          
-          activeTab: 'timer'
+          isTimerRunning: false,
+          activeTab: 'timer',
         });
       }
     }
@@ -182,24 +193,27 @@ export default class App extends Component<Props, State> {
       });
     }
 
-    const now = moment()
-    if (this.state.alarmTime&& ! this.state.alarmSounding && this.state.alarmTime.isSameOrBefore(now))
-    {        
-        this.setState({            
-          activeTab: 'clock',
-          alarmSounding: true
-        });
+    const now = moment();
+    if (
+      this.state.alarmTime &&
+      !this.state.alarmSounding &&
+      this.state.alarmTime.isSameOrBefore(now)
+    ) {
+      this.setState({
+        activeTab: 'clock',
+        alarmSounding: true,
+      });
 
-        NotificationSounds.getNotifications('ringtone').then(soundsList  => {          
-          playSampleSound(soundsList[0]);
-          setTimeout(()=>{
-            stopSampleSound();
-            this.setState({                            
-              alarmSounding: false,
-              alarmTime: undefined
-            }); 
-          }, 5000);
-        });      
+      NotificationSounds.getNotifications('ringtone').then((soundsList) => {
+        playSampleSound(soundsList[0]);
+        setTimeout(() => {
+          stopSampleSound();
+          this.setState({
+            alarmSounding: false,
+            alarmTime: undefined,
+          });
+        }, 5000);
+      });
     }
   }
 
@@ -219,23 +233,29 @@ export default class App extends Component<Props, State> {
         return;
       }
 
-      try{
+      try {
         const didStart = await this._picovoiceManager?.start();
         if (didStart) {
           setInterval(this._updateTime.bind(this), 100);
         }
-      } catch(err) {
+      } catch (err) {
         let errorMessage = '';
         if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
           errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
         } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
-          errorMessage = "AccessKey activation error";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
-          errorMessage = "AccessKey reached its device limit";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationRefusedError) {
-          errorMessage = "AccessKey refused";
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationThrottledError) {
-          errorMessage = "AccessKey has been throttled";
+          errorMessage = 'AccessKey activation error';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationLimitError
+        ) {
+          errorMessage = 'AccessKey reached its device limit';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
+        ) {
+          errorMessage = 'AccessKey refused';
+        } else if (
+          err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
+        ) {
+          errorMessage = 'AccessKey has been throttled';
         } else {
           errorMessage = err.toString();
         }
@@ -251,7 +271,7 @@ export default class App extends Component<Props, State> {
         {
           title: 'Microphone Permission',
           message:
-            'Picovoice wants to access your mic to enable voice commands.',          
+            'Picovoice wants to access your mic to enable voice commands.',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         },
@@ -331,15 +351,15 @@ export default class App extends Component<Props, State> {
     });
   }
 
-  _performAlarmCommand(slots) {    
+  _performAlarmCommand(slots) {
     if (slots['action'] == 'delete') {
       this.setState({
-        alarmTime: undefined
-      })
+        alarmTime: undefined,
+      });
     }
   }
 
-  _setAlarm(slots) {       
+  _setAlarm(slots) {
     let hours = 0;
     let minutes = 0;
     let alarmWeekday = moment().day();
@@ -353,45 +373,44 @@ export default class App extends Component<Props, State> {
       minutes = Number.parseInt(slots['minute']);
     }
 
-    if (slots['amPm'] == "p m") hours += 12;
-    
+    if (slots['amPm'] == 'p m') hours += 12;
+
     if (hours >= 24 || minutes >= 60) {
-      console.error(`${hours}:${minutes} is an invalid time.`)
+      console.error(`${hours}:${minutes} is an invalid time.`);
       return;
     }
 
     const now = moment();
     const dayOfMonth = now.date() + alarmWeekday - now.day();
     const time = moment({
-      year:now.year(),
+      year: now.year(),
       month: now.month(),
       date: dayOfMonth,
       hour: hours,
-      minute: minutes
+      minute: minutes,
     });
 
-    if(time.isBefore(now)){
-      console.error(`${time.format("ddd, MMM Do h:mm a")} is an invalid alarm time.`)
+    if (time.isBefore(now)) {
+      console.error(
+        `${time.format('ddd, MMM Do h:mm a')} is an invalid alarm time.`,
+      );
       return;
     }
-    
+
     this.setState({
-      alarmTime: moment(time)
+      alarmTime: moment(time),
     });
   }
 
   _dayToWeekday(day) {
-      if(day == 'tomorrow')
-        return moment().day() + 1;
-      else if(day == 'today'){
-        return moment().day();    
-      }
-      else if(day =='sunday'){
-        return 7;
-      }
-      else{        
-        return moment().day(day).day();
-      }
+    if (day == 'tomorrow') return moment().day() + 1;
+    else if (day == 'today') {
+      return moment().day();
+    } else if (day == 'sunday') {
+      return 7;
+    } else {
+      return moment().day(day).day();
+    }
   }
 
   _performStopwatchCommand(slots) {
@@ -427,28 +446,29 @@ export default class App extends Component<Props, State> {
     }
   }
 
-  _renderIcon = (icon) => ({isActive}) => (
-    <Icon size={40} color={isActive ? '#377DFF' : '#777777'} name={icon} />
-  );
+  _renderIcon =
+    (icon) =>
+    ({ isActive }) =>
+      <Icon size={40} color={isActive ? '#377DFF' : '#777777'} name={icon} />;
 
-  _renderTab = ({tab, isActive}) => (
+  _renderTab = ({ tab, isActive }) => (
     <FullTab
       isActive={isActive}
       key={tab.key}
       label={tab.label}
-      labelStyle={{color: isActive ? '#377DFF' : '#777777'}}
+      labelStyle={{ color: isActive ? '#377DFF' : '#777777' }}
       renderIcon={this._renderIcon(tab.icon)}
     />
   );
 
   _renderDisplayClockText() {
-    if (this.state.activeTab == 'clock') {      
+    if (this.state.activeTab == 'clock') {
       return (
         <Moment
           element={Text}
           style={styles.clockText}
           format={'h:mm A'}
-          interval={500}></Moment>          
+          interval={500}></Moment>
       );
     } else if (this.state.activeTab == 'timer') {
       return (
@@ -468,70 +488,71 @@ export default class App extends Component<Props, State> {
   }
 
   _renderDisplayDateText() {
-    if (this.state.activeTab == 'clock') {      
+    if (this.state.activeTab == 'clock') {
       return (
         <Moment
-          element={Text}         
+          element={Text}
           format={'dddd, MMMM Do'}
           interval={500}
-          style={styles.dateText}></Moment>          
+          style={styles.dateText}></Moment>
       );
-    }
-    else return null;
+    } else return null;
   }
 
   _renderAlarmText() {
-    if (this.state.activeTab == 'clock' && this.state.alarmTime) {      
+    if (this.state.activeTab == 'clock' && this.state.alarmTime) {
       return (
-        <View style={{position:'absolute', 
-                      bottom:0, 
-                      alignItems:'center'}}>
-          <Icon name='alarm'
-                color="#ff005f"
-                size={20}></Icon>
+        <View style={{ position: 'absolute', bottom: 0, alignItems: 'center' }}>
+          <Icon name="alarm" color="#ff005f" size={20}></Icon>
           <Moment
-            element={Text}         
-            format={'ddd, MMM Do h:mma'}          
+            element={Text}
+            format={'ddd, MMM Do h:mma'}
             style={styles.alarmText}>
-              {this.state.alarmTime}
-          </Moment>          
+            {this.state.alarmTime}
+          </Moment>
         </View>
       );
-    }
-    else return null;
+    } else return null;
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, marginTop:20, justifyContent:'center', alignItems:'center'}}>
+        <View
+          style={{
+            flex: 1,
+            marginTop: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           {this._renderDisplayClockText()}
-          {this._renderDisplayDateText()}           
+          {this._renderDisplayDateText()}
           {this._renderAlarmText()}
         </View>
-        {this.state.isError ?
+        {this.state.isError ? (
           <View style={styles.errorBox}>
-            <Text style={{
-              color: 'white',
-              fontSize: 16
-            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 16,
+              }}>
               {this.state.errorMessage}
             </Text>
           </View>
-        : 
-        <View style={{flex: 0.35, justifyContent: 'center'}}>
-          <Icon
-            size={100}
-            color={this.state.isListening ? '#377DFF' : '#777777'}
-            name={this.state.isListening ? 'mic' : 'mic-none'}
-            style={{ alignSelf: 'center' }} 
-          />
-          <Text style={styles.instructions}>Say 'PicoClock'!</Text>
-        </View>
-        }
-        <View style={{flex: 0.18, justifyContent: 'flex-end'}}>
+        ) : (
+          <View style={{ flex: 0.35, justifyContent: 'center' }}>
+            <Icon
+              size={100}
+              color={this.state.isListening ? '#377DFF' : '#777777'}
+              name={this.state.isListening ? 'mic' : 'mic-none'}
+              style={{ alignSelf: 'center' }}
+            />
+            <Text style={styles.instructions}>Say 'PicoClock'!</Text>
+          </View>
+        )}
+        <View style={{ flex: 0.18, justifyContent: 'flex-end' }}>
           <BottomNavigation
-            style={{borderTopWidth: 2, borderTopColor: '#EEEEEE', flex: 1}}
+            style={{ borderTopWidth: 2, borderTopColor: '#EEEEEE', flex: 1 }}
             activeTab={this.state.activeTab}
             renderTab={this._renderTab}
             tabs={this.tabs}
@@ -546,37 +567,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  clockText: {       
+  clockText: {
     color: '#377DFF',
     fontSize: 70,
     textAlign: 'center',
-    textAlignVertical: 'center',        
+    textAlignVertical: 'center',
   },
-  dateText: {    
-    color: '#777777',    
+  dateText: {
+    color: '#777777',
     textAlign: 'center',
-    textAlignVertical: 'center',    
-    fontSize: 22
+    textAlignVertical: 'center',
+    fontSize: 22,
   },
-  alarmText: {    
-    color: '#ff005f',    
+  alarmText: {
+    color: '#ff005f',
     textAlign: 'center',
-    textAlignVertical: 'center',    
-    fontSize: 15
+    textAlignVertical: 'center',
+    fontSize: 15,
   },
   instructions: {
     textAlign: 'center',
     color: '#BBBBBB',
     fontWeight: 'bold',
-    fontSize: 18
+    fontSize: 18,
   },
   errorBox: {
     backgroundColor: 'red',
     borderRadius: 5,
     margin: 20,
     padding: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });

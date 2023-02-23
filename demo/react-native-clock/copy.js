@@ -16,9 +16,9 @@ fs.copyFileSync(
 
 // copy iOS resources
 fs.copyFileSync(
-    '../../resources/porcupine/resources/keyword_files/ios/pico clock_ios.ppn',
-    './ios/pico_clock_ios.ppn',
-  );
+  '../../resources/porcupine/resources/keyword_files/ios/pico clock_ios.ppn',
+  './ios/pico_clock_ios.ppn',
+);
 fs.copyFileSync(
   '../../resources/rhino/resources/contexts/ios/clock_ios.rhn',
   './ios/clock_ios.rhn',
