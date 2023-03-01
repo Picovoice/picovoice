@@ -17,8 +17,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitSuccessSimple() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
         let p = try Picovoice(
                 accessKey: accessKey,
                 keywordPath: keywordPath,
@@ -35,10 +35,10 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitSuccessCustomModelPaths() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
-        let porcupineModelPath = bundle.path(forResource: "porcupine_params", ofType: "pv")!
-        let rhinoModelPath = bundle.path(forResource: "rhino_params", ofType: "pv")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
+        let porcupineModelPath = bundle.path(forResource: "porcupine_params", ofType: "pv", inDirectory: "test_resources/model_files/")!
+        let rhinoModelPath = bundle.path(forResource: "rhino_params", ofType: "pv", inDirectory: "test_resources/model_files/")!
         let p = try Picovoice(
                 accessKey: accessKey,
                 keywordPath: keywordPath,
@@ -54,8 +54,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitSuccessCustomSensitivities() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
         let p = try Picovoice(
                 accessKey: accessKey,
                 keywordPath: keywordPath,
@@ -71,8 +71,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithMismatchedPorcupineLanguage() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "heuschrecke_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "heuschrecke_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/de")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -91,8 +91,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithMismatchedRhinoLanguage() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "beleuchtung_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "beleuchtung_ios", ofType: "rhn", inDirectory: "test_resources/context_files/de")!
 
         var didFail = false
         do {
@@ -112,7 +112,7 @@ class PicovoiceAppTestUITests: BaseTest {
     func testInitFailWithInvalidKeywordPath() throws {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = "bad_path/bad_path.ppn"
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -131,7 +131,7 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithInvalidContextPath() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
         let contextPath = "bad_path/bad_path.rhn"
 
         var didFail = false
@@ -151,8 +151,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithInvalidPorcupineModelPath() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
         let porcupineModelPath = "bad_path/bad_path.pv"
 
         var didFail = false
@@ -173,8 +173,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithInvalidRhinoModelPath() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
         let rhinoModelPath = "bad_path/bad_path.pv"
 
         var didFail = false
@@ -195,8 +195,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithInvalidPorcupineSensitivity() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -216,8 +216,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithInvalidRhinoSensitivity() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -237,8 +237,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithWrongPorcupinePlatform() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "alexa_linux", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "alexa_linux", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_ios", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -257,8 +257,8 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitFailWithWrongRhinoPlatform() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "coffee_maker_linux", ofType: "rhn")!
+        let keywordPath = bundle.path(forResource: "picovoice_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(forResource: "coffee_maker_linux", ofType: "rhn", inDirectory: "test_resources/context_files/en")!
 
         var didFail = false
         do {
@@ -277,10 +277,10 @@ class PicovoiceAppTestUITests: BaseTest {
 
     func testInitWithNonAsciiModelName() throws {
         let bundle = Bundle(for: type(of: self))
-        let keywordPath = bundle.path(forResource: "manzana_ios", ofType: "ppn")!
-        let contextPath = bundle.path(forResource: "iluminación_inteligente_ios", ofType: "rhn")!
-        let porcupineModelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv")!
-        let rhinoModelPath = bundle.path(forResource: "rhino_params_es", ofType: "pv")!
+        let keywordPath = bundle.path(forResource: "manzana_ios", ofType: "ppn", inDirectory: "test_resources/keyword_files/es")!
+        let contextPath = bundle.path(forResource: "iluminación_inteligente_ios", ofType: "rhn", inDirectory: "test_resources/context_files/es")!
+        let porcupineModelPath = bundle.path(forResource: "porcupine_params_es", ofType: "pv", inDirectory: "test_resources/model_files")!
+        let rhinoModelPath = bundle.path(forResource: "rhino_params_es", ofType: "pv", inDirectory: "test_resources/model_files")!
 
         let p = try Picovoice(
                 accessKey: accessKey,

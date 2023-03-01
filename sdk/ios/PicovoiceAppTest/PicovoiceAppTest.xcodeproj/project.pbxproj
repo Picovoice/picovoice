@@ -7,58 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02281EFD286E403E00DB7045 /* abaxi-luz_pt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EF6286E403E00DB7045 /* abaxi-luz_pt.wav */; };
-		02281EFE286E403E00DB7045 /* heuschrecke-beleuchtung_de.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EF7286E403E00DB7045 /* heuschrecke-beleuchtung_de.wav */; };
-		02281EFF286E403E00DB7045 /* mon-intelligent_fr.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EF8286E403E00DB7045 /* mon-intelligent_fr.wav */; };
-		02281F00286E403E00DB7045 /* koppulso-seumateu-jomyeong_ko.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EF9286E403E00DB7045 /* koppulso-seumateu-jomyeong_ko.wav */; };
-		02281F01286E403E00DB7045 /* cameriere-luce_it.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EFA286E403E00DB7045 /* cameriere-luce_it.wav */; };
-		02281F02286E403E00DB7045 /* manzana-luz_es.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EFB286E403E00DB7045 /* manzana-luz_es.wav */; };
-		02281F03286E403E00DB7045 /* ninja-sumāto-shōmei_ja.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02281EFC286E403E00DB7045 /* ninja-sumāto-shōmei_ja.wav */; };
-		02281F07286E40CE00DB7045 /* coffee_maker_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F06286E40CE00DB7045 /* coffee_maker_ios.rhn */; };
-		02281F09286E40E700DB7045 /* coffee_maker_linux.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F08286E40E700DB7045 /* coffee_maker_linux.rhn */; };
-		02281F0B286E40F600DB7045 /* beleuchtung_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F0A286E40F600DB7045 /* beleuchtung_ios.rhn */; };
-		02281F0D286E411400DB7045 /* iluminación_inteligente_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F0C286E411400DB7045 /* iluminación_inteligente_ios.rhn */; };
-		02281F0F286E413200DB7045 /* éclairage_intelligent_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F0E286E413200DB7045 /* éclairage_intelligent_ios.rhn */; };
-		02281F11286E414700DB7045 /* illuminazione_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F10286E414700DB7045 /* illuminazione_ios.rhn */; };
-		02281F13286E415800DB7045 /* sumāto_shōmei_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F12286E415800DB7045 /* sumāto_shōmei_ios.rhn */; };
-		02281F15286E416D00DB7045 /* seumateu_jomyeong_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F14286E416D00DB7045 /* seumateu_jomyeong_ios.rhn */; };
-		02281F19286E419C00DB7045 /* luz_inteligente_ios.rhn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F18286E419C00DB7045 /* luz_inteligente_ios.rhn */; };
-		02281F1B286E41BC00DB7045 /* picovoice_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F1A286E41BC00DB7045 /* picovoice_ios.ppn */; };
-		02281F1D286E41DD00DB7045 /* alexa_linux.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F1C286E41DD00DB7045 /* alexa_linux.ppn */; };
-		02281F1F286E422800DB7045 /* manzana_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F1E286E422800DB7045 /* manzana_ios.ppn */; };
-		02281F21286E423B00DB7045 /* heuschrecke_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F20286E423B00DB7045 /* heuschrecke_ios.ppn */; };
-		02281F23286E425300DB7045 /* mon chouchou_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F22286E425300DB7045 /* mon chouchou_ios.ppn */; };
-		02281F25286E426C00DB7045 /* cameriere_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F24286E426C00DB7045 /* cameriere_ios.ppn */; };
-		02281F27286E427D00DB7045 /* ninja_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F26286E427D00DB7045 /* ninja_ios.ppn */; };
-		02281F29286E429500DB7045 /* koppulso_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F28286E429500DB7045 /* koppulso_ios.ppn */; };
-		02281F2B286E42A300DB7045 /* abacaxi_ios.ppn in Resources */ = {isa = PBXBuildFile; fileRef = 02281F2A286E42A300DB7045 /* abacaxi_ios.ppn */; };
-		02281F30286E42F000DB7045 /* porcupine_params_ja.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F2C286E42F000DB7045 /* porcupine_params_ja.pv */; };
-		02281F31286E42F000DB7045 /* porcupine_params_pt.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F2D286E42F000DB7045 /* porcupine_params_pt.pv */; };
-		02281F32286E42F000DB7045 /* porcupine_params_it.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F2E286E42F000DB7045 /* porcupine_params_it.pv */; };
-		02281F33286E42F000DB7045 /* porcupine_params_ko.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F2F286E42F000DB7045 /* porcupine_params_ko.pv */; };
-		02281F38286E430000DB7045 /* rhino_params_pt.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F34286E430000DB7045 /* rhino_params_pt.pv */; };
-		02281F39286E430000DB7045 /* rhino_params_ja.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F35286E430000DB7045 /* rhino_params_ja.pv */; };
-		02281F3A286E430000DB7045 /* rhino_params_it.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F36286E430000DB7045 /* rhino_params_it.pv */; };
-		02281F3B286E430000DB7045 /* rhino_params_ko.pv in Resources */ = {isa = PBXBuildFile; fileRef = 02281F37286E430000DB7045 /* rhino_params_ko.pv */; };
 		1E0063D227CED542006FF6E9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0063D127CED542006FF6E9 /* AppDelegate.swift */; };
 		1E0063D627CED542006FF6E9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0063D527CED542006FF6E9 /* ViewController.swift */; };
 		1E0063D927CED542006FF6E9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E0063D727CED542006FF6E9 /* Main.storyboard */; };
 		1E0063DB27CED543006FF6E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E0063DA27CED543006FF6E9 /* Assets.xcassets */; };
 		1E0063DE27CED543006FF6E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E0063DC27CED543006FF6E9 /* LaunchScreen.storyboard */; };
 		1E0063F327CED543006FF6E9 /* PicovoiceAppTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */; };
-		1E00640927CEDA06006FF6E9 /* picovoice-coffee.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1E00640827CEDA06006FF6E9 /* picovoice-coffee.wav */; };
-		1E00640E27CEDA15006FF6E9 /* porcupine_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00640A27CEDA15006FF6E9 /* porcupine_params_fr.pv */; };
-		1E00640F27CEDA15006FF6E9 /* porcupine_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00640B27CEDA15006FF6E9 /* porcupine_params.pv */; };
-		1E00641027CEDA15006FF6E9 /* porcupine_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00640C27CEDA15006FF6E9 /* porcupine_params_de.pv */; };
-		1E00641127CEDA15006FF6E9 /* porcupine_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00640D27CEDA15006FF6E9 /* porcupine_params_es.pv */; };
-		1E00641627CEDA27006FF6E9 /* rhino_params_de.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641227CEDA27006FF6E9 /* rhino_params_de.pv */; };
-		1E00641727CEDA27006FF6E9 /* rhino_params_fr.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641327CEDA27006FF6E9 /* rhino_params_fr.pv */; };
-		1E00641827CEDA27006FF6E9 /* rhino_params_es.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641427CEDA27006FF6E9 /* rhino_params_es.pv */; };
-		1E00641927CEDA27006FF6E9 /* rhino_params.pv in Resources */ = {isa = PBXBuildFile; fileRef = 1E00641527CEDA27006FF6E9 /* rhino_params.pv */; };
 		90483B2471CE0C3DFCABCC2A /* libPods-PicovoiceAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */; };
 		A52A72DA960D9C08EE6BB076 /* BaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */; };
 		A52A7AD7390D2A6893C91843 /* PicovoiceLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A7E806E562D39BF3F887A /* PicovoiceLanguageTests.swift */; };
 		B9815E42B7CA64629D3D9590 /* libPods-PicovoiceAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */; };
+		C7B7F1A52984579F0091B8A6 /* test_resources in Resources */ = {isa = PBXBuildFile; fileRef = C7B7F1A42984579F0091B8A6 /* test_resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,39 +31,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		02281EF6286E403E00DB7045 /* abaxi-luz_pt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "abaxi-luz_pt.wav"; path = "../../../../resources/audio_samples/abaxi-luz_pt.wav"; sourceTree = "<group>"; };
-		02281EF7286E403E00DB7045 /* heuschrecke-beleuchtung_de.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "heuschrecke-beleuchtung_de.wav"; path = "../../../../resources/audio_samples/heuschrecke-beleuchtung_de.wav"; sourceTree = "<group>"; };
-		02281EF8286E403E00DB7045 /* mon-intelligent_fr.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "mon-intelligent_fr.wav"; path = "../../../../resources/audio_samples/mon-intelligent_fr.wav"; sourceTree = "<group>"; };
-		02281EF9286E403E00DB7045 /* koppulso-seumateu-jomyeong_ko.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "koppulso-seumateu-jomyeong_ko.wav"; path = "../../../../resources/audio_samples/koppulso-seumateu-jomyeong_ko.wav"; sourceTree = "<group>"; };
-		02281EFA286E403E00DB7045 /* cameriere-luce_it.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "cameriere-luce_it.wav"; path = "../../../../resources/audio_samples/cameriere-luce_it.wav"; sourceTree = "<group>"; };
-		02281EFB286E403E00DB7045 /* manzana-luz_es.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "manzana-luz_es.wav"; path = "../../../../resources/audio_samples/manzana-luz_es.wav"; sourceTree = "<group>"; };
-		02281EFC286E403E00DB7045 /* ninja-sumāto-shōmei_ja.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "ninja-sumāto-shōmei_ja.wav"; path = "../../../../resources/audio_samples/ninja-sumāto-shōmei_ja.wav"; sourceTree = "<group>"; };
-		02281F06286E40CE00DB7045 /* coffee_maker_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_ios.rhn; path = ../../../../resources/rhino/resources/contexts/ios/coffee_maker_ios.rhn; sourceTree = "<group>"; };
-		02281F08286E40E700DB7045 /* coffee_maker_linux.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = coffee_maker_linux.rhn; path = ../../../../resources/rhino/resources/contexts/linux/coffee_maker_linux.rhn; sourceTree = "<group>"; };
-		02281F0A286E40F600DB7045 /* beleuchtung_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = beleuchtung_ios.rhn; path = ../../../../resources/rhino/resources/contexts_de/ios/beleuchtung_ios.rhn; sourceTree = "<group>"; };
-		02281F0C286E411400DB7045 /* iluminación_inteligente_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "iluminación_inteligente_ios.rhn"; path = "../../../../resources/rhino/resources/contexts_es/ios/iluminación_inteligente_ios.rhn"; sourceTree = "<group>"; };
-		02281F0E286E413200DB7045 /* éclairage_intelligent_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "éclairage_intelligent_ios.rhn"; path = "../../../../resources/rhino/resources/contexts_fr/ios/éclairage_intelligent_ios.rhn"; sourceTree = "<group>"; };
-		02281F10286E414700DB7045 /* illuminazione_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = illuminazione_ios.rhn; path = ../../../../resources/rhino/resources/contexts_it/ios/illuminazione_ios.rhn; sourceTree = "<group>"; };
-		02281F12286E415800DB7045 /* sumāto_shōmei_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "sumāto_shōmei_ios.rhn"; path = "../../../../resources/rhino/resources/contexts_ja/ios/sumāto_shōmei_ios.rhn"; sourceTree = "<group>"; };
-		02281F14286E416D00DB7045 /* seumateu_jomyeong_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = seumateu_jomyeong_ios.rhn; path = ../../../../resources/rhino/resources/contexts_ko/ios/seumateu_jomyeong_ios.rhn; sourceTree = "<group>"; };
-		02281F18286E419C00DB7045 /* luz_inteligente_ios.rhn */ = {isa = PBXFileReference; lastKnownFileType = file; name = luz_inteligente_ios.rhn; path = ../../../../resources/rhino/resources/contexts_pt/ios/luz_inteligente_ios.rhn; sourceTree = "<group>"; };
-		02281F1A286E41BC00DB7045 /* picovoice_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = picovoice_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files/ios/picovoice_ios.ppn; sourceTree = "<group>"; };
-		02281F1C286E41DD00DB7045 /* alexa_linux.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = alexa_linux.ppn; path = ../../../../resources/porcupine/resources/keyword_files/linux/alexa_linux.ppn; sourceTree = "<group>"; };
-		02281F1E286E422800DB7045 /* manzana_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = manzana_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_es/ios/manzana_ios.ppn; sourceTree = "<group>"; };
-		02281F20286E423B00DB7045 /* heuschrecke_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = heuschrecke_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_de/ios/heuschrecke_ios.ppn; sourceTree = "<group>"; };
-		02281F22286E425300DB7045 /* mon chouchou_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = "mon chouchou_ios.ppn"; path = "../../../../resources/porcupine/resources/keyword_files_fr/ios/mon chouchou_ios.ppn"; sourceTree = "<group>"; };
-		02281F24286E426C00DB7045 /* cameriere_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = cameriere_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_it/ios/cameriere_ios.ppn; sourceTree = "<group>"; };
-		02281F26286E427D00DB7045 /* ninja_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = ninja_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_ja/ios/ninja_ios.ppn; sourceTree = "<group>"; };
-		02281F28286E429500DB7045 /* koppulso_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = koppulso_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_ko/ios/koppulso_ios.ppn; sourceTree = "<group>"; };
-		02281F2A286E42A300DB7045 /* abacaxi_ios.ppn */ = {isa = PBXFileReference; lastKnownFileType = file; name = abacaxi_ios.ppn; path = ../../../../resources/porcupine/resources/keyword_files_pt/ios/abacaxi_ios.ppn; sourceTree = "<group>"; };
-		02281F2C286E42F000DB7045 /* porcupine_params_ja.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_ja.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_ja.pv; sourceTree = "<group>"; };
-		02281F2D286E42F000DB7045 /* porcupine_params_pt.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_pt.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_pt.pv; sourceTree = "<group>"; };
-		02281F2E286E42F000DB7045 /* porcupine_params_it.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_it.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_it.pv; sourceTree = "<group>"; };
-		02281F2F286E42F000DB7045 /* porcupine_params_ko.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_ko.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_ko.pv; sourceTree = "<group>"; };
-		02281F34286E430000DB7045 /* rhino_params_pt.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_pt.pv; path = ../../../../resources/rhino/lib/common/rhino_params_pt.pv; sourceTree = "<group>"; };
-		02281F35286E430000DB7045 /* rhino_params_ja.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_ja.pv; path = ../../../../resources/rhino/lib/common/rhino_params_ja.pv; sourceTree = "<group>"; };
-		02281F36286E430000DB7045 /* rhino_params_it.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_it.pv; path = ../../../../resources/rhino/lib/common/rhino_params_it.pv; sourceTree = "<group>"; };
-		02281F37286E430000DB7045 /* rhino_params_ko.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_ko.pv; path = ../../../../resources/rhino/lib/common/rhino_params_ko.pv; sourceTree = "<group>"; };
 		1E0063CE27CED542006FF6E9 /* PicovoiceAppTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicovoiceAppTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0063D127CED542006FF6E9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E0063D527CED542006FF6E9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -115,21 +41,13 @@
 		1E0063EE27CED543006FF6E9 /* PicovoiceAppTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicovoiceAppTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicovoiceAppTestUITests.swift; sourceTree = "<group>"; };
 		1E00640127CED575006FF6E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1E00640827CEDA06006FF6E9 /* picovoice-coffee.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "picovoice-coffee.wav"; path = "../../../../resources/audio_samples/picovoice-coffee.wav"; sourceTree = "<group>"; };
-		1E00640A27CEDA15006FF6E9 /* porcupine_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_fr.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_fr.pv; sourceTree = "<group>"; };
-		1E00640B27CEDA15006FF6E9 /* porcupine_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params.pv; sourceTree = "<group>"; };
-		1E00640C27CEDA15006FF6E9 /* porcupine_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_de.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_de.pv; sourceTree = "<group>"; };
-		1E00640D27CEDA15006FF6E9 /* porcupine_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = porcupine_params_es.pv; path = ../../../../resources/porcupine/lib/common/porcupine_params_es.pv; sourceTree = "<group>"; };
-		1E00641227CEDA27006FF6E9 /* rhino_params_de.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_de.pv; path = ../../../../resources/rhino/lib/common/rhino_params_de.pv; sourceTree = "<group>"; };
-		1E00641327CEDA27006FF6E9 /* rhino_params_fr.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_fr.pv; path = ../../../../resources/rhino/lib/common/rhino_params_fr.pv; sourceTree = "<group>"; };
-		1E00641427CEDA27006FF6E9 /* rhino_params_es.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params_es.pv; path = ../../../../resources/rhino/lib/common/rhino_params_es.pv; sourceTree = "<group>"; };
-		1E00641527CEDA27006FF6E9 /* rhino_params.pv */ = {isa = PBXFileReference; lastKnownFileType = file; name = rhino_params.pv; path = ../../../../resources/rhino/lib/common/rhino_params.pv; sourceTree = "<group>"; };
 		2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96D81685E3AD5BACC589E154 /* Pods-PicovoiceAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest.debug.xcconfig"; sourceTree = "<group>"; };
 		A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
 		A52A7E806E562D39BF3F887A /* PicovoiceLanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicovoiceLanguageTests.swift; sourceTree = "<group>"; };
 		BEE8FA14F087E3C98E4F8982 /* Pods-PicovoiceAppTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTestUITests.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C7B7F1A42984579F0091B8A6 /* test_resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_resources; sourceTree = "<group>"; };
 		DB38CCA7597CFB4AC719C40E /* Pods-PicovoiceAppTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTest.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest.release.xcconfig"; sourceTree = "<group>"; };
 		E2EA3945EBF30344E7A0AC7B /* Pods-PicovoiceAppTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTestUITests.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,102 +108,13 @@
 		1E0063F127CED543006FF6E9 /* PicovoiceAppTestUITests */ = {
 			isa = PBXGroup;
 			children = (
-				1E00640227CED920006FF6E9 /* test_resources */,
+				C7B7F1A42984579F0091B8A6 /* test_resources */,
 				1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */,
 				1E00640127CED575006FF6E9 /* Info.plist */,
 				A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */,
 				A52A7E806E562D39BF3F887A /* PicovoiceLanguageTests.swift */,
 			);
 			path = PicovoiceAppTestUITests;
-			sourceTree = "<group>";
-		};
-		1E00640227CED920006FF6E9 /* test_resources */ = {
-			isa = PBXGroup;
-			children = (
-				1E00640727CED955006FF6E9 /* audio_samples */,
-				1E00640627CED94E006FF6E9 /* context_files */,
-				1E00640527CED947006FF6E9 /* keyword_files */,
-				1E00640327CED930006FF6E9 /* porcupine_model_files */,
-				1E00640427CED941006FF6E9 /* rhino_model_files */,
-			);
-			name = test_resources;
-			sourceTree = "<group>";
-		};
-		1E00640327CED930006FF6E9 /* porcupine_model_files */ = {
-			isa = PBXGroup;
-			children = (
-				02281F2E286E42F000DB7045 /* porcupine_params_it.pv */,
-				02281F2C286E42F000DB7045 /* porcupine_params_ja.pv */,
-				02281F2F286E42F000DB7045 /* porcupine_params_ko.pv */,
-				02281F2D286E42F000DB7045 /* porcupine_params_pt.pv */,
-				1E00640C27CEDA15006FF6E9 /* porcupine_params_de.pv */,
-				1E00640D27CEDA15006FF6E9 /* porcupine_params_es.pv */,
-				1E00640A27CEDA15006FF6E9 /* porcupine_params_fr.pv */,
-				1E00640B27CEDA15006FF6E9 /* porcupine_params.pv */,
-			);
-			name = porcupine_model_files;
-			sourceTree = "<group>";
-		};
-		1E00640427CED941006FF6E9 /* rhino_model_files */ = {
-			isa = PBXGroup;
-			children = (
-				02281F36286E430000DB7045 /* rhino_params_it.pv */,
-				02281F35286E430000DB7045 /* rhino_params_ja.pv */,
-				02281F37286E430000DB7045 /* rhino_params_ko.pv */,
-				02281F34286E430000DB7045 /* rhino_params_pt.pv */,
-				1E00641227CEDA27006FF6E9 /* rhino_params_de.pv */,
-				1E00641427CEDA27006FF6E9 /* rhino_params_es.pv */,
-				1E00641327CEDA27006FF6E9 /* rhino_params_fr.pv */,
-				1E00641527CEDA27006FF6E9 /* rhino_params.pv */,
-			);
-			name = rhino_model_files;
-			sourceTree = "<group>";
-		};
-		1E00640527CED947006FF6E9 /* keyword_files */ = {
-			isa = PBXGroup;
-			children = (
-				02281F2A286E42A300DB7045 /* abacaxi_ios.ppn */,
-				02281F28286E429500DB7045 /* koppulso_ios.ppn */,
-				02281F26286E427D00DB7045 /* ninja_ios.ppn */,
-				02281F24286E426C00DB7045 /* cameriere_ios.ppn */,
-				02281F22286E425300DB7045 /* mon chouchou_ios.ppn */,
-				02281F20286E423B00DB7045 /* heuschrecke_ios.ppn */,
-				02281F1E286E422800DB7045 /* manzana_ios.ppn */,
-				02281F1C286E41DD00DB7045 /* alexa_linux.ppn */,
-				02281F1A286E41BC00DB7045 /* picovoice_ios.ppn */,
-			);
-			name = keyword_files;
-			sourceTree = "<group>";
-		};
-		1E00640627CED94E006FF6E9 /* context_files */ = {
-			isa = PBXGroup;
-			children = (
-				02281F18286E419C00DB7045 /* luz_inteligente_ios.rhn */,
-				02281F14286E416D00DB7045 /* seumateu_jomyeong_ios.rhn */,
-				02281F12286E415800DB7045 /* sumāto_shōmei_ios.rhn */,
-				02281F10286E414700DB7045 /* illuminazione_ios.rhn */,
-				02281F0E286E413200DB7045 /* éclairage_intelligent_ios.rhn */,
-				02281F0C286E411400DB7045 /* iluminación_inteligente_ios.rhn */,
-				02281F0A286E40F600DB7045 /* beleuchtung_ios.rhn */,
-				02281F08286E40E700DB7045 /* coffee_maker_linux.rhn */,
-				02281F06286E40CE00DB7045 /* coffee_maker_ios.rhn */,
-			);
-			name = context_files;
-			sourceTree = "<group>";
-		};
-		1E00640727CED955006FF6E9 /* audio_samples */ = {
-			isa = PBXGroup;
-			children = (
-				02281EF6286E403E00DB7045 /* abaxi-luz_pt.wav */,
-				02281EFA286E403E00DB7045 /* cameriere-luce_it.wav */,
-				02281EF7286E403E00DB7045 /* heuschrecke-beleuchtung_de.wav */,
-				02281EF9286E403E00DB7045 /* koppulso-seumateu-jomyeong_ko.wav */,
-				02281EFB286E403E00DB7045 /* manzana-luz_es.wav */,
-				02281EF8286E403E00DB7045 /* mon-intelligent_fr.wav */,
-				02281EFC286E403E00DB7045 /* ninja-sumāto-shōmei_ja.wav */,
-				1E00640827CEDA06006FF6E9 /* picovoice-coffee.wav */,
-			);
-			name = audio_samples;
 			sourceTree = "<group>";
 		};
 		25C7CD288284E5280D1E193F /* Frameworks */ = {
@@ -405,48 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02281F3B286E430000DB7045 /* rhino_params_ko.pv in Resources */,
-				02281F0D286E411400DB7045 /* iluminación_inteligente_ios.rhn in Resources */,
-				02281F0F286E413200DB7045 /* éclairage_intelligent_ios.rhn in Resources */,
-				02281F02286E403E00DB7045 /* manzana-luz_es.wav in Resources */,
-				02281F27286E427D00DB7045 /* ninja_ios.ppn in Resources */,
-				02281F00286E403E00DB7045 /* koppulso-seumateu-jomyeong_ko.wav in Resources */,
-				1E00641827CEDA27006FF6E9 /* rhino_params_es.pv in Resources */,
-				02281EFE286E403E00DB7045 /* heuschrecke-beleuchtung_de.wav in Resources */,
-				02281F23286E425300DB7045 /* mon chouchou_ios.ppn in Resources */,
-				02281F29286E429500DB7045 /* koppulso_ios.ppn in Resources */,
-				02281F25286E426C00DB7045 /* cameriere_ios.ppn in Resources */,
-				02281F3A286E430000DB7045 /* rhino_params_it.pv in Resources */,
-				1E00641927CEDA27006FF6E9 /* rhino_params.pv in Resources */,
-				02281F0B286E40F600DB7045 /* beleuchtung_ios.rhn in Resources */,
-				02281F1B286E41BC00DB7045 /* picovoice_ios.ppn in Resources */,
-				02281F13286E415800DB7045 /* sumāto_shōmei_ios.rhn in Resources */,
-				1E00641127CEDA15006FF6E9 /* porcupine_params_es.pv in Resources */,
-				02281F15286E416D00DB7045 /* seumateu_jomyeong_ios.rhn in Resources */,
-				1E00640927CEDA06006FF6E9 /* picovoice-coffee.wav in Resources */,
-				02281F19286E419C00DB7045 /* luz_inteligente_ios.rhn in Resources */,
-				02281F09286E40E700DB7045 /* coffee_maker_linux.rhn in Resources */,
-				02281F39286E430000DB7045 /* rhino_params_ja.pv in Resources */,
-				02281EFD286E403E00DB7045 /* abaxi-luz_pt.wav in Resources */,
-				02281F1D286E41DD00DB7045 /* alexa_linux.ppn in Resources */,
-				02281F33286E42F000DB7045 /* porcupine_params_ko.pv in Resources */,
-				02281F31286E42F000DB7045 /* porcupine_params_pt.pv in Resources */,
-				02281F11286E414700DB7045 /* illuminazione_ios.rhn in Resources */,
-				02281F38286E430000DB7045 /* rhino_params_pt.pv in Resources */,
-				1E00641727CEDA27006FF6E9 /* rhino_params_fr.pv in Resources */,
-				02281F07286E40CE00DB7045 /* coffee_maker_ios.rhn in Resources */,
-				02281F21286E423B00DB7045 /* heuschrecke_ios.ppn in Resources */,
-				02281F03286E403E00DB7045 /* ninja-sumāto-shōmei_ja.wav in Resources */,
-				02281F32286E42F000DB7045 /* porcupine_params_it.pv in Resources */,
-				1E00640F27CEDA15006FF6E9 /* porcupine_params.pv in Resources */,
-				02281EFF286E403E00DB7045 /* mon-intelligent_fr.wav in Resources */,
-				02281F1F286E422800DB7045 /* manzana_ios.ppn in Resources */,
-				1E00641627CEDA27006FF6E9 /* rhino_params_de.pv in Resources */,
-				02281F30286E42F000DB7045 /* porcupine_params_ja.pv in Resources */,
-				02281F2B286E42A300DB7045 /* abacaxi_ios.ppn in Resources */,
-				1E00641027CEDA15006FF6E9 /* porcupine_params_de.pv in Resources */,
-				02281F01286E403E00DB7045 /* cameriere-luce_it.wav in Resources */,
-				1E00640E27CEDA15006FF6E9 /* porcupine_params_fr.pv in Resources */,
+				C7B7F1A52984579F0091B8A6 /* test_resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@ ananas
 androidx
 annyeong
 apaga
+Appcenter
 armario
 armeabi
 armv
@@ -60,6 +61,7 @@ compat
 computador
 computadora
 constraintlayout
+convmv
 coolterm
 cortexm
 cozinha
@@ -181,6 +183,7 @@ netcoreapp
 Newtonsoft
 nklayman
 noncacheable
+notest
 NumChans
 nunit
 ocotp
