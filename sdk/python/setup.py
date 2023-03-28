@@ -21,19 +21,19 @@ os.mkdir(package_folder)
 
 shutil.copy(os.path.join(os.path.dirname(__file__), '../../LICENSE'), package_folder)
 shutil.copy(os.path.join(os.path.dirname(__file__), '__init__.py'), os.path.join(package_folder, '__init__.py'))
-shutil.copy(os.path.join(os.path.dirname(__file__), 'picovoice.py'), os.path.join(package_folder, 'picovoice.py'))
+shutil.copy(os.path.join(os.path.dirname(__file__), '_picovoice.py'), os.path.join(package_folder, '_picovoice.py'))
 
 with open(os.path.join(os.path.dirname(__file__), 'MANIFEST.in'), 'w') as f:
     f.write('include picovoice/LICENSE\n')
     f.write('include picovoice/__init__.py\n')
-    f.write('include picovoice/picovoice.py\n')
+    f.write('include picovoice/_picovoice.py\n')
 
 with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
     long_description = f.read()
 
 setuptools.setup(
     name="picovoice",
-    version="2.1.5",
+    version="2.2.0",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice is an end-to-end platform for building voice products on your terms.",
@@ -41,7 +41,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoice"],
-    install_requires=["pvporcupine==2.1.4", "pvrhino==2.1.7"],
+    install_requires=["pvporcupine==2.2.0", "pvrhino==2.2.0"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

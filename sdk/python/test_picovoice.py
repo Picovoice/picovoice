@@ -17,7 +17,7 @@ import wave
 
 from parameterized import parameterized
 
-from picovoice import Picovoice
+from _picovoice import Picovoice
 from test_util import *
 
 

@@ -19,18 +19,20 @@ from picovoice import *
 def read_file(file_name, sample_rate):
     wav_file = wave.open(file_name, mode="rb")
     channels = wav_file.getnchannels()
+    sample_width = wav_file.getsampwidth()
     num_frames = wav_file.getnframes()
 
     if wav_file.getframerate() != sample_rate:
         raise ValueError("Audio file should have a sample rate of %d. got %d" % (sample_rate, wav_file.getframerate()))
+    if sample_width != 2:
+        raise ValueError("Audio file should be 16-bit. got %d" % sample_width)
+    if channels == 2:
+        print("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.")
 
     samples = wav_file.readframes(num_frames)
     wav_file.close()
 
     frames = struct.unpack('h' * num_frames * channels, samples)
-
-    if channels == 2:
-        print("Picovoice processes single-channel audio but stereo file is provided. Processing left channel only.")
 
     return frames[::channels]
 
@@ -43,30 +45,47 @@ def main():
         help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
         required=True)
 
-    parser.add_argument('--input_audio_path', help='Absolute path to input audio file.', required=True)
+    parser.add_argument(
+        '--wav_path',
+        help='Absolute path to input audio file.',
+        required=True)
 
-    parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.", required=True)
+    parser.add_argument(
+        '--keyword_path',
+        help="Absolute path to a Porcupine keyword file.",
+        required=True)
 
-    parser.add_argument('--context_path', help="Absolute path to a Rhino context file.", required=True)
+    parser.add_argument(
+        '--context_path',
+        help="Absolute path to a Rhino context file.",
+        required=True)
 
-    parser.add_argument('--porcupine_library_path', help="Absolute path to Porcupine's dynamic library.", default=None)
+    parser.add_argument(
+        '--porcupine_library_path',
+        help="Absolute path to Porcupine's dynamic library.")
 
-    parser.add_argument('--porcupine_model_path', help="Absolute path to Porcupine's model file.", default=None)
+    parser.add_argument(
+        '--porcupine_model_path',
+        help="Absolute path to Porcupine's model file.")
 
     parser.add_argument(
         '--porcupine_sensitivity',
-        help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity " +
+        help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity "
              "results in fewer misses at the cost of increasing the false alarm rate.",
         type=float,
         default=0.5)
 
-    parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
+    parser.add_argument(
+        '--rhino_library_path',
+        help="Absolute path to Rhino's dynamic library.")
 
-    parser.add_argument('--rhino_model_path', help="Absolute path to Rhino's model file.", default=None)
+    parser.add_argument(
+        '--rhino_model_path',
+        help="Absolute path to Rhino's model file.")
 
     parser.add_argument(
         '--rhino_sensitivity',
-        help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer" +
+        help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer "
              "misses at the cost of (potentially) increasing the erroneous inference rate.",
         type=float,
         default=0.5)

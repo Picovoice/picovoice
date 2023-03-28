@@ -8,8 +8,8 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 #
-
 import os
+from typing import Callable, Optional, Sequence
 
 import pvporcupine
 import pvrhino
@@ -108,19 +108,19 @@ class Picovoice(object):
 
     def __init__(
             self,
-            access_key,
-            keyword_path,
-            wake_word_callback,
-            context_path,
-            inference_callback,
-            porcupine_library_path=None,
-            porcupine_model_path=None,
-            porcupine_sensitivity=0.5,
-            rhino_library_path=None,
-            rhino_model_path=None,
-            rhino_sensitivity=0.5,
-            endpoint_duration_sec=1.,
-            require_endpoint=True):
+            access_key: str,
+            keyword_path: str,
+            wake_word_callback: Callable[[], None],
+            context_path: str,
+            inference_callback: Callable[[pvrhino.Inference], None],
+            porcupine_library_path: Optional[str] = None,
+            porcupine_model_path: Optional[str] = None,
+            porcupine_sensitivity: float = 0.5,
+            rhino_library_path: Optional[str] = None,
+            rhino_model_path: Optional[str] = None,
+            rhino_sensitivity: float = 0.5,
+            endpoint_duration_sec: float = 1.,
+            require_endpoint: bool = True):
         """
         Constructor.
 
@@ -231,7 +231,7 @@ class Picovoice(object):
         self._porcupine.delete()
         self._rhino.delete()
 
-    def process(self, pcm):
+    def process(self, pcm: Sequence[int]) -> None:
         """
         Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command
         inference invokes user-defined callbacks.
@@ -262,28 +262,45 @@ class Picovoice(object):
                 raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
     @property
-    def sample_rate(self):
+    def sample_rate(self) -> int:
         """Audio sample rate accepted by Picovoice."""
 
         return self._sample_rate
 
     @property
-    def frame_length(self):
+    def frame_length(self) -> int:
         """Number of audio samples per frame."""
 
         return self._frame_length
 
     @property
-    def version(self):
+    def version(self) -> str:
         """Version"""
 
-        return '2.1.0'
+        return '2.2.0'
 
     @property
-    def context_info(self):
+    def context_info(self) -> str:
         """Context information."""
 
         return self._rhino.context_info
 
     def __str__(self):
         return 'Picovoice %s {Porcupine %s, Rhino %s}' % (self.version, self._porcupine.version, self._rhino.version)
+
+
+__all__ = [
+    'Picovoice',
+    'PicovoiceError',
+    'PicovoiceMemoryError',
+    'PicovoiceIOError',
+    'PicovoiceInvalidArgumentError',
+    'PicovoiceStopIterationError',
+    'PicovoiceKeyError',
+    'PicovoiceInvalidStateError',
+    'PicovoiceRuntimeError',
+    'PicovoiceActivationError',
+    'PicovoiceActivationLimitError',
+    'PicovoiceActivationThrottledError',
+    'PicovoiceActivationRefusedError'
+]

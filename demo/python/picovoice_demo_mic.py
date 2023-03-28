@@ -10,145 +10,11 @@
 #
 
 import argparse
-import os
-import sys
 import struct
 import wave
-from threading import Thread
 
 from picovoice import *
 from pvrecorder import PvRecorder
-
-
-class PicovoiceDemo(Thread):
-    def __init__(
-            self,
-            access_key,
-            audio_device_index,
-            keyword_path,
-            context_path,
-            porcupine_library_path=None,
-            porcupine_model_path=None,
-            porcupine_sensitivity=0.5,
-            rhino_library_path=None,
-            rhino_model_path=None,
-            rhino_sensitivity=0.5,
-            endpoint_duration_sec=1.,
-            require_endpoint=True,
-            output_path=None):
-        super(PicovoiceDemo, self).__init__()
-
-        try:
-            self._picovoice = Picovoice(
-                access_key=access_key,
-                keyword_path=keyword_path,
-                wake_word_callback=self._wake_word_callback,
-                context_path=context_path,
-                inference_callback=self._inference_callback,
-                porcupine_library_path=porcupine_library_path,
-                porcupine_model_path=porcupine_model_path,
-                porcupine_sensitivity=porcupine_sensitivity,
-                rhino_library_path=rhino_library_path,
-                rhino_model_path=rhino_model_path,
-                rhino_sensitivity=rhino_sensitivity,
-                endpoint_duration_sec=endpoint_duration_sec,
-                require_endpoint=require_endpoint)
-        except PicovoiceInvalidArgumentError as e:
-            args = (
-                access_key,
-                keyword_path,
-                self._wake_word_callback,
-                context_path,
-                self._inference_callback,
-                porcupine_library_path,
-                porcupine_model_path,
-                porcupine_sensitivity,
-                rhino_library_path,
-                rhino_model_path,
-                rhino_sensitivity,
-                endpoint_duration_sec,
-                require_endpoint
-            )
-            print("One or more arguments provided to Picovoice is invalid: ", args)
-            print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % access_key)
-            raise e
-        except PicovoiceActivationError as e:
-            print("AccessKey activation error")
-            raise e
-        except PicovoiceActivationLimitError as e:
-            print("AccessKey '%s' has reached it's temporary device limit" % access_key)
-            raise e
-        except PicovoiceActivationRefusedError as e:
-            print("AccessKey '%s' refused" % access_key)
-            raise e
-        except PicovoiceActivationThrottledError as e:
-            print("AccessKey '%s' has been throttled" % access_key)
-            raise e
-        except PicovoiceError as e:
-            print("Failed to initialize Picovoice")
-            raise e
-
-        self.audio_device_index = audio_device_index
-        self.output_path = output_path
-
-    @staticmethod
-    def _wake_word_callback():
-        print('[wake word]\n')
-
-    @staticmethod
-    def _inference_callback(inference):
-        if inference.is_understood:
-            print('{')
-            print("  intent : '%s'" % inference.intent)
-            print('  slots : {')
-            for slot, value in inference.slots.items():
-                print("    %s : '%s'" % (slot, value))
-            print('  }')
-            print('}\n')
-        else:
-            print("Didn't understand the command.\n")
-
-    def run(self):
-        recorder = None
-        wav_file = None
-
-        try:
-            recorder = PvRecorder(device_index=self.audio_device_index, frame_length=self._picovoice.frame_length)
-            recorder.start()
-
-            if self.output_path is not None:
-                wav_file = wave.open(self.output_path, "w")
-                # noinspection PyTypeChecker
-                wav_file.setparams((1, 2, 16000, 512, "NONE", "NONE"))
-
-            print("Using device: %s" % recorder.selected_device)
-            print('[Listening ...]')
-
-            while True:
-                pcm = recorder.read()
-
-                if wav_file is not None:
-                    wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
-
-                self._picovoice.process(pcm)
-        except KeyboardInterrupt:
-            sys.stdout.write('\b' * 2)
-            print('Stopping ...')
-        finally:
-            if recorder is not None:
-                recorder.delete()
-
-            if wav_file is not None:
-                wav_file.close()
-
-            self._picovoice.delete()
-
-    @classmethod
-    def show_audio_devices(cls):
-        devices = PvRecorder.get_audio_devices()
-
-        for i in range(len(devices)):
-            print('index: %d, device name: %s' % (i, devices[i]))
 
 
 def main():
@@ -159,28 +25,42 @@ def main():
         help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
         required=True)
 
-    parser.add_argument('--keyword_path', help="Absolute path to a Porcupine keyword file.")
+    parser.add_argument(
+        '--keyword_path',
+        help="Absolute path to a Porcupine keyword file.",
+        required=True)
 
-    parser.add_argument('--context_path', help="Absolute path to a Rhino context file.")
+    parser.add_argument(
+        '--context_path',
+        help="Absolute path to a Rhino context file.",
+        required=True)
 
-    parser.add_argument('--porcupine_library_path', help="Absolute path to Porcupine's dynamic library.", default=None)
+    parser.add_argument(
+        '--porcupine_library_path',
+        help="Absolute path to Porcupine's dynamic library.")
 
-    parser.add_argument('--porcupine_model_path', help="Absolute path to Porcupine's model file.", default=None)
+    parser.add_argument(
+        '--porcupine_model_path',
+        help="Absolute path to Porcupine's model file.")
 
     parser.add_argument(
         '--porcupine_sensitivity',
-        help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity " +
+        help="Sensitivity for detecting wake word. Each value should be a number within [0, 1]. A higher sensitivity "
              "results in fewer misses at the cost of increasing the false alarm rate.",
         type=float,
         default=0.5)
 
-    parser.add_argument('--rhino_library_path', help="Absolute path to Rhino's dynamic library.", default=None)
+    parser.add_argument(
+        '--rhino_library_path',
+        help="Absolute path to Rhino's dynamic library.")
 
-    parser.add_argument('--rhino_model_path', help="Absolute path to Rhino's model file.", default=None)
+    parser.add_argument(
+        '--rhino_model_path',
+        help="Absolute path to Rhino's model file.")
 
     parser.add_argument(
         '--rhino_sensitivity',
-        help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer" +
+        help="Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer "
              "misses at the cost of (potentially) increasing the erroneous inference rate.",
         type=float,
         default=0.5)
@@ -217,19 +97,32 @@ def main():
         require_endpoint = True
 
     if args.show_audio_devices:
-        PicovoiceDemo.show_audio_devices()
-    else:
-        if not args.keyword_path:
-            raise ValueError("Missing path to Porcupine's keyword file.")
+        for i, device in enumerate(PvRecorder.get_audio_devices()):
+            print('Device %d: %s' % (i, device))
+        return
 
-        if not args.context_path:
-            raise ValueError("Missing path to Rhino's context file.")
+    def wake_word_callback():
+        print('[wake word]\n')
 
-        PicovoiceDemo(
+    def inference_callback(inference):
+        if inference.is_understood:
+            print('{')
+            print("  intent : '%s'" % inference.intent)
+            print('  slots : {')
+            for slot, value in inference.slots.items():
+                print("    %s : '%s'" % (slot, value))
+            print('  }')
+            print('}\n')
+        else:
+            print("Didn't understand the command.\n")
+
+    try:
+        picovoice = Picovoice(
             access_key=args.access_key,
-            audio_device_index=args.audio_device_index,
             keyword_path=args.keyword_path,
+            wake_word_callback=wake_word_callback,
             context_path=args.context_path,
+            inference_callback=inference_callback,
             porcupine_library_path=args.porcupine_library_path,
             porcupine_model_path=args.porcupine_model_path,
             porcupine_sensitivity=args.porcupine_sensitivity,
@@ -237,8 +130,61 @@ def main():
             rhino_model_path=args.rhino_model_path,
             rhino_sensitivity=args.rhino_sensitivity,
             endpoint_duration_sec=args.endpoint_duration_sec,
-            require_endpoint=require_endpoint,
-            output_path=os.path.expanduser(args.output_path) if args.output_path is not None else None).run()
+            require_endpoint=require_endpoint)
+    except PicovoiceInvalidArgumentError as e:
+        print("One or more arguments provided to Picovoice is invalid: ", args)
+        print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % args.access_key)
+        raise e
+    except PicovoiceActivationError as e:
+        print("AccessKey activation error")
+        raise e
+    except PicovoiceActivationLimitError as e:
+        print("AccessKey '%s' has reached it's temporary device limit" % args.access_key)
+        raise e
+    except PicovoiceActivationRefusedError as e:
+        print("AccessKey '%s' refused" % args.access_key)
+        raise e
+    except PicovoiceActivationThrottledError as e:
+        print("AccessKey '%s' has been throttled" % args.access_key)
+        raise e
+    except PicovoiceError as e:
+        print("Failed to initialize Picovoice")
+        raise e
+
+    print('Picovoice version: %s' % picovoice.version)
+    print('Context info: %s' % picovoice.context_info)
+
+    recorder = PvRecorder(
+        device_index=args.audio_device_index,
+        frame_length=picovoice.frame_length,
+    )
+    recorder.start()
+
+    print('Listening ... (Press Ctrl+C to exit)\n')
+
+    wav_file = None
+    if args.output_path is not None:
+        wav_file = wave.open(args.output_path, 'wb')
+        wav_file.setnchannels(1)
+        wav_file.setsampwidth(2)
+        wav_file.setframerate(picovoice.sample_rate)
+
+    try:
+        while True:
+            pcm = recorder.read()
+
+            if wav_file is not None:
+                wav_file.writeframes(struct.pack("h" * len(pcm), *pcm))
+
+            picovoice.process(pcm)
+
+    except KeyboardInterrupt:
+        print('Stopping ...')
+    finally:
+        recorder.delete()
+        picovoice.delete()
+        if wav_file is not None:
+            wav_file.close()
 
 
 if __name__ == '__main__':
