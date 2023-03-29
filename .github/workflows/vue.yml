@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/vue.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/vue/**'
       - '!sdk/vue/README.md'
@@ -49,7 +49,7 @@ jobs:
 
     - name: Build
       run: yarn build
-    
+
     - name: Setup test
       run: yarn setup-test
 

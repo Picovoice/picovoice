@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/web.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'

@@ -11,7 +11,7 @@ on:
       - 'resources/rhino'
       - '.github/workflows/angular.yml'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/angular/**'
       - '!sdk/angular/README.md'
@@ -52,7 +52,7 @@ jobs:
 
     - name: Lint
       run: yarn lint
-    
+
     - name: Setup test
       run: yarn setup-test
 
