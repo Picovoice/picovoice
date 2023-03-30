@@ -72,4 +72,4 @@ for d in ${RHINO_RESOURCE_DIR}/contexts_*; do
 done
 
 echo "Copying test data file..."
-cp ${PICOVOICE_RESOURCE_DIR}/test/test_data.json ${ASSET_DIR}/
+cp ${PICOVOICE_RESOURCE_DIR}/.test/test_data.json ${ASSET_DIR}/

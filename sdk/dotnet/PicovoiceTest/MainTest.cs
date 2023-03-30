@@ -61,7 +61,7 @@ namespace PicovoiceTest
 
         private static JObject LoadJsonTestData()
         {
-            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/test/test_data.json"));
+            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/.test/test_data.json"));
             return JObject.Parse(content);
         }
 
