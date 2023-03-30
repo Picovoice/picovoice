@@ -71,7 +71,7 @@
         "inference": {
           "intent": "shopping",
           "slots": {
-            "vrucht": "रसभर"
+            "vrucht": "रसभरी"
           }
         }
       },
@@ -149,9 +149,9 @@
       },
       {
         "language": "ru",
-        "wakeword": "porcupine_ru",
+        "wakeword": "pomogite",
         "context_name": "simple_context_ru",
-        "audio_file": "porcupine-simple-context_ru.wav",
+        "audio_file": "pomogite-simple-context_ru.wav",
         "inference": {
           "intent": "shopping",
           "slots": {
