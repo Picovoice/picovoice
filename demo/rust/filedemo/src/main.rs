@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -10,11 +10,11 @@
 */
 
 use clap::{App, Arg};
-use hound;
 use itertools::Itertools;
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
 use std::path::PathBuf;
 
+#[allow(clippy::too_many_arguments)]
 fn picovoice_demo(
     input_audio_path: PathBuf,
     access_key: &str,
@@ -193,7 +193,7 @@ fn main() {
             .value_name("BOOL")
             .help("If set, Rhino requires an endpoint (chunk of silence) before finishing inference.")
             .takes_value(true)
-            .possible_values(&["TRUE", "true", "FALSE", "false"])
+            .possible_values(["TRUE", "true", "FALSE", "false"])
         )
         .get_matches();
 
