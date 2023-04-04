@@ -28,6 +28,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
@@ -49,6 +51,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
@@ -70,6 +74,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Rust dependencies
       if: matrix.os == 'ubuntu-latest'
