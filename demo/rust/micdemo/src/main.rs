@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -11,14 +11,13 @@
 
 use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
-use ctrlc;
-use hound;
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
 use pv_recorder::RecorderBuilder;
 use std::sync::atomic::{AtomicBool, Ordering};
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
+#[allow(clippy::too_many_arguments)]
 fn picovoice_demo(
     audio_device_index: i32,
     access_key: &str,
@@ -102,7 +101,7 @@ fn picovoice_demo(
 
         picovoice.process(&pcm).unwrap();
 
-        if !output_path.is_none() {
+        if output_path.is_some() {
             audio_data.extend_from_slice(&pcm);
         }
     }
@@ -217,7 +216,7 @@ fn main() {
             .value_name("BOOL")
             .help("If set, Rhino requires an endpoint (chunk of silence) before finishing inference.")
             .takes_value(true)
-            .possible_values(&["TRUE", "true", "FALSE", "false"])
+            .possible_values(["TRUE", "true", "FALSE", "false"])
         )
         .arg(
             Arg::with_name("audio_device_index")
