@@ -65,8 +65,25 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
 
+    - name: mkdir NuGet directory
+      run: mkdir local-nuget
+
+    - name: Pack Porcupine binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/porcupine/binding/dotnet
+
+    - name: Copy Porcupine Nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg local-nuget
+
+    - name: Pack Rhino binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/rhino/binding/dotnet
+
+    - name: Copy Rhino Nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg local-nuget
+
     - name: Build binding
-      run: dotnet build Picovoice/Picovoice.csproj --framework ${{ matrix.binding-framework }}
+      run: dotnet build Picovoice/Picovoice.csproj --framework ${{ matrix.binding-framework }} --source local-nuget
 
     - name: Test
       run: dotnet test --framework ${{ matrix.test-framework }} -v d
@@ -86,8 +103,28 @@ jobs:
       with:
         submodules: recursive
 
+    - name: mkdir NuGet directory
+      run: mkdir local-nuget
+
+    - name: Pack Porcupine binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/porcupine/binding/dotnet
+
+    - name: Copy Porcupine Nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg local-nuget
+
+    - name: Pack Rhino binding for local ref
+      run: dotnet pack -c Release
+      working-directory: resources/rhino/binding/dotnet
+
+    - name: Copy Rhino Nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg local-nuget
+
     - name: Build binding
-      run: dotnet build Picovoice/Picovoice.csproj --framework net6.0
+      run: dotnet build Picovoice/Picovoice.csproj --framework net6.0 --source local-nuget
 
     - name: Test
       run: dotnet test --framework net6.0 -v d
+
+    - name: Cleanup NuGet directory
+      run: rm -rf local-nuget
