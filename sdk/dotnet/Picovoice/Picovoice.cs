@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -30,9 +30,9 @@ namespace Pv
     public class Picovoice : IDisposable
     {
         private Porcupine _porcupine;
-        private Action _wakeWordCallback;
+        private readonly Action _wakeWordCallback;
         private Rhino _rhino;
-        private Action<Inference> _inferenceCallback;
+        private readonly Action<Inference> _inferenceCallback;
 
         private bool _isWakeWordDetected = false;
 
