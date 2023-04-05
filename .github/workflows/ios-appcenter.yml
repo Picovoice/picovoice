@@ -7,7 +7,6 @@ on:
     paths:
       - '.github/workflows/ios-appcenter.yml'
       - 'sdk/ios/PicovoiceAppTest/**'
-      - 'binding/ios/RhinoAppTest/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
@@ -17,7 +16,6 @@ on:
     paths:
       - '.github/workflows/ios-appcenter.yml'
       - 'sdk/ios/PicovoiceAppTest/**'
-      - 'binding/ios/RhinoAppTest/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
