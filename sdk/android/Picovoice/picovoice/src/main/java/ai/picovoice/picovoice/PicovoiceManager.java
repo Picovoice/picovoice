@@ -146,7 +146,7 @@ public class PicovoiceManager {
      * @return Version.
      */
     public String getVersion() {
-        return "2.1.0";
+        return "2.2.0";
     }
 
     /**
