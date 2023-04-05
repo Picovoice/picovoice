@@ -25,6 +25,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
     - name: Set up Node.js lts/*
       uses: actions/setup-node@v3
@@ -33,6 +35,15 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install yarn
+      working-directory: resources/porcupine/binding/react-native
+
+    - name: Install Porcupine dependencies
+      run: yarn install & yarn pkg
+      working-directory: resources/porcupine/binding/react-native
+
+    - name: Install Rhino dependencies
+      run: yarn install & yarn pkg
+      working-directory: resources/rhino/binding/react-native
 
     - name: Run Binding Linter
       run: yarn && yarn lint
