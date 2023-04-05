@@ -141,7 +141,7 @@ public class Picovoice {
      * @return Version.
      */
     public String getVersion() {
-        return "2.1.0";
+        return "2.2.0";
     }
 
     /**
@@ -387,9 +387,9 @@ public class Picovoice {
                         .setSensitivity(porcupineSensitivity)
                         .build(appContext);
 
-                if (!porcupine.getVersion().startsWith("2.1.")) {
+                if (!porcupine.getVersion().startsWith("2.2.")) {
                     final String message = String.format(
-                            "Expected Porcupine library with version '2.1.x' but received %s",
+                            "Expected Porcupine library with version '2.2.x' but received %s",
                             porcupine.getVersion());
                     throw new PicovoiceRuntimeException(message);
                 }
@@ -403,9 +403,9 @@ public class Picovoice {
                         .setRequireEndpoint(requireEndpoint)
                         .build(appContext);
 
-                if (!rhino.getVersion().startsWith("2.1.")) {
+                if (!rhino.getVersion().startsWith("2.2.")) {
                     final String message = String.format(
-                            "Expected Rhino library with version '2.1.x' but received %s",
+                            "Expected Rhino library with version '2.2.x' but received %s",
                             rhino.getVersion());
                     throw new PicovoiceRuntimeException(message);
                 }
