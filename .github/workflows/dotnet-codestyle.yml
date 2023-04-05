@@ -26,9 +26,9 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Run Binding Codestyle
-      run: dotnet format --verify-no-changes
+      run: dotnet format --verify-no-changes --no-restore
       working-directory: sdk/dotnet
 
     - name: Run Demo Codestyle
-      run: dotnet format --verify-no-changes
+      run: dotnet format --verify-no-changes --no-restore
       working-directory: demo/dotnet
