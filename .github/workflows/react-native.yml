@@ -45,11 +45,11 @@ jobs:
       working-directory: resources/porcupine/binding/react-native
 
     - name: Install Porcupine dependencies
-      run: yarn install & yarn pkg
+      run: yarn install && yarn pkg
       working-directory: resources/porcupine/binding/react-native
 
     - name: Install Rhino dependencies
-      run: yarn install & yarn pkg
+      run: yarn install && yarn pkg
       working-directory: resources/rhino/binding/react-native
 
     - name: Install dependencies
