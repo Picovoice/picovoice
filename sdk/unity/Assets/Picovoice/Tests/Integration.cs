@@ -25,30 +25,30 @@ namespace Tests
     [Serializable]
     public class TestData
     {
-      public Tests tests;
+        public Tests tests;
     }
 
     [Serializable]
     public class Tests
     {
-      public ParametersTest[] parameters;
+        public ParametersTest[] parameters;
     }
 
     [Serializable]
     public class ParametersTest
     {
-      public string language;
-      public string wakeword;
-      public string context_name;
-      public string audio_file;
-      public TestDataInference inference;
+        public string language;
+        public string wakeword;
+        public string context_name;
+        public string audio_file;
+        public TestDataInference inference;
     }
 
     [Serializable]
     public class TestDataInference
     {
-      public string intent;
-      public Dictionary<string, string> slots;
+        public string intent;
+        public Dictionary<string, string> slots;
     }
 
     public class Integration
@@ -118,7 +118,8 @@ namespace Tests
 #endif
         }
 
-        private static TestData LoadJsonTestData() {
+        private static TestData LoadJsonTestData()
+        {
             string dataAsJson = File.ReadAllText(ExtractResource(Path.Combine(Application.streamingAssetsPath, "test/test_data.json")));
             return JsonConvert.DeserializeObject<TestData>(dataAsJson);
         }
@@ -224,11 +225,13 @@ namespace Tests
             bool wakewordCalled = false;
             Inference inference = null;
 
-            void wakeWordCallback() {
+            void wakeWordCallback()
+            {
                 wakewordCalled = true;
             }
 
-            void inferenceCallback(Inference newInference) {
+            void inferenceCallback(Inference newInference)
+            {
                 inference = newInference;
             }
 

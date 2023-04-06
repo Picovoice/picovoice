@@ -5,8 +5,8 @@ cp ../../resources/rhino/lib/android/arm64-v8a/libpv_rhino.so ./Assets/Picovoice
 cp ../../resources/rhino/lib/android/armeabi-v7a/libpv_rhino.so ./Assets/Picovoice/Plugins/android/armeabi-v7a/libpv_rhino.so
 
 echo "Copying iOS lib..."
-cp -R ../../resources/porcupine/lib/ios/PvPorcupine.xcframework/ios-arm64_armv7/PvPorcupine.framework ./Assets/Picovoice/Plugins/ios/PvPorcupine.framework
-cp -R ../../resources/rhino/lib/ios/PvRhino.xcframework/ios-arm64_armv7/PvRhino.framework ./Assets/Picovoice/Plugins/ios/PvRhino.framework
+cp -R ../../resources/porcupine/lib/ios/PvPorcupine.xcframework/ios-arm64/PvPorcupine.framework ./Assets/Picovoice/Plugins/ios
+cp -R ../../resources/rhino/lib/ios/PvRhino.xcframework/ios-arm64/PvRhino.framework ./Assets/Picovoice/Plugins/ios
 
 echo "Copying Linux lib..."
 cp ../../resources/porcupine/lib/linux/x86_64/libpv_porcupine.so ./Assets/Picovoice/Plugins/linux/x86_64/libpv_porcupine.so
