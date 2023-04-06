@@ -54,8 +54,8 @@ jobs:
     - name: Install dependencies (temporary)
       run: |
         pip install -r requirements.txt
-        pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/*.whl && popd
-        pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && ls dist/ && pip install dist/*.whl && popd
+        pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/pvporcupine-2.2.0-py3-none-any.whl && popd
+        pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && pip install dist/pvrhino-2.2.0-py3-none-any.whl && popd
 
     - name: Test
       run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
@@ -80,6 +80,7 @@ jobs:
 
     - name: Install dependencies (temporary)
       run: |
+        sudo apt-get install python3-setuptools
         pip install -r requirements.txt
         pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/*.whl && popd
         pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && ls dist/ && pip install dist/*.whl && popd
