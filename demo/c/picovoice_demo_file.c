@@ -199,7 +199,7 @@ int picovoice_main(int argc, char *argv[]) {
 
     void *picovoice_library = open_dl(library_path);
     if (!picovoice_library) {
-        fprintf(stderr, "failed to open library.\n");
+        fprintf(stderr, "failed to open library\n");
         exit(1);
     }
 
