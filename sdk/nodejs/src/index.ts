@@ -8,9 +8,9 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
-"use strict";
+'use strict';
 
-import Picovoice from "./picovoice";
-import { getInt16Frames, checkWaveFile } from "./wave_util"
+import Picovoice from './picovoice';
+import { getInt16Frames, checkWaveFile } from './wave_util';
 
 export { Picovoice, getInt16Frames, checkWaveFile };

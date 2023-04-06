@@ -8,12 +8,15 @@
 // an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 //
-"use strict";
+'use strict';
 
-import { Porcupine } from "@picovoice/porcupine-node";
-import { Rhino, RhinoInference } from "@picovoice/rhino-node";
+import { Porcupine } from '@picovoice/porcupine-node';
+import { Rhino, RhinoInference } from '@picovoice/rhino-node';
 
-import { PicovoiceInvalidArgumentError, PicovoiceInvalidStateError } from "./errors";
+import {
+  PicovoiceInvalidArgumentError,
+  PicovoiceInvalidStateError,
+} from './errors';
 
 export type WakeWordCallback = (keyword: number) => void;
 export type InferenceCallback = (inference: RhinoInference) => void;
@@ -76,7 +79,9 @@ export default class Picovoice {
       accessKey === undefined ||
       accessKey.length === 0
     ) {
-      throw new PicovoiceInvalidArgumentError(`No AccessKey provided to Picovoice`);
+      throw new PicovoiceInvalidArgumentError(
+        `No AccessKey provided to Picovoice`
+      );
     }
 
     if (!(wakeWordCallback instanceof Function)) {
@@ -115,7 +120,7 @@ export default class Picovoice {
 
     this._frameLength = 512;
     this._sampleRate = 16000;
-    this._version = "2.1.0";
+    this._version = '2.2.0';
 
     this._porcupineVersion = this.porcupine.version;
     this._rhinoVersion = this.rhino.version;
@@ -172,12 +177,11 @@ export default class Picovoice {
    *
    * @param {Array} frame 16-bit integers of 16kHz linear PCM mono audio.
    * The specific array length is obtained from Rhino via the frameLength field.
-   * @returns {boolean} true when Rhino has concluded processing audio and determined the intent (or that the intent was not understood), false otherwise.
    */
-  process(frame: Int16Array) {
+  process(frame: Int16Array): void {
     if (this.porcupine === null || this.rhino === null) {
       throw new PicovoiceInvalidStateError(
-        "Attempting to process but resources have been released."
+        'Attempting to process but resources have been released.'
       );
     }
     if (!this.isWakeWordDetected) {
@@ -200,7 +204,7 @@ export default class Picovoice {
   /**
    * Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
    */
-  release() {
+  release(): void {
     if (this.porcupine !== null) {
       this.porcupine.release();
       this.porcupine = null;
