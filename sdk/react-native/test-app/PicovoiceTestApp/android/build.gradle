@@ -39,5 +39,11 @@ allprojects {
         maven {
             url("$rootDir/../node_modules/detox/Detox-android")
         }
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1223/'
+        }
+        maven {
+            url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1224/'
+        }
     }
 }

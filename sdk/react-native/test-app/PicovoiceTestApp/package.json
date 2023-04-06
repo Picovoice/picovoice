@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@picovoice/picovoice-react-native": "file:../../",
-    "@picovoice/porcupine-react-native": "latest",
+    "@picovoice/porcupine-react-native": "file:../../../../resources/porcupine/binding/react-native/pkg/picovoice-porcupine-react-native-2.2.0.tgz",
     "@picovoice/react-native-voice-processor": "^1.1.0",
-    "@picovoice/rhino-react-native": "latest",
+    "@picovoice/rhino-react-native": "file:../../../../resources/rhino/binding/react-native/pkg/picovoice-rhino-react-native-2.2.0.tgz",
     "base-64": "^1.0.0",
     "react": "18.2.0",
     "react-native": "0.71.0",
