@@ -80,7 +80,6 @@ jobs:
 
     - name: Install dependencies (temporary)
       run: |
-        apt-get install python3-setuptools
         pip install -r requirements.txt
         pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/*.whl && popd
         pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && ls dist/ && pip install dist/*.whl && popd
