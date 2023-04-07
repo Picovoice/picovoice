@@ -306,3 +306,4 @@ xpresso
 éclairage
 Éteignez
 Éteins
+setuptools
