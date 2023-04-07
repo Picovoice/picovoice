@@ -53,7 +53,7 @@ jobs:
 
     - name: Install dependencies (temporary)
       run: |
-        pip install -r requirements.txt
+        pip3 install -r requirements.txt
         pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/pvporcupine-2.2.0-py3-none-any.whl && popd
         pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && pip install dist/pvrhino-2.2.0-py3-none-any.whl && popd
 
@@ -66,7 +66,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
     - uses: actions/checkout@v2
@@ -80,7 +80,7 @@ jobs:
 
     - name: Install dependencies (temporary)
       run: |
-        pip install -r requirements.txt
+        pip3 install -r requirements.txt
         pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/*.whl && popd
         pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && ls dist/ && pip install dist/*.whl && popd
 
