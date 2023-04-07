@@ -1,5 +1,5 @@
 /*
-    Copyright 2021 Picovoice Inc.
+    Copyright 2021-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -25,17 +25,19 @@ import java.util.*;
 public class Main {
 
     static final String[] LOCATIONS = {"kitchen", "living room", "bedroom", "hallway", "bathroom", "closet", "pantry"};
-    static final Map<String, Color> COLOR_MAP = new HashMap<>() {{
-        put("none", new Color(0, 0, 0, 255));
-        put("blue", new Color(0, 0, 255, 255));
-        put("green", new Color(0, 255, 0, 255));
-        put("orange", new Color(255, 128, 0, 255));
-        put("pink", new Color(255, 0, 128, 255));
-        put("purple", new Color(255, 0, 255, 255));
-        put("red", new Color(255, 0, 0, 255));
-        put("white", new Color(255, 255, 255, 255));
-        put("yellow", new Color(255, 255, 0, 255));
-    }};
+    static final Map<String, Color> COLOR_MAP = new HashMap<>() {
+        {
+            put("none", new Color(0, 0, 0, 255));
+            put("blue", new Color(0, 0, 255, 255));
+            put("green", new Color(0, 255, 0, 255));
+            put("orange", new Color(255, 128, 0, 255));
+            put("pink", new Color(255, 0, 128, 255));
+            put("purple", new Color(255, 0, 255, 255));
+            put("red", new Color(255, 0, 0, 255));
+            put("white", new Color(255, 255, 255, 255));
+            put("yellow", new Color(255, 255, 0, 255));
+        }
+    };
     static Map<String, JPanel> locationLights = new HashMap<>();
 
     static final String ENVIRONMENT_NAME;
@@ -46,7 +48,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Options options = BuildCommandLineOptions();
+        Options options = buildCommandLineOptions();
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
 
@@ -109,7 +111,8 @@ public class Main {
 
         JLabel infoText2 = new JLabel();
         infoText2.setBounds(30, 175, 500, 50);
-        infoText2.setText("Then you can say a command like - 'Change the kitchen lights to green' or 'Turn on all the lights'");
+        infoText2.setText("Then you can say a command like - " +
+                          "'Change the kitchen lights to green' or 'Turn on all the lights'");
         infoText2.setFont(new Font("Arial", Font.PLAIN, 11));
         infoText2.setHorizontalTextPosition(SwingConstants.CENTER);
         infoText2.setVerticalTextPosition(SwingConstants.CENTER);
@@ -155,7 +158,7 @@ public class Main {
                             color = COLOR_MAP.get(slots.get("color"));
                         }
 
-                        ChangeLightColor(locationLightsToChange, color);
+                        changeLightColor(locationLightsToChange, color);
                         break;
                     case "changeLightState":
                         boolean state = false;
@@ -163,11 +166,12 @@ public class Main {
                             state = slots.get("state").equals("on");
                         }
 
-                        ChangeLightState(locationLightsToChange, state);
+                        changeLightState(locationLightsToChange, state);
                         break;
                     case "changeLightStateOff":
-                        ChangeLightState(locationLightsToChange, false);
+                        changeLightState(locationLightsToChange, false);
                         break;
+                    default:
                 }
 
                 // update ui
@@ -180,8 +184,12 @@ public class Main {
         };
 
         Picovoice picovoice;
-        final String keywordPath = String.format("res/keyword_files/%s/jarvis_%s.ppn", ENVIRONMENT_NAME, ENVIRONMENT_NAME);
-        final String contextPath = String.format("res/contexts/%s/smart_lighting_%s.rhn", ENVIRONMENT_NAME, ENVIRONMENT_NAME);
+        final String keywordPath = String.format("res/keyword_files/%s/jarvis_%s.ppn",
+                                                 ENVIRONMENT_NAME,
+                                                 ENVIRONMENT_NAME);
+        final String contextPath = String.format("res/contexts/%s/smart_lighting_%s.rhn",
+                                                 ENVIRONMENT_NAME,
+                                                 ENVIRONMENT_NAME);
 
         try {
             picovoice = new Picovoice.Builder()
@@ -222,7 +230,7 @@ public class Main {
         }
     }
 
-    private static Options BuildCommandLineOptions() {
+    private static Options buildCommandLineOptions() {
         Options options = new Options();
 
         options.addOption(Option.builder("a")
@@ -235,13 +243,14 @@ public class Main {
 
         return options;
     }
-    static void ChangeLightColor(Set<String> locations, Color color) {
+
+    static void changeLightColor(Set<String> locations, Color color) {
         for (String location : locations) {
             locationLights.get(location).setBackground(color);
         }
     }
 
-    static void ChangeLightState(Set<String> locations, boolean state) {
+    static void changeLightState(Set<String> locations, boolean state) {
 
         int alpha = state ? 255 : 0;
         for (String location : locations) {
@@ -273,4 +282,4 @@ public class Main {
             return null;
         }
     }
-}  
+}
