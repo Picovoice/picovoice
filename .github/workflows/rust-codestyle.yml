@@ -32,7 +32,6 @@ jobs:
         submodules: recursive
 
     - name: Rust dependencies
-      if: matrix.os == 'ubuntu-latest'
       run: sudo apt install libasound2-dev -y
 
     - name: Install stable toolchain
@@ -63,7 +62,6 @@ jobs:
         submodules: recursive
 
     - name: Rust dependencies
-      if: matrix.os == 'ubuntu-latest'
       run: sudo apt install libasound2-dev -y
 
     - name: Install stable toolchain
@@ -86,7 +84,6 @@ jobs:
         submodules: recursive
 
     - name: Rust dependencies
-      if: matrix.os == 'ubuntu-latest'
       run: sudo apt install libasound2-dev -y
 
     - name: Install stable toolchain
