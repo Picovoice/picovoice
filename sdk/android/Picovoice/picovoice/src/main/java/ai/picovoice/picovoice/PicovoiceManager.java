@@ -1,5 +1,5 @@
 /*
-    Copyright 2020-2022 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -68,8 +68,9 @@ public class PicovoiceManager {
      *                             higher sensitivity value results in fewer misses at the cost of
      *                             (potentially) increasing the erroneous inference rate.
      * @param endpointDurationSec  Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
-     *                             utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
-     *                             duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+     *                             utterance that marks the end of spoken command. It should be a positive number
+     *                             within [0.5, 5]. A lower endpoint duration reduces delay and improves
+     *                             responsiveness. A higher endpoint duration assures Rhino doesn't return inference
      *                             pre-emptively in case the user pauses before finishing the request.
      * @param requireEndpoint      Boolean variable to indicate if Rhino should wait for a chunk of
      *                             silence before finishing inference.
@@ -132,7 +133,7 @@ public class PicovoiceManager {
     }
 
     /**
-     * Getter for the Rhino context
+     * Getter for the Rhino context.
      *
      * @return Rhino context
      */
@@ -150,7 +151,7 @@ public class PicovoiceManager {
     }
 
     /**
-     * Getter for the version of Porcupine
+     * Getter for the version of Porcupine.
      *
      * @return Porcupine version
      */
@@ -159,7 +160,7 @@ public class PicovoiceManager {
     }
 
     /**
-     * Getter for the version of Rhino
+     * Getter for the version of Rhino.
      *
      * @return Rhino version
      */
@@ -168,7 +169,7 @@ public class PicovoiceManager {
     }
 
     /**
-     * Builder for creating an instance of PicovoiceManager with a mixture of default arguments
+     * Builder for creating an instance of PicovoiceManager with a mixture of default arguments.
      */
     public static class Builder {
         private String accessKey = null;
@@ -188,7 +189,7 @@ public class PicovoiceManager {
         private PicovoiceManagerErrorCallback processErrorCallback = null;
 
         /**
-         * Setter for AccessKey
+         * Setter for AccessKey.
          *
          * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
          */
@@ -198,7 +199,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for path to Porcupine model file
+         * Setter for path to Porcupine model file.
          *
          * @param porcupineModelPath Absolute path to the file containing Porcupine's model parameters.
          */
@@ -208,7 +209,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for path to Porcupine keyword file
+         * Setter for path to Porcupine keyword file.
          *
          * @param keywordPath Absolute path to Porcupine's keyword model file.
          */
@@ -218,7 +219,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for wake word engine sensitivity
+         * Setter for wake word engine sensitivity.
          *
          * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
          *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
@@ -230,7 +231,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for wake word detection callback
+         * Setter for wake word detection callback.
          *
          * @param wakeWordCallback User-defined callback invoked upon detection of the wake phrase.
          *                         ${@link PicovoiceWakeWordCallback} defines the interface of the
@@ -242,7 +243,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for path to Rhino model file
+         * Setter for path to Rhino model file.
          *
          * @param rhinoModelPath Absolute path to the file containing Rhino's model parameters.
          */
@@ -252,7 +253,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for path to Rhino context file
+         * Setter for path to Rhino context file.
          *
          * @param contextPath Absolute path to file containing context parameters. A context
          *                    represents the set of expressions (spoken commands), intents, and
@@ -264,7 +265,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for inference engine sensitivity
+         * Setter for inference engine sensitivity.
          *
          * @param rhinoSensitivity Inference sensitivity. It should be a number within [0, 1]. A
          *                         higher sensitivity value results in fewer misses at the cost of
@@ -276,11 +277,12 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for endpointDurationSec
+         * Setter for endpointDurationSec.
          *
          * @param endpointDurationSec Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
-         *                            utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
-         *                            duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
+         *                            utterance that marks the end of spoken command. It should be a positive number
+         *                            within [0.5, 5]. A lower endpoint duration reduces delay and improves
+         *                            responsiveness. A higher endpoint duration assures Rhino doesn't return inference
          *                            pre-emptively in case the user pauses before finishing the request.
          */
         public PicovoiceManager.Builder setEndpointDurationSec(float endpointDurationSec) {
@@ -289,7 +291,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for requireEndpoint
+         * Setter for requireEndpoint.
          *
          * @param requireEndpoint Boolean variable to indicate if Rhino should wait for a chunk of
          *                        silence before finishing inference.
@@ -300,7 +302,7 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for intent inference callback
+         * Setter for intent inference callback.
          *
          * @param inferenceCallback User-defined callback invoked upon completion of intent inference.
          *                          #{@link PicovoiceInferenceCallback} defines the interface of the
@@ -312,11 +314,11 @@ public class PicovoiceManager {
         }
 
         /**
-         * Setter for error callback
+         * Setter for error callback.
          *
-         * @param processErrorCallback User-defined callback invoked when an error is encountered while processing audio.
-         *                             #{@link PicovoiceManagerErrorCallback} defines the interface of the
-         *                             callback.
+         * @param processErrorCallback User-defined callback invoked when an error is encountered while
+         *                             processing audio. #{@link PicovoiceManagerErrorCallback} defines
+         *                             the interface of the callback.
          */
         public PicovoiceManager.Builder setProcessErrorCallback(PicovoiceManagerErrorCallback processErrorCallback) {
             this.processErrorCallback = processErrorCallback;

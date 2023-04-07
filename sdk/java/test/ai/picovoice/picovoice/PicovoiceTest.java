@@ -48,7 +48,7 @@ public class PicovoiceTest {
 
     private Picovoice picovoice;
     private final String accessKey = System.getProperty("pvTestingAccessKey");
-    private final static String environmentName = getEnvironmentName();
+    private static final String environmentName = getEnvironmentName();
 
     private boolean isWakeWordDetected = false;
     private final PicovoiceWakeWordCallback wakeWordCallback = new PicovoiceWakeWordCallback() {
@@ -101,7 +101,7 @@ public class PicovoiceTest {
     private static String getTestRhinoModelPath(String language) {
         return Paths.get(System.getProperty("user.dir"))
             .resolve("../../resources/rhino/lib/common")
-            .resolve(appendLanguage("rhino_params", language)+".pv")
+            .resolve(appendLanguage("rhino_params", language) + ".pv")
             .toString();
     }
 
@@ -155,7 +155,11 @@ public class PicovoiceTest {
         assertTrue(picovoice.getSampleRate() > 0);
     }
 
-    void runTestCase(String audioFileName, String expectedIntent, Map<String, String> expectedSlots) throws PicovoiceException, IOException, UnsupportedAudioFileException {
+    void runTestCase(
+            String audioFileName,
+            String expectedIntent,
+            Map<String, String> expectedSlots)
+            throws PicovoiceException, IOException, UnsupportedAudioFileException {
         isWakeWordDetected = false;
         inferenceResult = null;
 
@@ -184,7 +188,14 @@ public class PicovoiceTest {
 
     @ParameterizedTest(name = "testIntentDetection for ''{0}''")
     @MethodSource("intentDetectionProvider")
-    void testIntentDetection(String language, String keyword, String context, String audioFileName, String expectedIntent, Map<String, String> expectedSlots) throws PicovoiceException, IOException, UnsupportedAudioFileException {
+    void testIntentDetection(
+            String language,
+            String keyword,
+            String context,
+            String audioFileName,
+            String expectedIntent,
+            Map<String, String> expectedSlots)
+            throws PicovoiceException, IOException, UnsupportedAudioFileException {
         picovoice = new Picovoice.Builder()
                 .setAccessKey(accessKey)
                 .setPorcupineModelPath(getTestPorcupineModelPath(language))
@@ -214,7 +225,10 @@ public class PicovoiceTest {
             final String audioFileName = testData.get("audio_file").getAsString();
             final String intent = testData.getAsJsonObject("inference").get("intent").getAsString();
             HashMap<String, String> expectedSlotValues = new HashMap<String, String>();
-            for (Map.Entry<String, JsonElement> entry : testData.getAsJsonObject("inference").getAsJsonObject("slots").asMap().entrySet()) {
+            for (Map.Entry<String, JsonElement> entry : testData.getAsJsonObject("inference")
+                                                                .getAsJsonObject("slots")
+                                                                .asMap()
+                                                                .entrySet()) {
                 expectedSlotValues.put(entry.getKey(), entry.getValue().getAsString());
             }
             testArgs.add(Arguments.of(
