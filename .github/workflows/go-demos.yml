@@ -28,12 +28,12 @@ jobs:
         go: [ '1.16', '1.17', '1.18' ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Setup go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 
@@ -49,12 +49,12 @@ jobs:
         go: [ '1.16', '1.17', '1.18' ]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Setup go
-      uses: actions/setup-go@v1
+      uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 

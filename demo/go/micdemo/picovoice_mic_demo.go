@@ -1,4 +1,4 @@
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -169,7 +169,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer p.Delete()
+	defer func() {
+		err := p.Delete()
+		if err != nil {
+			log.Fatalf("Failed to release resources: %s", err)
+		}
+	}()
 
 	var outputWav *wav.Encoder
 	if *outputPathArg != "" {
@@ -230,7 +235,10 @@ waitLoop:
 			// write to debug file
 			if outputWav != nil {
 				for outputBufIndex := range pcm {
-					outputWav.WriteFrame(pcm[outputBufIndex])
+					err := outputWav.WriteFrame(pcm[outputBufIndex])
+					if err != nil {
+						log.Fatal(err)
+					}
 				}
 			}
 		}
