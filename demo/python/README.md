@@ -47,7 +47,7 @@ using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}
 ```console
 picovoice_demo_file \
 --access_key ${ACCESS_KEY} \
---input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
+--wav_path ${PATH_TO_INPUT_AUDIO_FILE} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
 --context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
 ```

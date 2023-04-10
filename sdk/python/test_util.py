@@ -150,7 +150,7 @@ def pv_keyword_paths_by_language(language):
 
     res = dict()
     for x in os.listdir(keyword_files_dir):
-        res[x.rsplit('_')[0]] = os.path.join(keyword_files_dir, x)
+        res[x.rsplit('_', 1)[0]] = os.path.join(keyword_files_dir, x)
 
     return res
 
@@ -174,7 +174,14 @@ def load_test_data():
     test_data = json.loads(json_test_data)['tests']
 
     test_parameters = [
-        (t['language'], t['wakeword'], t['context_name'], t['audio_file'], t['inference']['intent'], t['inference']['slots'])
+        (
+            t['language'],
+            t['wakeword'],
+            t['context_name'],
+            t['audio_file'],
+            t['inference']['intent'],
+            t['inference']['slots']
+        )
         for t in test_data['parameters']]
 
     return test_parameters
