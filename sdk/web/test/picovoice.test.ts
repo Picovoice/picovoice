@@ -1,0 +1,231 @@
+import {Picovoice, PicovoiceWorker} from "../";
+import testData from "./test_data.json";
+
+// @ts-ignore
+import picovoiceKeyword from "./keyword_files/picovoice_wasm";
+// @ts-ignore
+import porcupineParams from "./porcupine/picovoice_params";
+// @ts-ignore
+import coffeeMakerContext from "./contexts/coffee_maker_wasm";
+// @ts-ignore
+import rhinoParams from "./rhino/rhino_params";
+
+import { PvModel } from '@picovoice/web-utils';
+import { BuiltInKeyword, PorcupineKeyword } from "@picovoice/porcupine-web";
+import { RhinoContext, RhinoInference } from "@picovoice/rhino-web";
+
+const ACCESS_KEY: string = Cypress.env("ACCESS_KEY");
+
+const runInitTest = async (
+  instance: typeof Picovoice | typeof PicovoiceWorker,
+  params: {
+    accessKey?: string,
+    keyword?: (BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]),
+    context?: RhinoContext,
+    porcupineModel?: PvModel,
+    rhinoModel?: PvModel,
+    expectFailure?: boolean,
+  } = {}
+) => {
+  const {
+    accessKey = ACCESS_KEY,
+    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true },
+    context = { publicPath: '/test/contexts/coffee_maker_wasm.rhn', forceWrite: true },
+    porcupineModel = { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true },
+    rhinoModel = { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true },
+    expectFailure = false,
+  } = params;
+
+  let isFailed = false;
+
+  try {
+    const picovoice = await instance.create(
+      accessKey,
+      keyword,
+      () => {},
+      porcupineModel,
+      context,
+      () => {},
+      rhinoModel
+    );
+    expect(picovoice.sampleRate).to.be.eq(16000);
+    expect(typeof picovoice.version).to.eq('string');
+    expect(picovoice.version.length).to.be.greaterThan(0);
+
+    if (picovoice instanceof PicovoiceWorker) {
+      picovoice.terminate();
+    } else {
+      await picovoice.release();
+    }
+  } catch (e) {
+    if (expectFailure) {
+      isFailed = true;
+    } else {
+      expect(e).to.be.undefined;
+    }
+  }
+
+  if (expectFailure) {
+    expect(isFailed).to.be.true;
+  }
+};
+
+const runProcTest = async (
+  instance: typeof Picovoice | typeof PicovoiceWorker,
+  inputPcm: Int16Array,
+  params: {
+    accessKey?: string,
+    keyword?: (BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]),
+    context?: RhinoContext,
+    porcupineModel?: PvModel,
+    rhinoModel?: PvModel,
+  } = {},
+  expectedContext?: any
+) => {
+  const {
+    accessKey = ACCESS_KEY,
+    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true },
+    context = { publicPath: '/test/contexts/coffee_maker_wasm.rhn', forceWrite: true },
+    porcupineModel = { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true },
+    rhinoModel = { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true },
+  } = params;
+
+  let keywordDetection = false;
+  let inference: RhinoInference | null = null;
+
+  const runProcess = () => new Promise<void>(async (resolve, reject) => {
+    const picovoice = await instance.create(
+      accessKey,
+      keyword,
+      () => {
+        keywordDetection = true;
+      },
+      porcupineModel,
+      context,
+      (rhinoInference: RhinoInference) => {
+        if (keywordDetection && rhinoInference.isFinalized) {
+          inference = rhinoInference;
+          resolve();
+        }
+      },
+      rhinoModel,
+      {
+        processErrorCallback: (error: string) => {
+          reject(error);
+        }
+      }
+    );
+
+    for (let i = 0; i < (inputPcm.length - picovoice.frameLength + 1); i += picovoice.frameLength) {
+      await picovoice.process(inputPcm.slice(i, i + picovoice.frameLength));
+    }
+  });
+
+  try {
+    await runProcess();
+    if (expectedContext !== undefined) {
+      expect(inference.intent).to.deep.eq(expectedContext.intent);
+      expect(inference.slots).to.deep.eq(expectedContext.slots);
+    } else {
+      expect(inference.isUnderstood).to.be.false;
+    }
+  } catch (e) {
+    expect(e).to.be.undefined;
+  }
+};
+
+describe("Picovoice Binding", function () {
+  for (const instance of [Picovoice, PicovoiceWorker]) {
+    const instanceString = (instance === PicovoiceWorker) ? 'worker' : 'main';
+
+    it(`should be able to init with public path (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance);
+      });
+    });
+
+    it(`should be able to init with base64 (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          keyword: { base64: picovoiceKeyword, forceWrite: true },
+          porcupineModel: { base64: porcupineParams, forceWrite: true },
+          context: { base64: coffeeMakerContext, forceWrite: true },
+          rhinoModel: { base64: rhinoParams, forceWrite: true }
+        });
+      });
+    });
+
+    it(`should be able to handle UTF-8 public path (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          porcupineModel: { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true, customWritePath: '테스트' },
+          rhinoModel: { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true, customWritePath: 'オレンジ' },
+        });
+      });
+    });
+
+    it(`should be able to handle invalid public path (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          porcupineModel: { publicPath: 'invalid', forceWrite: true },
+          expectFailure: true
+        });
+      });
+    });
+
+    it(`should be able to handle invalid base64 (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          rhinoModel: { base64: 'invalid', forceWrite: true },
+          expectFailure: true
+        });
+      });
+    });
+
+    it(`should be able to handle invalid access key (${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          accessKey: 'invalid',
+          expectFailure: true
+        });
+      });
+    });
+
+    it(`should be able to handle invalid sensitivity(${instanceString})`, () => {
+      cy.wrap(null).then(async () => {
+        await runInitTest(instance, {
+          context: { publicPath: '/test/contexts/picovoice.rhn', forceWrite: true, sensitivity: -1 },
+          expectFailure: true
+        });
+      });
+    });
+
+    for (const testParam of testData.tests.parameters) {
+      it(`should be able to process within context (${testParam.language}) (${instanceString})`, () => {
+        try {
+          const suffix = (testParam.language === 'en') ? '' : `_${testParam.language}`;
+          cy.getFramesFromFile(`audio_samples/${testParam.audio_file}`).then( async pcm => {
+            await runProcTest(
+              instance,
+              pcm,
+              {
+                keyword: {
+                  publicPath: `/test/keyword_files/${encodeURIComponent(testParam.wakeword)}_wasm.ppn`,
+                  forceWrite: true
+                },
+                porcupineModel: { publicPath: `/test/porcupine/porcupine_params${suffix}.pv`, forceWrite: true },
+                context: {
+                  publicPath: `/test/contexts/${encodeURIComponent(testParam.context_name)}_wasm.rhn`,
+                  forceWrite: true,
+                },
+                rhinoModel: { publicPath: `/test/rhino/rhino_params${suffix}.pv`, forceWrite: true }
+              },
+              testParam.inference);
+          });
+        } catch (e) {
+          expect(e).to.be.undefined;
+        }
+      });
+    }
+  }
+});
