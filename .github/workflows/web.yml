@@ -7,15 +7,21 @@ on:
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
+      - '.github/workflows/web.yml'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/web.yml'
+      - 'resources/test/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
       - '.github/workflows/web.yml'
+      - 'resources/audio_samples/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+      - 'resources/test/**'
 
 defaults:
   run:
@@ -45,14 +51,14 @@ jobs:
       - name: Copy Porcupine libs
         run: yarn copywasm && yarn copyppn
         working-directory: resources/porcupine/binding/web
-        
+
       - name: Build Porcupine
         run: yarn && yarn build
         working-directory: resources/porcupine/binding/web
-        
+
       - name: Copy Rhino libs
         run: yarn copywasm
-        working-directory: resources/porcupine/binding/web
+        working-directory: resources/rhino/binding/web
 
       - name: Build Rhino
         run: yarn && yarn build

@@ -122,6 +122,7 @@ const runProcTest = async (
 
     for (let i = 0; i < (inputPcm.length - picovoice.frameLength! + 1); i += picovoice.frameLength!) {
       await picovoice.process(inputPcm.slice(i, i + picovoice.frameLength!));
+      await delay(32);
     }
 
     await delay(1000);
@@ -209,7 +210,7 @@ describe("Picovoice Binding", function () {
     });
 
     for (const testParam of testData.tests.parameters) {
-      it(`should be able to process within context (${testParam.language}) (${instanceString})`, () => {
+      it(`should be able to process (${testParam.language}) (${instanceString})`, () => {
         try {
           const suffix = (testParam.language === 'en') ? '' : `_${testParam.language}`;
           cy.getFramesFromFile(`audio_samples/${testParam.audio_file}`).then( async pcm => {
