@@ -23,7 +23,7 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
-static const char* ACCESS_KEY = ... //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char* ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
@@ -116,6 +116,15 @@ int main(void) {
         printf("Picovoice init failed with '%s'", pv_status_to_string(status));
         error_handler();
     }
+
+    const char *rhino_context = NULL;
+    status = pv_picovoice_context_info(handle, &rhino_context);
+    if (status != PV_STATUS_SUCCESS) {
+        printf("retrieving context info failed with '%s'", pv_status_to_string(status));
+        error_handler();
+    }
+    printf("Rhino context info: %s\r\n", rhino_context);
+
 
     while (true) {
         const int16_t *buffer = pv_audio_rec_get_new_buffer();

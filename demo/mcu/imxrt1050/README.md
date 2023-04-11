@@ -4,10 +4,24 @@ This package contains a demo project for the i.MX RT1050 Evaluation Kit using Pi
 
 ## Supported Languages
 
-1. English
-2. French
-3. German
-4. Spanish
+1. Arabic
+2. Dutch
+3. English
+4. French
+5. German
+6. Hindi
+7. Italian
+8. Japanese
+9. Korean
+10. Mandarin
+11. Polish
+12. Portuguese
+13. Russian
+14. Spanish
+15. Swedish
+16. Vietnamese
+
+- Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Installation
 
@@ -37,7 +51,17 @@ Then, to compile and run the demo project on an i.MX RT1050 Evaluation board, pe
 7. Click `Run` > `Debug as` > `MCUXpresso IDE LinkServer probes` and then select the connected board.
 8. In the debug view, press `Run` > `Resume`
 
-The default wake word and context model for all supported languages are listed [here](../README.md)
+In this demo, you can determine the default wake word and context models for each language by checking the [pv_params.h](./imxrt1050-evkb/inc/pv_params.h). Find the language section surrounded by:
+
+```c
+#if defined(__PV_LANGUAGE_{LANGUAGE_NAME}__)
+...
+#endif
+```
+
+The default wake word for each language can be found next to the `// wake-word` comment, and the default context is located beside the `// context` comment.
+
+When the demo begins, the context information will be displayed on the console.
 
 ## Create Custom Models
 

@@ -44,7 +44,17 @@ Then, to compile and run the demo project on a STM32F769 discovery board, perfor
 4. Click `Project` > `Build Project`
 5. Connect the board to the computer and press `Run` > `Run`
 
-The default wake word and context model for all supported languages are listed [here](../README.md)
+In this demo, you can determine the default wake word and context models for each language by checking the [pv_params.h](./stm32f769i-disco/Inc/pv_params.h). Find the language section surrounded by:
+
+```c
+#if defined(__PV_LANGUAGE_{LANGUAGE_NAME}__)
+...
+#endif
+```
+
+The default wake word for each language can be found next to the `// wake-word` comment, and the default context is located beside the `// context` comment.
+
+When the demo begins, the context information will be displayed on the console.
 
 ## Create Custom Models
 
