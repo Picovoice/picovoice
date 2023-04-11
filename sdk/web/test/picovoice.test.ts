@@ -1,26 +1,30 @@
-import {Picovoice, PicovoiceWorker} from "../";
+import { Picovoice, PicovoiceWorker } from "../";
 import testData from "./test_data.json";
 
 // @ts-ignore
 import picovoiceKeyword from "./keyword_files/picovoice_wasm";
 // @ts-ignore
-import porcupineParams from "./porcupine/picovoice_params";
+import porcupineParams from "./porcupine/porcupine_params";
 // @ts-ignore
 import coffeeMakerContext from "./contexts/coffee_maker_wasm";
 // @ts-ignore
 import rhinoParams from "./rhino/rhino_params";
 
 import { PvModel } from '@picovoice/web-utils';
-import { BuiltInKeyword, PorcupineKeyword } from "@picovoice/porcupine-web";
+import { PorcupineKeyword } from "@picovoice/porcupine-web";
 import { RhinoContext, RhinoInference } from "@picovoice/rhino-web";
 
 const ACCESS_KEY: string = Cypress.env("ACCESS_KEY");
+
+function delay(time: number) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
 
 const runInitTest = async (
   instance: typeof Picovoice | typeof PicovoiceWorker,
   params: {
     accessKey?: string,
-    keyword?: (BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]),
+    keyword?: PorcupineKeyword,
     context?: RhinoContext,
     porcupineModel?: PvModel,
     rhinoModel?: PvModel,
@@ -29,7 +33,7 @@ const runInitTest = async (
 ) => {
   const {
     accessKey = ACCESS_KEY,
-    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true },
+    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true, label: 'picovoice' },
     context = { publicPath: '/test/contexts/coffee_maker_wasm.rhn', forceWrite: true },
     porcupineModel = { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true },
     rhinoModel = { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true },
@@ -75,7 +79,7 @@ const runProcTest = async (
   inputPcm: Int16Array,
   params: {
     accessKey?: string,
-    keyword?: (BuiltInKeyword | PorcupineKeyword | (BuiltInKeyword | PorcupineKeyword)[]),
+    keyword?: PorcupineKeyword,
     context?: RhinoContext,
     porcupineModel?: PvModel,
     rhinoModel?: PvModel,
@@ -84,14 +88,14 @@ const runProcTest = async (
 ) => {
   const {
     accessKey = ACCESS_KEY,
-    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true },
+    keyword = { publicPath: '/test/keyword_files/picovoice_wasm.ppn', forceWrite: true, label: 'picovoice' },
     context = { publicPath: '/test/contexts/coffee_maker_wasm.rhn', forceWrite: true },
     porcupineModel = { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true },
     rhinoModel = { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true },
   } = params;
 
   let keywordDetection = false;
-  let inference: RhinoInference | null = null;
+  let inference: RhinoInference;
 
   const runProcess = () => new Promise<void>(async (resolve, reject) => {
     const picovoice = await instance.create(
@@ -116,19 +120,23 @@ const runProcTest = async (
       }
     );
 
-    for (let i = 0; i < (inputPcm.length - picovoice.frameLength + 1); i += picovoice.frameLength) {
-      await picovoice.process(inputPcm.slice(i, i + picovoice.frameLength));
+    for (let i = 0; i < (inputPcm.length - picovoice.frameLength! + 1); i += picovoice.frameLength!) {
+      await picovoice.process(inputPcm.slice(i, i + picovoice.frameLength!));
+    }
+
+    await delay(1000);
+
+    if (picovoice instanceof PicovoiceWorker) {
+      picovoice.terminate();
+    } else {
+      await picovoice.release();
     }
   });
 
   try {
     await runProcess();
-    if (expectedContext !== undefined) {
-      expect(inference.intent).to.deep.eq(expectedContext.intent);
-      expect(inference.slots).to.deep.eq(expectedContext.slots);
-    } else {
-      expect(inference.isUnderstood).to.be.false;
-    }
+    expect(inference!.intent).to.deep.eq(expectedContext.intent);
+    expect(inference!.slots).to.deep.eq(expectedContext.slots);
   } catch (e) {
     expect(e).to.be.undefined;
   }
@@ -147,7 +155,7 @@ describe("Picovoice Binding", function () {
     it(`should be able to init with base64 (${instanceString})`, () => {
       cy.wrap(null).then(async () => {
         await runInitTest(instance, {
-          keyword: { base64: picovoiceKeyword, forceWrite: true },
+          keyword: { base64: picovoiceKeyword, forceWrite: true, label: picovoiceKeyword },
           porcupineModel: { base64: porcupineParams, forceWrite: true },
           context: { base64: coffeeMakerContext, forceWrite: true },
           rhinoModel: { base64: rhinoParams, forceWrite: true }
@@ -211,11 +219,12 @@ describe("Picovoice Binding", function () {
               {
                 keyword: {
                   publicPath: `/test/keyword_files/${encodeURIComponent(testParam.wakeword)}_wasm.ppn`,
-                  forceWrite: true
+                  forceWrite: true,
+                  label: testParam.wakeword
                 },
                 porcupineModel: { publicPath: `/test/porcupine/porcupine_params${suffix}.pv`, forceWrite: true },
                 context: {
-                  publicPath: `/test/contexts/${encodeURIComponent(testParam.context_name)}_wasm.rhn`,
+                  publicPath: `/test/contexts/${encodeURIComponent(testParam.context_name.replace("ā", "a").replace("ō", "o"))}_wasm.rhn`,
                   forceWrite: true,
                 },
                 rhinoModel: { publicPath: `/test/rhino/rhino_params${suffix}.pv`, forceWrite: true }

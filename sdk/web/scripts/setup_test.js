@@ -63,7 +63,9 @@ try {
     fs.readdirSync(engineSourceDirectory).forEach(folder => {
       if (folder.includes(engine.dir)) {
         fs.readdirSync(join(engineSourceDirectory, folder, 'wasm')).forEach(file => {
-          fs.copyFileSync(join(engineSourceDirectory, folder, 'wasm', file), join(outputDirectory, engine.dir, file));
+          fs.copyFileSync(
+            join(engineSourceDirectory, folder, 'wasm', file),
+            join(outputDirectory, engine.dir, file.replace("ā", "a").replace("ō", "o")));
         });
       }
     });

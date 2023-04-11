@@ -40,7 +40,8 @@
     "format": "prettier --write \"**/*.{js,ts,json}\"",
     "base64-ppn-files": "npx pvbase64 -i ./test/porcupine/porcupine_params.pv -o ./test/porcupine/porcupine_params.js -n porcupineModelBase64 && npx pvbase64 -i ./test/keyword_files/picovoice_wasm.ppn -o ./test/keyword_files/picovoice_wasm.js -n picovoiceKeywordBase64",
     "base64-rhn-files": "npx pvbase64 -i ./test/rhino/rhino_params.pv -o ./test/rhino/rhino_params.js -n rhinoModelBase64 && npx pvbase64 -i ./test/contexts/coffee_maker_wasm.rhn -o ./test/contexts/coffee_maker_wasm.js -n coffeeMakerContextBase64",
-    "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files"
+    "setup-test": "node scripts/setup_test.js && yarn base64-ppn-files && yarn base64-rhn-files",
+    "test": "cypress run --spec test/picovoice.test.ts"
   },
   "dependencies": {
     "@picovoice/porcupine-web": "../../resources/porcupine/binding/web/",
