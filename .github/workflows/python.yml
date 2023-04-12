@@ -51,11 +51,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install wheel
 
-    - name: Install dependencies (temporary)
-      run: |
-        pip3 install -r requirements.txt
-        pushd ../../resources/porcupine/binding/python && python setup.py bdist_wheel && pip install dist/pvporcupine-2.2.0-py3-none-any.whl && popd
-        pushd ../../resources/rhino/binding/python && python setup.py bdist_wheel && pip install dist/pvrhino-2.2.0-py3-none-any.whl && popd
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
 
     - name: Test
       run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
@@ -78,11 +75,8 @@ jobs:
         python3 -m pip install --upgrade pip
         pip3 install wheel
 
-    - name: Install dependencies (temporary)
-      run: |
-        pip3 install -r requirements.txt
-        pushd ../../resources/porcupine/binding/python && python3 setup.py bdist_wheel && pip3 install dist/*.whl && popd
-        pushd ../../resources/rhino/binding/python && python3 setup.py bdist_wheel && pip3 install dist/*.whl && popd
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
 
     - name: Test
       run: python3 test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}
