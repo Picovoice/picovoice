@@ -74,6 +74,6 @@
   ],
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web": "../web"
+    "@picovoice/picovoice-web": "file:../web"
   }
 }

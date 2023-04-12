@@ -40,7 +40,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/picovoice-web": "../web"
+    "@picovoice/picovoice-web": "file:../web"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
