@@ -20,6 +20,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="PvRecorder" Version="1.1.1" />
-		<PackageReference Include="Picovoice" Version="2.1.6" />
+		<PackageReference Include="Picovoice" Version="2.2.0" />
 	</ItemGroup>
 </Project>
