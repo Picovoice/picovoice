@@ -588,11 +588,15 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/porcupine-node@file:../../resources/porcupine/binding/nodejs":
+"@picovoice/porcupine-node@=2.2.0":
   version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.2.0.tgz#216a3b139f56f46e620035c51441388ae1a51ede"
+  integrity sha512-/tZSCps9L+XqRUroaCzW/tMXIgH3tC/XfwiqY3qFcV2niBcJTnLNbJ5Du4XvVKY3f/ElZVMFGyJ4SV2oPMCScg==
 
-"@picovoice/rhino-node@file:../../resources/rhino/binding/nodejs":
+"@picovoice/rhino-node@=2.2.0":
   version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.2.0.tgz#d3d0c11f968dbc8b643146b7cb01e421326c9c22"
+  integrity sha512-aN3yjOf2OgMgBtubWuBnZQac44bWAx7oHTjA2WTGrbF01Qce5DlnSmNXnnCAgWZkTK1AMptJcgHJ6WNPY5QE3w==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.6"

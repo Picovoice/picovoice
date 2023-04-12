@@ -39,8 +39,8 @@
     "lint": "eslint . --ext .js,.ts"
   },
   "dependencies": {
-    "@picovoice/porcupine-node": "file:../../resources/porcupine/binding/nodejs",
-    "@picovoice/rhino-node": "file:../../resources/rhino/binding/nodejs"
+    "@picovoice/porcupine-node": "=2.2.0",
+    "@picovoice/rhino-node": "=2.2.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
