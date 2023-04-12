@@ -7,15 +7,21 @@ on:
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
+      - '.github/workflows/web.yml'
+      - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/web.yml'
+      - 'resources/.test/**'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/web/**'
       - '!sdk/web/README.md'
       - '.github/workflows/web.yml'
+      - 'resources/audio_samples/**'
+      - 'resources/porcupine'
+      - 'resources/rhino'
+      - 'resources/.test/**'
 
 defaults:
   run:
@@ -27,41 +33,45 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.8]
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [lts/*]
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Pre-build dependencies
+        run: npm install yarn
 
-    - name: Install system dependencies
-      run: |
-        pip install packaging
-        pip install selenium
-        pip install webdriver-manager
+      - name: Copy Porcupine libs
+        run: yarn copywasm && yarn copyppn
+        working-directory: resources/porcupine/binding/web
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+      - name: Build Porcupine
+        run: yarn && yarn build
+        working-directory: resources/porcupine/binding/web
 
-    - name: Install dependencies
-      run: yarn install
+      - name: Copy Rhino libs
+        run: yarn copywasm
+        working-directory: resources/rhino/binding/web
 
-    - name: build
-      run: yarn build
+      - name: Build Rhino
+        run: yarn && yarn build
+        working-directory: resources/rhino/binding/web
 
-    - name: Prepare Test
-      run: yarn setup-test
+      - name: Install dependencies
+        run: yarn install
 
-    - name: Test
-      run: python test/selenium_test.py --access_key ${{secrets.PV_VALID_ACCESS_KEY}} --test_audio_file ../../resources/audio_samples/picovoice-coffee.wav
+      - name: Build
+        run: yarn build
+
+      - name: Prepare Test
+        run: yarn setup-test
+
+      - name: Test
+        run: yarn test --env ACCESS_KEY=${{secrets.PV_VALID_ACCESS_KEY}}
