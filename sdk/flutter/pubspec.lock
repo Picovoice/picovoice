@@ -182,9 +182,9 @@ packages:
   porcupine_flutter:
     dependency: "direct main"
     description:
-      path: "../../resources/porcupine/binding/flutter"
-      relative: true
-    source: path
+      name: porcupine_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.2.0"
   process:
     dependency: transitive
@@ -196,9 +196,9 @@ packages:
   rhino_flutter:
     dependency: "direct main"
     description:
-      path: "../../resources/rhino/binding/flutter"
-      relative: true
-    source: path
+      name: rhino_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "2.2.0"
   sky_engine:
     dependency: transitive
