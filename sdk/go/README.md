@@ -28,7 +28,7 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 ## Installation
 
 ```console
-go get github.com/Picovoice/picovoice/sdk/go
+go get github.com/Picovoice/picovoice/sdk/go/v2
 ```
 
 Depending on your setup you also may need to run `go mod tidy` after in order to download transitive dependencies.
@@ -41,7 +41,7 @@ To create an instance of the engine with default parameters, use the `NewPicovoi
 . "github.com/Picovoice/picovoice/sdk/go/v2"
 rhn "github.com/Picovoice/rhino/binding/go/v2"
 
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+const accessKey string = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 keywordPath := "/path/to/keyword/file.ppn"
 wakeWordCallback := func(){
