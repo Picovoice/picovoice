@@ -50,7 +50,17 @@ Then, to compile and run the demo project on a STM32F407 discovery board, perfor
 to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
 > , Chapter 7.
 
-The default wake word and context model for all supported languages are listed [here](../README.md)
+In this demo, you can determine the default wake word and context models for each language by checking the [pv_params.h](./stm32f407g-disc1/Inc/pv_params.h). Find the language section surrounded by:
+
+```c
+#if defined(__PV_LANGUAGE_{LANGUAGE_NAME}__)
+...
+#endif
+```
+
+The default wake word for each language can be found next to the `// wake-word` comment, and the default context is located beside the `// context` comment.
+
+When the demo begins, the context information will be displayed on the console.
 
 ## Create Custom Models
 

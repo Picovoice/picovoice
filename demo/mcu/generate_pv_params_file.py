@@ -38,14 +38,22 @@ FOOTER = """
 """
 
 LANGUAGE_CODE_TO_NAME = {
+    'ar': 'arabic',
+    'nl': 'dutch',
     'en': 'english',
-    'de': 'german',
-    'es': 'spanish',
     'fr': 'french',
+    'de': 'german',
+    'hi': 'hindi',
     'it': 'italian',
     'ja': 'japanese',
     'ko': 'korean',
+    'zh': 'mandarin',
+    'pl': 'polish',
     'pt': 'portuguese',
+    'ru': 'russian',
+    'es': 'spanish',
+    'sv': 'swedish',
+    'vn': 'vietnamese',
 }
 
 
@@ -53,13 +61,12 @@ def generate_pv_params(model_files, header_file_folders):
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.join(script_dir, '../..')
 
-    for header_file_path, languages in header_file_folders.items():
+    for header_file_path in header_file_folders:
         header_file = os.path.join(os.path.dirname(__file__), header_file_path, 'pv_params.h')
         with open(header_file, 'w') as f_out:
             f_out.write(HEADER)
 
-            for language in languages:
-                ppn_rhn_models = model_files[language]
+            for language, ppn_rhn_models in model_files.items():
 
                 if language == 'en':
                     ppn_dir = os.path.join(repo_dir, 'resources/porcupine/resources/keyword_files/cortexm')
@@ -123,12 +130,20 @@ if __name__ == '__main__':
         'ja': {'wake_word': 'konnichiwa konpyūtā', 'context': 'sumāto_shōmei'},
         'ko': {'wake_word': 'annyeong keompyuteo', 'context': 'seumateu_jomyeong'},
         'pt': {'wake_word': 'olá computador', 'context': 'luz_inteligente'},
+        'ru': {'wake_word': 'privet kompyuter', 'context': 'simple_context_ru'},
+        'nl': {'wake_word': 'hallo computer', 'context': 'simple_context_nl'},
+        'hi': {'wake_word': 'namaste putra', 'context': 'simple_context_hi'},
+        'ar': {'wake_word': 'coffee', 'context': 'simple_context_ar'},
+        'pl': {'wake_word': 'cześć komputer', 'context': 'simple_context_pl'},
+        'sv': {'wake_word': 'hej dator', 'context': 'simple_context_sv'},
+        'vn': {'wake_word': 'xin chào máy tính', 'context': 'simple_context_vn'},
+        'zh': {'wake_word': 'nǐ hǎo diànnǎo', 'context': 'simple_context_zh'},
     }
-    include_folders = {
-        'imxrt1050/imxrt1050-evkb/inc': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
-        'stm32f407/stm32f407g-disc1/Inc/': ['en', 'de', 'es', 'fr'],
-        'stm32f411/stm32f411e-disco/Inc/': ['en', 'de', 'es', 'fr'],
-        'stm32f769/stm32f769i-disco/Inc/': ['en', 'de', 'es', 'fr', 'it', 'ja', 'ko', 'pt'],
-    }
+    include_folders = [
+        'imxrt1050/imxrt1050-evkb/inc',
+        'stm32f407/stm32f407g-disc1/Inc/',
+        'stm32f411/stm32f411e-disco/Inc/',
+        'stm32f769/stm32f769i-disco/Inc/',
+    ]
 
     generate_pv_params(models, include_folders)
