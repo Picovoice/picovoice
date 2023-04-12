@@ -737,7 +737,7 @@ and command inference completion events, respectively:
 ```javascript
 const Picovoice = require("@picovoice/picovoice-node");
 
-const accessKey = "${ACCESS_KEY}" // Obtained from the Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}"; // Obtained from the Picovoice Console (https://console.picovoice.ai/)
 
 let keywordCallback = function (keyword) {
   console.log(`Wake word detected`);
@@ -850,13 +850,13 @@ The easiest way to create an instance of the engine is with the Picovoice Builde
 ```java
 import ai.picovoice.picovoice.*;
 
-String keywordPath = "/absolute/path/to/keyword.ppn"
+String keywordPath = "/absolute/path/to/keyword.ppn";
 
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 
 PicovoiceWakeWordCallback wakeWordCallback = () -> {..};
 
-String contextPath = "/absolute/path/to/context.rhn"
+String contextPath = "/absolute/path/to/context.rhn";
 
 PicovoiceInferenceCallback inferenceCallback = inference -> {
     // `inference` exposes three getters:
@@ -866,7 +866,7 @@ PicovoiceInferenceCallback inferenceCallback = inference -> {
     // ..
 };
 
-try{
+try {
     Picovoice handle = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
@@ -917,18 +917,18 @@ go get github.com/Picovoice/picovoice/sdk/go
 To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function. You must then make a call to `Init()`.
 
 ```go
-. "github.com/Picovoice/picovoice/sdk/go"
-rhn "github.com/Picovoice/rhino/binding/go"
+. "github.com/Picovoice/picovoice/sdk/go/v2"
+rhn "github.com/Picovoice/rhino/binding/go/v2"
 
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+const accessKey string = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 keywordPath := "/path/to/keyword/file.ppn"
-wakeWordCallback := func(){
+wakeWordCallback := func() {
     // let user know wake word detected
 }
 
 contextPath := "/path/to/keyword/file.rhn"
-inferenceCallback := func(inference rhn.RhinoInference){
+inferenceCallback := func(inference rhn.RhinoInference) {
     if inference.IsUnderstood {
             intent := inference.Intent
             slots := inference.Slots
@@ -962,7 +962,7 @@ When instantiated, valid sample rate can be obtained via `SampleRate`. Expected 
 frame is `FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```go
-func getNextFrameAudio() []int16{
+func getNextFrameAudio() []int16 {
     // get audio frame
 }
 
@@ -1089,7 +1089,7 @@ The static constructor `PicovoiceManager.create` will create an instance of a Pi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoiceManager() {
   _picovoiceManager = PicovoiceManager.create(
@@ -1130,12 +1130,12 @@ who want to incorporate it into an already existing audio processing pipeline.
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
     double rhinoSensitivity = 0.6;
-    try{
+    try {
         _picovoice = await Picovoice.create(
             accessKey,
             "/path/to/keyword/file.ppn",
@@ -1187,7 +1187,7 @@ audio recording. This class is the quickest way to get started.
 
 The static constructor `PicovoiceManager.create` will create an instance of a PicovoiceManager using a Porcupine keyword file and Rhino context file that you pass to it.
 ```javascript
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://console.picovoice.ai/)
 
 this._picovoiceManager = PicovoiceManager.create(
     accessKey,
@@ -1220,14 +1220,14 @@ who want to incorporate it into an already existing audio processing pipeline.
 `Picovoice` is created by passing a Porcupine keyword file and Rhino context file to the `create` static constructor. Sensitivity and model files are optional.
 
 ```javascript
-const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
+const accessKey = "${ACCESS_KEY}"; // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-async createPicovoice(){
-    let porcupineSensitivity = 0.7
-    let rhinoSensitivity = 0.6
-    let requireEndpoint = false
+async createPicovoice() {
+    let porcupineSensitivity = 0.7;
+    let rhinoSensitivity = 0.6;
+    let requireEndpoint = false;
 
-    try{
+    try {
         this._picovoice = await Picovoice.create(
             accessKey,
             '/path/to/keyword/file.ppn',
@@ -1239,7 +1239,7 @@ async createPicovoice(){
             rhinoSensitivity,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            requireEndpoint)
+            requireEndpoint);
     } catch (err) {
         // handle error
     }
@@ -1283,8 +1283,8 @@ inference completion.
 
 ```java
 final String accessKey = "${ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-final String keywordPath = "/path/to/keyword.ppn" // path relative to 'assets' folder
-final String contextPath = "/path/to/context.rhn" // path relative to 'assets' folder
+final String keywordPath = "/path/to/keyword.ppn"; // path relative to 'assets' folder
+final String contextPath = "/path/to/context.rhn"; // path relative to 'assets' folder
 
 PicovoiceManager manager = new PicovoiceManager.Builder()
     .setAccessKey(accessKey)
@@ -1942,6 +1942,13 @@ pv_picovoice_delete(handle);
 ```
 
 ## Releases
+
+### v2.2.0 - April 12th, 2023
+
+- Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
+- Added support for .NET 7.0 and fixed support for .NET Standard 2.0
+- iOS minimum support moved to 11.0
+- Improved stability and performance
 
 ### v2.1.0 - January 20th, 2022
 
