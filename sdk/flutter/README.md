@@ -77,7 +77,7 @@ The constructor `PicovoiceManager.create` will create an instance of the Picovoi
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 _picovoiceManager = PicovoiceManager.create(
     accessKey,
@@ -99,13 +99,13 @@ void _wakeWordCallback(){
     // wake word detected
 }
 
-void _inferenceCallback(RhinoInference inference){
-    if(inference.isUnderstood!){
-        String intent = inference.intent!
-        Map<String, String> slots = inference.slots!
+void _inferenceCallback(RhinoInference inference) {
+    if(inference.isUnderstood!) {
+        String intent = inference.intent!;
+        Map<String, String> slots = inference.slots!;
         // add code to take action based on inferred intent and slot values
     }
-    else{
+    else {
         // add code to handle unsupported commands
     }
 }
@@ -121,7 +121,7 @@ Picovoice accepts the following optional parameters:
  These optional parameters can be passed in like so:
 
 ```dart
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoiceManager() {
     double porcupineSensitivity = 0.7;
@@ -141,7 +141,7 @@ void createPicovoiceManager() {
         errorCallback: _errorCallback);
 }
 
-void _errorCallback(PicovoiceException error){
+void _errorCallback(PicovoiceException error) {
     // handle error
 }
 ```
@@ -149,9 +149,9 @@ void _errorCallback(PicovoiceException error){
 Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
 
 ```dart
-try{
+try {
     await _picovoiceManager.start();
-} on PicovoiceException catch(ex){
+} on PicovoiceException catch(ex) {
     // deal with Picovoice init error
 }
 ```
@@ -177,7 +177,7 @@ who want to incorporate it into an already existing audio processing pipeline.
 import 'package:picovoice/picovoice_manager.dart';
 import 'package:picovoice/picovoice_error.dart';
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoice() async {
     double porcupineSensitivity = 0.7;
@@ -208,12 +208,12 @@ void wakeWordCallback() {
 }
 
 void inferenceCallback(RhinoInference inference) {
-    if(inference.isUnderstood!){
-        String intent = inference.intent!
-        Map<String, String> slots = inference.slots!
+    if(inference.isUnderstood!) {
+        String intent = inference.intent!;
+        Map<String, String> slots = inference.slots!;
         // add code to take action based on inferred intent and slot values
     }
-    else{
+    else {
         // add code to handle unsupported commands
     }
 }
@@ -252,12 +252,12 @@ flutter:
 
 In your Flutter app code, you can then pass the assets directly to Picovoice's `create` constructor:
 ```dart
-String keywordAsset = "assets/keyword.ppn"
-String contextAsset = "assets/context.rhn"
+String keywordAsset = "assets/keyword.ppn";
+String contextAsset = "assets/context.rhn";
 
-String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-try{
+try {
     _picovoice = await Picovoice.create(
         accessKey,
         keywordAsset,
