@@ -18,13 +18,6 @@ java {
 
 repositories {
     mavenCentral()
-
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1228/'
-    }
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1229/'
-    }
 }
 
 sourceSets {
