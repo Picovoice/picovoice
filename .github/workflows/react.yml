@@ -44,18 +44,6 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Build Porcupine
-      run: yarn install && yarn copywasm && yarn copyppn && yarn build
-      working-directory: resources/porcupine/binding/web
-
-    - name: Build Rhino
-      run: yarn install && yarn copywasm && yarn build
-      working-directory: resources/rhino/binding/web
-
-    - name: Build Picovoice
-      run: yarn install && yarn build
-      working-directory: sdk/web
-
     - name: Install dependencies
       run: yarn install
 

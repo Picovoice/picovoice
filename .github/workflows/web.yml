@@ -48,22 +48,6 @@ jobs:
       - name: Pre-build dependencies
         run: npm install yarn
 
-      - name: Copy Porcupine libs
-        run: yarn copywasm && yarn copyppn
-        working-directory: resources/porcupine/binding/web
-
-      - name: Build Porcupine
-        run: yarn && yarn build
-        working-directory: resources/porcupine/binding/web
-
-      - name: Copy Rhino libs
-        run: yarn copywasm
-        working-directory: resources/rhino/binding/web
-
-      - name: Build Rhino
-        run: yarn && yarn build
-        working-directory: resources/rhino/binding/web
-
       - name: Install dependencies
         run: yarn install
 
