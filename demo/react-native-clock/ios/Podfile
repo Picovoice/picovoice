@@ -7,8 +7,6 @@ target 'ReactNativeClock' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
-  pod 'Porcupine-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/porcupine/v2.2/binding/ios/Porcupine-iOS.podspec'
-  pod 'Rhino-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/rhino/v2.2/binding/ios/Rhino-iOS.podspec'
   post_install do |installer|
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|

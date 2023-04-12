@@ -4,23 +4,24 @@ on:
   push:
     branches: [ master ]
     paths:
+      - '.github/workflows/react-native-tests.yml'
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/react-native-tests.yml'
+
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
+      - '.github/workflows/react-native-tests.yml'
       - 'sdk/react-native/**'
       - '!sdk/react-native/README.md'
       - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - '.github/workflows/react-native-tests.yml'
 
 defaults:
   run:
@@ -82,7 +83,7 @@ jobs:
 
     - name: Cocoapods install
       working-directory: sdk/react-native/test-app/PicovoiceTestApp/ios
-      run: pod install
+      run: pod install --repo-update
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts

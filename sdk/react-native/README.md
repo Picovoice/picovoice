@@ -1,4 +1,6 @@
-# Picovoice
+# Picovoice SDK for React Native
+
+## Picovoice
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
