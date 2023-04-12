@@ -30,9 +30,9 @@ jobs:
     - name: Pre-build dependencies
       run: npm install yarn
 
-    - name: Run Binding Linter
+    - name: Run SDK Linter
       run: yarn && yarn lint
-      working-directory: binding/angular
+      working-directory: sdk/angular
 
     - name: Run Demo Linter
       run: yarn && yarn lint
