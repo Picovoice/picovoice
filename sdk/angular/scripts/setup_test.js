@@ -28,7 +28,7 @@ const sourceDirectory = join(
 
 const testDataSource = join(
   sourceDirectory,
-  'test',
+  '.test',
   'test_data.json'
 );
 

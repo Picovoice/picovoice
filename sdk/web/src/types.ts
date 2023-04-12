@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -24,7 +24,7 @@ export type PicovoiceArgs = {
 };
 
 export type PicovoiceOptions = {
-  processErrorCallback?: (error: string) => void;
+  processErrorCallback?: (error: Error) => void;
   /** @defaultValue '1.0' */
   endpointDurationSec?: number;
   /** @defaultValue 'false' */

@@ -44,8 +44,8 @@
     "test": "cypress run --spec test/picovoice.test.ts"
   },
   "dependencies": {
-    "@picovoice/porcupine-web": "../../resources/porcupine/binding/web/",
-    "@picovoice/rhino-web": "../../resources/rhino/binding/web/",
+    "@picovoice/porcupine-web": "file:../../resources/porcupine/binding/web/",
+    "@picovoice/rhino-web": "file:../../resources/rhino/binding/web/",
     "@picovoice/web-utils": "=1.3.1"
   },
   "devDependencies": {

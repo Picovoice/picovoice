@@ -32,17 +32,29 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
       run: npm install yarn
+
+    - name: Build Porcupine
+      run: yarn install && yarn copywasm && yarn copyppn && yarn build
+      working-directory: resources/porcupine/binding/web
+
+    - name: Build Rhino
+      run: yarn install && yarn copywasm && yarn build
+      working-directory: resources/rhino/binding/web
+
+    - name: Build Picovoice
+      run: yarn install && yarn build
+      working-directory: sdk/web
 
     - name: Install dependencies
       run: yarn install
