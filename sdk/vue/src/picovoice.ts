@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -58,7 +58,7 @@ export type PicovoiceVue = {
     contextInfo: string | null;
     isLoaded: boolean;
     isListening: boolean;
-    error: string | null;
+    error: Error | null;
   },
   init: (
     accessKey: string,
@@ -82,7 +82,7 @@ export function usePicovoice(): PicovoiceVue {
     contextInfo: string | null;
     isLoaded: boolean;
     isListening: boolean;
-    error: string | null;
+    error: Error | null;
   }>({
     wakeWordDetection: null,
     inference: null,
@@ -106,7 +106,7 @@ export function usePicovoice(): PicovoiceVue {
     }
   };
 
-  const errorCallback = (newError: string): void => {
+  const errorCallback = (newError: Error): void => {
     if (newError) {
       state.error = newError;
     }
@@ -144,14 +144,14 @@ export function usePicovoice(): PicovoiceVue {
         state.error = null;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 
   const start = async (): Promise<void> => {
     try {
       if (!picovoiceRef.value) {
-        state.error = 'Picovoice has not been initialized or has been released';
+        state.error = new Error('Picovoice has not been initialized or has been released');
         return;
       }
 
@@ -161,14 +161,14 @@ export function usePicovoice(): PicovoiceVue {
         state.error = null;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 
   const stop = async (): Promise<void> => {
     try {
       if (!picovoiceRef.value) {
-        state.error = 'Picovoice has not been initialized or has been released';
+        state.error = new Error('Picovoice has not been initialized or has been released');
         return;
       }
 
@@ -179,7 +179,7 @@ export function usePicovoice(): PicovoiceVue {
         state.error = null;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 
@@ -192,7 +192,7 @@ export function usePicovoice(): PicovoiceVue {
         state.isLoaded = false;
       }
     } catch (e: any) {
-      state.error = e.toString();
+      state.error = e;
     }
   };
 

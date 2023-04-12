@@ -69,7 +69,7 @@ describe('Picovoice SDK', () => {
       )
     ).then(() => {
       expect(picovoice.state.isLoaded).to.be.false;
-      expect(picovoice.state.error).to.contain("Error response returned while fetching model from '/test/porcupine/porcupine_params_failed.pv'");
+      expect(picovoice.state.error?.toString()).to.contain("Error response returned while fetching model from '/test/porcupine/porcupine_params_failed.pv'");
     });
   });
 
@@ -86,7 +86,7 @@ describe('Picovoice SDK', () => {
       )
     ).then(() => {
       expect(picovoice.state.isLoaded).to.be.false;
-      expect(picovoice.state.error).to.contain("Invalid AccessKey");
+      expect(picovoice.state.error?.toString()).to.contain("Invalid AccessKey");
     });
   });
 
