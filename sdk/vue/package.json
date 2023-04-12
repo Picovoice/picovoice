@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-vue",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Vue binding for Picovoice Web SDK",
   "author": "Picovoice Inc",
   "entry": "src/index.ts",

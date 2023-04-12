@@ -77,10 +77,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-vue@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-vue/-/picovoice-vue-2.2.0.tgz#040e0b1ea096d90fc98763faf2710ebece0db758"
-  integrity sha512-fA6IO2QF2wr0yMGCXkXlCQKIpGd4akMPKvnc4kV3v8Vg1RqvgFef0/Se7+Fjojgq2qUB9jROC5FxBGznNJQelw==
+"@picovoice/picovoice-vue@~2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-vue/-/picovoice-vue-2.2.1.tgz#e71bb43e91f453e619445fb7bd1d9d3cf2000d90"
+  integrity sha512-2O5fjVDocCTWtqNUic/8Cl1fsBXaMCsxfTbwdOa2sQuUzpo7mBHQDAYedhCak5czMY6TvwHIRfzaeEjQr/G82w==
   dependencies:
     "@picovoice/picovoice-web" "=2.2.0"
 

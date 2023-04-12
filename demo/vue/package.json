@@ -1,6 +1,6 @@
 {
   "name": "picovoice-web-vue-demo",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "private": true,
@@ -19,7 +19,7 @@
     "postinstall": "npm-run-all cp:** --parallel"
   },
   "dependencies": {
-    "@picovoice/picovoice-vue": "~2.2.0",
+    "@picovoice/picovoice-vue": "~2.2.1",
     "@picovoice/web-voice-processor": "~4.0.6",
     "vue": "^3.2.45"
   },
