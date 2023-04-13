@@ -11,9 +11,9 @@ on:
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'resources/.test/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/python.yml'
       - 'sdk/python/**'
@@ -21,7 +21,7 @@ on:
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'resources/.test/**'
 
 defaults:
   run:
@@ -37,12 +37,12 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -52,7 +52,7 @@ jobs:
         pip install wheel
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: pip3 install -r requirements.txt
 
     - name: Test
       run: python test_picovoice.py ${{secrets.PV_VALID_ACCESS_KEY}}

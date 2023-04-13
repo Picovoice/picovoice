@@ -11,9 +11,9 @@ on:
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'resources/.test/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/nodejs.yml'
       - 'sdk/nodejs/**'
@@ -21,7 +21,7 @@ on:
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'resources/.test/**'
 
 defaults:
   run:
@@ -37,14 +37,22 @@ jobs:
         node-version: [14.x, 16.x, 18.x]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Local Porcupine dependency
+      run: yarn && yarn build
+      working-directory: resources/porcupine/binding/nodejs
+
+    - name: Local Rhino dependency
+      run: yarn && yarn build
+      working-directory: resources/rhino/binding/nodejs
 
     - name: Pre-build dependencies
       run: npm install yarn
@@ -63,9 +71,17 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
+
+    - name: Local Porcupine dependency
+      run: yarn && yarn build
+      working-directory: resources/porcupine/binding/nodejs
+
+    - name: Local Rhino dependency
+      run: yarn && yarn build
+      working-directory: resources/rhino/binding/nodejs
 
     - name: Pre-build dependencies
       run: npm install --global yarn

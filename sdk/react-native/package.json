@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react-native",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "description": "React Native binding for Picovoice end-to-end platform",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -40,9 +40,9 @@
   },
   "homepage": "https://github.com/Picovoice/picovoice#readme",
   "devDependencies": {
-    "@picovoice/porcupine-react-native": "=2.1.5",
+    "@picovoice/porcupine-react-native": "=2.2.0",
     "@picovoice/react-native-voice-processor": "^1.1.0",
-    "@picovoice/rhino-react-native": "=2.1.7",
+    "@picovoice/rhino-react-native": "=2.2.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@types/jest": "^26.0.0",
     "@types/react": "^16.9.19",

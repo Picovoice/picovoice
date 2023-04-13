@@ -10,14 +10,14 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using Pv;
@@ -27,8 +27,7 @@ namespace PicovoiceTest
     [TestClass]
     public class MainTest
     {
-        private static string _cwd;
-        private static string _rootDir;
+        private static readonly string ROOT_DIR = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../../../../../..");
         private static string _env;
         private static Architecture _arch;
 
@@ -46,11 +45,7 @@ namespace PicovoiceTest
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-
             _accessKey = Environment.GetEnvironmentVariable("ACCESS_KEY");
-
-            _cwd = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            _rootDir = Path.Combine(_cwd, "../../../../../..");
             _arch = RuntimeInformation.ProcessArchitecture;
             _env = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "mac" :
                                                      RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "windows" :
@@ -61,7 +56,7 @@ namespace PicovoiceTest
 
         private static JObject LoadJsonTestData()
         {
-            string content = File.ReadAllText(Path.Combine(_rootDir, "resources/test/test_data.json"));
+            string content = File.ReadAllText(Path.Combine(ROOT_DIR, "resources/.test/test_data.json"));
             return JObject.Parse(content);
         }
 
@@ -105,7 +100,7 @@ namespace PicovoiceTest
         private static string GetKeywordPath(string language, string keyword)
         {
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "resources/porcupine/resources",
                 AppendLanguage("keyword_files", language),
                 $"{_env}/{keyword}_{_env}.ppn"
@@ -116,7 +111,7 @@ namespace PicovoiceTest
         {
             string file_name = AppendLanguage("porcupine_params", language);
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "resources/porcupine/lib/common",
                 $"{file_name}.pv"
             );
@@ -125,7 +120,7 @@ namespace PicovoiceTest
         private static string GetContextPath(string language, string context)
         {
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "resources/rhino/resources",
                 AppendLanguage("contexts", language),
                 $"{_env}/{context}_{_env}.rhn"
@@ -136,7 +131,7 @@ namespace PicovoiceTest
         {
             string file_name = AppendLanguage("rhino_params", language);
             return Path.Combine(
-                _rootDir,
+                ROOT_DIR,
                 "resources/rhino/lib/common",
                 $"{file_name}.pv"
             );
@@ -157,7 +152,7 @@ namespace PicovoiceTest
 
         public void RunTestCase(string audioFileName, string expectedIntent, Dictionary<string, string> expectedSlots)
         {
-            string testAudioPath = Path.Combine(_rootDir, "resources/audio_samples/", audioFileName);
+            string testAudioPath = Path.Combine(ROOT_DIR, "resources/audio_samples/", audioFileName);
 
             List<short> data = GetPcmFromFile(testAudioPath, _picovoice.SampleRate);
 

@@ -13,7 +13,7 @@ export class VoiceWidget implements OnDestroy {
   isLoaded = false;
   isListening = false;
   contextInfo: string | null = null;
-  error: string | null = null;
+  error: Error | null = null;
   wakeWordDetection: PorcupineDetection | null = null;
   inference: RhinoInference | null = null;
   private wakeWordDetectionSubscription: Subscription;
@@ -55,7 +55,7 @@ export class VoiceWidget implements OnDestroy {
       }
     );
     this.errorSubscription = picovoiceService.error$.subscribe(
-      (error: string | null) => {
+      (error: Error | null) => {
         this.error = error;
       }
     );

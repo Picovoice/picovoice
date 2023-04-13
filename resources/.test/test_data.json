@@ -1,0 +1,200 @@
+{
+  "tests": {
+    "parameters": [
+      {
+        "language": "ar",
+        "wakeword": "hummus",
+        "context_name": "simple_context_ar",
+        "audio_file": "hummus-simple-context_ar.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "خوخ"
+          }
+        }
+      },
+      {
+        "language": "de",
+        "wakeword": "heuschrecke",
+        "context_name": "beleuchtung",
+        "audio_file": "heuschrecke-beleuchtung_de.wav",
+        "inference": {
+          "intent": "changeState",
+          "slots": {
+            "state": "aus"
+          }
+        }
+      },
+      {
+        "language": "en",
+        "wakeword": "picovoice",
+        "context_name": "coffee_maker",
+        "audio_file": "picovoice-coffee.wav",
+        "inference": {
+          "intent": "orderBeverage",
+          "slots": {
+            "size": "large",
+            "beverage": "coffee"
+          }
+        }
+      },
+      {
+        "language": "es",
+        "wakeword": "manzana",
+        "context_name": "iluminación_inteligente",
+        "audio_file": "manzana-luz_es.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "location": "habitación",
+            "color": "rosado"
+          }
+        }
+      },
+      {
+        "language": "fr",
+        "wakeword": "mon chouchou",
+        "context_name": "éclairage_intelligent",
+        "audio_file": "mon-intelligent_fr.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "color": "violet"
+          }
+        }
+      },
+      {
+        "language": "hi",
+        "wakeword": "namaste",
+        "context_name": "simple_context_hi",
+        "audio_file": "namaste-simple-context_hi.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "रसभरी"
+          }
+        }
+      },
+      {
+        "language": "it",
+        "wakeword": "cameriere",
+        "context_name": "illuminazione",
+        "audio_file": "cameriere-luce_it.wav",
+        "inference": {
+          "intent": "spegnereLuce",
+          "slots": {
+            "luogo": "bagno"
+          }
+        }
+      },
+      {
+        "language": "ja",
+        "wakeword": "ninja",
+        "context_name": "sumāto_shōmei",
+        "audio_file": "ninja-sumāto-shōmei_ja.wav",
+        "inference": {
+          "intent": "色変更",
+          "slots": {
+            "色": "オレンジ"
+          }
+        }
+      },
+      {
+        "language": "ko",
+        "wakeword": "koppulso",
+        "context_name": "seumateu_jomyeong",
+        "audio_file": "koppulso-seumateu-jomyeong_ko.wav",
+        "inference": {
+          "intent": "changeColor",
+          "slots": {
+            "color": "파란색"
+          }
+        }
+      },
+      {
+        "language": "nl",
+        "wakeword": "stekelvarken",
+        "context_name": "simple_context_nl",
+        "audio_file": "stekelvarken-simple-context_nl.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "framboos"
+          }
+        }
+      },
+      {
+        "language": "pl",
+        "wakeword": "porcupine_pl",
+        "context_name": "simple_context_pl",
+        "audio_file": "porcupine-simple-context_pl.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "malina"
+          }
+        }
+      },
+      {
+        "language": "pt",
+        "wakeword": "abacaxi",
+        "context_name": "luz_inteligente",
+        "audio_file": "abaxi-luz_pt.wav",
+        "inference": {
+          "intent": "ligueLuz",
+          "slots": {
+            "lugar": "cozinha"
+          }
+        }
+      },
+      {
+        "language": "ru",
+        "wakeword": "pomogite",
+        "context_name": "simple_context_ru",
+        "audio_file": "pomogite-simple-context_ru.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "фрукт": "картофель"
+          }
+        }
+      },
+      {
+        "language": "sv",
+        "wakeword": "porcupine_sv",
+        "context_name": "simple_context_sv",
+        "audio_file": "porcupine-simple-context_sv.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "blåbär"
+          }
+        }
+      },
+      {
+        "language": "vn",
+        "wakeword": "chao_chi",
+        "context_name": "simple_context_vn",
+        "audio_file": "chao-chi-simple-context_vn.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "food": "trái dứa"
+          }
+        }
+      },
+      {
+        "language": "zh",
+        "wakeword": "porcupine_zh",
+        "context_name": "simple_context_zh",
+        "audio_file": "porcupine-simple-context_zh.wav",
+        "inference": {
+          "intent": "shopping",
+          "slots": {
+            "vrucht": "香 蕉"
+          }
+        }
+      }
+    ]
+  }
+}

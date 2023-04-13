@@ -1,5 +1,5 @@
 /*
-    Copyright 2018-2021 Picovoice Inc.
+    Copyright 2018-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is
     located in the "LICENSE" file accompanying this source.
@@ -32,13 +32,15 @@ public class FileDemo {
     public static void runDemo(
             String accessKey, File inputAudioFile, String keywordPath, String contextPath,
             String porcupineLibraryPath, String porcupineModelPath, float porcupineSensitivity,
-            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity, float rhinoEndpointDuration, boolean requireEndpoint) {
+            String rhinoLibraryPath, String rhinoModelPath, float rhinoSensitivity,
+            float rhinoEndpointDuration, boolean requireEndpoint) {
 
         AudioInputStream audioInputStream;
         try {
             audioInputStream = AudioSystem.getAudioInputStream(inputAudioFile);
         } catch (UnsupportedAudioFileException e) {
-            System.err.println("Audio format not supported. Please provide an input file of .au, .aiff or .wav format");
+            System.err.println(
+                    "Audio format not supported. Please provide an input file of .au, .aiff or .wav format");
             return;
         } catch (IOException e) {
             System.err.println("Could not find input audio file at " + inputAudioFile);
@@ -82,7 +84,8 @@ public class FileDemo {
 
             AudioFormat audioFormat = audioInputStream.getFormat();
 
-            if (audioFormat.getSampleRate() != (float) picovoice.getSampleRate() || audioFormat.getSampleSizeInBits() != 16) {
+            if (audioFormat.getSampleRate() != (float) picovoice.getSampleRate() ||
+                    audioFormat.getSampleSizeInBits() != 16) {
                 throw new IllegalArgumentException(String.format("Invalid input audio file format. " +
                         "Input file must be a %dkHz, 16-bit audio file.", picovoice.getSampleRate()));
             }
@@ -124,7 +127,7 @@ public class FileDemo {
 
     public static void main(String[] args) {
 
-        Options options = BuildCommandLineOptions();
+        Options options = buildCommandLineOptions();
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
 
@@ -238,7 +241,7 @@ public class FileDemo {
                 rhinoLibraryPath, rhinoModelPath, rhinoSensitivity, endpointDuration, requireEndpoint);
     }
 
-    private static Options BuildCommandLineOptions() {
+    private static Options buildCommandLineOptions() {
         Options options = new Options();
 
         options.addOption(Option.builder("a")
@@ -300,24 +303,30 @@ public class FileDemo {
                 .longOpt("rhino_sensitivity")
                 .hasArgs()
                 .desc("Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value " +
-                        "results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.")
+                        "results in fewer misses at the cost of (potentially) increasing the " +
+                        "erroneous inference rate.")
                 .build());
 
         options.addOption(Option.builder("u")
                 .longOpt("endpoint_duration")
                 .hasArgs()
                 .desc("Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an " +
-                        "utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint " +
-                        "duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference " +
+                        "utterance that marks the end of spoken command. It should be a positive number " +
+                        "within [0.5, 5]. A lower endpoint " +
+                        "duration reduces delay and improves responsiveness. A higher endpoint duration " +
+                        "assures Rhino doesn't return inference " +
                         "pre-emptively in case the user pauses before finishing the request.")
                 .build());
 
         options.addOption(Option.builder("e")
                 .longOpt("require_endpoint")
                 .hasArg(true)
-                .desc("If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command. " +
-                        "If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set " +
-                        "to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).")
+                .desc("If set to `true`, Rhino requires an endpoint (a chunk of silence) after the " +
+                        "spoken command. " +
+                        "If set to `false`, Rhino tries to detect silence, but if it cannot, it " +
+                        "still will provide inference regardless. Set " +
+                        "to `false` only if operating in an environment with overlapping " +
+                        "speech (e.g. people talking in the background).")
                 .build());
 
         options.addOption(new Option("h", "help", false, ""));

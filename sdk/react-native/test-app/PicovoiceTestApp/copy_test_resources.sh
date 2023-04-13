@@ -66,4 +66,4 @@ cp ${RHINO_LIB_DIR}/common/*.pv ${ANDROID_ASSETS_DIR}/model_files
 cp ${RHINO_LIB_DIR}/common/*.pv ${IOS_ASSETS_DIR}/model_files
 
 echo "Copying test data file..."
-cp ${PICOVOICE_RESOURCE_DIR}/test/test_data.json .
+cp ${PICOVOICE_RESOURCE_DIR}/.test/test_data.json .

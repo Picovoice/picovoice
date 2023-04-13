@@ -19,7 +19,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Requirements
 
-- .NET Core 3.1
+- .NET 6.0
 
 ## Compatibility
 
@@ -58,8 +58,8 @@ picovoice/demo/dotnet/PicovoiceDemo
 
 ### File Demo
 
-The file demo uses Picovoice to scan for keywords and commands in an audio file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data. 
-Picovoice processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel. 
+The file demo uses Picovoice to scan for keywords and commands in an audio file. The demo is mainly useful for quantitative performance benchmarking against a corpus of audio data.
+Picovoice processes a 16kHz, single-channel audio stream. If a stereo file is provided it only processes the first (left) channel.
 The following processes a file looking for instances of the wake phrase defined in the file located at `${PATH_TO_PORCUPINE_KEYWORD_FILE}` and infers spoken commands
 using the context defined by the file located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 
@@ -68,7 +68,7 @@ dotnet run -c FileDemo.Release -- \
 --input_audio_path ${PATH_TO_INPUT_AUDIO_FILE} \
 --access_key ${ACCESS_KEY}
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE}
 ```
 
 ### Microphone Demo
@@ -82,7 +82,7 @@ located at `${PATH_TO_RHINO_CONTEXT_FILE)}`:
 dotnet run -c MicDemo.Release -- \
 --access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)}
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE}
 ```
 
 It is possible that the default audio input device recognized by PyAudio is not the one being used. There are a couple
@@ -97,16 +97,16 @@ It provides information about various audio input devices on the box. This is an
 ```
 index: 0, device name: USB Audio Device
 index: 1, device name: MacBook Air Microphone
-``` 
+```
 
-You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device 
+You can use the device index to specify which microphone to use for the demo. For instance, if you want to use the USB Audio Device
 in the above example, you can invoke the demo application as below:
 
 ```console
 dotnet run -c MicDemo.Release -- \
 --access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE} \
 --audio_device_index 0
 ```
 
@@ -116,7 +116,7 @@ If the problem persists we suggest storing the recorded audio into a file for in
 dotnet run -c MicDemo.Release -- \
 --access_key ${ACCESS_KEY} \
 --keyword_path ${PATH_TO_PORCUPINE_KEYWORD_FILE} \
---context_path ${PATH_TO_RHINO_CONTEXT_FILE)} \
+--context_path ${PATH_TO_RHINO_CONTEXT_FILE} \
 --audio_device_index 0
 --output_path ./test.wav
 ```

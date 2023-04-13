@@ -9,16 +9,4 @@
 # specific language governing permissions and limitations under the License.
 #
 
-from .picovoice import Picovoice
-from .picovoice import PicovoiceError
-from .picovoice import PicovoiceMemoryError
-from .picovoice import PicovoiceIOError
-from .picovoice import PicovoiceInvalidArgumentError
-from .picovoice import PicovoiceStopIterationError
-from .picovoice import PicovoiceKeyError
-from .picovoice import PicovoiceInvalidStateError
-from .picovoice import PicovoiceRuntimeError
-from .picovoice import PicovoiceActivationError
-from .picovoice import PicovoiceActivationLimitError
-from .picovoice import PicovoiceActivationThrottledError
-from .picovoice import PicovoiceActivationRefusedError
+from ._picovoice import *

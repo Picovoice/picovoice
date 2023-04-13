@@ -6,3 +6,4 @@ test/**/*.pv
 test/**/*.ppn
 test/**/*.rhn
 test/**/*.wav
+cypress/fixtures/audio_samples

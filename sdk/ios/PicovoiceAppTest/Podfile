@@ -1,12 +1,12 @@
 source 'https://cdn.cocoapods.org/'
 
-platform :ios, '9.0'
+platform :ios, '11.0'
 
 target 'PicovoiceAppTest' do
-    pod 'Picovoice-iOS', '2.1.3'
+    pod 'Picovoice-iOS', '~> 2.2.0'
 end
 
-target 'PicovoiceAppTestUITests' do    
-    pod 'Picovoice-iOS', '2.1.3'
+target 'PicovoiceAppTestUITests' do
+    pod 'Picovoice-iOS', '~> 2.2.0'
 end
 

@@ -83,6 +83,7 @@ pv_status_t status = pv_picovoice_init(
 
 if (status != PV_STATUS_SUCCESS) {
     // error handling logic
+    
 }
 ```
 

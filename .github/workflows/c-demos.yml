@@ -5,27 +5,27 @@ on:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/c-demos.yml'
-      - 'sdk/c/**'
-      - '!sdk/c/README.md'
-      - 'demo/c/**'
       - '!demo/c/README.md'
+      - '!sdk/c/README.md'
+      - '.github/workflows/c-demos.yml'
+      - 'demo/c/**'
+      - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'sdk/c/**'
   pull_request:
-    branches: [ master ]
+    branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/c-demos.yml'
-      - 'sdk/c/**'
-      - '!sdk/c/README.md'
-      - 'demo/c/**'
       - '!demo/c/README.md'
+      - '!sdk/c/README.md'
+      - '.github/workflows/c-demos.yml'
+      - 'demo/c/**'
+      - 'resources/.test/**'
       - 'resources/audio_samples/**'
       - 'resources/porcupine'
       - 'resources/rhino'
-      - 'resources/test/**'
+      - 'sdk/c/**'
 
 defaults:
   run:
@@ -40,7 +40,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
@@ -58,7 +58,7 @@ jobs:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
@@ -86,12 +86,12 @@ jobs:
           arch: x86_64
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 
     - name: Set up Python '3.10'
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -137,7 +137,7 @@ jobs:
           arch: ''
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: recursive
 

@@ -35,7 +35,7 @@ var (
 	isWakeWordDetected = false
 	inference          rhn.RhinoInference
 	pvTestAccessKey    string
-	testParameters []TestData
+	testParameters     []TestData
 )
 
 type TestData struct {
@@ -56,9 +56,8 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
-
 func loadTestData() []TestData {
-	content, err := ioutil.ReadFile("../../resources/test/test_data.json")
+	content, err := ioutil.ReadFile("../../resources/.test/test_data.json")
 	if err != nil {
 		log.Fatalf("Could not read test data json: %v", err)
 	}
@@ -66,13 +65,13 @@ func loadTestData() []TestData {
 	var testData struct {
 		Tests struct {
 			Parameters []struct {
-				Language string `json:"language"`
-				Wakeword  string `json:"wakeword"`
-				ContextName  string `json:"context_name"`
-				AudioFile  string `json:"audio_file"`
-				Inference struct {
-					Intent string `json:"intent"`
-					Slots map[string]string `json:"slots"`
+				Language    string `json:"language"`
+				Wakeword    string `json:"wakeword"`
+				ContextName string `json:"context_name"`
+				AudioFile   string `json:"audio_file"`
+				Inference   struct {
+					Intent string            `json:"intent"`
+					Slots  map[string]string `json:"slots"`
 				} `json:"inference"`
 			} `json:"Parameters"`
 		} `json:"tests"`
@@ -84,11 +83,11 @@ func loadTestData() []TestData {
 
 	for _, x := range testData.Tests.Parameters {
 		testData := TestData{
-			language:      	x.Language,
-			keyword:       	x.Wakeword,
-			context:       	x.ContextName,
-			testAudioFile: 	x.AudioFile,
-			expectedIntent:	x.Inference.Intent,
+			language:       x.Language,
+			keyword:        x.Wakeword,
+			context:        x.ContextName,
+			testAudioFile:  x.AudioFile,
+			expectedIntent: x.Inference.Intent,
 			expectedSlots:  x.Inference.Slots,
 		}
 

@@ -204,7 +204,7 @@ packages:
       name: picovoice_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.6"
+    version: "2.2.0"
   platform:
     dependency: transitive
     description:
@@ -225,7 +225,7 @@ packages:
       name: porcupine_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.6"
+    version: "2.2.0"
   process:
     dependency: transitive
     description:
@@ -239,7 +239,7 @@ packages:
       name: rhino_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.7"
+    version: "2.2.0"
   sky_engine:
     dependency: transitive
     description: flutter

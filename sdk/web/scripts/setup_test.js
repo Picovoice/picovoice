@@ -4,6 +4,7 @@ const { join } = require('path');
 console.log('Copying the porcupine and rhino models...');
 
 const outputDirectory = join(__dirname, '..', 'test');
+const fixturesDirectory = join(__dirname, '..', 'cypress', 'fixtures');
 
 const engines = [
   {
@@ -26,7 +27,7 @@ const sourceDirectory = join(
 
 const testDataSource = join(
   sourceDirectory,
-  'test',
+  '.test',
   'test_data.json'
 );
 
@@ -34,9 +35,9 @@ try {
   fs.mkdirSync(outputDirectory, { recursive: true });
   fs.copyFileSync(testDataSource, join(outputDirectory, 'test_data.json'));
 
-  fs.mkdirSync(join(outputDirectory, 'audio_samples'), { recursive: true });
+  fs.mkdirSync(join(fixturesDirectory, 'audio_samples'), { recursive: true });
   fs.readdirSync(join(sourceDirectory, 'audio_samples')).forEach(file => {
-    fs.copyFileSync(join(sourceDirectory, 'audio_samples', file), join(outputDirectory, 'audio_samples', file));
+    fs.copyFileSync(join(sourceDirectory, 'audio_samples', file), join(fixturesDirectory, 'audio_samples', file));
   });
 
   for (const engine of engines) {
@@ -62,7 +63,9 @@ try {
     fs.readdirSync(engineSourceDirectory).forEach(folder => {
       if (folder.includes(engine.dir)) {
         fs.readdirSync(join(engineSourceDirectory, folder, 'wasm')).forEach(file => {
-          fs.copyFileSync(join(engineSourceDirectory, folder, 'wasm', file), join(outputDirectory, engine.dir, file));
+          fs.copyFileSync(
+            join(engineSourceDirectory, folder, 'wasm', file),
+            join(outputDirectory, engine.dir, file.replace("ā", "a").replace("ō", "o")));
         });
       }
     });

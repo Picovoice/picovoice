@@ -272,7 +272,7 @@ func (picovoice *Picovoice) Init() error {
 	SampleRate = ppn.SampleRate
 	PorcupineVersion = ppn.Version
 	RhinoVersion = rhn.Version
-	Version = fmt.Sprintf("2.1.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
+	Version = fmt.Sprintf("2.2.0 (Porcupine v%s) (Rhino v%s)", PorcupineVersion, RhinoVersion)
 
 	picovoice.ContextInfo = picovoice.rhino.ContextInfo
 	picovoice.initialized = true

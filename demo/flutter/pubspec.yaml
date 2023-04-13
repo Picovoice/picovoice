@@ -14,13 +14,12 @@ dependencies:
     sdk: flutter
 
   path_provider: ^2.0.9
-  picovoice_flutter: "^2.1.6"
+  picovoice_flutter: ^2.2.0
 
 dev_dependencies:
   integration_test:
     sdk: flutter
   lints: ^1.0.1
-  wav: ^1.2.0
 
 flutter:
   uses-material-design: true
