@@ -125,7 +125,7 @@ if __name__ == '__main__':
         'en': {'wake_word': 'picovoice', 'context': 'smart_lighting'},
         'de': {'wake_word': 'hey computer', 'context': 'beleuchtung'},
         'es': {'wake_word': 'hola computadora', 'context': 'iluminación_inteligente'},
-        'fr': {'wake_word': 'salut ordinateur', 'context': 'éclairage_intelligent'},
+        'fr': {'wake_word': 'bonjour ordinateur', 'context': 'éclairage_intelligent'},
         'it': {'wake_word': 'ciao computer', 'context': 'illuminazione'},
         'ja': {'wake_word': 'konnichiwa konpyūtā', 'context': 'sumāto_shōmei'},
         'ko': {'wake_word': 'annyeong keompyuteo', 'context': 'seumateu_jomyeong'},
