@@ -165,7 +165,7 @@ def main():
         print("Failed to initialize Picovoice")
         raise e
 
-    audio = read_file(args.input_audio_path, pv.sample_rate)
+    audio = read_file(args.wav_path, pv.sample_rate)
 
     for i in range(len(audio) // pv.frame_length):
         frame = audio[i * pv.frame_length:(i + 1) * pv.frame_length]
