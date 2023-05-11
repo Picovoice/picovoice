@@ -12,7 +12,7 @@ import Picovoice
 
 struct ContentView: View {
 
-    let ACCESS_KEY = "Tw4jothrMMLyRYQ793yD/XF3DeithcbeNVsYlNN0Dc1vY26suWNOkg=="
+    let ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"
 
     let language: String = ProcessInfo.processInfo.environment["LANGUAGE"]!
     let wakeword: String = ProcessInfo.processInfo.environment["WAKEWORD"]!
