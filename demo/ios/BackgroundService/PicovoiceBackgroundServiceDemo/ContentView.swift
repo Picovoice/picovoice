@@ -12,16 +12,16 @@ import Picovoice
 import SwiftySound
 
 struct ContentView: View {
-    
+
     let ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"
-    
+
     let keywordPath = Bundle.main.path(forResource: "picovoice_ios", ofType: "ppn")
     let contextPath = Bundle.main.path(forResource: "smart_lighting_ios", ofType: "rhn")
-    
+
     @State var picovoiceManager: PicovoiceManager!
     @State var buttonLabel = "START"
     @State var errorMessage: String = ""
-    
+
     var body: some View {
         VStack {
             Spacer()
@@ -33,13 +33,14 @@ struct ContentView: View {
                 .font(.body)
                 .opacity(errorMessage.isEmpty ? 0 : 1)
                 .cornerRadius(.infinity)
-            
+
             Spacer()
-            Text("Press the Start button and say \"Picovoice, turn off the lights\". Try pressing the home button and saying it again.")
+            Text("Press the Start button and say \"Picovoice, turn off the lights\".
+                    Try pressing the home button and saying it again.")
                 .padding()
                 .foregroundColor(Color.black)
                 .multilineTextAlignment(.center)
-            Button(action: {
+            Button {
                 if self.buttonLabel == "START" {
                     do {
                         self.picovoiceManager = PicovoiceManager(
@@ -65,12 +66,12 @@ struct ContentView: View {
                                         }
                                     }
                                     result += "}\n"
-                                    
+
                                     NotificationManager.shared.sendNotification(message: result)
                                 }
                             })
                         try self.picovoiceManager.start()
-                        
+
                         self.buttonLabel = "STOP"
                         Sound.category = .playAndRecord
                         NotificationManager.shared.requestNotificationAuthorization()
@@ -82,17 +83,17 @@ struct ContentView: View {
                         errorMessage = "ACCESS_KEY activation refused"
                     } catch is PicovoiceActivationLimitError {
                         errorMessage = "ACCESS_KEY reached its limit"
-                    } catch is PicovoiceActivationThrottledError  {
+                    } catch is PicovoiceActivationThrottledError {
                         errorMessage = "ACCESS_KEY is throttled"
                     } catch {
                         errorMessage = "\(error)"
                     }
-                    
+
                 } else {
                     self.picovoiceManager.stop()
                     self.buttonLabel = "START"
                 }
-            }) {
+            } label: {
                 Text("\(buttonLabel)")
                     .padding()
                     .background(errorMessage.isEmpty ? Color.blue : Color.gray)

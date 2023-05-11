@@ -7,13 +7,13 @@
 //  specific language governing permissions and limitations under the License.
 //
 
-public class PicovoiceError : LocalizedError {
-    private let message: String;
-    
+public class PicovoiceError: LocalizedError {
+    private let message: String
+
     public init (_ message: String) {
         self.message = message
     }
-    
+
     public var errorDescription: String? {
         return message
     }
@@ -25,24 +25,24 @@ public class PicovoiceError : LocalizedError {
     }
 }
 
-public class PicovoiceMemoryError : PicovoiceError {}
+public class PicovoiceMemoryError: PicovoiceError {}
 
-public class PicovoiceIOError : PicovoiceError {}
+public class PicovoiceIOError: PicovoiceError {}
 
-public class PicovoiceInvalidArgumentError : PicovoiceError {}
+public class PicovoiceInvalidArgumentError: PicovoiceError {}
 
-public class PicovoiceStopIterationError : PicovoiceError {}
+public class PicovoiceStopIterationError: PicovoiceError {}
 
-public class PicovoiceKeyError : PicovoiceError {}
+public class PicovoiceKeyError: PicovoiceError {}
 
-public class PicovoiceInvalidStateError : PicovoiceError {}
+public class PicovoiceInvalidStateError: PicovoiceError {}
 
-public class PicovoiceRuntimeError : PicovoiceError {}
+public class PicovoiceRuntimeError: PicovoiceError {}
 
-public class PicovoiceActivationError : PicovoiceError {}
+public class PicovoiceActivationError: PicovoiceError {}
 
-public class PicovoiceActivationLimitError : PicovoiceError {}
+public class PicovoiceActivationLimitError: PicovoiceError {}
 
-public class PicovoiceActivationThrottledError : PicovoiceError {}
+public class PicovoiceActivationThrottledError: PicovoiceError {}
 
-public class PicovoiceActivationRefusedError : PicovoiceError {}
+public class PicovoiceActivationRefusedError: PicovoiceError {}
