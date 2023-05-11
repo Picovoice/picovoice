@@ -24,15 +24,17 @@ Open `PicovoiceBackgroundServiceDemo.xcworkspace` and paste your `AccessKey` int
 
 This demo runs wake word detection and context inference while the application is in focus. 
 
-To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
+To run the foreground application demo:
 
-```console
-pod install
-```
+1) Go to [ForegroundApp](./ForegroundApp) directory. Then run:
 
-Open the `PicovoiceForegroundAppDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Then, build and run the demo through XCode.
+2) Open the `PicovoiceForegroundAppDemo.xcworkspace` in XCode
 
-## Wake Word Detection and Context Inference
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ContentView.swift](./ForegroundApp/PicovoiceForegroundAppDemo/ContentView.swift) with your `AccessKey`.
+
+4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arScheme` -> Arabic Demo, `deScheme` -> German Demo)
+
+5) Run the demo with a simulator or connected iOS device
 
 The default wake word is `Picovoice`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
 
