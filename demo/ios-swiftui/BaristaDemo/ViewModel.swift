@@ -15,10 +15,24 @@ struct CapsuleSelection: Codable, Identifiable {
 
 class ViewModel: ObservableObject {
 
-    @Published var sizeSel = [CapsuleSelection(title: "Small"), CapsuleSelection(title: "Medium"), CapsuleSelection(title: "Large")]
-    @Published var shotSel = [CapsuleSelection(title: "Single Shot"), CapsuleSelection(title: "Double Shot"), CapsuleSelection(title: "Triple Shot")]
-    @Published var bevSel = [CapsuleSelection(title: "Americano"), CapsuleSelection(title: "Cappuccino"), CapsuleSelection(title: "Coffee"),
-                             CapsuleSelection(title: "Espresso"), CapsuleSelection(title: "Latte"), CapsuleSelection(title: "Mocha")]
+    @Published var sizeSel = [
+        CapsuleSelection(title: "Small"),
+        CapsuleSelection(title: "Medium"),
+        CapsuleSelection(title: "Large")
+    ]
+    @Published var shotSel = [
+        CapsuleSelection(title: "Single Shot"),
+        CapsuleSelection(title: "Double Shot"),
+        CapsuleSelection(title: "Triple Shot")
+    ]
+    @Published var bevSel = [
+        CapsuleSelection(title: "Americano"),
+        CapsuleSelection(title: "Cappuccino"),
+        CapsuleSelection(title: "Coffee"),
+        CapsuleSelection(title: "Espresso"),
+        CapsuleSelection(title: "Latte"),
+        CapsuleSelection(title: "Mocha")
+    ]
 
     @Published var isListening = false
     @Published var missedCommand = false

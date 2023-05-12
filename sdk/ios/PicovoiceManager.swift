@@ -32,6 +32,12 @@ public class PicovoiceManager {
 
     private var processErrorCallback: ((PicovoiceError) -> Void)?
 
+    public var contextInfo: String {
+        get {
+            return (self.picovoice != nil) ? self.picovoice.contextInfo : ""
+        }
+    }
+
     /// Constructor.
     ///
     /// - Parameters:

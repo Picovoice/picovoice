@@ -36,70 +36,70 @@ struct ContentView: View {
 
             Spacer()
             Text("Press the Start button and say \"Picovoice, turn off the lights\".
-                    Try pressing the home button and saying it again.")
+                Try pressing the home button and saying it again.")
                 .padding()
                 .foregroundColor(Color.black)
                 .multilineTextAlignment(.center)
-            Button {
+                Button {
                 if self.buttonLabel == "START" {
-                    do {
-                        self.picovoiceManager = PicovoiceManager(
-                            accessKey: self.ACCESS_KEY,
-                            keywordPath: self.keywordPath!,
-                            onWakeWordDetection: {
-                                Sound.play(file: "beep.wav")
-                                NotificationManager.shared.sendNotification(message: "Wake Word Detected")
-                            },
-                            contextPath: self.contextPath!,
-                            onInference: { x in
-                                DispatchQueue.main.async {
-                                    var result = "{\n"
-                                    result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
-                                    if x.isUnderstood {
-                                        result += "    \"intent : \"" + x.intent + "\",\n"
-                                        if !x.slots.isEmpty {
-                                            result += "    \"slots\" : {\n"
-                                            for (k, v) in x.slots {
-                                                result += "        \"" + k + "\" : \"" + v + "\",\n"
-                                            }
-                                            result += "    }\n"
-                                        }
-                                    }
-                                    result += "}\n"
+                do {
+                self.picovoiceManager = PicovoiceManager(
+                accessKey: self.ACCESS_KEY,
+                keywordPath: self.keywordPath!,
+                onWakeWordDetection: {
+                Sound.play(file: "beep.wav")
+                NotificationManager.shared.sendNotification(message: "Wake Word Detected")
+                },
+                contextPath: self.contextPath!,
+                onInference: { x in
+                DispatchQueue.main.async {
+                var result = "{\n"
+                result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
+                if x.isUnderstood {
+                result += "    \"intent : \"" + x.intent + "\",\n"
+                if !x.slots.isEmpty {
+                result += "    \"slots\" : {\n"
+                for (k, v) in x.slots {
+                result += "        \"" + k + "\" : \"" + v + "\",\n"
+                }
+                result += "    }\n"
+                }
+                }
+                result += "}\n"
 
-                                    NotificationManager.shared.sendNotification(message: result)
-                                }
-                            })
-                        try self.picovoiceManager.start()
+                NotificationManager.shared.sendNotification(message: result)
+                }
+                })
+                try self.picovoiceManager.start()
 
-                        self.buttonLabel = "STOP"
-                        Sound.category = .playAndRecord
-                        NotificationManager.shared.requestNotificationAuthorization()
-                    } catch let error as PicovoiceInvalidArgumentError {
-                        errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
-                    } catch is PicovoiceActivationError {
-                        errorMessage = "ACCESS_KEY activation error"
-                    } catch is PicovoiceActivationRefusedError {
-                        errorMessage = "ACCESS_KEY activation refused"
-                    } catch is PicovoiceActivationLimitError {
-                        errorMessage = "ACCESS_KEY reached its limit"
-                    } catch is PicovoiceActivationThrottledError {
-                        errorMessage = "ACCESS_KEY is throttled"
-                    } catch {
-                        errorMessage = "\(error)"
-                    }
+                self.buttonLabel = "STOP"
+                Sound.category = .playAndRecord
+                NotificationManager.shared.requestNotificationAuthorization()
+                } catch let error as PicovoiceInvalidArgumentError {
+                errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+                } catch is PicovoiceActivationError {
+                errorMessage = "ACCESS_KEY activation error"
+                } catch is PicovoiceActivationRefusedError {
+                errorMessage = "ACCESS_KEY activation refused"
+                } catch is PicovoiceActivationLimitError {
+                errorMessage = "ACCESS_KEY reached its limit"
+                } catch is PicovoiceActivationThrottledError {
+                errorMessage = "ACCESS_KEY is throttled"
+                } catch {
+                errorMessage = "\(error)"
+                }
 
                 } else {
-                    self.picovoiceManager.stop()
-                    self.buttonLabel = "START"
+                self.picovoiceManager.stop()
+                self.buttonLabel = "START"
                 }
-            } label: {
+                } label: {
                 Text("\(buttonLabel)")
-                    .padding()
-                    .background(errorMessage.isEmpty ? Color.blue : Color.gray)
-                    .foregroundColor(Color.white)
-                    .font(.largeTitle)
-            }.disabled(!errorMessage.isEmpty)
+                .padding()
+                .background(errorMessage.isEmpty ? Color.blue : Color.gray)
+                .foregroundColor(Color.white)
+                .font(.largeTitle)
+                }.disabled(!errorMessage.isEmpty)
         }
         .padding()
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)

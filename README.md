@@ -21,7 +21,9 @@
 
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
+<!-- markdown-link-check-disable -->
 [![Twitter URL](https://img.shields.io/twitter/url?label=%40AiPicovoice&style=social&url=https%3A%2F%2Ftwitter.com%2FAiPicovoice)](https://twitter.com/AiPicovoice)
+<!-- markdown-link-check-enable -->
 [![YouTube Channel Views](https://img.shields.io/youtube/channel/views/UCAdi9sTCXLosG1XeqDwLx7w?label=YouTube&style=social)](https://www.youtube.com/channel/UCAdi9sTCXLosG1XeqDwLx7w)
 
 Picovoice is the end-to-end platform for building voice products on your terms. Unlike Alexa and Google services,

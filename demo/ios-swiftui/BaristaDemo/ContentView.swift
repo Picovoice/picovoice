@@ -21,7 +21,7 @@ struct ContentView: View {
                     // Size row
                     HStack(alignment: .center, spacing: 10) {
                         ForEach(viewModel.sizeSel) { item in
-                            Button(action: {}) {
+                            Button {
                                 Text(item.title)
                                     .font(.system(size: 20))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
@@ -41,10 +41,15 @@ struct ContentView: View {
                     }
 
                     // # Shot row
-                    Text("Espresso Shots").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    Text("Espresso Shots")
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(inactiveGrey)
+                        .padding(.top, 8.0)
+
                     HStack(alignment: .center, spacing: 7) {
                         ForEach(viewModel.shotSel) { item in
-                            Button(action: {}) {
+                            Button {
                                 Text(item.title)
                                     .font(.system(size: 16))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
@@ -64,11 +69,16 @@ struct ContentView: View {
                     }
 
                     // Beverage row
-                    Text("Beverage Type").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    Text("Beverage Type")
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(inactiveGrey)
+                        .padding(.top, 8.0)
+
                     VStack(alignment: .center, spacing: 6) {
                         HStack(alignment: .center) {
                             ForEach(0..<viewModel.bevSel.count/2) { i in
-                                Button(action: {}) {
+                                Button {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
@@ -81,14 +91,15 @@ struct ContentView: View {
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
                                             Capsule()
-                                                .stroke(inactiveGrey, lineWidth: 2).opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
+                                                .stroke(inactiveGrey, lineWidth: 2)
+                                                .opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
                                         )
                                 )
                             }
                         }
                         HStack(alignment: .center) {
                             ForEach(viewModel.bevSel.count/2..<viewModel.bevSel.count) { i in
-                                Button(action: {}) {
+                                Button {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
@@ -101,7 +112,8 @@ struct ContentView: View {
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
                                             Capsule()
-                                                .stroke(inactiveGrey, lineWidth: 2).opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
+                                                .stroke(inactiveGrey, lineWidth: 2)
+                                                .opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
                                         )
                                 )
                             }
