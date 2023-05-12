@@ -34,7 +34,7 @@ public class PicovoiceManager {
 
     public var contextInfo: String {
         get {
-            return (self.picovoice != nil) ? self.picovoice.contextInfo : ""
+            return (self.picovoice != nil) ? self.picovoice!.contextInfo : ""
         }
     }
 
