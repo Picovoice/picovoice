@@ -14,7 +14,11 @@ struct SheetView: View {
     @Binding var contextInfo: String
 
     var body: some View {
-        Text(self.contextInfo)
+        ScrollView {
+            Text(self.contextInfo)
+                .padding()
+                .font(.system(size: 14))
+        }
     }
 }
 
@@ -34,6 +38,62 @@ struct ContentView: View {
     @State var errorMessage: String = ""
     @State var contextInfo: String = ""
     @State var showInfo: Bool = false
+
+    func initPicovoice() {
+        let keywordPath = Bundle.main.url(
+            forResource: "\(wakeword)_ios",
+            withExtension: "ppn",
+            subdirectory: "keywords")!.path
+        let ppnModelPath = (language == "en") ? nil :
+            Bundle.main.url(
+                forResource: "porcupine_params_\(language)",
+                withExtension: "pv",
+                subdirectory: "models")!.path
+
+        let contextPath = Bundle.main.url(
+            forResource: "\(context)_ios",
+            withExtension: "rhn",
+            subdirectory: "contexts")!.path
+        let rhnModelPath = (language == "en") ? nil :
+            Bundle.main.url(
+                forResource: "rhino_params_\(language)",
+                withExtension: "pv",
+                subdirectory: "models")!.path
+
+        self.picovoiceManager = PicovoiceManager(
+            accessKey: self.ACCESS_KEY,
+            keywordPath: keywordPath,
+            onWakeWordDetection: {
+                result = "Wake Word Detected!\nListening for command..."
+            },
+            contextPath: contextPath,
+            onInference: { x in
+                DispatchQueue.main.async {
+                    result = "{\n"
+                    self.result += "    \"isUnderstood\" : \"" +
+                        x.isUnderstood.description + "\",\n"
+                    if x.isUnderstood {
+                        self.result += "    \"intent : \"" + x.intent + "\",\n"
+                        if !x.slots.isEmpty {
+                            result += "    \"slots\" : {\n"
+                            for (k, v) in x.slots {
+                                self.result += "        \"" + k + "\" : \"" + v + "\",\n"
+                            }
+                            result += "    }\n"
+                        }
+                    }
+                    result += "}\n"
+                }
+
+                self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { _ in
+                    if buttonLabel == "STOP" {
+                        result = "Listening for Wake Word.."
+                    }
+                }
+            },
+            porcupineModelPath: ppnModelPath,
+            rhinoModelPath: rhnModelPath)
+    }
 
     var body: some View {
         NavigationView {
@@ -58,64 +118,13 @@ struct ContentView: View {
                     if self.buttonLabel == "START" {
                         self.textTimer?.invalidate()
                         self.result = ""
-
-                        let keywordPath = Bundle.main.url(
-                            forResource: "\(wakeword)_ios",
-                            withExtension: "ppn",
-                            subdirectory: "keywords")!.path
-                        let ppnModelPath = (language == "en") ? nil :
-                            Bundle.main.url(
-                                forResource: "porcupine_params_\(language)",
-                                withExtension: "pv",
-                                subdirectory: "models")!.path
-
-                        let contextPath = Bundle.main.url(
-                            forResource: "\(context)_ios",
-                            withExtension: "rhn",
-                            subdirectory: "contexts")!.path
-                        let rhnModelPath = (language == "en") ? nil :
-                            Bundle.main.url(
-                                forResource: "rhino_params_\(language)",
-                                withExtension: "pv",
-                                subdirectory: "models")!.path
+                        if self.picovoiceManager == nil {
+                            self.initPicovoice()
+                        }
 
                         do {
-                            self.picovoiceManager = PicovoiceManager(
-                                accessKey: self.ACCESS_KEY,
-                                keywordPath: keywordPath,
-                                onWakeWordDetection: {
-                                    result = "Wake Word Detected!\nListening for command..."
-                                },
-                                contextPath: contextPath,
-                                onInference: { x in
-                                    DispatchQueue.main.async {
-                                        result = "{\n"
-                                        self.result += "    \"isUnderstood\" : \"" +
-                                            x.isUnderstood.description + "\",\n"
-                                        if x.isUnderstood {
-                                            self.result += "    \"intent : \"" + x.intent + "\",\n"
-                                            if !x.slots.isEmpty {
-                                                result += "    \"slots\" : {\n"
-                                                for (k, v) in x.slots {
-                                                    self.result += "        \"" + k + "\" : \"" + v + "\",\n"
-                                                }
-                                                result += "    }\n"
-                                            }
-                                        }
-                                        result += "}\n"
-                                    }
-
-                                    self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { _ in
-                                        if buttonLabel == "STOP" {
-                                            result = "Listening for Wake Word.."
-                                        }
-                                    }
-                                },
-                                porcupineModelPath: ppnModelPath,
-                                rhinoModelPath: rhnModelPath)
-
                             try self.picovoiceManager.start()
-
+                            self.contextInfo = ""
                             self.buttonLabel = "STOP"
                             self.result = "Listening for '\(wakeword.uppercased())'..."
                         } catch let error as PicovoiceInvalidArgumentError {
@@ -151,6 +160,9 @@ struct ContentView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .background(Color.white)
             .navigationBarItems(trailing: Button("Context Info") {
+                if self.picovoiceManager == nil {
+                    initPicovoice()
+                }
                 self.showInfo = true
             })
         }

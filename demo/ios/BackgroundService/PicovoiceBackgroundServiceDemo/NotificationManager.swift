@@ -38,10 +38,10 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         UNUserNotificationCenter.current().requestAuthorization(
             options: [.badge, .alert, .sound],
             completionHandler: { (_, error) in
-            if let error = error {
-                print("Error: ", error)
-            }
-        })
+                if let error = error {
+                    print("Error: ", error)
+                }
+            })
     }
 
     public func sendNotification(message: String) {
