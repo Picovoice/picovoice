@@ -30,12 +30,14 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions
-    ) -> Void) {
+        ) -> Void) {
         completionHandler([.badge, .banner, .sound])
     }
 
     public func requestNotificationAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .alert, .sound], completionHandler: { (_, error) in
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.badge, .alert, .sound],
+            completionHandler: { (_, error) in
             if let error = error {
                 print("Error: ", error)
             }

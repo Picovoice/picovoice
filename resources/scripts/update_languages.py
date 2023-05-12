@@ -35,7 +35,10 @@ def update_ios_demo(parameters):
             pre_build_action = base_scheme_content.getElementsByTagName('ActionContent')[0]
             pre_build_action.setAttribute(
                 'scriptText',
-                pre_build_action.attributes['scriptText'].value.replace(" en", f" {language}"))
+                pre_build_action.attributes['scriptText'].value
+                    .replace(" en", f" {language}")
+                    .replace(" picovoice", f" {parameter['wakeword']}")
+                    .replace(" coffee_maker", f" {parameter['context']}"))
 
             env_vars = base_scheme_content.getElementsByTagName('EnvironmentVariable')
             for env_var in env_vars:
