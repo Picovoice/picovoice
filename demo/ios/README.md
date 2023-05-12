@@ -36,5 +36,5 @@ To run the foreground application demo:
 
 5) Run the demo with a simulator or connected iOS device
 
-6) Once the demo app has started, press the `start` button to start detecing keywords and infering context. To see more details about
+6) Once the demo app has started, press the `start` button to start detecting keywords and inferring context. To see more details about
 the current context information, press the `Context Info` button on the top right corner in the app.
