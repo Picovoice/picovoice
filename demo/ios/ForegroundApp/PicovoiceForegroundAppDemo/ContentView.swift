@@ -59,34 +59,34 @@ struct ContentView: View {
                         self.textTimer?.invalidate()
                         self.result = ""
 
-                        let token = (language == "en") ? "" : "_\(language)"
-
                         let keywordPath = Bundle.main.url(
                             forResource: "\(wakeword)_ios",
                             withExtension: "ppn",
-                            subdirectory: "keywords")!
-                        let ppnModelPath = Bundle.main.url(
-                            forResource: "porcupine_params\(token)",
-                            withExtension: "pv",
-                            subdirectory: "models")!
+                            subdirectory: "keywords")!.path
+                        let ppnModelPath = (language == "en") ? nil :
+                            Bundle.main.url(
+                                forResource: "porcupine_params_\(language)",
+                                withExtension: "pv",
+                                subdirectory: "models")!.path
 
                         let contextPath = Bundle.main.url(
                             forResource: "\(context)_ios",
                             withExtension: "rhn",
-                            subdirectory: "contexts")!
-                        let rhnModelPath = Bundle.main.url(
-                            forResource: "rhino_params\(token)",
-                            withExtension: "pv",
-                            subdirectory: "models")!
+                            subdirectory: "contexts")!.path
+                        let rhnModelPath = (language == "en") ? nil :
+                            Bundle.main.url(
+                                forResource: "rhino_params_\(language)",
+                                withExtension: "pv",
+                                subdirectory: "models")!.path
 
                         do {
                             self.picovoiceManager = PicovoiceManager(
                                 accessKey: self.ACCESS_KEY,
-                                keywordPath: keywordPath.path,
+                                keywordPath: keywordPath,
                                 onWakeWordDetection: {
                                     result = "Wake Word Detected!\nListening for command..."
                                 },
-                                contextPath: contextPath.path,
+                                contextPath: contextPath,
                                 onInference: { x in
                                     DispatchQueue.main.async {
                                         result = "{\n"
@@ -111,8 +111,8 @@ struct ContentView: View {
                                         }
                                     }
                                 },
-                                porcupineModelPath: ppnModelPath.path,
-                                rhinoModelPath: rhnModelPath.path)
+                                porcupineModelPath: ppnModelPath,
+                                rhinoModelPath: rhnModelPath)
 
                             try self.picovoiceManager.start()
 
