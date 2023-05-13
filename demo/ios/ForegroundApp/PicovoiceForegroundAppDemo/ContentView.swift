@@ -163,7 +163,9 @@ struct ContentView: View {
                 if self.picovoiceManager == nil {
                     initPicovoice()
                 }
-                self.showInfo = true
+                if self.picovoiceManager != nil {
+                    self.showInfo = true
+                }
             })
         }
         .sheet(isPresented: self.$showInfo) {
