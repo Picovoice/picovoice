@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { join } = require('path');
+const { createHash } = require('crypto');
 
 console.log('Copying the porcupine and rhino models...');
 
@@ -8,28 +9,18 @@ const fixturesDirectory = join(__dirname, '..', 'cypress', 'fixtures');
 
 const engines = [
   {
-    "name": "porcupine",
-    "dir": "keyword_files"
+    name: 'porcupine',
+    dir: 'keyword_files',
   },
   {
-    "name": "rhino",
-    "dir": "contexts"
-  }
+    name: 'rhino',
+    dir: 'contexts',
+  },
 ];
 
-const sourceDirectory = join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "resources",
-);
+const sourceDirectory = join(__dirname, '..', '..', '..', 'resources');
 
-const testDataSource = join(
-  sourceDirectory,
-  '.test',
-  'test_data.json'
-);
+const testDataSource = join(sourceDirectory, '.test', 'test_data.json');
 
 try {
   fs.mkdirSync(outputDirectory, { recursive: true });
@@ -37,7 +28,18 @@ try {
 
   fs.mkdirSync(join(fixturesDirectory, 'audio_samples'), { recursive: true });
   fs.readdirSync(join(sourceDirectory, 'audio_samples')).forEach(file => {
-    fs.copyFileSync(join(sourceDirectory, 'audio_samples', file), join(fixturesDirectory, 'audio_samples', file));
+    let src = join(sourceDirectory, 'audio_samples', file);
+
+    // Bug in Cypress means we can't read utf-8 file names, so we have to hash them
+    let encodedAudioName = createHash('md5')
+      .update(file.replace('.wav', ''))
+      .digest('hex');
+    let dst = join(
+      fixturesDirectory,
+      'audio_samples',
+      `${encodedAudioName}.wav`
+    );
+    fs.copyFileSync(src, dst);
   });
 
   for (const engine of engines) {
@@ -52,21 +54,41 @@ try {
       sourceDirectory,
       engine.name,
       'resources'
-    )
+    );
 
     fs.mkdirSync(join(outputDirectory, engine.name), { recursive: true });
     fs.readdirSync(paramsSourceDirectory).forEach(file => {
-      fs.copyFileSync(join(paramsSourceDirectory, file), join(outputDirectory, engine.name, file));
+      fs.copyFileSync(
+        join(paramsSourceDirectory, file),
+        join(outputDirectory, engine.name, file)
+      );
     });
 
     fs.mkdirSync(join(outputDirectory, engine.dir), { recursive: true });
     fs.readdirSync(engineSourceDirectory).forEach(folder => {
       if (folder.includes(engine.dir)) {
-        fs.readdirSync(join(engineSourceDirectory, folder, 'wasm')).forEach(file => {
-          fs.copyFileSync(
-            join(engineSourceDirectory, folder, 'wasm', file),
-            join(outputDirectory, engine.dir, file.replace("ā", "a").replace("ō", "o")));
-        });
+        fs.readdirSync(join(engineSourceDirectory, folder, 'wasm')).forEach(
+          file => {
+            let src = join(engineSourceDirectory, folder, 'wasm', file);
+            if (folder === engine.dir) {
+              let dst = join(outputDirectory, engine.dir, file);
+              fs.copyFileSync(src, dst);
+            } else {
+              let fileParts = file.split('_wasm');
+
+              // Bug in Cypress means we can't read utf-8 file names, so we have to hash them
+              let encodedFileName = createHash('md5')
+                .update(fileParts[0])
+                .digest('hex');
+              let dst = join(
+                outputDirectory,
+                engine.dir,
+                `${encodedFileName}_wasm${fileParts[1]}`
+              );
+              fs.copyFileSync(src, dst);
+            }
+          }
+        );
       }
     });
   }
