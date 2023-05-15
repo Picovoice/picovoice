@@ -25,7 +25,7 @@ public class Picovoice {
     public static let sampleRate = Porcupine.sampleRate
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
-    public static let picovoiceVersion = "2.1.0"
+    public static let picovoiceVersion = "2.2.0"
     public var contextInfo: String? = ""
 
     private var isWakeWordDetected: Bool = false
@@ -86,7 +86,7 @@ public class Picovoice {
                 endpointDurationSec: endpointDurationSec,
                 requireEndpoint: requireEndpoint)
 
-            contextInfo = rhino?.contextInfo
+            contextInfo = (rhino != nil) ? rhino!.contextInfo : ""
         } catch {
             throw mapToPicovoiceError(error)
         }
