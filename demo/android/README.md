@@ -20,6 +20,12 @@ This demo is intended for applications that need to do voice recognition in the 
 
 Copy your AccessKey into the `ACCESS_KEY` variable in `PicovoiceService.java` before building the demo.
 
+## Setup
+
+1. Open the project in Android Studio
+2. Go to `Build > Select Build Variant...` and select the language you would like to run the demo in (e.g. enDebug -> English, itRelease -> Italian)
+3. Build and run on an installed simulator or a connected Android device
+
 ## Running the Demo
 
 The default wake word is `Porcupine`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start
