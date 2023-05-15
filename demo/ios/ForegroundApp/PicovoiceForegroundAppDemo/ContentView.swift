@@ -95,9 +95,13 @@ struct ContentView: View {
             rhinoModelPath: rhnModelPath)
 
         do {
-            try self.picovoiceManager.start()
-            self.contextInfo = self.picovoiceManager.contextInfo
-            self.picovoiceManager.stop()
+            if self.picovoiceManager.contextInfo == ""  && buttonLabel == "START" {
+                try self.picovoiceManager.start()
+                self.contextInfo = self.picovoiceManager.contextInfo
+                self.picovoiceManager.stop()
+            } else {
+                self.contextInfo = self.picovoiceManager.contextInfo
+            }
         } catch { }
     }
 
