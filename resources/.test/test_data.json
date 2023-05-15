@@ -185,7 +185,7 @@
       },
       {
         "language": "zh",
-        "wakeword": "豪 猪",
+        "wakeword": "豪猪",
         "context_name": "simple_context_zh",
         "audio_file": "porcupine-simple-context_zh.wav",
         "inference": {
