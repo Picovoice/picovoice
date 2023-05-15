@@ -93,6 +93,12 @@ struct ContentView: View {
             },
             porcupineModelPath: ppnModelPath,
             rhinoModelPath: rhnModelPath)
+
+        do {
+            try self.picovoiceManager.start()
+            self.contextInfo = self.picovoiceManager.contextInfo
+            self.picovoiceManager.stop()
+        } catch { }
     }
 
     var body: some View {
@@ -124,7 +130,6 @@ struct ContentView: View {
 
                         do {
                             try self.picovoiceManager.start()
-                            self.contextInfo = ""
                             self.buttonLabel = "STOP"
                             self.result = "Listening for '\(wakeword.uppercased())'..."
                         } catch let error as PicovoiceInvalidArgumentError {
