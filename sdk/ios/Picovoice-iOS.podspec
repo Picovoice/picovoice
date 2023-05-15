@@ -25,6 +25,6 @@ Pod::Spec.new do |s|
     s.exclude_files = 'sdk/ios/PicovoiceAppTest/**'
     
     s.dependency 'Porcupine-iOS', '~> 2.2.0'
-    s.dependency 'Rhino-iOS', '~> 2.2.0'
+    s.dependency 'Rhino-iOS', '~> 2.2.1'
     s.dependency 'ios-voice-processor', '~> 1.0.2'
   end
