@@ -3,6 +3,7 @@
   <head>
     <script src="node_modules/@picovoice/picovoice-web/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
+    <script src="models/picovoiceModels.js"></script>
     <script type="application/javascript">
 
       function writeMessage(message) {
@@ -37,17 +38,9 @@
             publicPath: "picovoice_wasm.ppn",
             forceWrite: true
           }
-          const porcupineModel = {
-            publicPath: "porcupine_params.pv",
-            forceWrite: true
-          }
 
           const rhinoContext = {
             publicPath: "clock_wasm.rhn",
-            forceWrite: true
-          }
-          const rhinoModel = {
-            publicPath: "rhino_params.pv",
             forceWrite: true
           }
 
