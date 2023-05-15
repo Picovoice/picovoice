@@ -3,7 +3,7 @@
     "parameters": [
       {
         "language": "ar",
-        "wakeword": "hummus",
+        "wakeword": "الحمص",
         "context_name": "simple_context_ar",
         "audio_file": "hummus-simple-context_ar.wav",
         "inference": {
@@ -65,7 +65,7 @@
       },
       {
         "language": "hi",
-        "wakeword": "namaste",
+        "wakeword": "नमस्ते",
         "context_name": "simple_context_hi",
         "audio_file": "namaste-simple-context_hi.wav",
         "inference": {
@@ -89,7 +89,7 @@
       },
       {
         "language": "ja",
-        "wakeword": "ninja",
+        "wakeword": "忍者",
         "context_name": "sumāto_shōmei",
         "audio_file": "ninja-sumāto-shōmei_ja.wav",
         "inference": {
@@ -101,7 +101,7 @@
       },
       {
         "language": "ko",
-        "wakeword": "koppulso",
+        "wakeword": "코뿔소",
         "context_name": "seumateu_jomyeong",
         "audio_file": "koppulso-seumateu-jomyeong_ko.wav",
         "inference": {
@@ -125,7 +125,7 @@
       },
       {
         "language": "pl",
-        "wakeword": "porcupine_pl",
+        "wakeword": "jeżozwierz",
         "context_name": "simple_context_pl",
         "audio_file": "porcupine-simple-context_pl.wav",
         "inference": {
@@ -149,7 +149,7 @@
       },
       {
         "language": "ru",
-        "wakeword": "pomogite",
+        "wakeword": "помогите",
         "context_name": "simple_context_ru",
         "audio_file": "pomogite-simple-context_ru.wav",
         "inference": {
@@ -161,7 +161,7 @@
       },
       {
         "language": "sv",
-        "wakeword": "porcupine_sv",
+        "wakeword": "piggsvin",
         "context_name": "simple_context_sv",
         "audio_file": "porcupine-simple-context_sv.wav",
         "inference": {
@@ -173,7 +173,7 @@
       },
       {
         "language": "vn",
-        "wakeword": "chao_chi",
+        "wakeword": "chào chị",
         "context_name": "simple_context_vn",
         "audio_file": "chao-chi-simple-context_vn.wav",
         "inference": {
@@ -185,7 +185,7 @@
       },
       {
         "language": "zh",
-        "wakeword": "porcupine_zh",
+        "wakeword": "豪 猪",
         "context_name": "simple_context_zh",
         "audio_file": "porcupine-simple-context_zh.wav",
         "inference": {
