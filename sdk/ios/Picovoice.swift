@@ -26,7 +26,7 @@ public class Picovoice {
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
     public static let picovoiceVersion = "2.2.0"
-    public var contextInfo: String? = ""
+    public var contextInfo: String = ""
 
     private var isWakeWordDetected: Bool = false
 
