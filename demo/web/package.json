@@ -5,10 +5,7 @@
   "description": "A basic demo to show how to use Picovoice for web browsers, using the IIFE version of the library",
   "main": "index.js",
   "scripts": {
-    "ppn-cp": "ncp ../../resources/porcupine/lib/common/porcupine_params.pv ./porcupine_params.pv && ncp ../../resources/porcupine/resources/keyword_files/wasm/picovoice_wasm.ppn ./picovoice_wasm.ppn",
-    "rhn-cp": "ncp ../../resources/rhino/lib/common/rhino_params.pv ./rhino_params.pv && ncp ../../resources/rhino/resources/contexts/wasm/clock_wasm.rhn ./clock_wasm.rhn",
-    "postinstall": "npm run ppn-cp && npm run rhn-cp",
-    "start": "http-server -a localhost -p 5000"
+    "start": "run(){ if node scripts/prepare_demo.js $1 == 0; then http-server -a localhost -p 5000; fi }; run"
   },
   "keywords": [
     "Picovoice",
@@ -33,7 +30,6 @@
     "@picovoice/web-voice-processor": "~4.0.6"
   },
   "devDependencies": {
-    "http-server": "^14.0.0",
-    "ncp": "^2.0.0"
+    "http-server": "^14.0.0"
   }
 }
