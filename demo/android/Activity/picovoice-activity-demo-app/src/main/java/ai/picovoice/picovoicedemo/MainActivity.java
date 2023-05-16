@@ -33,12 +33,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.Map;
+import java.util.Objects;
 
 import ai.picovoice.picovoice.*;
 import ai.picovoice.rhino.RhinoInference;
 
 public class MainActivity extends AppCompatActivity {
     private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+    private String wakeWordName = "";
+    private String contextName = "";
 
     private PicovoiceManager picovoiceManager;
     private TextView intentTextView;
@@ -118,11 +121,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TextView wakeWordNameTextView = findViewById(R.id.wakeWordName);
+        TextView contextNameTextView = findViewById(R.id.contextName);
         intentTextView = findViewById(R.id.intentView);
         errorTextView = findViewById(R.id.errorView);
         errorGuideline = findViewById(R.id.errorGuideLine);
         recordButton = findViewById(R.id.startButton);
         cheatSheetButton = findViewById(R.id.cheatSheetButton);
+
+        wakeWordName = getApplicationContext().getString(R.string.pvWakeword);
+        wakeWordNameTextView.setText(wakeWordName);
+
+        contextName = getApplicationContext().getString(R.string.pvContextName);
+        contextNameTextView.setText(contextName);
 
         initPicovoice();
     }
@@ -158,13 +169,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initPicovoice() {
+        String porcupineModel;
+        String rhinoModel;
+        if (Objects.equals(BuildConfig.FLAVOR, "en")) {
+            porcupineModel = "porcupine_params.pv";
+            rhinoModel = "rhino_params.pv";
+        } else {
+            porcupineModel = "porcupine_params_" + BuildConfig.FLAVOR + ".pv";
+            rhinoModel = "rhino_params_" + BuildConfig.FLAVOR + ".pv";
+        }
+
         picovoiceManager = new PicovoiceManager.Builder()
                 .setAccessKey(ACCESS_KEY)
-                .setKeywordPath("porcupine_android.ppn")
+                .setKeywordPath("wakewords/" + wakeWordName.replace(" ", "_") + ".ppn")
                 .setPorcupineSensitivity(0.75f)
+                .setPorcupineModelPath("models/" + porcupineModel)
                 .setWakeWordCallback(picovoiceWakeWordCallback)
-                .setContextPath("smart_lighting_android.rhn")
+                .setContextPath("contexts/" + contextName + ".rhn")
                 .setRhinoSensitivity(0.25f)
+                .setRhinoModelPath("models/" + rhinoModel)
                 .setInferenceCallback(picovoiceInferenceCallback)
                 .setProcessErrorCallback(picovoiceManagerErrorCallback)
                 .build(getApplicationContext());
