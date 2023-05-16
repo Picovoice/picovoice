@@ -291,6 +291,7 @@ usleep
 vtable
 VUEJS
 wakeword
+wakewords
 wargv
 wavefile
 wavspec
