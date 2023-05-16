@@ -59,6 +59,7 @@ try {
 fs.writeFileSync(
   path.join(outputDirectory, "porcupineWakeWord.js"),
   `const porcupineWakeWord = {
+  label: "${wakeWordFileName.replace("_wasm.ppn", "").replace("_", " ")}",
   publicPath: "wakewords/${wakeWordFileName}",
   forceWrite: true,
 };

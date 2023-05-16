@@ -8,13 +8,22 @@ Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` 
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get your `AccessKey`.
 
-## Install & run
+## Setup
 
-Use `yarn` or `npm` to install the dependencies, and the `start` script to start a local web server hosting the demo.
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `sv` -> Swedish, `zh` -> Mandarin).
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
+```
+
+(or)
+
+```console
+npm install
+npm run start ${LANGUAGE}
 ```
 
 Open `localhost:5000` in your web browser, as hinted at in the output:
@@ -25,12 +34,7 @@ Available on:
 Hit CTRL-C to stop the server
 ```
 
-Enter your `AccessKey` in the provided input field and then click the `start` button.
-Wait until Picovoice and the WebVoiceProcessor have initialized.
-Say "Picovoice", then say a command within the context "Pico Clock", e.g.:
-
-> "Picovoice, set a timer for ten seconds"
-
-```
-Inference detected: {"isFinalized":true,"isUnderstood":true,"intent":"setTimer","slots":{"seconds":"10"}}
-```
+## Usage
+1) Enter your `AccessKey` in the provided input field and 
+2) Click the `start` button and wait until Picovoice has been initialized.
+3) Say the indicated wakeword, then try to say a command within the context indicated at the bottom.

@@ -3,8 +3,16 @@
   <head>
     <script src="node_modules/@picovoice/picovoice-web/dist/iife/index.js"></script>
     <script src="node_modules/@picovoice/web-voice-processor/dist/iife/index.js"></script>
+    <script src="contexts/rhinoContext.js"></script>
     <script src="models/picovoiceModels.js"></script>
+    <script src="wakewords/porcupineWakeWord.js"></script>
     <script type="application/javascript">
+
+      window.addEventListener('load', function () {
+        document.getElementById("wakeword").appendChild(document.createTextNode(porcupineWakeWord.label))
+        document.getElementById("context").appendChild(
+                document.createTextNode(rhinoContext.publicPath.replace("contexts/", "").replace("_wasm.rhn", "")))
+      });
 
       function writeMessage(message) {
         console.log(message);
@@ -33,20 +41,10 @@
       async function startPicovoice(accessKey) {
         try {
           writeMessage("Picovoice is loading. Please wait...");
-          const porcupineKeyword = {
-            label: "Picovoice",
-            publicPath: "picovoice_wasm.ppn",
-            forceWrite: true
-          }
-
-          const rhinoContext = {
-            publicPath: "clock_wasm.rhn",
-            forceWrite: true
-          }
 
           let picovoiceWorker = await PicovoiceWeb.PicovoiceWorker.create(
               accessKey,
-              porcupineKeyword,
+              porcupineWakeWord,
               wakeWordCallback,
               porcupineModel,
               rhinoContext,
@@ -66,7 +64,7 @@
           try {
             WebVoiceProcessor.WebVoiceProcessor.subscribe(picovoiceWorker);
             writeMessage(
-              "WebVoiceProcessor ready! Say 'Picovoice' to start the interaction."
+             `WebVoiceProcessor ready! Say '${porcupineWakeWord.label}' to start the interaction.`
             );
           } catch (e) {
             writeMessage("WebVoiceProcessor failed to initialize: " + e);
@@ -82,8 +80,8 @@
     <p>This demo uses Picovoice SDK for Web and the WebVoiceProcessor to:</p>
     <ol>
       <li>
-        Create an English instance of Picovoice that listens for "Picovoice" and
-        understands follow-on commands in the "Pico Clock" context;
+        Create an instance of Picovoice that listens for <span id="wakeword"></span> and
+        understands follow-on commands in the <span id="context"></span> context;
       </li>
       <li>
         Acquire microphone (& ask permission) data stream and convert to voice
@@ -111,9 +109,6 @@
     />
     <hr />
     <div id="messages"></div>
-    <br />
-    <br />
-    <br />
     <hr />
     <h2>Context info:</h2>
     <pre id="rhn-context-yaml"></pre>
