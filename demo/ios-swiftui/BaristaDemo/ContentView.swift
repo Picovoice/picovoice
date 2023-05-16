@@ -1,33 +1,32 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+
     let activeBlue = Color(red: 55/255, green: 125/255, blue: 1, opacity: 1)
     let inactiveGrey = Color(red: 0.6, green: 0.6, blue: 0.6)
-    
-    
+
     @ObservedObject var viewModel = ViewModel()
-    
+
     var body: some View {
-        
+
         return
-            VStack(alignment: .center, spacing:20) {
+            VStack(alignment: .center, spacing: 20) {
                 Text("Say 'Hey Barista!'").font(.largeTitle).foregroundColor(activeBlue)
-                Image("cuppa").resizable().scaledToFit().padding(.horizontal,50.0)
+                Image("cuppa").resizable().scaledToFit().padding(.horizontal, 50.0)
 
                 VStack(alignment: .center, spacing: 5) {
-            
+
                     Text("Beverage Size").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey)
-                    
+
                     // Size row
                     HStack(alignment: .center, spacing: 10) {
                         ForEach(viewModel.sizeSel) { item in
-                            Button(action: {}){
+                            Button {
                                 Text(item.title)
                                     .font(.system(size: 20))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
                                     .padding(10)
-                                
+
                             }
                             .disabled(true)
                             .background(
@@ -40,17 +39,22 @@ struct ContentView: View {
                             )
                         }
                     }
-                    
+
                     // # Shot row
-                    Text("Espresso Shots").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    Text("Espresso Shots")
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(inactiveGrey)
+                        .padding(.top, 8.0)
+
                     HStack(alignment: .center, spacing: 7) {
                         ForEach(viewModel.shotSel) { item in
-                            Button(action: {}){
+                            Button {
                                 Text(item.title)
                                     .font(.system(size: 16))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
                                     .padding(8.0)
-                                
+
                             }
                             .disabled(true)
                             .background(
@@ -63,18 +67,23 @@ struct ContentView: View {
                             )
                         }
                     }
-                    
+
                     // Beverage row
-                    Text("Beverage Type").font(.body).fontWeight(.semibold).foregroundColor(inactiveGrey).padding(.top, 8.0)
+                    Text("Beverage Type")
+                        .font(.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(inactiveGrey)
+                        .padding(.top, 8.0)
+
                     VStack(alignment: .center, spacing: 6) {
                         HStack(alignment: .center) {
                             ForEach(0..<viewModel.bevSel.count/2) { i in
-                                Button(action: {}){
+                                Button {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
                                         .padding(8.0)
-                                    
+
                                 }
                                 .disabled(true)
                                 .background(
@@ -82,19 +91,20 @@ struct ContentView: View {
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
                                             Capsule()
-                                                .stroke(inactiveGrey, lineWidth: 2).opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
+                                                .stroke(inactiveGrey, lineWidth: 2)
+                                                .opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
                                         )
                                 )
                             }
                         }
                         HStack(alignment: .center) {
                             ForEach(viewModel.bevSel.count/2..<viewModel.bevSel.count) { i in
-                                Button(action: {}){
+                                Button {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
                                         .padding(8.0)
-                                    
+
                                 }
                                 .disabled(true)
                                 .background(
@@ -102,7 +112,8 @@ struct ContentView: View {
                                         .fill(viewModel.bevSel[i].isSelected ? activeBlue : Color.white)
                                         .overlay(
                                             Capsule()
-                                                .stroke(inactiveGrey, lineWidth: 2).opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
+                                                .stroke(inactiveGrey, lineWidth: 2)
+                                                .opacity(viewModel.bevSel[i].isSelected ? 0 : 1)
                                         )
                                 )
                             }
@@ -128,7 +139,7 @@ struct ContentView: View {
                         .foregroundColor(activeBlue)
                         .opacity(viewModel.missedCommand ? 1 : 0)
                 }.padding(.top, 10.0)
-               
+
             }.padding(.vertical, 6.0)
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.white)
     }

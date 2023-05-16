@@ -1,5 +1,5 @@
 //
-//  Copyright 2021-2022 Picovoice Inc.
+//  Copyright 2021-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -12,7 +12,8 @@ import Porcupine
 import Rhino
 
 /// Low-level iOS binding for Picovoice end-to-end platform.
-/// Client passes in audio data and is notified upon detection of the wake word or completion of in voice command inference.
+/// Client passes in audio data and is notified upon detection of the
+/// wake word or completion of in voice command inference.
 public class Picovoice {
     private var porcupine: Porcupine?
     private var rhino: Rhino?
@@ -24,8 +25,8 @@ public class Picovoice {
     public static let sampleRate = Porcupine.sampleRate
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
-    public static let picovoiceVersion = "2.1.0"
-    public var contextInfo: String? = ""
+    public static let picovoiceVersion = "2.2.0"
+    public var contextInfo: String = ""
 
     private var isWakeWordDetected: Bool = false
 
@@ -35,55 +36,57 @@ public class Picovoice {
     ///   - accessKey: The AccessKey obtained from Picovoice Console (https://console.picovoice.ai).
     ///   - keywordPath: Absolute paths to keyword model file.
     ///   - onWakeWordDetection: A callback that is invoked upon detection of the keyword.
-    ///   - contextPath: Absolute path to file containing context parameters. A context represents the set of expressions (spoken commands), intents, and
-    ///   intent arguments (slots) within a domain of interest.
+    ///   - contextPath: Absolute path to file containing context parameters. A context represents
+    ///   the set of expressions (spoken commands), intents, and intent arguments (slots) within a domain of interest.
     ///   - onInference: A callback that is invoked upon completion of intent inference.
     ///   - porcupineModelPath: Absolute path to file containing model parameters.
-    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1]. A higher sensitivity results in fewer misses at
-    ///   the cost of increasing the false alarm rate.
+    ///   - porcupineSensitivity: Sensitivity for detecting keywords. Each value should be a number within [0, 1].
+    ///   A higher sensitivity results in fewer misses at the cost of increasing the false alarm rate.
     ///   - rhinoModelPath: Absolute path to file containing model parameters.
-    ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value results in fewer misses at the cost of (potentially)
-    ///   increasing the erroneous inference rate.
+    ///   - rhinoSensitivity: Inference sensitivity. It should be a number within [0, 1]. A higher sensitivity value
+    ///   results in fewer misses at the cost of (potentially) increasing the erroneous inference rate.
     ///   - endpointDurationSec: Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
-    ///   utterance that marks the end of spoken command. It should be a positive number within [0.5, 5]. A lower endpoint
-    ///   duration reduces delay and improves responsiveness. A higher endpoint duration assures Rhino doesn't return inference
-    ///   pre-emptively in case the user pauses before finishing the request.
+    ///   utterance that marks the end of spoken command. It should be a positive number within [0.5, 5].
+    ///   A lower endpoint duration reduces delay and improves responsiveness.
+    ///   A higher endpoint duration assures Rhino doesn't return inference pre-emptively
+    ///   in case the user pauses before finishing the request.
     ///   - requireEndpoint: If set to `true`, Rhino requires an endpoint (a chunk of silence) after the spoken command.
-    ///   If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide inference regardless. Set
-    ///   to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
+    ///   If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide
+    ///   inference regardless. Set to `false` only if operating in an environment with overlapping speech
+    ///   (e.g. people talking in the background).
     /// - Throws: PicovoiceError
     public init(
-            accessKey: String,
-            keywordPath: String,
-            onWakeWordDetection: @escaping (() -> Void),
-            contextPath: String,
-            onInference: @escaping ((Inference) -> Void),
-            porcupineModelPath: String? = nil,
-            porcupineSensitivity: Float32 = 0.5,
-            rhinoModelPath: String? = nil,
-            rhinoSensitivity: Float32 = 0.5,
-            endpointDurationSec: Float32 = 1.0,
-            requireEndpoint: Bool = true) throws {
+        accessKey: String,
+        keywordPath: String,
+        onWakeWordDetection: @escaping (() -> Void),
+        contextPath: String,
+        onInference: @escaping ((Inference) -> Void),
+        porcupineModelPath: String? = nil,
+        porcupineSensitivity: Float32 = 0.5,
+        rhinoModelPath: String? = nil,
+        rhinoSensitivity: Float32 = 0.5,
+        endpointDurationSec: Float32 = 1.0,
+        requireEndpoint: Bool = true) throws {
 
         self.onWakeWordDetection = onWakeWordDetection
         self.onInference = onInference
 
         do {
             try porcupine = Porcupine(
-                    accessKey: accessKey,
-                    keywordPath: keywordPath,
-                    modelPath: porcupineModelPath,
-                    sensitivity: porcupineSensitivity)
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                modelPath: porcupineModelPath,
+                sensitivity: porcupineSensitivity)
 
             try rhino = Rhino(
-                    accessKey: accessKey,
-                    contextPath: contextPath,
-                    modelPath: rhinoModelPath,
-                    sensitivity: rhinoSensitivity,
-                    endpointDurationSec: endpointDurationSec,
-                    requireEndpoint: requireEndpoint)
+                accessKey: accessKey,
+                contextPath: contextPath,
+                modelPath: rhinoModelPath,
+                sensitivity: rhinoSensitivity,
+                endpointDurationSec: endpointDurationSec,
+                requireEndpoint: requireEndpoint)
 
-            contextInfo = rhino?.contextInfo
+            contextInfo = (rhino != nil) ? rhino!.contextInfo : ""
         } catch {
             throw mapToPicovoiceError(error)
         }
@@ -113,7 +116,8 @@ public class Picovoice {
     /// - Throws: PicovoiceError
     public func process(pcm: [Int16]) throws {
         if pcm.count != Picovoice.frameLength {
-            throw PicovoiceInvalidArgumentError("Invalid frame length - expected \(Picovoice.frameLength), received \(pcm.count)")
+            throw PicovoiceInvalidArgumentError(
+                "Invalid frame length - expected \(Picovoice.frameLength), received \(pcm.count)")
         }
 
         if porcupine == nil || rhino == nil {

@@ -17,7 +17,7 @@ class BaseTest: XCTestCase {
     let accessKey: String = "{TESTING_ACCESS_KEY_HERE}"
 
     var isWakeWordDetected = false
-    var inferenceResult: Inference? = nil
+    var inferenceResult: Inference?
 
     override func setUp() {
         super.setUp()
@@ -41,9 +41,9 @@ class BaseTest: XCTestCase {
     func processFile(picovoice: Picovoice, testAudioURL: URL) throws {
         let data = try Data(contentsOf: testAudioURL)
         let frameLengthBytes = Int(Rhino.frameLength) * 2
-        var pcmBuffer = Array<Int16>(repeating: 0, count: Int(Rhino.frameLength))
+        var pcmBuffer = [Int16](repeating: 0, count: Int(Rhino.frameLength))
         var index = 44
-        while (index + frameLengthBytes < data.count) {
+        while index + frameLengthBytes < data.count {
             _ = pcmBuffer.withUnsafeMutableBytes {
                 data.copyBytes(to: $0, from: index..<(index + frameLengthBytes))
             }

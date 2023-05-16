@@ -24,72 +24,17 @@ Open `PicovoiceBackgroundServiceDemo.xcworkspace` and paste your `AccessKey` int
 
 This demo runs wake word detection and context inference while the application is in focus. 
 
-To run the foreground application demo, go to [ForegroundApp](./ForegroundApp) directory. Then run:
+To run the foreground application demo:
 
-```console
-pod install
-```
+1) Go to [ForegroundApp](./ForegroundApp) directory. Then run:
 
-Open the `PicovoiceForegroundAppDemo.xcworkspace` and paste your `AccessKey` into the `ACCESS_KEY` variable in `ContentView.swift`. Then, build and run the demo through XCode.
+2) Open the `PicovoiceForegroundAppDemo.xcworkspace` in XCode
 
-## Wake Word Detection and Context Inference
+3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ContentView.swift](./ForegroundApp/PicovoiceForegroundAppDemo/ContentView.swift) with your `AccessKey`.
 
-The default wake word is `Picovoice`. The default Rhino Speech-to-Intent context is `Smart Lighting`. Simply press start and the engine can recognize commands such as:
+4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arDemo` -> Arabic Demo, `deDemo` -> German Demo)
 
-> Picovoice, turn off the lights.
+5) Run the demo with a simulator or connected iOS device
 
-or
-
-> Picovoice, set the lights in the bedroom to blue.
-
-See below for the full context:
-
-```yaml
-context:
-  expressions:
-    changeColor:
-      - "[turn, make] (all, the) lights $color:color"
-      - "[change, set, switch] (all, the) lights to $color:color"
-      - "[turn, make] (the) $location:location (color, light, lights) $color:color"
-      - "[change, set, switch] (the) $location:location (color, light, lights) to $color:color"
-      - "[turn, make] (the) [color, light, lights] [at, in] (the) $location:location $color:color"
-      - "[change, set, switch] (the) [color, light, lights] [at, in] (the) $location:location to $color:color"
-      - "[turn, make] (the) [color, light, lights] $color:color [at, in] (the) $location:location"
-      - "[change, set, switch] (the) [color, light, lights] to $color:color [at, in] (the) $location:location"
-    changeLightState:
-      - "[switch, turn] $state:state (all, the) lights"
-      - "[switch, turn] (all, the) lights $state:state"
-      - "[switch, turn] $state:state (the) $location:location (light, lights)"
-      - "[switch, turn] (the) $location:location [light, lights] $state:state"
-      - "[switch, turn] $state:state (the) [light, lights] [at, in] (the) $location:location"
-      - "[switch, turn] (the) [light, lights] [in, at] the $location:location $state:state"
-    changeLightStateOff:
-      - "shut off (all, the) lights"
-      - "shut (all, the) lights off"
-      - "shut off (the) $location:location (light, lights)"
-      - "shut (the) $location:location (light, lights) off"
-      - "shut off (the) [light, lights] [at, in] (the) $location:location"
-      - "shut (the) [light, lights] off [at, in] (the) $location:location"
-      - "shut (the) [light, lights] [at, in] (the) $location:location off"
-  slots:
-    color:
-      - "blue"
-      - "green"
-      - "orange"
-      - "pink"
-      - "purple"
-      - "red"
-      - "white"
-      - "yellow"
-    state:
-      - "off"
-      - "on"
-    location:
-      - "bathroom"
-      - "bedroom"
-      - "closet"
-      - "hallway"
-      - "kitchen"
-      - "living room"
-      - "pantry"
-```
+6) Once the demo app has started, press the `start` button to start detecting keywords and inferring context. To see more details about
+the current context information, press the `Context Info` button on the top right corner in the app.

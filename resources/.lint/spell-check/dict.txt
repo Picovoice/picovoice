@@ -264,6 +264,7 @@ siri
 snowboy
 soundfile
 spegnere
+SRCROOT
 Speisekammer
 spidev
 stachelschwein
@@ -302,6 +303,10 @@ weiß
 Wohnzimmer
 xcframework
 xcworkspace
+xcodeproj
+xcshareddata
+xcscheme
+xcschemes
 xpresso
 ändere
 éclairage
