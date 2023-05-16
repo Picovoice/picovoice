@@ -94,7 +94,7 @@ struct ContentView: View {
             porcupineModelPath: ppnModelPath,
             rhinoModelPath: rhnModelPath)
     }
-    
+
     func startPicovoice() -> Bool {
         do {
             try self.picovoiceManager.start()
@@ -113,7 +113,7 @@ struct ContentView: View {
         } catch {
             errorMessage = "\(error)"
         }
-        
+
         return false
     }
 
@@ -143,7 +143,7 @@ struct ContentView: View {
                         if self.picovoiceManager == nil {
                             self.initPicovoice()
                         }
-                        
+
                         if startPicovoice() {
                             self.buttonLabel = "STOP"
                             self.result = "Listening for '\(wakeword.uppercased())'..."
