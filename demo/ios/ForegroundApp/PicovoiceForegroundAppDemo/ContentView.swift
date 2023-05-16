@@ -87,7 +87,7 @@ struct ContentView: View {
 
                 self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { _ in
                     if buttonLabel == "STOP" {
-                        result = "Listening for Wake Word.."
+                        result = "Listening for '\(wakeword.uppercased())'..."
                     }
                 }
             },

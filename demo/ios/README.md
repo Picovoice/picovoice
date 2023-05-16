@@ -32,7 +32,7 @@ To run the foreground application demo:
 
 3) Replace `let accessKey = "${YOUR_ACCESS_KEY_HERE}"` in the file [ContentView.swift](./ForegroundApp/PicovoiceForegroundAppDemo/ContentView.swift) with your `AccessKey`.
 
-4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arScheme` -> Arabic Demo, `deScheme` -> German Demo)
+4) Go to `Product > Scheme` and select the scheme for the language you would like to demo (e.g. `arDemo` -> Arabic Demo, `deDemo` -> German Demo)
 
 5) Run the demo with a simulator or connected iOS device
 
