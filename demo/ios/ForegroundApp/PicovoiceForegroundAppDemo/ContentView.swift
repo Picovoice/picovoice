@@ -93,16 +93,28 @@ struct ContentView: View {
             },
             porcupineModelPath: ppnModelPath,
             rhinoModelPath: rhnModelPath)
-
+    }
+    
+    func startPicovoice() -> Bool {
         do {
-            if self.picovoiceManager.contextInfo == ""  && buttonLabel == "START" {
-                try self.picovoiceManager.start()
-                self.contextInfo = self.picovoiceManager.contextInfo
-                self.picovoiceManager.stop()
-            } else {
-                self.contextInfo = self.picovoiceManager.contextInfo
-            }
-        } catch { }
+            try self.picovoiceManager.start()
+            return true
+        } catch let error as PicovoiceInvalidArgumentError {
+            errorMessage =
+                "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+        } catch is PicovoiceActivationError {
+            errorMessage = "ACCESS_KEY activation error"
+        } catch is PicovoiceActivationRefusedError {
+            errorMessage = "ACCESS_KEY activation refused"
+        } catch is PicovoiceActivationLimitError {
+            errorMessage = "ACCESS_KEY reached its limit"
+        } catch is PicovoiceActivationThrottledError {
+            errorMessage = "ACCESS_KEY is throttled"
+        } catch {
+            errorMessage = "\(error)"
+        }
+        
+        return false
     }
 
     var body: some View {
@@ -131,26 +143,12 @@ struct ContentView: View {
                         if self.picovoiceManager == nil {
                             self.initPicovoice()
                         }
-
-                        do {
-                            try self.picovoiceManager.start()
+                        
+                        if startPicovoice() {
                             self.buttonLabel = "STOP"
                             self.result = "Listening for '\(wakeword.uppercased())'..."
-                        } catch let error as PicovoiceInvalidArgumentError {
-                            errorMessage =
-                                "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
-                        } catch is PicovoiceActivationError {
-                            errorMessage = "ACCESS_KEY activation error"
-                        } catch is PicovoiceActivationRefusedError {
-                            errorMessage = "ACCESS_KEY activation refused"
-                        } catch is PicovoiceActivationLimitError {
-                            errorMessage = "ACCESS_KEY reached its limit"
-                        } catch is PicovoiceActivationThrottledError {
-                            errorMessage = "ACCESS_KEY is throttled"
-                        } catch {
-                            errorMessage = "\(error)"
+                            self.contextInfo = self.picovoiceManager.contextInfo
                         }
-
                     } else {
                         self.picovoiceManager.stop()
                         self.buttonLabel = "START"
@@ -173,7 +171,15 @@ struct ContentView: View {
                     initPicovoice()
                 }
                 if self.picovoiceManager != nil {
-                    self.showInfo = true
+                    if self.buttonLabel == "START" {
+                        if self.startPicovoice() {
+                            self.contextInfo = self.picovoiceManager.contextInfo
+                            self.showInfo = true
+                            self.picovoiceManager.stop()
+                        }
+                    } else {
+                        self.showInfo = true
+                    }
                 }
             })
         }
