@@ -2,9 +2,9 @@
    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
       <PreActions>
          <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent title="Run Script" scriptText="${SRCROOT}/pre-build.sh sv porcupine_sv simple_context_sv">
+            <ActionContent title="Run Script" scriptText="${SRCROOT}/pre-build.sh sv piggsvin simple_context_sv">
                <EnvironmentBuildable>
-                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BBE66BC9205DD6F7006005B1" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
+                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="1760DF28253A175000395344" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -33,7 +33,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable key="LANGUAGE" value="sv" isEnabled="YES">
          </EnvironmentVariable>
-         <EnvironmentVariable key="WAKEWORD" value="porcupine_sv" isEnabled="YES">
+         <EnvironmentVariable key="WAKEWORD" value="piggsvin" isEnabled="YES">
          </EnvironmentVariable>
          <EnvironmentVariable key="CONTEXT" value="simple_context_sv" isEnabled="YES">
          </EnvironmentVariable>

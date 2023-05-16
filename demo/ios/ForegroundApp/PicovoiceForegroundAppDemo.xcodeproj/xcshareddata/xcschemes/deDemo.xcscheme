@@ -4,7 +4,7 @@
          <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent title="Run Script" scriptText="${SRCROOT}/pre-build.sh de heuschrecke beleuchtung">
                <EnvironmentBuildable>
-                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BBE66BC9205DD6F7006005B1" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
+                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="1760DF28253A175000395344" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>

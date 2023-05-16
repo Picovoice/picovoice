@@ -2,9 +2,9 @@
    <BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
       <PreActions>
          <ExecutionAction ActionType="Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
-            <ActionContent title="Run Script" scriptText="${SRCROOT}/pre-build.sh hi namaste simple_context_hi">
+            <ActionContent title="Run Script" scriptText="${SRCROOT}/pre-build.sh hi नमस्ते simple_context_hi">
                <EnvironmentBuildable>
-                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="BBE66BC9205DD6F7006005B1" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
+                  <BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="1760DF28253A175000395344" BuildableName="PicovoiceForegroundAppDemo.app" BlueprintName="PicovoiceForegroundAppDemo" ReferencedContainer="container:PicovoiceForegroundAppDemo.xcodeproj">
                   </BuildableReference>
                </EnvironmentBuildable>
             </ActionContent>
@@ -33,7 +33,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable key="LANGUAGE" value="hi" isEnabled="YES">
          </EnvironmentVariable>
-         <EnvironmentVariable key="WAKEWORD" value="namaste" isEnabled="YES">
+         <EnvironmentVariable key="WAKEWORD" value="नमस्ते" isEnabled="YES">
          </EnvironmentVariable>
          <EnvironmentVariable key="CONTEXT" value="simple_context_hi" isEnabled="YES">
          </EnvironmentVariable>
