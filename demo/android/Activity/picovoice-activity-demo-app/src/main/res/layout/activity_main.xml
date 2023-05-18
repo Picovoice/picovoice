@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.33"/>
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/buttonGuideline"
@@ -63,13 +63,12 @@
         android:id="@+id/wakeWordName"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:text="@string/wake_word_name"
-        android:textSize="14sp"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toTopOf="@id/topGuideline"
-        app:layout_constraintStart_toEndOf="@id/textGuideline"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/buttonGuideline"
-        app:layout_constraintHorizontal_bias="0" />
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/textGuideline"
+        app:layout_constraintTop_toTopOf="@id/topGuideline" />
 
     <TextView
         android:id="@+id/contextLabel"
@@ -87,39 +86,13 @@
         android:id="@+id/contextName"
         android:layout_width="0sp"
         android:layout_height="wrap_content"
-        android:text="@string/context_name"
         android:layout_marginTop="10dp"
-        android:textSize="14sp"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/wakeWordName"
-        app:layout_constraintStart_toEndOf="@+id/textGuideline"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/buttonGuideline"
-        app:layout_constraintHorizontal_bias="0" />
-
-    <TextView
-        android:id="@+id/phraseLabel"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:text="@string/phrase_label"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/contextName"
-        app:layout_constraintStart_toStartOf="@id/startGuideline"
-        app:layout_constraintEnd_toEndOf="@id/textGuideline"
-        app:layout_constraintHorizontal_bias="0" />
-
-    <TextView
-        android:id="@+id/phraseText"
-        android:layout_width="0sp"
-        android:layout_height="wrap_content"
-        android:text="@string/phrase_text"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp"
-        android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@+id/contextName"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/textGuideline"
-        app:layout_constraintEnd_toEndOf="@id/endGuideline"
-        app:layout_constraintHorizontal_bias="0" />
+        app:layout_constraintTop_toBottomOf="@id/wakeWordName" />
 
     <TextView
         android:id="@+id/intentView"
@@ -133,7 +106,7 @@
         app:layout_constraintBottom_toTopOf="@+id/startButton"
         app:layout_constraintLeft_toLeftOf="@id/startGuideline"
         app:layout_constraintRight_toRightOf="@id/endGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/phraseText" />
+        app:layout_constraintTop_toBottomOf="@+id/contextName" />
 
     <ToggleButton
         android:id="@+id/startButton"

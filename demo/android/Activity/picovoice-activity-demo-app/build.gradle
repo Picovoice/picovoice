@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 
 Properties properties = new Properties()
@@ -28,6 +30,78 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    def testDataFile = file('../../../../resources/.test/test_data.json')
+    def parsedJson = new JsonSlurper().parseText(testDataFile.text)
+    def languages = []
+    parsedJson.tests.parameters.each { t ->
+        languages.add([t.language, t.wakeword, t.context_name])
+    }
+
+    flavorDimensions "language"
+    productFlavors {
+        languages.each { languageInfo ->
+            "${languageInfo.get(0)}" {
+                applicationIdSuffix ".${languageInfo.get(0)}"
+                ext.wakeword = "${languageInfo.get(1)}"
+                ext.contextName = "${languageInfo.get(2)}"
+            }
+        }
+
+        all { flavor ->
+            delete fileTree("$projectDir/src/main/assets") {
+                exclude '**/.gitkeep'
+            }
+            task("${flavor.name}CopyPorcupineParams", type: Copy) {
+                from("$projectDir/../../../../resources/porcupine/lib/common/")
+                if (flavor.name != 'en') {
+                    include("porcupine_params_${flavor.name}.pv")
+                } else {
+                    include("porcupine_params.pv")
+                }
+                into("$projectDir/src/main/assets/models")
+            }
+            task("${flavor.name}CopyRhinoParams", type: Copy) {
+                from("$projectDir/../../../../resources/rhino/lib/common/")
+                if (flavor.name != 'en') {
+                    include("rhino_params_${flavor.name}.pv")
+                } else {
+                    include("rhino_params.pv")
+                }
+                into("$projectDir/src/main/assets/models")
+            }
+            task("${flavor.name}CopyWakeword", type: Copy) {
+                description = "Copy ${flavor.name} resources"
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../resources/porcupine/resources/keyword_files_${flavor.name}/android")
+                } else {
+                    from("$projectDir/../../../../resources/porcupine/resources/keyword_files/android")
+                }
+                include("${flavor.ext.wakeword}_android.ppn")
+                into("$projectDir/src/main/assets/wakewords")
+                rename { String fileName ->
+                    fileName.replace("_android", "").replace(" ", "_")
+                }
+            }
+            task("${flavor.name}CopyContext", type: Copy) {
+                description = "Copy ${flavor.name} resources"
+                if (flavor.name != 'en') {
+                    from("$projectDir/../../../../resources/rhino/resources/contexts_${flavor.name}/android")
+                } else {
+                    from("$projectDir/../../../../resources/rhino/resources/contexts/android")
+                }
+                include("${flavor.ext.contextName}_android.rhn")
+                into("$projectDir/src/main/assets/contexts")
+                rename { String fileName ->
+                    fileName.replace("_android", "").replace(" ", "_")
+                }
+            }
+            task("${flavor.name}WakewordContextName") {
+                resValue 'string', 'pvWakeword', flavor.ext.wakeword
+                resValue 'string', 'pvContextName', flavor.ext.contextName
+            }
+        }
+    }
 }
 
 dependencies {
@@ -46,10 +120,20 @@ dependencies {
     androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
 }
 
-task copyResources(type: Copy) {
-    from("$projectDir/../../../../resources/porcupine/resources/keyword_files/android/porcupine_android.ppn")
-    from("$projectDir/../../../../resources/rhino/resources/contexts/android/smart_lighting_android.rhn")
-    into "$projectDir/src/main/assets"
-}
+afterEvaluate {
+    android.productFlavors.all {
+        flavor ->
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyPorcupineParams"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyPorcupineParams"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyRhinoParams"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyRhinoParams"
 
-preBuild.dependsOn(copyResources)
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyWakeword"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyWakeword"
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyContext"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyContext"
+
+            tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}WakewordContextName"
+            tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}WakewordContextName"
+    }
+}

@@ -1,4 +1,6 @@
 /build
 test_resources
-porcupine_android.ppn
-smart_lighting_android.rhn
+
+*.pv
+*.rhn
+*.ppn
