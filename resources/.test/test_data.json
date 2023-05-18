@@ -52,6 +52,18 @@
         }
       },
       {
+        "language": "fa",
+        "wakeword": "جوجه تیغی",
+        "context_name": "simple_context_fa",
+        "audio_file": "porcupine-simple-context_fa.wav",
+        "inference": {
+          "intent": "navigation",
+          "slots": {
+            "location": "آشپزخانه"
+          }
+        }
+      },
+      {
         "language": "fr",
         "wakeword": "mon chouchou",
         "context_name": "éclairage_intelligent",
