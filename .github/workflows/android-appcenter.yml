@@ -32,8 +32,10 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Setup Node.js environment
+    - name: Set up Node.js LTS
       uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
 
     - name: Install AppCenter CLI
       run: npm install -g appcenter-cli

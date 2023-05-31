@@ -24,7 +24,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Set up Node.js lts/*
+      - name: Set up Node.js LTS
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
