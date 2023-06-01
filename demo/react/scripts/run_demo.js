@@ -146,6 +146,6 @@ const rhinoModel = {
 })();`
 );
 
-child_process.fork("react-scripts", [commands], {
+child_process.fork("react-scripts", commands, {
   execPath: "npx",
 });
