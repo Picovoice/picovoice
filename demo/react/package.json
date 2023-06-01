@@ -19,16 +19,10 @@
     "prettier": "^2.7.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "node scripts/run_demo.js start",
+    "build": "node scripts/run_demo.js build",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "cp:ppn-keyword": "cp ../../resources/porcupine/resources/keyword_files/wasm/picovoice_wasm.ppn ./public",
-    "cp:ppn-model": "cp ../../resources/porcupine/lib/common/porcupine_params.pv ./public",
-    "cp:rhn-context": "cp ../../resources/rhino/resources/contexts/wasm/clock_wasm.rhn ./public",
-    "cp:rhn-model": "cp ../../resources/rhino/lib/common/rhino_params.pv ./public",
-    "postinstall": "npm-run-all cp:** --parallel"
+    "lint": "eslint ."
   },
   "eslintConfig": {
     "extends": [

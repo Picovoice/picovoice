@@ -16,83 +16,26 @@ Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to get you
 
 ## Install and Run
 
-Use `yarn` or `npm` to install the demo packages and start a local server where you can try the demo:
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `sv` -> Swedish, `zh` -> Mandarin).
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
+```
+
+(or)
+
+```console
+npm install
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:3000` to view it in the browser.
 
-## Try voice commands
+## Usage
 
-The demo uses "Picovoice" as the Porcupine wake word and a "Clock" Rhino context for follow-on commands.
-
-When the demo is loaded, and you have granted microphone permissions, say the following e.g.:
-
-> "Picovoice, set a timer for five minutes"
-
-The output should look similar to below:
-
-```json
-Wake word detected!
-
-Inference:
-{
-  "isFinalized": true,
-  "isUnderstood": true,
-  "intent": "setTimer",
-  "slots": {
-    "minutes": "5"
-  }
-}
-```
-
-When the wake word "Picovoice" is detected, internally Picovoice SDK switches control to the Rhino ('rhn') engine for command inference.
-
-After inference, the control will return to wake word detection, which will once again be listening for "Picovoice" to start the voice interaction again.
-
-> "Picovoice, what's the meaning of life?"
-
-```json
-Wake word detected!
-
-Inference:
-{
-  "isFinalized": true,
-  "isUnderstood": false,
-  "intent": null,
-  "slots": {}
-}
-```
-
-This command falls outside the domain of "Clock" and is therefore not understood.
-
-The Clock was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file.
-
-```yaml
-context:
-  expressions:
-    setAlarm:
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours]"
-      - "$pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "$pv.TwoDigitInteger:seconds [second, seconds]"
-    reset:
-      - "reset (the) (timer)"
-    pause:
-      - "[pause, stop] (the) (timer)"
-    resume:
-      - "resume (the) (timer)"
-```
+1) Enter your `AccessKey` in the provided input field and
+2) Click the `start` button and wait until Picovoice has been initialized.
+3) Say the indicated wakeword, then try to say a command within the context indicated at the bottom.

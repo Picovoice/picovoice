@@ -25,3 +25,10 @@ yarn-error.log*
 *.ppn
 *.pv
 *.rhn
+
+# params
+public/wakewords/*
+public/contexts/*
+public/models/*
+src/lib/*
+!src/lib/.gitkeep
