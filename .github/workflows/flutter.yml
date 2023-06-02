@@ -101,9 +101,6 @@ jobs:
         flutter-version: ${{ matrix.flutter-version }}
         architecture: x64
 
-    - name: Copy assets
-      run: ./copy_assets.sh
-
     - name: Update Cocoapods repo
       run: pod repo update
 
