@@ -12,7 +12,7 @@
     "android-install": "yarn"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "=2.2.0",
+    "@picovoice/picovoice-react-native": "=2.2.1",
     "@picovoice/porcupine-react-native": "=2.2.0",
     "@picovoice/react-native-voice-processor": "^1.1.0",
     "@picovoice/rhino-react-native": "=2.2.0",

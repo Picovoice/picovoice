@@ -5,8 +5,10 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
 import {
   PicovoiceManager,
   PicovoiceErrors,
@@ -169,7 +171,7 @@ export default class App extends Component<Props, State> {
       const didStart = await this._picovoiceManager?.start();
       if (didStart) {
         this.setState({
-          contextInfo: 'CONTEXT INFO HERE',
+          contextInfo: this._picovoiceManager?.contextInfo,
         });
       }
       return didStart;
@@ -277,7 +279,7 @@ export default class App extends Component<Props, State> {
           visible={this.state.showContextInfo}>
           <View style={styles.modalView}>
             <ScrollView style={{ flex: 0.95, marginBottom: 10 }}>
-              <Text>this._picovoiceManager?.contextInfo</Text>
+              <Text>{this._picovoiceManager?.contextInfo}</Text>
             </ScrollView>
             <TouchableOpacity
               style={{
