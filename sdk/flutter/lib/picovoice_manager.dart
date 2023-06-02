@@ -39,7 +39,7 @@ class PicovoiceManager {
 
   /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
   /// which expressions map to those intents, as well as slots and their possible values.
-  /// Only available after a call to `.start()`
+  /// Only available after a call to `.start()`.
   String? get contextInfo => _picovoice?.contextInfo;
 
   /// Picovoice constructor

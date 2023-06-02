@@ -161,7 +161,7 @@ class _MyAppState extends State<MyApp> {
       return true;
     } on PicovoiceInvalidArgumentException catch (ex) {
       errorCallback(PicovoiceInvalidArgumentException(
-          "${ex.message}\nEnsure your accessKey '$accessKey' is a valid access key."));
+          "${ex.message}\nEnsure your accessKey '$accessKey' is valid."));
     } on PicovoiceActivationException {
       errorCallback(
           PicovoiceActivationException("AccessKey activation error."));
