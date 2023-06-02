@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
 
   path_provider: ^2.0.9
-  picovoice_flutter: ^2.2.0
+  picovoice_flutter:
+    path: ../../sdk/flutter
 
 dev_dependencies:
   integration_test:
@@ -25,8 +26,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
-    - assets/contexts/
-    - assets/keywords/
+    - assets/contexts/android/
+    - assets/contexts/ios/
+    - assets/keywords/android/
+    - assets/keywords/ios/
     - assets/models/
     - assets/test_resources/
     - assets/test_resources/audio_samples/

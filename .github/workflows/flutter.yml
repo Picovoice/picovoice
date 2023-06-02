@@ -49,11 +49,11 @@ jobs:
       with:
         flutter-version: ${{ matrix.flutter-version }}
 
-    - name: Copy assets
-      run: ./copy_assets.sh
-
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
 
     - name: Build
       run: flutter build apk
@@ -68,12 +68,17 @@ jobs:
         submodules: recursive
 
     - name: Copy test_resources
-      run: |
-        ./copy_assets.sh
-        ./copy_test_resources.sh
+      run: ./copy_test_resources.sh
+
     - name: Inject AppID
       run: sed -i 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
         integration_test/app_test.dart
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
 
     - name: Run integration tests
       run: flutter test integration_test
@@ -105,6 +110,9 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
+
     - name: Build
       run: flutter build ios --release --no-codesign
 
@@ -118,9 +126,7 @@ jobs:
         submodules: recursive
 
     - name: Copy test_resources
-      run: |
-        ./copy_assets.sh
-        ./copy_test_resources.sh
+      run: ./copy_test_resources.sh
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:'
@@ -131,6 +137,9 @@ jobs:
 
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Prepare demo
+      run: dart scripts/prepare_demo.dart en
 
     - name: Run integration tests
       run: flutter test integration_test

@@ -371,18 +371,25 @@ To browse the demo source go to [demo/unity](demo/unity).
 
 To run the Picovoice demo on Android or iOS with Flutter, you must have the [Flutter SDK](https://flutter.dev/docs/get-started/install) installed on your system. Once installed, you can run `flutter doctor` to determine any other missing requirements for your relevant platform. Once your environment has been set up, launch a simulator or connect an Android/iOS device.
 
-Before launching the app, use the copy_assets.sh script to copy the Picovoice demo assets into the demo project. (**NOTE**: on Windows, Git Bash or another bash shell is required, or you will have to manually copy the context into the project.).
+Run the `prepare_demo` script from [demo/flutter](./demo/flutter/) with a language code to set up the demo in the language of your
+choice (e.g. `de` -> German, `ko` -> Korean). To see a list of available languages, run `prepare_demo` without a language code.
 
-Run the following command from [demo/flutter](demo/flutter) to build and deploy the demo to your device:
+```console
+dart scripts/prepare_demo.dart ${LANGUAGE}
+```
+
+Replace your `AccessKey` in [lib/main.dart](./demo/flutter/lib/main.dart) file:
+
+```dart
+final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+```
+
+Run the following command from [demo/flutter](./demo/flutter/) to build and deploy the demo to your device:
 ```console
 flutter run
 ```
 
-Once the application has been deployed, press the start button and say:
-
-> Picovoice, turn off the lights in the kitchen.
-
-For the full set of supported commands refer to [demo's readme](demo/flutter/README.md).
+Once the demo app has started, press the start button and utter a command to start inferring context. To see more details about the current context information, press the `Context Info` button on the top right corner in the app.
 
 ### React Native Demos
 To run the React Native Picovoice demo app you'll first need to install yarn and set up your React Native environment. For this, please refer to [React Native's documentation](https://reactnative.dev/docs/environment-setup). Once your environment has been set up, you can run the following commands:

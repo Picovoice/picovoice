@@ -1,5 +1,5 @@
 //
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -32,7 +32,7 @@ class Picovoice {
   int? get sampleRate => _porcupine?.sampleRate;
 
   /// Version of Picovoice
-  String get version => "2.1.0";
+  String get version => "2.2.0";
 
   /// Version of Porcupine
   String? get porcupineVersion => _porcupine?.version;

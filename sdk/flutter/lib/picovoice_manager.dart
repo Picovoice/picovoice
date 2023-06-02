@@ -1,5 +1,5 @@
 //
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -36,6 +36,11 @@ class PicovoiceManager {
   final InferenceCallback _inferenceCallback;
   final double _endpointDurationSec;
   final bool _requireEndpoint;
+
+  /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
+  /// which expressions map to those intents, as well as slots and their possible values.
+  /// Only available after a call to `.start()`
+  String? get contextInfo => _picovoice?.contextInfo;
 
   /// Picovoice constructor
   ///
