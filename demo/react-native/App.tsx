@@ -99,7 +99,7 @@ export default class App extends Component<Props, State> {
 
     this._timeoutRef = setTimeout(() => {
       this.setState({
-        picovoiceText: 'Listening for wake word...',
+        picovoiceText: `Listening for ${wakeword}...`,
       });
       this._timeoutRef = null;
     }, 2000);
@@ -157,7 +157,7 @@ export default class App extends Component<Props, State> {
         this.setState({
           buttonText: 'Stop',
           buttonDisabled: false,
-          picovoiceText: 'Listening for wake word...',
+          picovoiceText: `Listening for ${wakeword}...`,
           isListening: true,
         });
       }
