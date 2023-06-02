@@ -279,7 +279,7 @@ export default class App extends Component<Props, State> {
           visible={this.state.showContextInfo}>
           <View style={styles.modalView}>
             <ScrollView style={{ flex: 0.95, marginBottom: 10 }}>
-              <Text>{this._picovoiceManager?.contextInfo}</Text>
+              <Text>{this.state.contextInfo}</Text>
             </ScrollView>
             <TouchableOpacity
               style={{
