@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
-import { PermissionsAndroid, Platform, TouchableOpacity } from 'react-native';
+import {
+  Modal,
+  PermissionsAndroid,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import {
   PicovoiceManager,
   PicovoiceErrors,
 } from '@picovoice/picovoice-react-native';
 import { RhinoInference } from '@picovoice/rhino-react-native';
+
+import { language, wakeword, context } from './params.json';
 
 type Props = {};
 type State = {
@@ -15,7 +23,11 @@ type State = {
   isListening: boolean;
   isError: boolean;
   errorMessage: string;
+  contextInfo?: string;
+  showContextInfo: boolean;
 };
+
+const marginOffset = Platform.OS === 'ios' ? 30 : 0;
 
 export default class App extends Component<Props, State> {
   readonly _accessKey = '${YOUR_ACCESS_KEY_HERE}'; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
@@ -32,12 +44,21 @@ export default class App extends Component<Props, State> {
       isListening: false,
       isError: false,
       errorMessage: '',
+      showContextInfo: false,
     };
   }
 
   async componentDidMount() {
-    let wakeWordPath = `porcupine_${Platform.OS}.ppn`;
-    let contextPath = `smart_lighting_${Platform.OS}.rhn`;
+    let wakeWordPath = `keywords/${wakeword}_${Platform.OS}.ppn`;
+    let contextPath = `contexts/${context}_${Platform.OS}.rhn`;
+    let ppnModelPath: string | undefined;
+    if (language !== 'en') {
+      ppnModelPath = `models/porcupine_params_${language}.pv`;
+    }
+    let rhnModelPath: string | undefined;
+    if (language !== 'en') {
+      rhnModelPath = `models/rhino_params_${language}.pv`;
+    }
 
     this._picovoiceManager = PicovoiceManager.create(
       this._accessKey,
@@ -48,6 +69,10 @@ export default class App extends Component<Props, State> {
       (error: PicovoiceErrors.PicovoiceError) => {
         this._errorCallback(error.message);
       },
+      0.5,
+      0.5,
+      ppnModelPath,
+      rhnModelPath,
     );
   }
 
@@ -81,14 +106,14 @@ export default class App extends Component<Props, State> {
   }
 
   _prettyPrintInference(inference: RhinoInference) {
-    let printText = `{\n    \"isUnderstood\" : \"${inference.isUnderstood}\",\n`;
+    let printText = `{\n    "isUnderstood" : "${inference.isUnderstood}",\n`;
     if (inference.isUnderstood) {
-      printText += `    \"intent\" : \"${inference.intent}\",\n`;
+      printText += `    "intent" : "${inference.intent}",\n`;
       if (Object.keys(inference.slots).length > 0) {
         printText += '    "slots" : {\n';
         let slots = inference.slots;
         for (const key in slots) {
-          printText += `        \"${key}\" : \"${slots[key]}\",\n`;
+          printText += `        "${key}" : "${slots[key]}",\n`;
         }
         printText += '    }\n';
       }
@@ -111,7 +136,7 @@ export default class App extends Component<Props, State> {
     });
 
     let recordAudioRequest;
-    if (Platform.OS == 'android') {
+    if (Platform.OS === 'android') {
       recordAudioRequest = this._requestRecordAudioPermission();
     } else {
       recordAudioRequest = new Promise(function (resolve, _) {
@@ -127,40 +152,50 @@ export default class App extends Component<Props, State> {
         });
         return;
       }
-      try {
-        const didStart = await this._picovoiceManager?.start();
-        if (didStart) {
-          this.setState({
-            buttonText: 'Stop',
-            buttonDisabled: false,
-            picovoiceText: 'Listening for wake word...',
-            isListening: true,
-          });
-        }
-      } catch (err) {
-        let errorMessage = '';
-        if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
-          errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
-          errorMessage = 'AccessKey activation error';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationLimitError
-        ) {
-          errorMessage = 'AccessKey reached its device limit';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
-        ) {
-          errorMessage = 'AccessKey refused';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
-        ) {
-          errorMessage = 'AccessKey has been throttled';
-        } else {
-          errorMessage = err.toString();
-        }
-        this._errorCallback(errorMessage);
+      const didStart = await this._startPicovoice();
+      if (didStart) {
+        this.setState({
+          buttonText: 'Stop',
+          buttonDisabled: false,
+          picovoiceText: 'Listening for wake word...',
+          isListening: true,
+        });
       }
     });
+  }
+
+  async _startPicovoice() {
+    try {
+      const didStart = await this._picovoiceManager?.start();
+      if (didStart) {
+        this.setState({
+          contextInfo: 'CONTEXT INFO HERE',
+        });
+      }
+      return didStart;
+    } catch (err) {
+      let errorMessage = '';
+      if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
+        errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
+      } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
+        errorMessage = 'AccessKey activation error';
+      } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
+        errorMessage = 'AccessKey reached its device limit';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
+      ) {
+        errorMessage = 'AccessKey refused';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
+      ) {
+        errorMessage = 'AccessKey has been throttled';
+      } else {
+        errorMessage = err.toString();
+      }
+      this._errorCallback(errorMessage);
+    }
+
+    return false;
   }
 
   _stopProcessing() {
@@ -212,33 +247,52 @@ export default class App extends Component<Props, State> {
     }
   }
 
+  async showContextInfo() {
+    if (!this.state.contextInfo) {
+      await this._startPicovoice();
+      this._stopProcessing();
+    }
+    if (!this.state.isError) {
+      this.setState({ showContextInfo: true });
+    }
+  }
+
   render() {
     return (
       <View style={[styles.container]}>
         <View style={styles.statusBar}>
           <Text style={styles.statusBarText}>Picovoice</Text>
+          <View style={styles.statusBarButtonContainer}>
+            <TouchableOpacity
+              style={{ backgroundColor: '#ffd105' }}
+              onPress={() => this.showContextInfo()}>
+              <Text style={styles.statusBarButtonStyle}>Context Info</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View
-          style={{
-            flex: 0.35,
-            justifyContent: 'center',
-            alignContent: 'center',
-          }}>
-          <TouchableOpacity
-            style={{
-              width: '50%',
-              height: '50%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              backgroundColor: this.state.isError ? '#cccccc' : '#377DFF',
-              borderRadius: 100,
-            }}
-            onPress={() => this._toggleListening()}
-            disabled={this.state.buttonDisabled || this.state.isError}>
-            <Text style={styles.buttonText}>{this.state.buttonText}</Text>
-          </TouchableOpacity>
-        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={this.state.showContextInfo}>
+          <View style={styles.modalView}>
+            <ScrollView style={{ flex: 0.95, marginBottom: 10 }}>
+              <Text>this._picovoiceManager?.contextInfo</Text>
+            </ScrollView>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#377DFF',
+                padding: 3,
+                flex: 0.05,
+              }}
+              onPress={() => this.setState({ showContextInfo: false })}>
+              <Text style={{ color: 'white' }}>CLOSE</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+
         <View style={{ flex: 1, padding: 20 }}>
           <View
             style={{
@@ -262,6 +316,28 @@ export default class App extends Component<Props, State> {
             </Text>
           </View>
         )}
+
+        <View
+          style={{
+            flex: 0.35,
+            justifyContent: 'center',
+            alignContent: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              width: '50%',
+              height: '50%',
+              alignSelf: 'center',
+              justifyContent: 'center',
+              backgroundColor: this.state.isError ? '#cccccc' : '#377DFF',
+              borderRadius: 100,
+            }}
+            onPress={() => this._toggleListening()}
+            disabled={this.state.buttonDisabled || this.state.isError}>
+            <Text style={styles.buttonText}>{this.state.buttonText}</Text>
+          </TouchableOpacity>
+        </View>
+
         <View
           style={{ flex: 0.08, justifyContent: 'flex-end', paddingBottom: 25 }}>
           <Text style={styles.instructions}>
@@ -287,16 +363,25 @@ const styles = StyleSheet.create({
   statusBar: {
     flex: 0.17,
     backgroundColor: '#377DFF',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   statusBarText: {
     fontSize: 18,
     color: 'white',
     fontWeight: 'bold',
     marginLeft: 15,
-    marginBottom: 15,
+    marginTop: marginOffset,
   },
-
+  statusBarButtonContainer: {
+    marginRight: 5,
+    marginTop: marginOffset,
+  },
+  statusBarButtonStyle: {
+    padding: 7.5,
+    fontWeight: '500',
+  },
   buttonStyle: {
     backgroundColor: '#377DFF',
     borderRadius: 100,
@@ -326,7 +411,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: 5,
     margin: 20,
-    padding: 20,
+    marginTop: 5,
+    marginBottom: 5,
+    padding: 10,
     textAlign: 'center',
+  },
+  modalView: {
+    margin: 10,
+    marginTop: 10 + marginOffset,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
 });

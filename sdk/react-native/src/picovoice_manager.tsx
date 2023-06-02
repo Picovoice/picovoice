@@ -197,6 +197,14 @@ class PicovoiceManager {
     this._picovoice = undefined;
     return this._voiceProcessor?.stop();
   }
+
+  /**
+   * Only available after a call to `.start()`
+   * @returns the Rhino context source YAML.
+   */
+  get contextInfo() {
+    return this._picovoice?.contextInfo;
+  }
 }
 
 export default PicovoiceManager;
