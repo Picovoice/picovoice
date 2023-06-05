@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
       wakeWordName = params["wakeWord"];
     } catch (_) {
       errorCallback(PicovoiceException(
-          "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before lauching the demo."));
+          "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before launching the demo."));
       return;
     }
 
