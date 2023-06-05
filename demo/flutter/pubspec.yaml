@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
 
   path_provider: ^2.0.9
-  picovoice_flutter: ^2.2.0
+  picovoice_flutter: ^2.2.1
 
 dev_dependencies:
   integration_test:
@@ -24,10 +24,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/contexts/android/smart_lighting_android.rhn
-    - assets/contexts/ios/smart_lighting_ios.rhn
-    - assets/keyword_files/android/picovoice_android.ppn
-    - assets/keyword_files/ios/picovoice_ios.ppn
+    - assets/
+    - assets/contexts/android/
+    - assets/contexts/ios/
+    - assets/keywords/android/
+    - assets/keywords/ios/
+    - assets/models/
     - assets/test_resources/
     - assets/test_resources/audio_samples/
     - assets/test_resources/context_files/
