@@ -20,8 +20,8 @@ Picovoice is:
 
 [Picovoice unity package](./picovoice-2.2.1.unitypackage) is for running Picovoice on **Unity 2017.4+** on the following platforms:
 
-- Android 4.4+ (API 19+) (ARM only)
-- iOS 9.0+
+- Android 5.0+ (API 21+) (ARM only)
+- iOS 11.0+
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
