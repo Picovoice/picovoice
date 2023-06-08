@@ -9,7 +9,7 @@ const [porcupineModel, rhinoModel] = picovoiceModels;
 
 export default function VoiceWidget() {
   const [inputValue, setInputValue] = useState("");
-
+  const contextName = rhinoContext.publicPath.split("/").pop()?.replace("_wasm.rhn", "");
   const {
     wakeWordDetection,
     inference,
@@ -94,7 +94,8 @@ export default function VoiceWidget() {
         </>
       )}
       <hr />
-      <h3>Context info</h3>
+      <h3>Context Name: {contextName}</h3>
+      <h3>Context Info: </h3>
       <pre>{contextInfo}</pre>
     </div>
   );
