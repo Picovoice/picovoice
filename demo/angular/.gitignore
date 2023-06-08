@@ -41,5 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-src/assets
+src/assets/*
 !src/assets/.gitkeep
+src/lib/*.js

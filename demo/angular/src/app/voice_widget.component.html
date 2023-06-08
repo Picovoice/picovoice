@@ -26,7 +26,7 @@
   <button (click)="release()" [disabled]="error || !isLoaded || isListening">Release</button>
 
   <div *ngIf="isListening">
-    <h3 *ngIf="wakeWordDetection === null">Listening for 'Picovoice'...</h3>
+    <h3 *ngIf="wakeWordDetection === null">Listening for '{{ wakeWordName }}'...</h3>
     <h3 *ngIf="wakeWordDetection !== null">Wake word detected!</h3>
   </div>
   <div *ngIf="isListening && inference !== null">
@@ -34,6 +34,7 @@
     <pre>{{ inference | json }}</pre>
   </div>
   <hr />
-  <h3>Context info</h3>
+  <h3>Context Name: {{ contextName }}</h3>
+  <h3>Context Info</h3>
   <pre>{{ contextInfo }}</pre>
 </div>
