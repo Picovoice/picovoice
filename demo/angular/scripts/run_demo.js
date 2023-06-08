@@ -45,7 +45,7 @@ const wakeWordDir = path.join(
 );
 
 const libDirectory = path.join(__dirname, "..", "src", "lib");
-let outputDirectory = path.join(__dirname, "..", "public", "wakewords");
+let outputDirectory = path.join(__dirname, "..", "src", "assets", "wakewords");
 createOrEmptyDir(outputDirectory);
 
 try {
@@ -62,7 +62,7 @@ fs.writeFileSync(
   path.join(libDirectory, "porcupineWakeWord.js"),
   `const porcupineWakeWord = {
   label: "${wakeWordFileName.replace("_wasm.ppn", "").replace("_", " ")}",
-  publicPath: "wakewords/${wakeWordFileName}",
+  publicPath: "assets/wakewords/${wakeWordFileName}",
   customWritePath: "${version}_${wakeWordFileName}",
 };
 
@@ -78,7 +78,7 @@ const context = testData["tests"]["parameters"].find(
 const contextFileName = `${context}_wasm.rhn`;
 const contextDir = path.join(rhnDir, "resources", `contexts${suffix}`, "wasm");
 
-outputDirectory = path.join(__dirname, "..", "public", "contexts");
+outputDirectory = path.join(__dirname, "..", "src", "assets", "contexts");
 createOrEmptyDir(outputDirectory);
 
 try {
@@ -94,7 +94,7 @@ try {
 fs.writeFileSync(
   path.join(libDirectory, "rhinoContext.js"),
   `const rhinoContext = {
-  publicPath: "contexts/${contextFileName}",
+  publicPath: "assets/contexts/${contextFileName}",
   customWritePath: "${version}_${contextFileName}",
 };
 
@@ -104,7 +104,7 @@ fs.writeFileSync(
 })();`
 );
 
-outputDirectory = path.join(__dirname, "..", "public", "models");
+outputDirectory = path.join(__dirname, "..", "src", "assets", "models");
 createOrEmptyDir(outputDirectory);
 
 const ppnModelDir = path.join(ppnDir, "lib", "common");
@@ -124,12 +124,12 @@ fs.copyFileSync(
 fs.writeFileSync(
   path.join(libDirectory, "picovoiceModels.js"),
   `const porcupineModel = {
-  publicPath: "models/${ppnModelName}",
+  publicPath: "assets/models/${ppnModelName}",
   customWritePath: "${version}_${ppnModelName}",
 };
 
 const rhinoModel = {
-  publicPath: "models/${rhnModelName}",
+  publicPath: "assets/models/${rhnModelName}",
   customWritePath: "${version}_${rhnModelName}",
 };
 
@@ -139,6 +139,6 @@ const rhinoModel = {
 })();`
 );
 
-child_process.fork("react-scripts", commands, {
+child_process.fork("ng", commands, {
   execPath: "npx",
 });

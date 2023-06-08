@@ -34,6 +34,7 @@ const createOrEmptyDir = (dir) => {
   }
 };
 
+const version = process.env.npm_package_version;
 const suffix = language === "en" ? "" : `_${language}`;
 const rootDir = path.join(__dirname, "..", "..", "..");
 const ppnDir = path.join(rootDir, "resources", "porcupine");
@@ -68,7 +69,7 @@ fs.writeFileSync(
   `const porcupineWakeWord = {
   label: "${wakeWordFileName.replace("_wasm.ppn", "").replace("_", " ")}",
   publicPath: "wakewords/${wakeWordFileName}",
-  forceWrite: true,
+  customWritePath: "${version}_${wakeWordFileName}",
 };
 
 (function () {
@@ -100,7 +101,7 @@ fs.writeFileSync(
   path.join(outputDirectory, "rhinoContext.js"),
   `const rhinoContext = {
   publicPath: "contexts/${contextFileName}",
-  forceWrite: true,
+  customWritePath: "${version}_${contextFileName}",
 };
 
 (function () {
@@ -130,12 +131,12 @@ fs.writeFileSync(
   path.join(outputDirectory, "picovoiceModels.js"),
   `const porcupineModel = {
   publicPath: "models/${ppnModelName}",
-  forceWrite: true,
+  customWritePath: "${version}_${ppnModelName}",
 };
 
 const rhinoModel = {
   publicPath: "models/${rhnModelName}",
-  forceWrite: true,
+  customWritePath: "${version}_${rhnModelName}",
 };
 
 (function () {

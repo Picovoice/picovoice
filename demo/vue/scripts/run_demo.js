@@ -3,7 +3,9 @@ const fs = require("fs");
 const path = require("path");
 const testData = require("../../../resources/.test/test_data.json");
 
-const availableLanguages = testData["tests"]["parameters"].map((x) => x["language"]);
+const availableLanguages = testData["tests"]["parameters"].map(
+  x => x["language"]
+);
 
 const commands = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
@@ -17,9 +19,9 @@ if (!availableLanguages.includes(language)) {
   process.exit(1);
 }
 
-const createOrEmptyDir = (dir) => {
+const createOrEmptyDir = dir => {
   if (fs.existsSync(dir)) {
-    fs.readdirSync(dir).forEach((f) => {
+    fs.readdirSync(dir).forEach(f => {
       fs.unlinkSync(path.join(dir, f));
     });
   } else {
@@ -34,7 +36,7 @@ const ppnDir = path.join(rootDir, "resources", "porcupine");
 const rhnDir = path.join(rootDir, "resources", "rhino");
 
 const wakeword = testData["tests"]["parameters"].find(
-  (x) => x["language"] === language
+  x => x["language"] === language
 )["wakeword"];
 const wakeWordFileName = `${wakeword}_wasm.ppn`;
 const wakeWordDir = path.join(
@@ -66,14 +68,12 @@ fs.writeFileSync(
   customWritePath: "${version}_${wakeWordFileName}",
 };
 
-(function () {
-  if (typeof module !== "undefined" && typeof module.exports !== "undefined")
-    module.exports = porcupineWakeWord;
-})();`
+export default porcupineWakeWord;
+`
 );
 
 const context = testData["tests"]["parameters"].find(
-  (x) => x["language"] === language
+  x => x["language"] === language
 )["context_name"];
 const contextFileName = `${context}_wasm.rhn`;
 const contextDir = path.join(rhnDir, "resources", `contexts${suffix}`, "wasm");
@@ -98,10 +98,8 @@ fs.writeFileSync(
   customWritePath: "${version}_${contextFileName}",
 };
 
-(function () {
-  if (typeof module !== "undefined" && typeof module.exports !== "undefined")
-    module.exports = rhinoContext;
-})();`
+export default rhinoContext;
+`
 );
 
 outputDirectory = path.join(__dirname, "..", "public", "models");
@@ -133,12 +131,10 @@ const rhinoModel = {
   customWritePath: "${version}_${rhnModelName}",
 };
 
-(function () {
-  if (typeof module !== "undefined" && typeof module.exports !== "undefined")
-    module.exports = [porcupineModel, rhinoModel];
-})();`
+export { porcupineModel, rhinoModel };
+`
 );
 
-child_process.fork("react-scripts", commands, {
+child_process.fork("vite", commands, {
   execPath: "npx",
 });

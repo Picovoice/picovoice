@@ -23,6 +23,7 @@ pnpm-debug.log*
 *.sw?
 
 src/dist
-public/*.pv
-public/*.ppn
-public/*.rhn
+src/lib/*.js
+public/contexts
+public/wakewords
+public/models

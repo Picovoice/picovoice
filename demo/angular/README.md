@@ -14,82 +14,29 @@ Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` 
 You can get your `AccessKey` for free. Make sure to keep your `AccessKey` secret.
 Signup or Login to [Picovoice Console](https://console.picovoice.ai/) to obtain your `AccessKey`.
 
-## Install and run
+## Install and Run
 
-Use `yarn` or `npm` to install then start the demo application:
+Use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
+to start a local web server hosting the demo in the language of your choice (e.g. `pl` -> Polish, `ko` -> Korean).
+To see a list of available languages, run `start` without a language code.
 
 ```console
 yarn
-yarn start
+yarn start ${LANGUAGE}
 ```
 
 (or)
 
 ```console
 npm install
-npm run start
+npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:4200/` in your browser.
 
-## Try Picovoice
+## Usage
 
-With the demo application running in your browser (and microphone permissions granted), try saying the following:
-
-> "Picovoice, set a timer for one minute"
-
-The result should look similar to this:
-
-```json
-{
-  "isFinalized": true,
-  "isUnderstood": true,
-  "intent": "setAlarm",
-  "slots": {
-    "minutes": "1"
-  }
-}
-```
-
-Try a phrase that is out-of-context:
-
-> "Picovoice, what's my horoscope?"
-
-```json
-{
-  "isFinalized": true,
-  "isUnderstood": false,
-  "intent": null,
-  "slots": {}
-}
-```
-
-This command falls outside the "Clock" context and is therefore not understood.
-
-The Clock context was trained to understand a particular set of expressions. These are built using a simple grammar and grouped together into a YAML file. This file is trained by [Picovoice Console](https://console.picovoice.ai/) to create a `.rhn` file for the WebAssembly (WASM) platform.
-
-```yaml
-context:
-  expressions:
-    setAlarm:
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:hours [hour, hours]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "set (a, an, the) [alarm, timer] for $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "$pv.TwoDigitInteger:hours [hour, hours] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:hours [hour, hours]"
-      - "$pv.TwoDigitInteger:minutes [minute, minutes] (and) $pv.TwoDigitInteger:seconds [second, seconds]"
-      - "$pv.TwoDigitInteger:minutes [minute, minutes]"
-      - "$pv.TwoDigitInteger:seconds [second, seconds]"
-    reset:
-      - "reset (the) (timer)"
-    pause:
-      - "[pause, stop] (the) (timer)"
-    resume:
-      - "resume (the) (timer)"
-```
+1) Enter your `AccessKey` in the provided input field
+2) Click the `Init Picovoice` button and wait until Picovoice has been initialized
+3) Click the `Start` button to start recording audio
+4) Say the indicated wakeword, then try to say a command within the context indicated at the bottom of the page

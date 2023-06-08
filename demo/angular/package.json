@@ -3,15 +3,10 @@
   "version": "2.2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "node scripts/run_demo.js serve",
+    "build": "node scripts/run_demo.js build",
     "watch": "ng build --watch --configuration development",
-    "lint": "ng lint",
-    "cp:ppn-keyword": "cp ../../resources/porcupine/resources/keyword_files/wasm/picovoice_wasm.ppn ./src/assets",
-    "cp:ppn-model": "cp ../../resources/porcupine/lib/common/porcupine_params.pv ./src/assets",
-    "cp:rhn-context": "cp ../../resources/rhino/resources/contexts/wasm/clock_wasm.rhn ./src/assets",
-    "cp:rhn-model": "cp ../../resources/rhino/lib/common/rhino_params.pv ./src/assets",
-    "postinstall": "npm-run-all cp:** --parallel"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {

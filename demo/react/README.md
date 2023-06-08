@@ -36,6 +36,7 @@ Open `http://localhost:3000` to view it in the browser.
 
 ## Usage
 
-1) Enter your `AccessKey` in the provided input field and
-2) Click the `start` button and wait until Picovoice has been initialized.
-3) Say the indicated wakeword, then try to say a command within the context indicated at the bottom.
+1) Enter your `AccessKey` in the provided input field
+2) Click the `Init Picovoice` button and wait until Picovoice has been initialized
+3) Click the `Start` button to start recording audio
+4) Say the indicated wakeword, then try to say a command within the context indicated at the bottom of the page
