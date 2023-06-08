@@ -36,5 +36,5 @@ Hit CTRL-C to stop the server
 
 ## Usage
 1) Enter your `AccessKey` in the provided input field and 
-2) Click the `start` button and wait until Picovoice has been initialized.
+2) Click the `Start Picovoice` button and wait until Picovoice has been initialized.
 3) Say the indicated wakeword, then try to say a command within the context indicated at the bottom.
