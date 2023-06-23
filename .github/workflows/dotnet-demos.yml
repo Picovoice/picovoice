@@ -17,7 +17,7 @@ on:
 
 defaults:
   run:
-    working-directory: demo/dotnet/PorcupineDemo
+    working-directory: demo/dotnet/PicovoiceDemo
 
 jobs:
   build-github-hosted:
@@ -36,6 +36,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Set up .NET 6.0
       uses: actions/setup-dotnet@v3
@@ -82,6 +84,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Package restore
       run: dotnet restore

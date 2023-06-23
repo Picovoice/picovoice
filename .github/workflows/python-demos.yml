@@ -1,4 +1,4 @@
-ame: Python Demos
+name: Python Demos
 
 on:
   workflow_dispatch:
@@ -37,6 +37,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
@@ -80,6 +82,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
     - name: Install dependencies
       run: pip3 install -r requirements.txt
