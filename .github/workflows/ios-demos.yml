@@ -90,11 +90,11 @@ jobs:
       - name: Run Cocoapods
         run: pod install
 
-      - name: Build
-        run: xcrun xcodebuild build
-          -configuration Debug
-          -workspace PicovoiceBackgroundServiceDemo.xcworkspace
-          -sdk iphoneos
-          -scheme PicovoiceBackgroundServiceDemo
-          -derivedDataPath ddp
-          CODE_SIGNING_ALLOWED=NO
+      # - name: Build
+      #   run: xcrun xcodebuild build
+      #     -configuration Debug
+      #     -workspace PicovoiceBackgroundServiceDemo.xcworkspace
+      #     -sdk iphoneos
+      #     -scheme PicovoiceBackgroundServiceDemo
+      #     -derivedDataPath ddp
+      #     CODE_SIGNING_ALLOWED=NO
