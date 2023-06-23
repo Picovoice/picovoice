@@ -1,26 +1,23 @@
-name: Rust Demos
+ame: Python Demos
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/rust-demos.yml'
-      - 'demo/rust/**'
-      - '!demo/rust/README.md'
+      - '.github/workflows/python-demos.yml'
+      - 'demo/python/**'
+      - '!demo/python/README.md'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/rust-demos.yml'
-      - 'demo/rust/**'
-      - '!demo/rust/README.md'
-
-env:
-  CARGO_TERM_COLOR: always
+      - '.github/workflows/python-demos.yml'
+      - 'demo/python/**'
+      - '!demo/python/README.md'
 
 defaults:
   run:
-    working-directory: demo/rust
+    working-directory: demo/python
 
 jobs:
   build-github-hosted:
@@ -29,6 +26,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.7', '3.8', '3.9', '3.10']
         include:
         - os: ubuntu-latest
           platform: linux
@@ -40,40 +38,33 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Rust dependencies
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt install libasound2-dev -y
-
-    - name: Install stable toolchain
-      uses: actions-rs/toolchain@v1
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
       with:
-        profile: minimal
-        toolchain: stable
-        override: true
+        python-version: ${{ matrix.python-version }}
 
-    - name: Rust build micdemo
-      run: cargo build --verbose
-      working-directory: demo/rust/micdemo
+    - name: Pre-build dependencies
+      run: python -m pip install --upgrade pip
 
-    - name: Rust build filedemo
-      run: cargo build --verbose
-      working-directory: demo/rust/filedemo
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
     - name: Test
-      run: cargo run --release --
+      run: python picovoice_demo_file.py
         --access_key ${{ secrets.PV_VALID_ACCESS_KEY }}
-        --input_audio_path ../../../resources/audio_samples/picovoice-coffee.wav
+        --wav_path ../../resources/audio_samples/picovoice-coffee.wav
         --keyword_path ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
         --context_path ../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
-      working-directory: demo/rust/filedemo
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
         include:
+        - machine: rpi2
+          platform: raspberry-pi
         - machine: rpi3-32
           platform: raspberry-pi
         - machine: rpi3-64
@@ -84,28 +75,18 @@ jobs:
           platform: raspberry-pi
         - machine: jetson
           platform: jetson
+        - machine: beaglebone
+          platform: beaglebone
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install stable toolchain
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-        override: true
-
-    - name: Rust build micdemo
-      run: cargo build --verbose
-      working-directory: demo/rust/micdemo
-
-    - name: Rust build filedemo
-      run: cargo build --verbose
-      working-directory: demo/rust/filedemo
+    - name: Install dependencies
+      run: pip3 install -r requirements.txt
 
     - name: Test
-      run: cargo run --release --
+      run: python picovoice_demo_file.py
         --access_key ${{ secrets.PV_VALID_ACCESS_KEY }}
-        --input_audio_path ../../../resources/audio_samples/picovoice-coffee.wav
+        --wav_path ../../resources/audio_samples/picovoice-coffee.wav
         --keyword_path ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
         --context_path ../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
-      working-directory: demo/rust/filedemo

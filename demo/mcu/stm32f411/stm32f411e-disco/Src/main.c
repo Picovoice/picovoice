@@ -23,7 +23,7 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
-static const char* ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char *ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
@@ -63,7 +63,8 @@ static void inference_callback(pv_inference_t *inference) {
 }
 
 static void error_handler(void) {
-    while(true);
+    while (true)
+        ;
 }
 
 int main(void) {
@@ -132,7 +133,6 @@ int main(void) {
                 error_handler();
             }
         }
-
     }
     pv_board_deinit();
     pv_audio_rec_deinit();

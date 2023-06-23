@@ -9,15 +9,15 @@
     specific language governing permissions and limitations under the License.
 */
 
+#include <alsa/asoundlib.h>
+#include <asm/ioctl.h>
 #include <dlfcn.h>
 #include <errno.h>
 #include <getopt.h>
+#include <linux/spi/spidev.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <alsa/asoundlib.h>
-#include <asm/ioctl.h>
-#include <linux/spi/spidev.h>
 #include <sys/ioctl.h>
 
 #include "pv_picovoice.h"
@@ -73,8 +73,8 @@ static void spi_write_data(unsigned char *data, int len) {
     struct spi_ioc_transfer spi;
     memset(&spi, 0, sizeof(spi));
 
-    spi.tx_buf = (unsigned long)data;
-    spi.rx_buf = (unsigned long)data;
+    spi.tx_buf = (unsigned long) data;
+    spi.rx_buf = (unsigned long) data;
     spi.len = len;
     spi.delay_usecs = spi_delay;
     spi.speed_hz = spi_speed;
@@ -87,13 +87,13 @@ static void spi_write_data(unsigned char *data, int len) {
 }
 
 static void set_color(const uint8_t rgb[3]) {
-    for(int32_t i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
         spi_write_data(&zero, 1);
     }
 
     static const uint32_t BRIGHTNESS = 1;
-    for(int32_t i = 0; i < 12; i++) {
+    for (int32_t i = 0; i < 12; i++) {
         uint8_t led_frame[4];
         led_frame[0] = 0b11100000 | (0b00011111 & BRIGHTNESS);
         led_frame[1] = rgb[2];
@@ -102,7 +102,7 @@ static void set_color(const uint8_t rgb[3]) {
         spi_write_data(led_frame, 4);
     }
 
-    for(int32_t i = 0; i < 4; i++) {
+    for (int32_t i = 0; i < 4; i++) {
         uint8_t zero = 0x00;
         spi_write_data(&zero, 1);
     }
@@ -175,15 +175,16 @@ static struct option long_options[] = {
         {"porcupine_model_path",  required_argument, NULL, 'p'},
         {"rhino_sensitivity",     required_argument, NULL, 't'},
         {"rhino_model_path",      required_argument, NULL, 'r'},
-        {"require_endpoint",      required_argument,       NULL, 'e'},
-        {"input_audio_device", required_argument, NULL, 'i'}
+        {"require_endpoint",      required_argument, NULL, 'e'},
+        {"input_audio_device",    required_argument, NULL, 'i'}
 };
 
 void print_usage(const char *program_name) {
     fprintf(stderr,
             "Usage : %s -l LIBRARY_PATH -a ACCESS_KEY -k KEYWORD_PATH -c CONTEXT_PATH -p PPN_MODEL_PATH -r RHN_MODEL_PATH -i INPUT_AUDIO_DEVICE "
             "[--porcupine_sensitivity PPN_SENSITIVITY --rhino_sensitivity RHN_SENSITIVITY --require_endpoint \"true\"|\"false\" ]\n",
-            program_name, program_name);
+            program_name,
+            program_name);
 }
 
 int main(int argc, char *argv[]) {
@@ -293,7 +294,7 @@ int main(int argc, char *argv[]) {
     }
 
     pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *) =
-    dlsym(picovoice_library, "pv_picovoice_process");
+            dlsym(picovoice_library, "pv_picovoice_process");
     if ((error = dlerror()) != NULL) {
         fprintf(stderr, "failed to load 'pv_picovoice_process' with '%s'", error);
         exit(1);

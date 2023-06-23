@@ -17,37 +17,84 @@ on:
 
 defaults:
   run:
-    working-directory: demo/dotnet/PicovoiceDemo
+    working-directory: demo/dotnet/PorcupineDemo
 
 jobs:
-  build-micdemo:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+        - os: ubuntu-latest
+          platform: linux
+        - os: windows-latest
+          platform: windows
+        - os: macos-latest
+          platform: mac
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
 
-    - name: Setup .NET
+    - name: Set up .NET 6.0
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+
+    - name: Package restore
+      run: dotnet restore
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release
 
-  build-filedemo:
-    runs-on: ubuntu-latest
+    - name: Dotnet build filedemo
+      run: dotnet build -c FileDemo.Release
+
+    - name: Run Dotnet filedemo
+      run: dotnet run -c FileDemo.Release --
+        --input_audio_path ../../../resources/audio_samples/picovoice-coffee.wav
+        --access_key ${{secrets.PV_VALID_ACCESS_KEY}}
+        --keyword_path ../../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
+        --context_path ../../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
+
+    strategy:
+      matrix:
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        include:
+        - machine: rpi2
+          platform: raspberry-pi
+        - machine: rpi3-32
+          platform: raspberry-pi
+        - machine: rpi3-64
+          platform: raspberry-pi
+        - machine: rpi4-32
+          platform: raspberry-pi
+        - machine: rpi4-64
+          platform: raspberry-pi
+        - machine: jetson
+          platform: jetson
+        - machine: beaglebone
+          platform: beaglebone
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
+    - name: Package restore
+      run: dotnet restore
+
+    - name: Dotnet build micdemo
+      run: dotnet build -c MicDemo.Release
 
     - name: Dotnet build filedemo
       run: dotnet build -c FileDemo.Release
+
+    - name: Run Dotnet filedemo
+      run: dotnet run -c FileDemo.Release --
+        --input_audio_path ../../../resources/audio_samples/picovoice-coffee.wav
+        --access_key ${{secrets.PV_VALID_ACCESS_KEY}}
+        --keyword_path ../../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
+        --context_path ../../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn

@@ -42,7 +42,6 @@ static void *open_dl(const char *dl_path) {
     return dlopen(dl_path, RTLD_NOW);
 
 #endif
-
 }
 
 static void *load_symbol(void *handle, const char *symbol) {
@@ -56,7 +55,6 @@ static void *load_symbol(void *handle, const char *symbol) {
     return dlsym(handle, symbol);
 
 #endif
-
 }
 
 static void close_dl(void *handle) {
@@ -70,7 +68,6 @@ static void close_dl(void *handle) {
     dlclose(handle);
 
 #endif
-
 }
 
 static void print_dl_error(const char *message) {
@@ -84,7 +81,6 @@ static void print_dl_error(const char *message) {
     fprintf(stderr, "%s with '%s'.\n", message, dlerror());
 
 #endif
-
 }
 
 static struct option long_options[] = {
@@ -271,7 +267,7 @@ int picovoice_main(int argc, char *argv[]) {
     }
 
     pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *) =
-    load_symbol(picovoice_library, "pv_picovoice_process");
+            load_symbol(picovoice_library, "pv_picovoice_process");
     if (!pv_picovoice_process_func) {
         print_dl_error("failed to load 'pv_picovoice_process'");
         exit(1);
@@ -358,8 +354,7 @@ int picovoice_main(int argc, char *argv[]) {
 
         status = pv_picovoice_process_func(picovoice, pcm);
         if (status != PV_STATUS_SUCCESS) {
-            fprintf(stderr, "'pv_picovoice_process' failed with '%s'\n",
-                    pv_status_to_string_func(status));
+            fprintf(stderr, "'pv_picovoice_process' failed with '%s'\n", pv_status_to_string_func(status));
             exit(1);
         }
     }
@@ -386,14 +381,14 @@ int main(int argc, char *argv[]) {
 #if defined(_WIN32) || defined(_WIN64)
 
 #define UTF8_COMPOSITION_FLAG (0)
-#define NULL_TERMINATED (-1)
+#define NULL_TERMINATED       (-1)
 
     LPWSTR *wargv = CommandLineToArgvW(GetCommandLineW(), &argc);
     if (wargv == NULL) {
         fprintf(stderr, "CommandLineToArgvW failed\n");
         exit(1);
     }
-    
+
     char *utf8_argv[argc];
 
     for (int i = 0; i < argc; ++i) {
