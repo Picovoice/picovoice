@@ -89,7 +89,7 @@ jobs:
       run: pip3 install -r requirements.txt
 
     - name: Test
-      run: python picovoice_demo_file.py
+      run: python3 picovoice_demo_file.py
         --access_key ${{ secrets.PV_VALID_ACCESS_KEY }}
         --wav_path ../../resources/audio_samples/picovoice-coffee.wav
         --keyword_path ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
