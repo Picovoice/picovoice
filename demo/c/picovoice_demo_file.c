@@ -19,7 +19,7 @@
 #include <windows.h>
 
 #define UTF8_COMPOSITION_FLAG (0)
-#define NULL_TERMINATED (-1)
+#define NULL_TERMINATED       (-1)
 
 #else
 
@@ -44,7 +44,6 @@ static void *open_dl(const char *dl_path) {
     return dlopen(dl_path, RTLD_NOW);
 
 #endif
-
 }
 
 static void *load_symbol(void *handle, const char *symbol) {
@@ -58,7 +57,6 @@ static void *load_symbol(void *handle, const char *symbol) {
     return dlsym(handle, symbol);
 
 #endif
-
 }
 
 static void close_dl(void *handle) {
@@ -72,7 +70,6 @@ static void close_dl(void *handle) {
     dlclose(handle);
 
 #endif
-
 }
 
 static void print_dl_error(const char *message) {
@@ -86,7 +83,6 @@ static void print_dl_error(const char *message) {
     fprintf(stderr, "%s with '%s'.\n", message, dlerror());
 
 #endif
-
 }
 
 static void wake_word_callback(void) {
@@ -241,7 +237,7 @@ int picovoice_main(int argc, char *argv[]) {
     }
 
     pv_status_t (*pv_picovoice_process_func)(pv_picovoice_t *, const int16_t *) =
-    load_symbol(picovoice_library, "pv_picovoice_process");
+            load_symbol(picovoice_library, "pv_picovoice_process");
     if (!pv_picovoice_process_func) {
         print_dl_error("failed to load 'pv_picovoice_process'");
         exit(1);

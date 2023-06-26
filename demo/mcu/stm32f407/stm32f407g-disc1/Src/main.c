@@ -23,7 +23,7 @@
 
 #define MEMORY_BUFFER_SIZE (70 * 1024)
 
-static const char* ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
+static const char *ACCESS_KEY = "${ACCESS_KEY}"; //AccessKey string obtained from Picovoice Console (https://picovoice.ai/console/)
 
 static int8_t memory_buffer[MEMORY_BUFFER_SIZE] __attribute__((aligned(16)));
 
@@ -38,7 +38,7 @@ static void wake_word_callback(void) {
 }
 
 static void inference_callback(pv_inference_t *inference) {
-	BSP_LED_Off(LED4);
+    BSP_LED_Off(LED4);
     printf("{\n");
     printf("    is_understood : '%s',\n", (inference->is_understood ? "true" : "false"));
     if (inference->is_understood) {
@@ -53,17 +53,18 @@ static void inference_callback(pv_inference_t *inference) {
     }
     printf("}\n\n");
     for (int32_t i = 0; i < 10; i++) {
-    	BSP_LED_Toggle(LED3);
-    	BSP_LED_Toggle(LED4);
-    	BSP_LED_Toggle(LED5);
-    	BSP_LED_Toggle(LED6);
-    	HAL_Delay(30);
+        BSP_LED_Toggle(LED3);
+        BSP_LED_Toggle(LED4);
+        BSP_LED_Toggle(LED5);
+        BSP_LED_Toggle(LED6);
+        HAL_Delay(30);
     }
     pv_inference_delete(inference);
 }
 
 static void error_handler(void) {
-    while(true);
+    while (true)
+        ;
 }
 
 int main(void) {
@@ -131,7 +132,6 @@ int main(void) {
                 error_handler();
             }
         }
-
     }
     pv_board_deinit();
     pv_audio_rec_deinit();

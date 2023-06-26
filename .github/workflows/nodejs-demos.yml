@@ -1,23 +1,24 @@
-name: Java Demos
+name: Node.js Demos
 
 on:
   workflow_dispatch:
   push:
     branches: [ master ]
     paths:
-      - '.github/workflows/java-demos.yml'
-      - 'demo/java/**'
-      - '!demo/java/README.md'
+      - 'demo/nodejs/**'
+      - '!demo/nodejs/README.md'
+      - '.github/workflows/nodejs-demos.yml'
+
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
-      - '.github/workflows/java-demos.yml'
-      - 'demo/java/**'
-      - '!demo/java/README.md'
+      - 'demo/nodejs/**'
+      - '!demo/nodejs/README.md'
+      - '.github/workflows/nodejs-demos.yml'
 
 defaults:
   run:
-    working-directory: demo/java
+    working-directory: demo/nodejs
 
 jobs:
   build-github-hosted:
@@ -26,6 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [14.x, 16.x, 18.x, 20.x]
         include:
         - os: ubuntu-latest
           platform: linux
@@ -39,17 +41,19 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
       with:
-        java-version: '11'
-        distribution: 'temurin'
+        node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: ./gradlew build
+    - name: Pre-build dependencies
+      run: npm install yarn
 
-    - name: Run filedemo
-      run: java -jar build/libs/picovoice-file-demo.jar
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Test
+      run: yarn file
         -a  ${{ secrets.PV_VALID_ACCESS_KEY }}
         -i ../../resources/audio_samples/picovoice-coffee.wav
         -k ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
@@ -82,11 +86,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Build
-      run: ./gradlew build
+    - name: Pre-build dependencies
+      run: npm install --global yarn
 
-    - name: Run filedemo
-      run: java -jar build/libs/picovoice-file-demo.jar
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Test
+      run: yarn file
         -a  ${{ secrets.PV_VALID_ACCESS_KEY }}
         -i ../../resources/audio_samples/picovoice-coffee.wav
         -k ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn

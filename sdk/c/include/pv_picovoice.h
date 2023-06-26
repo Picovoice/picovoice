@@ -148,7 +148,6 @@ PV_API int32_t pv_picovoice_frame_length(void);
 PV_API pv_status_t pv_picovoice_context_info(const pv_picovoice_t *object, const char **context);
 
 #ifdef __cplusplus
-
 }
 
 #endif
