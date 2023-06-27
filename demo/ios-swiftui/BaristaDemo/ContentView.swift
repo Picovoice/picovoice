@@ -6,7 +6,7 @@ struct ContentView: View {
     let inactiveGrey = Color(red: 0.6, green: 0.6, blue: 0.6)
 
     @ObservedObject var viewModel = ViewModel()
-    
+
     func action() { }
 
     var body: some View {
