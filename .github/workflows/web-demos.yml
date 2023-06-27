@@ -43,14 +43,13 @@ jobs:
       run: yarn install
   
   build-electron:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: demo/electron
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: [14.x, 16.x, 18.x, 20.x]
 
     steps:
