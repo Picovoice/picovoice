@@ -66,5 +66,5 @@ jobs:
     - name: Install dependencies
       run: yarn install
 
-     - name: Build application
+    - name: Build application
       run: yarn build

@@ -29,8 +29,6 @@ cp ../../resources/rhino/lib/linux/x86_64/libpv_rhino.so ./Assets/Picovoice/Plug
 echo "Copying macOS lib..."
 cp ../../resources/porcupine/lib/mac/x86_64/libpv_porcupine.dylib ./Assets/Picovoice/Plugins/mac/x86_64/libpv_porcupine.dylib
 cp ../../resources/rhino/lib/mac/x86_64/libpv_rhino.dylib ./Assets/Picovoice/Plugins/mac/x86_64/libpv_rhino.dylib
-cp ../../resources/porcupine/lib/mac/arm64/libpv_porcupine.dylib ./Assets/Picovoice/Plugins/mac/arm64/libpv_porcupine.dylib
-cp ../../resources/rhino/lib/mac/arm64/libpv_rhino.dylib ./Assets/Picovoice/Plugins/mac/arm64/libpv_rhino.dylib
 
 echo "Copying Windows lib..."
 cp ../../resources/porcupine/lib/windows/amd64/libpv_porcupine.dll ./Assets/Picovoice/Plugins/windows/amd64/pv_porcupine.dll
@@ -71,7 +69,10 @@ cp ../../resources/rhino/resources/contexts/windows/video_player_windows.rhn ./A
 echo "Copying unity scripts..."
 cp ../../sdk/unity/Assets/Picovoice/Picovoice.cs ./Assets/Picovoice/Picovoice.cs
 cp ../../sdk/unity/Assets/Picovoice/PicovoiceManager.cs ./Assets/Picovoice/PicovoiceManager.cs
+cp ../../sdk/unity/Assets/Picovoice/PicovoiceException.cs ./Assets/Picovoice/PicovoiceException.cs
 cp ../../resources/porcupine/binding/unity/Assets/Porcupine/Porcupine.cs ./Assets/Picovoice/Porcupine.cs
+cp ../../resources/porcupine/binding/unity/Assets/Porcupine/PorcupineException.cs ./Assets/Picovoice/PorcupineException.cs
 cp ../../resources/rhino/binding/unity/Assets/Rhino/Rhino.cs ./Assets/Picovoice/Rhino.cs
+cp ../../resources/rhino/binding/unity/Assets/Rhino/RhinoException.cs ./Assets/Picovoice/RhinoException.cs
 
 echo "Copy complete!"

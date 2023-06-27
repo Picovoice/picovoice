@@ -35,8 +35,10 @@ struct ContentView: View {
                 .cornerRadius(.infinity)
 
             Spacer()
-            Text("Press the Start button and say \"Picovoice, turn off the lights\".
-                Try pressing the home button and saying it again.")
+            Text("""
+                 Press the Start button and say \"Picovoice, turn off the lights\".
+                 Try pressing the home button and saying it again.
+                 """)
                 .padding()
                 .foregroundColor(Color.black)
                 .multilineTextAlignment(.center)

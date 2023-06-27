@@ -14,7 +14,7 @@
     "ios-bundle": "react-native bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "=2.2.0",
+    "@picovoice/picovoice-react-native": "=2.2.1",
     "@picovoice/porcupine-react-native": "=2.2.0",
     "@picovoice/react-native-voice-processor": "^1.1.0",
     "@picovoice/rhino-react-native": "=2.2.0",
@@ -22,7 +22,7 @@
     "prettier": "^2.8.0",
     "react": "^17.0.2",
     "react-moment": "^1.1.1",
-    "react-native": "^0.68.5",
+    "react-native": "^0.68.7",
     "react-native-material-bottom-navigation": "^1.0.5",
     "react-native-notification-sounds": "^0.5.5",
     "react-native-vector-icons": "^8.1.0"
@@ -31,7 +31,7 @@
     "@babel/core": "^7.13.8",
     "@babel/runtime": "^7.13.9",
     "@types/react": "^17.0.35",
-    "@types/react-native": "^0.68.5",
+    "@types/react-native": "^0.68.7",
     "babel-jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.65.2",
     "react-test-renderer": "^17.0.2",
