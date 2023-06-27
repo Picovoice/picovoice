@@ -155,7 +155,7 @@ jobs:
     - name: Build
       run: xcrun xcodebuild build
         -configuration Debug
-        -workspace ReactNativeClockDemo.xcworkspace
+        -workspace ReactNativeClock.xcworkspace
         -sdk iphoneos
         -scheme ReactNativeClock
         -derivedDataPath ddp
