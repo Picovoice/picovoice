@@ -68,6 +68,8 @@ const VoiceTimer = defineComponent({
         { publicPath: "rhino_params.pv", forceWrite: true }
       );
       await start();
+
+      console.log(state.contextInfo)
     };
 
     onBeforeUnmount(() => {
@@ -112,6 +114,7 @@ const VoiceTimer = defineComponent({
     watch(
       () => state.inference,
       (inference) => {
+        console.log(inference)
         if (inference === null) {
           return;
         }
@@ -122,7 +125,7 @@ const VoiceTimer = defineComponent({
           timerInSeconds = 0;
         if (inference.isUnderstood) {
           switch (inference.intent) {
-            case "setAlarm":
+            case "setTimer":
               if (inference.slots?.["hours"] !== undefined) {
                 hours = parseInt(inference.slots["hours"]);
               }
@@ -137,15 +140,15 @@ const VoiceTimer = defineComponent({
               timeInitial.value = timerInSeconds;
               startTimer();
               break;
-            case "pause":
-              pauseTimer();
-              break;
-            case "reset":
-              timeRemaining.value = timeInitial.value;
-              stopTimer();
-              break;
-            case "resume":
-              startTimer();
+            case "timer":
+              if (inference.slots?.["action"] === "pause" || inference.slots?.["action"] === "stop") {
+                pauseTimer();
+              } else if (inference.slots?.["action"] === "reset") {
+                timeRemaining.value = timeInitial.value;
+                stopTimer();
+              } else if (inference.slots?.["action"] === "start") {
+                startTimer();
+              }
               break;
           }
         }
