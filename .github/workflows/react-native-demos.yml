@@ -111,7 +111,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
-      run: npm install yarn
+      run: npm install yarn --legacy-peer-deps
 
     - name: Install dependencies
       run: yarn android-install
@@ -144,7 +144,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Pre-build dependencies
-      run: npm install yarn
+      run: npm install yarn --legacy-peer-deps
 
     - name: Install dependencies
       run: yarn ios-install
