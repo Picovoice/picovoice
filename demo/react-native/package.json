@@ -3,13 +3,15 @@
   "version": "2.2.0",
   "private": true,
   "scripts": {
-    "android-run": "node scripts/run_demo.js run-android",
-    "ios-run": "node scripts/run_demo.js run-ios",
     "start": "react-native start",
     "lint": "eslint .",
-    "ios-link": "cd ios && pod install && cd ..",
+    "android-run": "node scripts/run_demo.js run-android",
+    "android-install": "yarn",
+    "android-bundle": "node scripts/run_demo.js bundle --dev false --platform android --entry-file index.js --bundle-output ./android/picovoice-rn-demo-app/src/main/assets/app.jsbundle --assets-dest ./android/picovoice-rn-demo-app/src/main/res/",
+    "ios-run": "node scripts/run_demo.js run-ios",
     "ios-install": "yarn && yarn ios-link",
-    "android-install": "yarn"
+    "ios-link": "cd ios && pod install && cd ..",
+    "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
   "dependencies": {
     "@picovoice/picovoice-react-native": "=2.2.1",

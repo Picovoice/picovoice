@@ -19,8 +19,8 @@ cp ../../resources/rhino/lib/android/arm64-v8a/libpv_rhino.so ./Assets/Picovoice
 cp ../../resources/rhino/lib/android/armeabi-v7a/libpv_rhino.so ./Assets/Picovoice/Plugins/android/armeabi-v7a/libpv_rhino.so
 
 echo "Copying iOS lib..."
-cp -R ../../resources/porcupine/lib/ios/PvPorcupine.xcframework/ios-arm64_armv7/PvPorcupine.framework ./Assets/Picovoice/Plugins/ios/PvPorcupine.framework
-cp -R ../../resources/rhino/lib/ios/PvRhino.xcframework/ios-arm64_armv7/PvRhino.framework ./Assets/Picovoice/Plugins/ios/PvRhino.framework
+cp -R ../../resources/porcupine/lib/ios/PvPorcupine.xcframework/ios-arm64/PvPorcupine.framework ./Assets/Picovoice/Plugins/ios/PvPorcupine.framework
+cp -R ../../resources/rhino/lib/ios/PvRhino.xcframework/ios-arm64/PvRhino.framework ./Assets/Picovoice/Plugins/ios/PvRhino.framework
 
 echo "Copying Linux lib..."
 cp ../../resources/porcupine/lib/linux/x86_64/libpv_porcupine.so ./Assets/Picovoice/Plugins/linux/x86_64/libpv_porcupine.so
@@ -69,7 +69,10 @@ cp ../../resources/rhino/resources/contexts/windows/video_player_windows.rhn ./A
 echo "Copying unity scripts..."
 cp ../../sdk/unity/Assets/Picovoice/Picovoice.cs ./Assets/Picovoice/Picovoice.cs
 cp ../../sdk/unity/Assets/Picovoice/PicovoiceManager.cs ./Assets/Picovoice/PicovoiceManager.cs
+cp ../../sdk/unity/Assets/Picovoice/PicovoiceException.cs ./Assets/Picovoice/PicovoiceException.cs
 cp ../../resources/porcupine/binding/unity/Assets/Porcupine/Porcupine.cs ./Assets/Picovoice/Porcupine.cs
+cp ../../resources/porcupine/binding/unity/Assets/Porcupine/PorcupineException.cs ./Assets/Picovoice/PorcupineException.cs
 cp ../../resources/rhino/binding/unity/Assets/Rhino/Rhino.cs ./Assets/Picovoice/Rhino.cs
+cp ../../resources/rhino/binding/unity/Assets/Rhino/RhinoException.cs ./Assets/Picovoice/RhinoException.cs
 
 echo "Copy complete!"

@@ -47,9 +47,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/rhino_flutter/ios"
 
 SPEC CHECKSUMS:
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_voice_processor: afb59b604d99397a1ccf15c935ac8f2c2327f09f
-  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
+  integration_test: 13825b8a9334a850581300559b8839134b124670
   ios-voice-processor: 65b25a8db69ea25ffba0eeef37bae71a982f34cc
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   Porcupine-iOS: 34f7b77fbd5f999eb9c4daa94acbb6c90c08ad1e

@@ -90,11 +90,52 @@ jobs:
       - name: Run Cocoapods
         run: pod install
 
-      # - name: Build
-      #   run: xcrun xcodebuild build
-      #     -configuration Debug
-      #     -workspace PicovoiceBackgroundServiceDemo.xcworkspace
-      #     -sdk iphoneos
-      #     -scheme PicovoiceBackgroundServiceDemo
-      #     -derivedDataPath ddp
-      #     CODE_SIGNING_ALLOWED=NO
+      - name: Build
+        run: xcrun xcodebuild build
+          -configuration Debug
+          -workspace PicovoiceBackgroundServiceDemo.xcworkspace
+          -sdk iphoneos
+          -scheme PicovoiceBackgroundServiceDemo
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO
+
+  build-swift-ui:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: demo/ios-swiftui
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
+      - name: Install AppCenter CLI
+        run: npm install -g appcenter-cli
+
+      - name: Make build dir
+        run: mkdir ddp
+
+      - name: Run Cocoapods
+        run: pod install
+
+      - name: Prepare Demo
+        run: bash copy.sh
+
+      - name: Build
+        run: xcrun xcodebuild build
+          -configuration Debug
+          -workspace BaristaDemo.xcworkspace
+          -sdk iphoneos
+          -scheme BaristaDemo
+          -derivedDataPath ddp
+          CODE_SIGNING_ALLOWED=NO

@@ -70,3 +70,6 @@ Assets/Picovoice/**/*.so
 Assets/Picovoice/**/*.dylib
 Assets/Picovoice/**/*.dll
 Assets/Picovoice/**/*.framework
+
+UserSettings/*
+*_Data/*

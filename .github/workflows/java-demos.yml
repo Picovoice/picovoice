@@ -7,13 +7,17 @@ on:
     paths:
       - '.github/workflows/java-demos.yml'
       - 'demo/java/**'
+      - 'demo/java-swing/**'
       - '!demo/java/README.md'
+      - '!demo/java-swing/README.md'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/java-demos.yml'
       - 'demo/java/**'
+      - 'demo/java-swing/**'
       - '!demo/java/README.md'
+      - '!demo/java-swing/README.md'
 
 defaults:
   run:
@@ -91,3 +95,23 @@ jobs:
         -i ../../resources/audio_samples/picovoice-coffee.wav
         -k ../../resources/porcupine/resources/keyword_files/${{ matrix.platform }}/picovoice_${{ matrix.platform }}.ppn
         -c ../../resources/rhino/resources/contexts/${{ matrix.platform }}/coffee_maker_${{ matrix.platform }}.rhn
+
+  build-swing:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/java-swing
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Build
+      run: ./gradlew build

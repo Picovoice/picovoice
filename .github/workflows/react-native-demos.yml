@@ -6,13 +6,17 @@ on:
     branches: [ master ]
     paths:
       - 'demo/react-native/**'
+      - 'demo/react-native-clock/**'
       - '!demo/react-native/README.md'
+      - '!demo/react-native-clock/README.md'
       - '.github/workflows/react-native-demos.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'demo/react-native/**'
+      - 'demo/react-native-clock/**'
       - '!demo/react-native/README.md'
+      - '!demo/react-native-clock/README.md'
       - '.github/workflows/react-native-demos.yml'
 
 defaults:
@@ -20,7 +24,7 @@ defaults:
     working-directory: demo/react-native
 
 jobs:
-  build:
+  build-android:
     runs-on: ubuntu-latest
 
     strategy:
@@ -29,8 +33,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        submodules: recursive
 
-    - name: Set up Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
@@ -39,4 +45,119 @@ jobs:
       run: npm install yarn
 
     - name: Install dependencies
-      run: yarn install
+      run: yarn android-install
+
+    - name: Build bundle
+      run: yarn android-bundle ko
+
+    - name: Build
+      run: ./gradlew assembleDebug
+      working-directory: demo/react-native/android
+
+  build-ios:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn
+
+    - name: Install dependencies
+      run: yarn ios-install
+
+    - name: Build bundle
+      run: yarn ios-bundle nl
+
+    - name: Build
+      run: xcrun xcodebuild build
+        -configuration Debug
+        -workspace PicovoiceDemo.xcworkspace
+        -sdk iphoneos
+        -scheme PicovoiceDemo
+        -derivedDataPath ddp
+        CODE_SIGNING_ALLOWED=NO
+      working-directory: demo/react-native/ios
+
+  build-clock-android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: demo/react-native-clock
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn --legacy-peer-deps
+
+    - name: Install dependencies
+      run: yarn android-install
+
+    - name: Build bundle
+      run: yarn android-bundle
+
+    - name: Build
+      run: ./gradlew assembleDebug
+      working-directory: demo/react-native-clock/android
+
+  build-clock-ios:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: demo/react-native-clock
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Pre-build dependencies
+      run: npm install yarn --legacy-peer-deps
+
+    - name: Install dependencies
+      run: yarn ios-install
+
+    - name: Build bundle
+      run: yarn ios-bundle
+
+    - name: Build
+      run: xcrun xcodebuild build
+        -configuration Debug
+        -workspace ReactNativeClock.xcworkspace
+        -sdk iphoneos
+        -scheme ReactNativeClock
+        -derivedDataPath ddp
+        CODE_SIGNING_ALLOWED=NO
+      working-directory: demo/react-native-clock/ios

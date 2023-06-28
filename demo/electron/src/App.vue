@@ -14,7 +14,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="css">
 body {
   background-color: #377dff;
   color: white;

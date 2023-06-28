@@ -24,3 +24,7 @@ pnpm-debug.log*
 
 #Electron-builder output
 /dist_electron
+
+# Picovoice files
+*.pv
+*.rhn

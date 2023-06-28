@@ -7,6 +7,8 @@ struct ContentView: View {
 
     @ObservedObject var viewModel = ViewModel()
 
+    func action() { }
+
     var body: some View {
 
         return
@@ -21,7 +23,7 @@ struct ContentView: View {
                     // Size row
                     HStack(alignment: .center, spacing: 10) {
                         ForEach(viewModel.sizeSel) { item in
-                            Button {
+                            Button(action: action) {
                                 Text(item.title)
                                     .font(.system(size: 20))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
@@ -49,7 +51,7 @@ struct ContentView: View {
 
                     HStack(alignment: .center, spacing: 7) {
                         ForEach(viewModel.shotSel) { item in
-                            Button {
+                            Button(action: action) {
                                 Text(item.title)
                                     .font(.system(size: 16))
                                     .foregroundColor(item.isSelected ? Color.white : inactiveGrey)
@@ -78,7 +80,7 @@ struct ContentView: View {
                     VStack(alignment: .center, spacing: 6) {
                         HStack(alignment: .center) {
                             ForEach(0..<viewModel.bevSel.count/2) { i in
-                                Button {
+                                Button(action: action) {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)
@@ -99,7 +101,7 @@ struct ContentView: View {
                         }
                         HStack(alignment: .center) {
                             ForEach(viewModel.bevSel.count/2..<viewModel.bevSel.count) { i in
-                                Button {
+                                Button(action: action) {
                                     Text(viewModel.bevSel[i].title)
                                         .font(.system(size: 15))
                                         .foregroundColor(viewModel.bevSel[i].isSelected ? Color.white : inactiveGrey)

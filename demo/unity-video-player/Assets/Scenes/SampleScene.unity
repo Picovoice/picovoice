@@ -740,6 +740,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 634138760}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!222 &634138759
@@ -1337,7 +1338,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1124853863}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: db17d37cef7da4b41987e5ae100a3951, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: e58dbc1e0f5aed13cab802cdc9f84464, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 963194227}

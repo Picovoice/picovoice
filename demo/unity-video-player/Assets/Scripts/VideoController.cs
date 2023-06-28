@@ -15,6 +15,8 @@ using UnityEngine.UI;
 
 public class VideoController : MonoBehaviour
 {
+    private static string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+
     VideoPlayer _videoPlayer;
     PicovoiceManager _picovoiceManager;
     MeshRenderer _screenOverlay;
@@ -33,51 +35,52 @@ public class VideoController : MonoBehaviour
 
     private bool isListening;
 
-    private static readonly string _platform;
-    private static readonly string _keywordPath;
-    private static readonly string _contextPath;
+    private string _platform;
+    private string _keywordPath;
+    private string _contextPath;
 
     private readonly Color picoBlue = new Color(0.21568627451f, 0.49019607843f, 1f, 0.5f);
 
-    static VideoController()
-    {
-        _platform = GetPlatform();
-        _keywordPath = GetKeywordPath();
-        _contextPath = GetContextPath();
-    }
-
     void Start()
     {
-        _voiceProcessor = VoiceProcessor.Instance;
-        _voiceProcessor.OnFrameCaptured += AnalyzeMicSignal;
+        try {
+            _platform = GetPlatform();
+            _keywordPath = GetKeywordPath();
+            _contextPath = GetContextPath();
 
-        _videoPlayer = gameObject.GetComponentInChildren<VideoPlayer>();
+            _voiceProcessor = VoiceProcessor.Instance;
+            _voiceProcessor.OnFrameCaptured += AnalyzeMicSignal;
 
-        MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
-        _border = meshes.First(x=>x.name == "Border");
-        _screenOverlay = meshes.First(x => x.name == "ScreenOverlay");
+            _videoPlayer = gameObject.GetComponentInChildren<VideoPlayer>();
 
-        Component[] objs = gameObject.GetComponentsInChildren<Component>();
-        _timeline = objs.First(x => x.name == "TimelinePivot");
-        _timelineFull = objs.First(x => x.name == "TimelineFullPivot");
-        _timeline.transform.localScale = new Vector3(0, 0.2f, 1);
-        _timelineFull.transform.localScale = new Vector3(1, 0.2f, 1);
+            MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
+            _border = meshes.First(x=>x.name == "Border");
+            _screenOverlay = meshes.First(x => x.name == "ScreenOverlay");
 
-        _volume = objs.First(x => x.name == "VolumePivot");
-        _volumeFull = objs.First(x => x.name == "VolumeFullPivot");
-        _volume.transform.localScale = new Vector3(1, 0, 1);
-        _volumeFull.transform.localScale = new Vector3(1, 0, 1);
+            Component[] objs = gameObject.GetComponentsInChildren<Component>();
+            _timeline = objs.First(x => x.name == "TimelinePivot");
+            _timelineFull = objs.First(x => x.name == "TimelineFullPivot");
+            _timeline.transform.localScale = new Vector3(0, 0.2f, 1);
+            _timelineFull.transform.localScale = new Vector3(1, 0.2f, 1);
 
-        _stateIcons = gameObject.GetComponentsInChildren<SpriteRenderer>().ToDictionary(x => x.name);
-        _playbackSpeedText = gameObject.GetComponentsInChildren<TextMeshPro>().First(x=>x.name == "PlaybackSpeed");
-        _notificationText = gameObject.GetComponentsInChildren<Text>().First(x => x.name == "NotificationText");
-        _notificationText.text = "Say 'Porcupine, what can I say?' for help";
-        _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
+            _volume = objs.First(x => x.name == "VolumePivot");
+            _volumeFull = objs.First(x => x.name == "VolumeFullPivot");
+            _volume.transform.localScale = new Vector3(1, 0, 1);
+            _volumeFull.transform.localScale = new Vector3(1, 0, 1);
 
-        _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");
-        _picovoiceManager = new PicovoiceManager(_keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
+            _stateIcons = gameObject.GetComponentsInChildren<SpriteRenderer>().ToDictionary(x => x.name);
+            _playbackSpeedText = gameObject.GetComponentsInChildren<TextMeshPro>().First(x=>x.name == "PlaybackSpeed");
+            _notificationText = gameObject.GetComponentsInChildren<Text>().First(x => x.name == "NotificationText");
+            _notificationText.text = "Say 'Porcupine, what can I say?' for help";
+            _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
 
-        StartCoroutine(FadeIntroNotification());
+            _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");
+            _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
+
+            StartCoroutine(FadeIntroNotification());
+        } catch (Exception e) {
+            Debug.Log(e.Message);
+        }
     }
 
     IEnumerator FadeIntroNotification()
@@ -425,7 +428,7 @@ public class VideoController : MonoBehaviour
         _border.material.SetColor("_EmissionColor", picoBlue * normalizedDbfs);
     }
 
-    private static string GetPlatform()
+    private string GetPlatform()
     {
         switch (Application.platform)
         {
@@ -448,7 +451,7 @@ public class VideoController : MonoBehaviour
     }
 
 
-    public static string GetKeywordPath()
+    public string GetKeywordPath()
     {
         string fileName = string.Format("porcupine_{0}.ppn", _platform);
         string srcPath = Path.Combine(Application.streamingAssetsPath, string.Format("keyword_files/{0}/{1}", _platform, fileName));
@@ -466,7 +469,7 @@ public class VideoController : MonoBehaviour
 #endif
     }
 
-    public static string GetContextPath()
+    public string GetContextPath()
     {
         string fileName = string.Format("video_player_{0}.rhn", _platform);
         string srcPath = Path.Combine(Application.streamingAssetsPath, string.Format("contexts/{0}/{1}", _platform, fileName));
@@ -485,7 +488,7 @@ public class VideoController : MonoBehaviour
     }
 
 #if !UNITY_EDITOR && UNITY_ANDROID
-    public static string ExtractResource(string srcPath, string dstPath)
+    public string ExtractResource(string srcPath, string dstPath)
     {
         var loadingRequest = UnityWebRequest.Get(srcPath);
         loadingRequest.SendWebRequest();
