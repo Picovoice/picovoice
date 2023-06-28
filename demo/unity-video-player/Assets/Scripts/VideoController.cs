@@ -15,7 +15,7 @@ using UnityEngine.UI;
 
 public class VideoController : MonoBehaviour
 {
-    private static string ACCESS_KEY = "Tw4jothrMMLyRYQ793yD/XF3DeithcbeNVsYlNN0Dc1vY26suWNOkg=="; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
+    private static string ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
     VideoPlayer _videoPlayer;
     PicovoiceManager _picovoiceManager;

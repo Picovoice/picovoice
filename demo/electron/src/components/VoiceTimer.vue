@@ -68,8 +68,6 @@ const VoiceTimer = defineComponent({
         { publicPath: "rhino_params.pv", forceWrite: true }
       );
       await start();
-
-      console.log(state.contextInfo)
     };
 
     onBeforeUnmount(() => {
@@ -114,7 +112,6 @@ const VoiceTimer = defineComponent({
     watch(
       () => state.inference,
       (inference) => {
-        console.log(inference)
         if (inference === null) {
           return;
         }

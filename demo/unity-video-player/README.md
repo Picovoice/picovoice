@@ -4,7 +4,7 @@
 
 This binding is for running Picovoice on **Unity 2017.4+** on the following platforms:
 
-- Android 4.1+ (API 16+) (ARM only)
+- Android 5.1+ (API 21+) (ARM only)
 - iOS 9.0+
 - Windows (x86_64)
 - macOS (x86_64)
@@ -15,6 +15,9 @@ This binding is for running Picovoice on **Unity 2017.4+** on the following plat
 If running the project from source, run the `copy.sh` script first to copy resources from elsewhere in the repo. You should then be able to choose one of the supported platforms and build the demo.
 
 ## Usage
+
+Open [Assets/Scripts/VideoController.cs](Assets/Scripts/VideoController.cs) and replace `{YOUR_ACCESS_KEY_HERE}` with your access key obtained from from Picovoice Console (https://console.picovoice.ai/).
+Press `Build and Run` in Unity Editor to run the demo in the device of your choice.
 
 The wake word for this demo is `Porcupine`. After the wake word, when you see the border light up, you can say a command to control the video player.
 
