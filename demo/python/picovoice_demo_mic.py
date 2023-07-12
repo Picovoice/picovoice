@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Picovoice Inc.
+# Copyright 2020-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -22,18 +22,15 @@ def main():
 
     parser.add_argument(
         '--access_key',
-        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)',
-        required=True)
+        help='AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)')
 
     parser.add_argument(
         '--keyword_path',
-        help="Absolute path to a Porcupine keyword file.",
-        required=True)
+        help="Absolute path to a Porcupine keyword file.")
 
     parser.add_argument(
         '--context_path',
-        help="Absolute path to a Rhino context file.",
-        required=True)
+        help="Absolute path to a Rhino context file.")
 
     parser.add_argument(
         '--porcupine_library_path',
@@ -97,8 +94,12 @@ def main():
         require_endpoint = True
 
     if args.show_audio_devices:
-        for i, device in enumerate(PvRecorder.get_audio_devices()):
+        for i, device in enumerate(PvRecorder.get_available_devices()):
             print('Device %d: %s' % (i, device))
+        return
+
+    if not args.access_key or not args.keyword_path or not args.context_path:
+        print('--access_key, --keyword_path and --context_path are required.')
         return
 
     def wake_word_callback():
@@ -155,8 +156,8 @@ def main():
     print('Context info: %s' % picovoice.context_info)
 
     recorder = PvRecorder(
-        device_index=args.audio_device_index,
         frame_length=picovoice.frame_length,
+        device_index=args.audio_device_index,
     )
     recorder.start()
 
