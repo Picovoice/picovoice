@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2020-2021 Picovoice Inc.
+    Copyright 2020-2023 Picovoice Inc.
 
     You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
     file accompanying this source.
@@ -97,54 +97,54 @@ namespace PicovoiceDemo
                 endpointDurationSec,
                 requireEndpoint);
 
-            BinaryWriter outputFileWriter = null;
-            int totalSamplesWritten = 0;
+            // create recorder
+            using PvRecorder recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength);            
+            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            {
+                e.Cancel = true;
+                recorder.Stop();
+                Console.WriteLine("Stopping...");
+            };
 
             // open stream to output file
+            BinaryWriter outputFileWriter = null;
+            int totalSamplesWritten = 0;
             if (!string.IsNullOrWhiteSpace(outputPath))
             {
                 outputFileWriter = new BinaryWriter(new FileStream(outputPath, FileMode.OpenOrCreate, FileAccess.Write));
-                WriteWavHeader(outputFileWriter, 1, 16, 16000, 0);
+                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, 0);
             }
 
-            Console.CancelKeyPress += (s, o) =>
+            recorder.Start();
+            Console.WriteLine($"Using device: {recorder.SelectedDevice}");
+            Console.WriteLine("Listening...\n");
+
+            while (recorder.IsRecording)
             {
-                Console.WriteLine("Stopping...");
+                short[] frame = recorder.Read();
+
+                picovoice.Process(frame);
 
                 if (outputFileWriter != null)
                 {
-                    // write size to header and clean up
-                    WriteWavHeader(outputFileWriter, 1, 16, 16000, totalSamplesWritten);
-                    outputFileWriter.Flush();
-                    outputFileWriter.Dispose();
-                }
-            };
-
-            using (PvRecorder recorder = PvRecorder.Create(audioDeviceIndex, picovoice.FrameLength))
-            {
-                recorder.Start();
-
-                Console.WriteLine($"Using device: {recorder.SelectedDevice}");
-                Console.WriteLine("Listening...");
-
-                while (true)
-                {
-                    short[] pcm = recorder.Read();
-
-                    picovoice.Process(pcm);
-
-                    if (outputFileWriter != null)
+                    foreach (short sample in frame)
                     {
-                        foreach (short sample in pcm)
-                        {
-                            outputFileWriter.Write(sample);
-                        }
-                        totalSamplesWritten += pcm.Length;
+                        outputFileWriter.Write(sample);
                     }
-                    Thread.Yield();
+                    totalSamplesWritten += frame.Length;
                 }
+                Thread.Yield();
             }
 
+            if (outputFileWriter != null)
+            {
+                // write size to header and clean up
+                WriteWavHeader(outputFileWriter, 1, 16, recorder.SampleRate, totalSamplesWritten);
+                outputFileWriter.Flush();
+                outputFileWriter.Dispose();
+                Console.Write($"Wrote audio to '{outputPath}'");
+            }
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace PicovoiceDemo
         /// </summary>
         public static void ShowAudioDevices()
         {
-            string[] devices = PvRecorder.GetAudioDevices();
+            string[] devices = PvRecorder.GetAvailableDevices();
             for (int i = 0; i < devices.Length; i++)
             {
                 Console.WriteLine($"index: {i}, device name: {devices[i]}");
