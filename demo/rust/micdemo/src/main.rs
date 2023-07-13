@@ -12,7 +12,7 @@
 use chrono::prelude::*;
 use clap::{App, Arg, ArgGroup};
 use picovoice::{rhino::RhinoInference, PicovoiceBuilder};
-use pv_recorder::RecorderBuilder;
+use pv_recorder::PvRecorderBuilder;
 use std::sync::atomic::{AtomicBool, Ordering};
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
@@ -69,7 +69,8 @@ fn picovoice_demo(
         picovoice_builder = picovoice_builder.rhino_sensitivity(rhino_sensitivity);
     }
     if let Some(rhino_endpoint_duration_sec) = rhino_endpoint_duration_sec {
-        picovoice_builder = picovoice_builder.rhino_endpoint_duration_sec(rhino_endpoint_duration_sec);
+        picovoice_builder =
+            picovoice_builder.rhino_endpoint_duration_sec(rhino_endpoint_duration_sec);
     }
     if let Some(rhino_require_endpoint) = rhino_require_endpoint {
         picovoice_builder = picovoice_builder.rhino_require_endpoint(rhino_require_endpoint);
@@ -79,9 +80,8 @@ fn picovoice_demo(
         .init()
         .expect("Failed to create Picovoice");
 
-    let recorder = RecorderBuilder::new()
+    let recorder = PvRecorderBuilder::new(picovoice.frame_length() as i32)
         .device_index(audio_device_index)
-        .frame_length(picovoice.frame_length() as i32)
         .init()
         .expect("Failed to initialize pvrecorder");
     recorder.start().expect("Failed to start audio recording");
@@ -96,13 +96,12 @@ fn picovoice_demo(
 
     let mut audio_data = Vec::new();
     while LISTENING.load(Ordering::SeqCst) {
-        let mut pcm = vec![0; recorder.frame_length()];
-        recorder.read(&mut pcm).expect("Failed to read audio frame");
+        let frame = recorder.read().expect("Failed to read audio frame");
 
-        picovoice.process(&pcm).unwrap();
+        picovoice.process(&frame).unwrap();
 
         if output_path.is_some() {
-            audio_data.extend_from_slice(&pcm);
+            audio_data.extend_from_slice(&frame);
         }
     }
 
@@ -125,10 +124,7 @@ fn picovoice_demo(
 }
 
 fn show_audio_devices() {
-    let audio_devices = RecorderBuilder::new()
-        .init()
-        .expect("Failed to initialize pvrecorder")
-        .get_audio_devices();
+    let audio_devices = PvRecorderBuilder::default().get_available_devices();
     match audio_devices {
         Ok(audio_devices) => {
             for (idx, device) in audio_devices.iter().enumerate() {
