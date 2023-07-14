@@ -83,7 +83,7 @@ jobs:
 
     - name: Cocoapods install
       working-directory: sdk/react-native/test-app/PicovoiceTestApp/ios
-      run: pod install --repo-update
+      run: pod install
 
     - name: Inject AppID
       run: sed -i '.bak' 's:{TESTING_ACCESS_KEY_HERE}:${{secrets.PV_VALID_ACCESS_KEY}}:' Tests.ts
