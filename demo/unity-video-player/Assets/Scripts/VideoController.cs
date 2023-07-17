@@ -43,7 +43,8 @@ public class VideoController : MonoBehaviour
 
     void Start()
     {
-        try {
+        try
+        {
             _platform = GetPlatform();
             _keywordPath = GetKeywordPath();
             _contextPath = GetContextPath();
@@ -54,7 +55,7 @@ public class VideoController : MonoBehaviour
             _videoPlayer = gameObject.GetComponentInChildren<VideoPlayer>();
 
             MeshRenderer[] meshes = gameObject.GetComponentsInChildren<MeshRenderer>();
-            _border = meshes.First(x=>x.name == "Border");
+            _border = meshes.First(x => x.name == "Border");
             _screenOverlay = meshes.First(x => x.name == "ScreenOverlay");
 
             Component[] objs = gameObject.GetComponentsInChildren<Component>();
@@ -69,7 +70,7 @@ public class VideoController : MonoBehaviour
             _volumeFull.transform.localScale = new Vector3(1, 0, 1);
 
             _stateIcons = gameObject.GetComponentsInChildren<SpriteRenderer>().ToDictionary(x => x.name);
-            _playbackSpeedText = gameObject.GetComponentsInChildren<TextMeshPro>().First(x=>x.name == "PlaybackSpeed");
+            _playbackSpeedText = gameObject.GetComponentsInChildren<TextMeshPro>().First(x => x.name == "PlaybackSpeed");
             _notificationText = gameObject.GetComponentsInChildren<Text>().First(x => x.name == "NotificationText");
             _notificationText.text = "Say 'Porcupine, what can I say?' for help";
             _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
@@ -187,7 +188,7 @@ public class VideoController : MonoBehaviour
             {
                 ChangePlaybackSpeed(inference.Slots);
             }
-            else if(inference.Intent == "help")
+            else if (inference.Intent == "help")
             {
                 ToggleHelp(inference.Slots);
             }
@@ -438,7 +439,7 @@ public class VideoController : MonoBehaviour
         double rmsSum = 0;
         for (int i = 0; i < audio.Length; i++)
             rmsSum += Math.Pow(audio[i], 2);
-        double rms =  Math.Sqrt(rmsSum / audio.Length) / 32767.0f;
+        double rms = Math.Sqrt(rmsSum / audio.Length) / 32767.0f;
 
         // average past values for smoothing effect
         if (rmsQueue.Count == 7)
