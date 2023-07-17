@@ -5,10 +5,10 @@
 This binding is for running Picovoice on **Unity 2017.4+** on the following platforms:
 
 - Android 5.1+ (API 21+) (ARM only)
-- iOS 9.0+
-- Windows (x86_64)
-- macOS (x86_64)
+- iOS 11.0+
 - Linux (x86_64)
+- macOS (x86_64, arm64)
+- Windows (x86_64)
 
 ## Installation
 
@@ -40,6 +40,6 @@ The wake word for this demo is `Porcupine`. After the wake word, when you see th
 **Playback speed commands:**
 - set playback speed to 1.5 times
 - change playback speed to 25%
-- playback speed normal	
+- playback speed normal
 
 While using the app, you can say "Porcupine, show/hide help" to see some examples of what to say.
