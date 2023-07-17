@@ -75,11 +75,13 @@ public class VideoController : MonoBehaviour
             _notificationPanel = gameObject.GetComponentsInChildren<Image>().First(x => x.name == "NotificationPanel");
 
             _helpCanvas = gameObject.GetComponentsInChildren<Canvas>().First(x => x.name == "HelpCanvas");
-            _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
 
             StartCoroutine(FadeIntroNotification());
-        } catch (Exception e) {
-            Debug.Log(e.Message);
+            _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult);
+        }
+        catch (Exception e)
+        {
+            ShowError(e.Message);
         }
     }
 
@@ -106,15 +108,36 @@ public class VideoController : MonoBehaviour
                 {
                     _picovoiceManager.Start();
                 }
-                catch (Exception ex)
+                catch (PicovoiceInvalidArgumentException ex)
                 {
-                    Debug.LogError(ex.ToString());
+                    ShowError($"{ex.Message}\nEnsure your access key '{ACCESS_KEY}' is a valid access key.");
+                }
+                catch (PicovoiceActivationException)
+                {
+                    ShowError("AccessKey activation error");
+                }
+                catch (PicovoiceActivationLimitException)
+                {
+                    ShowError("AccessKey reached its device limit");
+                }
+                catch (PicovoiceActivationRefusedException)
+                {
+                    ShowError("AccessKey refused");
+                }
+                catch (PicovoiceActivationThrottledException)
+                {
+                    ShowError("AccessKey has been throttled");
+                }
+                catch (PicovoiceException ex)
+                {
+                    ShowError("PicovoiceManager was unable to initialize: " + ex.Message);
                 }
             }
             else
-                Debug.LogError("No audio recording device available!");
+            {
+                ShowError("No audio recording device available!");
+            }
         }
-
         float timelineScaleX = (float)(_videoPlayer.time / _videoPlayer.length);
         _timeline.transform.localScale = new Vector3(timelineScaleX, _timeline.transform.localScale.y, _timeline.transform.localScale.z);
     }
@@ -127,6 +150,13 @@ public class VideoController : MonoBehaviour
         {
             _picovoiceManager.Stop();
         }
+    }
+
+    void ShowError(string error)
+    {
+        _notificationText.text = error;
+        _notificationText.color = Color.red;
+        Debug.Log(error);
     }
 
     private void OnWakeWordDetected()

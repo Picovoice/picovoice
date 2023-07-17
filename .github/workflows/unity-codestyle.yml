@@ -7,13 +7,15 @@ on:
     paths:
       - 'sdk/unity/**/*.cs'
       - 'demo/unity/**/*.cs'
-      - '.github/workflows/dotnet-codestyle.yml'
+      - 'demo/unity-video-player/**/*.cs'
+      - '.github/workflows/unity-codestyle.yml'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - 'sdk/unity/**/*.cs'
       - 'demo/unity/**/*.cs'
-      - '.github/workflows/dotnet-codestyle.yml'
+      - 'demo/unity-video-player/**/*.cs'
+      - '.github/workflows/unity-codestyle.yml'
 
 jobs:
   check-unity-codestyle:
@@ -27,3 +29,6 @@ jobs:
 
     - name: Run Demo Codestyle
       run: dotnet format whitespace demo/unity --folder --verify-no-changes
+
+    - name: Run Video Player Demo Codestyle
+      run: dotnet format whitespace demo/unity-video-player --folder --verify-no-changes

@@ -29,6 +29,8 @@ cp ../../resources/rhino/lib/linux/x86_64/libpv_rhino.so ./Assets/Picovoice/Plug
 echo "Copying macOS lib..."
 cp ../../resources/porcupine/lib/mac/x86_64/libpv_porcupine.dylib ./Assets/Picovoice/Plugins/mac/x86_64/libpv_porcupine.dylib
 cp ../../resources/rhino/lib/mac/x86_64/libpv_rhino.dylib ./Assets/Picovoice/Plugins/mac/x86_64/libpv_rhino.dylib
+cp ../../resources/porcupine/lib/mac/arm64/libpv_porcupine.dylib ./Assets/Picovoice/Plugins/mac/arm64/libpv_porcupine.dylib
+cp ../../resources/rhino/lib/mac/arm64/libpv_rhino.dylib ./Assets/Picovoice/Plugins/mac/arm64/libpv_rhino.dylib
 
 echo "Copying Windows lib..."
 cp ../../resources/porcupine/lib/windows/amd64/libpv_porcupine.dll ./Assets/Picovoice/Plugins/windows/amd64/pv_porcupine.dll
