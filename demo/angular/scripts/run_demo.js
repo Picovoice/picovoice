@@ -139,6 +139,8 @@ const rhinoModel = {
 })();`
 );
 
+const command = (process.platform === "win32") ? "npx.cmd" : "npx";
+
 child_process.fork("ng", commands, {
-  execPath: "npx",
+  execPath: command,
 });
