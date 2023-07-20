@@ -12,8 +12,8 @@
   },
   "main": "dist/electron/main/main.js",
   "dependencies": {
-    "@picovoice/picovoice-vue": "~2.2.1",
-    "@picovoice/web-voice-processor": "~4.0.6"
+    "@picovoice/picovoice-vue": "~2.2.2",
+    "@picovoice/web-voice-processor": "~4.0.8"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
