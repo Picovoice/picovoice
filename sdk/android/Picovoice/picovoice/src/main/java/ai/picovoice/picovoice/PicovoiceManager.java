@@ -13,17 +13,12 @@
 package ai.picovoice.picovoice;
 
 import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Process;
 import android.util.Log;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
+import ai.picovoice.android.voiceprocessor.VoiceProcessor;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorErrorListener;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorException;
+import ai.picovoice.android.voiceprocessor.VoiceProcessorFrameListener;
 
 /**
  * High-level Android binding for Picovoice end-to-end platform. It handles recording audio from
@@ -43,8 +38,12 @@ public class PicovoiceManager {
     private final float endpointDurationSec;
     private final boolean requireEndpoint;
     private final PicovoiceInferenceCallback inferenceCallback;
-    private final PicovoiceManagerErrorCallback processErrorCallback;
-    private final MicrophoneReader microphoneReader;
+
+    private final VoiceProcessor voiceProcessor;
+    private final VoiceProcessorFrameListener vpFrameListener;
+    private final VoiceProcessorErrorListener vpErrorListener;
+    private boolean isListening;
+
     private Picovoice picovoice = null;
 
     /**
@@ -80,18 +79,18 @@ public class PicovoiceManager {
      * @param processErrorCallback A callback that reports errors encountered while processing audio.
      */
     private PicovoiceManager(Context appContext,
-                            String accessKey,
-                            String porcupineModelPath,
-                            String keywordPath,
-                            float porcupineSensitivity,
-                            PicovoiceWakeWordCallback wakeWordCallback,
-                            String rhinoModelPath,
-                            String contextPath,
-                            float rhinoSensitivity,
-                            float endpointDurationSec,
-                            boolean requireEndpoint,
-                            PicovoiceInferenceCallback inferenceCallback,
-                            PicovoiceManagerErrorCallback processErrorCallback) {
+                             String accessKey,
+                             String porcupineModelPath,
+                             String keywordPath,
+                             float porcupineSensitivity,
+                             PicovoiceWakeWordCallback wakeWordCallback,
+                             String rhinoModelPath,
+                             String contextPath,
+                             float rhinoSensitivity,
+                             float endpointDurationSec,
+                             boolean requireEndpoint,
+                             PicovoiceInferenceCallback inferenceCallback,
+                             final PicovoiceManagerErrorCallback processErrorCallback) {
         this.appContext = appContext;
         this.accessKey = accessKey;
         this.porcupineModelPath = porcupineModelPath;
@@ -104,9 +103,37 @@ public class PicovoiceManager {
         this.endpointDurationSec = endpointDurationSec;
         this.requireEndpoint = requireEndpoint;
         this.inferenceCallback = inferenceCallback;
-        this.processErrorCallback = processErrorCallback;
 
-        microphoneReader = new MicrophoneReader();
+        this.voiceProcessor = VoiceProcessor.getInstance();
+        this.vpFrameListener = new VoiceProcessorFrameListener() {
+            @Override
+            public void onFrame(short[] frame) {
+                synchronized (voiceProcessor) {
+                    if (picovoice == null) {
+                        return;
+                    }
+                    try {
+                        picovoice.process(frame);
+                    } catch (PicovoiceException e) {
+                        if (processErrorCallback != null) {
+                            processErrorCallback.invoke(new PicovoiceException(e));
+                        } else {
+                            Log.e("PicovoiceManager", e.toString());
+                        }
+                    }
+                }
+            }
+        };
+        this.vpErrorListener = new VoiceProcessorErrorListener() {
+            @Override
+            public void onError(VoiceProcessorException error) {
+                if (processErrorCallback != null) {
+                    processErrorCallback.invoke(new PicovoiceException(error));
+                } else {
+                    Log.e("PicovoiceManager", error.toString());
+                }
+            }
+        };
     }
 
     /**
@@ -115,21 +142,55 @@ public class PicovoiceManager {
      * @throws PicovoiceException if there is an error with initialization of Picovoice.
      */
     public void start() throws PicovoiceException {
-        microphoneReader.start();
+        if (isListening) {
+            return;
+        }
+
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setPorcupineModelPath(porcupineModelPath)
+                .setKeywordPath(keywordPath)
+                .setPorcupineSensitivity(porcupineSensitivity)
+                .setWakeWordCallback(wakeWordCallback)
+                .setRhinoModelPath(rhinoModelPath)
+                .setContextPath(contextPath)
+                .setRhinoSensitivity(rhinoSensitivity)
+                .setEndpointDurationSec(endpointDurationSec)
+                .setRequireEndpoint(requireEndpoint)
+                .setInferenceCallback(inferenceCallback)
+                .build(appContext);
+        this.voiceProcessor.addFrameListener(vpFrameListener);
+        this.voiceProcessor.addErrorListener(vpErrorListener);
+
+        try {
+            voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
+        } catch (VoiceProcessorException e) {
+            throw new PicovoiceException(e);
+        }
+        isListening = true;
     }
 
     /**
      * Stops recording audio from the microphone.
      *
-     * @throws PicovoiceException if the {@link PicovoiceManager.MicrophoneReader} throws an
-     *                            exception while it's being stopped.
+     * @throws PicovoiceException if an error is encountered while attempting to stop.
      */
     public void stop() throws PicovoiceException {
-        try {
-            microphoneReader.stop();
-        } catch (InterruptedException e) {
-            throw new PicovoiceException(e);
+        voiceProcessor.removeErrorListener(vpErrorListener);
+        voiceProcessor.removeFrameListener(vpFrameListener);
+        if (voiceProcessor.getNumFrameListeners() == 0) {
+            try {
+                voiceProcessor.stop();
+            } catch (VoiceProcessorException e) {
+                throw new PicovoiceException(e);
+            }
         }
+
+        synchronized (voiceProcessor) {
+            picovoice.delete();
+            picovoice = null;
+        }
+        isListening = false;
     }
 
     /**
@@ -346,109 +407,6 @@ public class PicovoiceManager {
                     requireEndpoint,
                     inferenceCallback,
                     processErrorCallback);
-        }
-    }
-
-    private class MicrophoneReader {
-        private final AtomicBoolean started = new AtomicBoolean(false);
-        private final AtomicBoolean stop = new AtomicBoolean(false);
-        private final AtomicBoolean stopped = new AtomicBoolean(false);
-
-        private final Handler callbackHandler = new Handler(Looper.getMainLooper());
-
-        void start() throws PicovoiceException {
-            if (started.get()) {
-                return;
-            }
-
-            started.set(true);
-
-            picovoice = new Picovoice.Builder()
-                    .setAccessKey(accessKey)
-                    .setPorcupineModelPath(porcupineModelPath)
-                    .setKeywordPath(keywordPath)
-                    .setPorcupineSensitivity(porcupineSensitivity)
-                    .setWakeWordCallback(wakeWordCallback)
-                    .setRhinoModelPath(rhinoModelPath)
-                    .setContextPath(contextPath)
-                    .setRhinoSensitivity(rhinoSensitivity)
-                    .setEndpointDurationSec(endpointDurationSec)
-                    .setRequireEndpoint(requireEndpoint)
-                    .setInferenceCallback(inferenceCallback)
-                    .build(appContext);
-
-            Executors.newSingleThreadExecutor().submit(new Callable<Void>() {
-                @Override
-                public Void call() throws PicovoiceException {
-                    android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO);
-                    read();
-                    return null;
-                }
-            });
-        }
-
-        void stop() throws InterruptedException {
-            if (!started.get()) {
-                return;
-            }
-
-            stop.set(true);
-
-            while (!stopped.get()) {
-                Thread.sleep(10);
-            }
-
-            started.set(false);
-            stop.set(false);
-            stopped.set(false);
-        }
-
-        private void read() {
-            final int minBufferSize = AudioRecord.getMinBufferSize(
-                    picovoice.getSampleRate(),
-                    AudioFormat.CHANNEL_IN_MONO,
-                    AudioFormat.ENCODING_PCM_16BIT);
-            final int bufferSize = Math.max(picovoice.getSampleRate() / 2, minBufferSize);
-
-            AudioRecord audioRecord = null;
-
-            short[] buffer = new short[picovoice.getFrameLength()];
-
-            try {
-                audioRecord = new AudioRecord(
-                        MediaRecorder.AudioSource.MIC,
-                        picovoice.getSampleRate(),
-                        AudioFormat.CHANNEL_IN_MONO,
-                        AudioFormat.ENCODING_PCM_16BIT,
-                        bufferSize);
-                audioRecord.startRecording();
-
-                while (!stop.get()) {
-                    if (audioRecord.read(buffer, 0, buffer.length) == buffer.length) {
-                        picovoice.process(buffer);
-                    }
-                }
-
-                audioRecord.stop();
-                picovoice.delete();
-            } catch (final Exception e) {
-                if (processErrorCallback != null) {
-                    callbackHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            processErrorCallback.invoke(new PicovoiceException(e));
-                        }
-                    });
-                } else {
-                    Log.e("PorcupineManager", e.toString());
-                }
-            } finally {
-                if (audioRecord != null) {
-                    audioRecord.release();
-                }
-
-                stopped.set(true);
-            }
         }
     }
 }

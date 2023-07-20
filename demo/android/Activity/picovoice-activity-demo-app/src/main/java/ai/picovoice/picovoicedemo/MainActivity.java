@@ -35,7 +35,16 @@ import androidx.core.content.ContextCompat;
 import java.util.Map;
 import java.util.Objects;
 
-import ai.picovoice.picovoice.*;
+import ai.picovoice.picovoice.PicovoiceActivationException;
+import ai.picovoice.picovoice.PicovoiceActivationLimitException;
+import ai.picovoice.picovoice.PicovoiceActivationRefusedException;
+import ai.picovoice.picovoice.PicovoiceActivationThrottledException;
+import ai.picovoice.picovoice.PicovoiceException;
+import ai.picovoice.picovoice.PicovoiceInferenceCallback;
+import ai.picovoice.picovoice.PicovoiceInvalidArgumentException;
+import ai.picovoice.picovoice.PicovoiceManager;
+import ai.picovoice.picovoice.PicovoiceManagerErrorCallback;
+import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
 import ai.picovoice.rhino.RhinoInference;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,15 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     private PicovoiceManager picovoiceManager;
     private TextView intentTextView;
-    private TextView errorTextView;
-    private Guideline errorGuideline;
-    private ToggleButton recordButton;
-    private Button cheatSheetButton;
-
     private final CountDownTimer countDownTimer = new CountDownTimer(2000, 1000) {
         @Override
         public void onTick(long l) {
-
         }
 
         @Override
@@ -61,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
             intentTextView.setText("\n    Listening ...\n");
         }
     };
-
     private final PicovoiceWakeWordCallback picovoiceWakeWordCallback = new PicovoiceWakeWordCallback() {
         @Override
         public void invoke() {
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
-
     private final PicovoiceInferenceCallback picovoiceInferenceCallback = new PicovoiceInferenceCallback() {
         @Override
         public void invoke(final RhinoInference inference) {
@@ -103,7 +104,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
-
+    private TextView errorTextView;
+    private Guideline errorGuideline;
+    private ToggleButton recordButton;
+    private Button cheatSheetButton;
     private final PicovoiceManagerErrorCallback picovoiceManagerErrorCallback = new PicovoiceManagerErrorCallback() {
         @Override
         public void invoke(final PicovoiceException e) {
@@ -261,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         ViewGroup viewGroup = findViewById(R.id.content);
         View dialogView = LayoutInflater.from(view.getContext())
-                                        .inflate(R.layout.context_cheat_sheet, viewGroup, false);
+                .inflate(R.layout.context_cheat_sheet, viewGroup, false);
         builder.setView(dialogView);
 
         TextView contextField = dialogView.findViewById(R.id.contextField);
