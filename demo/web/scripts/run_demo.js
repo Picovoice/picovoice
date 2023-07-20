@@ -145,6 +145,8 @@ const rhinoModel = {
 })();`
 );
 
+const command = (process.platform === "win32") ? "npx.cmd" : "npx";
+
 child_process.fork("http-server", ["-a", "localhost", "-p", "5000"], {
-  execPath: "npx",
+  execPath: command,
 });
