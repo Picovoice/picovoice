@@ -65,18 +65,18 @@ public class PicovoiceManager {
     ///   (e.g. people talking in the background).
     ///   - processErrorCallback: A callback that is invoked if there is an error while processing audio.
     public init(
-        accessKey: String,
-        keywordPath: String,
-        onWakeWordDetection: @escaping (() -> Void),
-        contextPath: String,
-        onInference: @escaping ((Inference) -> Void),
-        porcupineModelPath: String? = nil,
-        porcupineSensitivity: Float32 = 0.5,
-        rhinoModelPath: String? = nil,
-        rhinoSensitivity: Float32 = 0.5,
-        endpointDurationSec: Float32 = 1.0,
-        requireEndpoint: Bool = true,
-        processErrorCallback: ((Error) -> Void)? = nil) {
+            accessKey: String,
+            keywordPath: String,
+            onWakeWordDetection: @escaping (() -> Void),
+            contextPath: String,
+            onInference: @escaping ((Inference) -> Void),
+            porcupineModelPath: String? = nil,
+            porcupineSensitivity: Float32 = 0.5,
+            rhinoModelPath: String? = nil,
+            rhinoSensitivity: Float32 = 0.5,
+            endpointDurationSec: Float32 = 1.0,
+            requireEndpoint: Bool = true,
+            processErrorCallback: ((Error) -> Void)? = nil) {
 
         self.accessKey = accessKey
         self.keywordPath = keywordPath
@@ -133,17 +133,17 @@ public class PicovoiceManager {
         }
 
         picovoice = try Picovoice(
-            accessKey: self.accessKey,
-            keywordPath: self.keywordPath,
-            onWakeWordDetection: self.onWakeWordDetection,
-            contextPath: self.contextPath,
-            onInference: self.onInference,
-            porcupineModelPath: self.porcupineModelPath,
-            porcupineSensitivity: self.porcupineSensitivity,
-            rhinoModelPath: self.rhinoModelPath,
-            rhinoSensitivity: self.rhinoSensitivity,
-            endpointDurationSec: self.endpointDurationSec,
-            requireEndpoint: self.requireEndpoint)
+                accessKey: self.accessKey,
+                keywordPath: self.keywordPath,
+                onWakeWordDetection: self.onWakeWordDetection,
+                contextPath: self.contextPath,
+                onInference: self.onInference,
+                porcupineModelPath: self.porcupineModelPath,
+                porcupineSensitivity: self.porcupineSensitivity,
+                rhinoModelPath: self.rhinoModelPath,
+                rhinoSensitivity: self.rhinoSensitivity,
+                endpointDurationSec: self.endpointDurationSec,
+                requireEndpoint: self.requireEndpoint)
 
         VoiceProcessor.instance.addErrorListener(errorListener!)
         VoiceProcessor.instance.addFrameListener(frameListener!)

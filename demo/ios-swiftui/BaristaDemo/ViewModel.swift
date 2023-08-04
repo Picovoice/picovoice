@@ -47,45 +47,45 @@ class ViewModel: ObservableObject {
     init() {
         do {
             picovoiceManager = PicovoiceManager(
-                accessKey: ACCESS_KEY,
-                keywordPath: keywordPath!,
-                onWakeWordDetection: {
-                    DispatchQueue.main.async {
-                        self.isListening = true
-                        self.missedCommand = false
-                        self.clearSelectedItems()
-                    }
-                },
-                contextPath: contextPath!,
-                onInference: { inference in
-                    DispatchQueue.main.async {
-                        if inference.isUnderstood {
-                            if inference.intent == "orderBeverage" {
-                                if let size = inference.slots["size"] {
-                                    if let i = self.sizeSel.firstIndex(where: { $0.id == size }) {
-                                        self.sizeSel[i].isSelected = true
-                                    }
-                                }
-
-                                if let numberOfShots = inference.slots["numberOfShots"] {
-                                    if let i = self.shotSel.firstIndex(where: { $0.id == numberOfShots }) {
-                                        self.shotSel[i].isSelected = true
-                                    }
-                                }
-
-                                if let beverage = inference.slots["beverage"] {
-                                    if let i = self.bevSel.firstIndex(where: { $0.id == beverage }) {
-                                        self.bevSel[i].isSelected = true
-                                    }
-                                }
-                            }
-                        } else {
-                            self.missedCommand = true
+                    accessKey: ACCESS_KEY,
+                    keywordPath: keywordPath!,
+                    onWakeWordDetection: {
+                        DispatchQueue.main.async {
+                            self.isListening = true
+                            self.missedCommand = false
+                            self.clearSelectedItems()
                         }
+                    },
+                    contextPath: contextPath!,
+                    onInference: { inference in
+                        DispatchQueue.main.async {
+                            if inference.isUnderstood {
+                                if inference.intent == "orderBeverage" {
+                                    if let size = inference.slots["size"] {
+                                        if let i = self.sizeSel.firstIndex(where: { $0.id == size }) {
+                                            self.sizeSel[i].isSelected = true
+                                        }
+                                    }
 
-                        self.isListening = false
-                    }
-                })
+                                    if let numberOfShots = inference.slots["numberOfShots"] {
+                                        if let i = self.shotSel.firstIndex(where: { $0.id == numberOfShots }) {
+                                            self.shotSel[i].isSelected = true
+                                        }
+                                    }
+
+                                    if let beverage = inference.slots["beverage"] {
+                                        if let i = self.bevSel.firstIndex(where: { $0.id == beverage }) {
+                                            self.bevSel[i].isSelected = true
+                                        }
+                                    }
+                                }
+                            } else {
+                                self.missedCommand = true
+                            }
+
+                            self.isListening = false
+                        }
+                    })
 
             try picovoiceManager.start()
         } catch let error as PicovoiceInvalidArgumentError {

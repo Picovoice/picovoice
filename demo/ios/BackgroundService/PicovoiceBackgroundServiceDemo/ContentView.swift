@@ -9,6 +9,7 @@
 
 import SwiftUI
 import Picovoice
+import ios_voice_processor
 import SwiftySound
 
 struct ContentView: View {
@@ -22,90 +23,118 @@ struct ContentView: View {
     @State var buttonLabel = "START"
     @State var errorMessage: String = ""
 
+    func startListening() {
+        guard VoiceProcessor.hasRecordAudioPermission else {
+            VoiceProcessor.requestRecordAudioPermission { isGranted in
+                guard isGranted else {
+                    DispatchQueue.main.async {
+                        errorMessage = "Demo requires microphone permission"
+                    }
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    self.startListening()
+                }
+            }
+            return
+        }
+
+        do {
+            self.picovoiceManager = PicovoiceManager(
+                    accessKey: self.ACCESS_KEY,
+                    keywordPath: self.keywordPath!,
+                    onWakeWordDetection: {
+                        Sound.play(file: "beep.wav")
+                        NotificationManager.shared.sendNotification(message: "Wake Word Detected")
+                    },
+                    contextPath: self.contextPath!,
+                    onInference: { x in
+                        DispatchQueue.main.async {
+                            var result = "{\n"
+                            result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
+                            if x.isUnderstood {
+                                result += "    \"intent : \"" + x.intent + "\",\n"
+                                if !x.slots.isEmpty {
+                                    result += "    \"slots\" : {\n"
+                                    for (k, v) in x.slots {
+                                        result += "        \"" + k + "\" : \"" + v + "\",\n"
+                                    }
+                                    result += "    }\n"
+                                }
+                            }
+                            result += "}\n"
+
+                            NotificationManager.shared.sendNotification(message: result)
+                        }
+                    })
+            try self.picovoiceManager.start()
+
+            self.buttonLabel = "STOP"
+            Sound.category = .playAndRecord
+            NotificationManager.shared.requestNotificationAuthorization()
+        } catch let error as PicovoiceInvalidArgumentError {
+            errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+        } catch is PicovoiceActivationError {
+            errorMessage = "ACCESS_KEY activation error"
+        } catch is PicovoiceActivationRefusedError {
+            errorMessage = "ACCESS_KEY activation refused"
+        } catch is PicovoiceActivationLimitError {
+            errorMessage = "ACCESS_KEY reached its limit"
+        } catch is PicovoiceActivationThrottledError {
+            errorMessage = "ACCESS_KEY is throttled"
+        } catch {
+            errorMessage = "\(error)"
+        }
+    }
+
+    func stopListening() {
+        do {
+            try self.picovoiceManager.stop()
+            self.buttonLabel = "START"
+        } catch {
+            errorMessage = "\(error)"
+        }
+    }
+
     var body: some View {
         VStack {
             Spacer()
             Text(errorMessage)
-                .padding()
-                .background(Color.red)
-                .foregroundColor(Color.white)
-                .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
-                .font(.body)
-                .opacity(errorMessage.isEmpty ? 0 : 1)
-                .cornerRadius(.infinity)
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(Color.white)
+                    .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
+                    .font(.body)
+                    .opacity(errorMessage.isEmpty ? 0 : 1)
+                    .cornerRadius(.infinity)
 
             Spacer()
             Text("""
                  Press the Start button and say \"Picovoice, turn off the lights\".
                  Try pressing the home button and saying it again.
                  """)
-                .padding()
-                .foregroundColor(Color.black)
-                .multilineTextAlignment(.center)
-                Button {
+                    .padding()
+                    .foregroundColor(Color.black)
+                    .multilineTextAlignment(.center)
+            Button {
                 if self.buttonLabel == "START" {
-                do {
-                self.picovoiceManager = PicovoiceManager(
-                accessKey: self.ACCESS_KEY,
-                keywordPath: self.keywordPath!,
-                onWakeWordDetection: {
-                Sound.play(file: "beep.wav")
-                NotificationManager.shared.sendNotification(message: "Wake Word Detected")
-                },
-                contextPath: self.contextPath!,
-                onInference: { x in
-                DispatchQueue.main.async {
-                var result = "{\n"
-                result += "    \"isUnderstood\" : \"" + x.isUnderstood.description + "\",\n"
-                if x.isUnderstood {
-                result += "    \"intent : \"" + x.intent + "\",\n"
-                if !x.slots.isEmpty {
-                result += "    \"slots\" : {\n"
-                for (k, v) in x.slots {
-                result += "        \"" + k + "\" : \"" + v + "\",\n"
-                }
-                result += "    }\n"
-                }
-                }
-                result += "}\n"
-
-                NotificationManager.shared.sendNotification(message: result)
-                }
-                })
-                try self.picovoiceManager.start()
-
-                self.buttonLabel = "STOP"
-                Sound.category = .playAndRecord
-                NotificationManager.shared.requestNotificationAuthorization()
-                } catch let error as PicovoiceInvalidArgumentError {
-                errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
-                } catch is PicovoiceActivationError {
-                errorMessage = "ACCESS_KEY activation error"
-                } catch is PicovoiceActivationRefusedError {
-                errorMessage = "ACCESS_KEY activation refused"
-                } catch is PicovoiceActivationLimitError {
-                errorMessage = "ACCESS_KEY reached its limit"
-                } catch is PicovoiceActivationThrottledError {
-                errorMessage = "ACCESS_KEY is throttled"
-                } catch {
-                errorMessage = "\(error)"
-                }
-
+                    startListening()
                 } else {
-                self.picovoiceManager.stop()
-                self.buttonLabel = "START"
+                    stopListening()
                 }
-                } label: {
+            } label: {
                 Text("\(buttonLabel)")
-                .padding()
-                .background(errorMessage.isEmpty ? Color.blue : Color.gray)
-                .foregroundColor(Color.white)
-                .font(.largeTitle)
-                }.disabled(!errorMessage.isEmpty)
+                        .padding()
+                        .background(errorMessage.isEmpty ? Color.blue : Color.gray)
+                        .foregroundColor(Color.white)
+                        .font(.largeTitle)
+            }
+                    .disabled(!errorMessage.isEmpty)
         }
-        .padding()
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-        .background(Color.white)
+                .padding()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .background(Color.white)
     }
 }
 
