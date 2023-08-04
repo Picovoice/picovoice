@@ -98,7 +98,9 @@ do {
 
 Stop the manager with:
 ```swift
-manager.stop();
+do {
+    manager.stop();
+} catch { }
 ```
 
 ### Low-Level API

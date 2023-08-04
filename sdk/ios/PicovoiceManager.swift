@@ -30,7 +30,8 @@ public class PicovoiceManager {
     private var endpointDurationSec: Float32
     private var requireEndpoint: Bool
 
-    private var processErrorCallback: ((PicovoiceError) -> Void)?
+    private var frameListener: VoiceProcessorFrameListener?
+    private var errorListener: VoiceProcessorErrorListener?
 
     public var contextInfo: String {
         get {
@@ -62,7 +63,7 @@ public class PicovoiceManager {
     ///   If set to `false`, Rhino tries to detect silence, but if it cannot, it still will provide
     ///   inference regardless. Set to `false` only if operating in an environment with overlapping speech
     ///   (e.g. people talking in the background).
-    /// - Throws: PicovoiceError
+    ///   - processErrorCallback: A callback that is invoked if there is an error while processing audio.
     public init(
         accessKey: String,
         keywordPath: String,
@@ -89,27 +90,46 @@ public class PicovoiceManager {
         self.rhinoSensitivity = rhinoSensitivity
         self.endpointDurationSec = endpointDurationSec
         self.requireEndpoint = requireEndpoint
-        self.processErrorCallback = processErrorCallback
+
+        self.errorListener = VoiceProcessorErrorListener({ error in
+            guard let callback = processErrorCallback else {
+                print("\(error.errorDescription)")
+                return
+            }
+
+            callback(PicovoiceError(error.errorDescription))
+        })
+
+        self.frameListener = VoiceProcessorFrameListener({ frame in
+            guard let picovoice = self.picovoice else {
+                return
+            }
+
+            do {
+                try picovoice.process(pcm: frame)
+            } catch {
+                guard let callback = processErrorCallback else {
+                    print("\(error)")
+                    return
+                }
+
+                callback(error)
+            }
+        })
     }
 
     deinit {
-        if picovoice != nil {
-            stop()
-        }
+        self.picovoice?.delete()
+        self.picovoice = nil
     }
 
     ///  Starts recording audio from the microphone and Picovoice processing loop.
     ///
-    /// - Throws: AVAudioSession, AVAudioEngine errors. Additionally PicovoiceManagerError if
-    ///           microphone permission is not granted.
+    /// - Throws: PicovoiceError if unable to start recording
     public func start() throws {
 
         if picovoice != nil {
             return
-        }
-
-        guard try VoiceProcessor.shared.hasPermissions() else {
-            throw PicovoiceRuntimeError("PicovoiceManager requires microphone permissions.")
         }
 
         picovoice = try Picovoice(
@@ -125,36 +145,40 @@ public class PicovoiceManager {
             endpointDurationSec: self.endpointDurationSec,
             requireEndpoint: self.requireEndpoint)
 
-        try VoiceProcessor.shared.start(
-            frameLength: Picovoice.frameLength,
-            sampleRate: Picovoice.sampleRate,
-            audioCallback: self.audioCallback
-        )
+        VoiceProcessor.instance.addErrorListener(errorListener!)
+        VoiceProcessor.instance.addFrameListener(frameListener!)
+
+        do {
+            try VoiceProcessor.instance.start(
+                    frameLength: Porcupine.frameLength,
+                    sampleRate: Porcupine.sampleRate
+            )
+        } catch {
+            throw PicovoiceError(error.localizedDescription)
+        }
     }
 
     /// Stop audio recording and processing loop
-    public func stop() {
-        VoiceProcessor.shared.stop()
-        self.picovoice?.delete()
-        self.picovoice = nil
-    }
+    ///
+    /// - Throws: PicovoiceError if unable to stop recording
+    public func stop() throws {
 
-    /// Callback to run after after voice processor processes frames.
-    private func audioCallback(pcm: [Int16]) {
-        guard self.picovoice != nil else {
+        if picovoice == nil {
             return
         }
 
-        do {
-            try self.picovoice!.process(pcm: pcm)
-        } catch let error as PicovoiceError {
-            if self.processErrorCallback != nil {
-                self.processErrorCallback!(error)
-            } else {
-                print("\(error)")
+        VoiceProcessor.instance.removeErrorListener(errorListener!)
+        VoiceProcessor.instance.removeFrameListener(frameListener!)
+
+        if VoiceProcessor.instance.numFrameListeners == 0 {
+            do {
+                try VoiceProcessor.instance.stop()
+            } catch {
+                throw PicovoiceError(error.localizedDescription)
             }
-        } catch {
-            print("\(error)")
         }
+
+        self.picovoice?.delete()
+        self.picovoice = nil
     }
 }
