@@ -96,7 +96,7 @@ struct ContentView: View {
                 rhinoModelPath: rhnModelPath)
     }
 
-    func startListening() -> Void {
+    func startListening() {
         self.textTimer?.invalidate()
         self.result = ""
         if self.picovoiceManager == nil {
@@ -147,7 +147,7 @@ struct ContentView: View {
         return false
     }
 
-    func stopListening() -> Void {
+    func stopListening() {
         do {
             try self.picovoiceManager.stop()
             self.buttonLabel = "START"
