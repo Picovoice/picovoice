@@ -22,7 +22,7 @@ def update_ios_demo(parameters):
     base_scheme = os.path.join(
         os.path.dirname(__file__),
         scheme_dir,
-        "enDemo.xcscheme")
+        "_enDemo.xcscheme")
 
     for language, parameter in parameters.items():
         if language == 'en':
