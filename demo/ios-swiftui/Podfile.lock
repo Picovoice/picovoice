@@ -10,17 +10,14 @@ PODS:
     - ios-voice-processor (~> 1.1.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/ios-vp-updates/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (~> 2.2.2)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Picovoice-iOS
     - Porcupine-iOS
     - Rhino-iOS
-
-EXTERNAL SOURCES:
-  Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/ios-vp-updates/sdk/ios/Picovoice-iOS.podspec
 
 SPEC CHECKSUMS:
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
@@ -28,6 +25,6 @@ SPEC CHECKSUMS:
   Porcupine-iOS: df8e4a63d787b6c16bd5f988fd0f2c29a249a4bd
   Rhino-iOS: 0fad86b28d35f67ccb6bd0a2efbbcc0d88b05124
 
-PODFILE CHECKSUM: e03ed6494c93a159c77837b2ad304bda32916b46
+PODFILE CHECKSUM: 63d1720767824602e511ca46371fd9664d612c1d
 
 COCOAPODS: 1.11.3
