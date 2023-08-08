@@ -4,8 +4,8 @@
 [submodule "resources/rhino"]
 	path = resources/rhino
 	url = ../rhino.git
-[submodule "sdk/unity/Assets/Picovoice/VoiceProcessor"]
-	path = sdk/unity/Assets/Picovoice/VoiceProcessor
+[submodule "sdk/unity/VoiceProcessor"]
+	path = sdk/unity/VoiceProcessor
 	url = ../unity-voice-processor.git
 [submodule "demo/c/pvrecorder"]
 	path = demo/c/pvrecorder

@@ -28,13 +28,19 @@ echo "Copying model files..."
 cp ../../resources/porcupine/lib/common/porcupine_params.pv ./Assets/StreamingAssets/porcupine_params.pv
 cp ../../resources/rhino/lib/common/rhino_params.pv ./Assets/StreamingAssets/rhino_params.pv
 
+echo "Copying Voice Processor files..."
+if [ ! -d "./Assets/Picovoice/VoiceProcessor" ]
+then
+    mkdir -p ./Assets/Picovoice/VoiceProcessor
+fi
+cp -rp VoiceProcessor/Assets/UnityVoiceProcessor/*.cs ./Assets/Picovoice/VoiceProcessor
+
 echo "Copying demo files..."
 if [ ! -d "./Assets/Picovoice/Demo" ]
 then
     mkdir -p ./Assets/Picovoice/Demo
 fi
 cp -rp ../../demo/unity/* ./Assets/Picovoice/Demo
-
 
 echo "Copying keyword files..."
 cp -rp ../../resources/porcupine/resources/keyword_files/android/* ./Assets/StreamingAssets/keyword_files/android
