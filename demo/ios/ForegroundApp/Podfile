@@ -3,5 +3,5 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 
 target 'PicovoiceForegroundAppDemo' do
-    pod 'Picovoice-iOS', '2.2.1'
+    pod 'Picovoice-iOS', '~> 2.2.2'
 end

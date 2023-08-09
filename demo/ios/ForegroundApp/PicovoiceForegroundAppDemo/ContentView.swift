@@ -9,6 +9,7 @@
 
 import SwiftUI
 import Picovoice
+import ios_voice_processor
 
 struct SheetView: View {
     @Binding var contextInfo: String
@@ -16,8 +17,8 @@ struct SheetView: View {
     var body: some View {
         ScrollView {
             Text(self.contextInfo)
-                .padding()
-                .font(.system(size: 14))
+                    .padding()
+                    .font(.system(size: 14))
         }
     }
 }
@@ -41,58 +42,88 @@ struct ContentView: View {
 
     func initPicovoice() {
         let keywordPath = Bundle.main.url(
-            forResource: "\(wakeword)_ios",
-            withExtension: "ppn",
-            subdirectory: "keywords")!.path
+                forResource: "\(wakeword)_ios",
+                withExtension: "ppn",
+                subdirectory: "keywords")!.path
         let ppnModelPath = (language == "en") ? nil :
-            Bundle.main.url(
-                forResource: "porcupine_params_\(language)",
-                withExtension: "pv",
-                subdirectory: "models")!.path
+                Bundle.main.url(
+                        forResource: "porcupine_params_\(language)",
+                        withExtension: "pv",
+                        subdirectory: "models")!.path
 
         let contextPath = Bundle.main.url(
-            forResource: "\(context)_ios",
-            withExtension: "rhn",
-            subdirectory: "contexts")!.path
+                forResource: "\(context)_ios",
+                withExtension: "rhn",
+                subdirectory: "contexts")!.path
         let rhnModelPath = (language == "en") ? nil :
-            Bundle.main.url(
-                forResource: "rhino_params_\(language)",
-                withExtension: "pv",
-                subdirectory: "models")!.path
+                Bundle.main.url(
+                        forResource: "rhino_params_\(language)",
+                        withExtension: "pv",
+                        subdirectory: "models")!.path
 
         self.picovoiceManager = PicovoiceManager(
-            accessKey: self.ACCESS_KEY,
-            keywordPath: keywordPath,
-            onWakeWordDetection: {
-                result = "Wake Word Detected!\nListening for command..."
-            },
-            contextPath: contextPath,
-            onInference: { x in
-                DispatchQueue.main.async {
-                    result = "{\n"
-                    self.result += "    \"isUnderstood\" : \"" +
-                        x.isUnderstood.description + "\",\n"
-                    if x.isUnderstood {
-                        self.result += "    \"intent : \"" + x.intent + "\",\n"
-                        if !x.slots.isEmpty {
-                            result += "    \"slots\" : {\n"
-                            for (k, v) in x.slots {
-                                self.result += "        \"" + k + "\" : \"" + v + "\",\n"
+                accessKey: self.ACCESS_KEY,
+                keywordPath: keywordPath,
+                onWakeWordDetection: {
+                    result = "Wake Word Detected!\nListening for command..."
+                },
+                contextPath: contextPath,
+                onInference: { x in
+                    DispatchQueue.main.async {
+                        result = "{\n"
+                        self.result += "    \"isUnderstood\" : \"" +
+                                x.isUnderstood.description + "\",\n"
+                        if x.isUnderstood {
+                            self.result += "    \"intent : \"" + x.intent + "\",\n"
+                            if !x.slots.isEmpty {
+                                result += "    \"slots\" : {\n"
+                                for (k, v) in x.slots {
+                                    self.result += "        \"" + k + "\" : \"" + v + "\",\n"
+                                }
+                                result += "    }\n"
                             }
-                            result += "    }\n"
+                        }
+                        result += "}\n"
+
+                        self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { _ in
+                            if self.buttonLabel == "STOP" {
+                                result = "Listening for '\(wakeword.uppercased())'..."
+                            }
                         }
                     }
-                    result += "}\n"
+                },
+                porcupineModelPath: ppnModelPath,
+                rhinoModelPath: rhnModelPath)
+    }
+
+    func startListening() {
+        self.textTimer?.invalidate()
+        self.result = ""
+        if self.picovoiceManager == nil {
+            self.initPicovoice()
+        }
+
+        guard VoiceProcessor.hasRecordAudioPermission else {
+            VoiceProcessor.requestRecordAudioPermission { isGranted in
+                guard isGranted else {
+                    DispatchQueue.main.async {
+                        errorMessage = "Demo requires microphone permission"
+                    }
+                    return
                 }
 
-                self.textTimer = Timer.scheduledTimer(withTimeInterval: 1.75, repeats: false) { _ in
-                    if buttonLabel == "STOP" {
-                        result = "Listening for '\(wakeword.uppercased())'..."
-                    }
+                DispatchQueue.main.async {
+                    self.startListening()
                 }
-            },
-            porcupineModelPath: ppnModelPath,
-            rhinoModelPath: rhnModelPath)
+            }
+            return
+        }
+
+        if startPicovoice() {
+            self.buttonLabel = "STOP"
+            self.result = "Listening for '\(wakeword.uppercased())'..."
+            self.contextInfo = self.picovoiceManager.contextInfo
+        }
     }
 
     func startPicovoice() -> Bool {
@@ -101,7 +132,7 @@ struct ContentView: View {
             return true
         } catch let error as PicovoiceInvalidArgumentError {
             errorMessage =
-                "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+                    "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
         } catch is PicovoiceActivationError {
             errorMessage = "ACCESS_KEY activation error"
         } catch is PicovoiceActivationRefusedError {
@@ -113,8 +144,18 @@ struct ContentView: View {
         } catch {
             errorMessage = "\(error)"
         }
-
         return false
+    }
+
+    func stopListening() {
+        do {
+            try self.picovoiceManager.stop()
+            self.buttonLabel = "START"
+            self.result = ""
+            self.textTimer?.invalidate()
+        } catch {
+            errorMessage = "\(error)"
+        }
     }
 
     var body: some View {
@@ -123,69 +164,61 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 Text("\(result)")
-                    .foregroundColor(Color.black)
-                    .padding()
+                        .foregroundColor(Color.black)
+                        .padding()
 
                 Text(errorMessage)
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(Color.white)
-                    .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
-                    .font(.body)
-                    .opacity(errorMessage.isEmpty ? 0 : 1)
-                    .cornerRadius(.infinity)
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(Color.white)
+                        .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
+                        .font(.body)
+                        .opacity(errorMessage.isEmpty ? 0 : 1)
+                        .cornerRadius(.infinity)
                 Spacer()
 
                 Button {
                     if self.buttonLabel == "START" {
-                        self.textTimer?.invalidate()
-                        self.result = ""
-                        if self.picovoiceManager == nil {
-                            self.initPicovoice()
-                        }
-
-                        if startPicovoice() {
-                            self.buttonLabel = "STOP"
-                            self.result = "Listening for '\(wakeword.uppercased())'..."
-                            self.contextInfo = self.picovoiceManager.contextInfo
-                        }
+                        startListening()
                     } else {
-                        self.picovoiceManager.stop()
-                        self.buttonLabel = "START"
-                        self.result = ""
-                        self.textTimer?.invalidate()
+                        stopListening()
                     }
                 } label: {
                     Text("\(buttonLabel)")
-                        .padding()
-                        .background(errorMessage.isEmpty ? Color.blue : Color.gray)
-                        .foregroundColor(Color.white)
-                        .font(.largeTitle)
-                }.disabled(!errorMessage.isEmpty)
+                            .padding()
+                            .background(errorMessage.isEmpty ? Color.blue : Color.gray)
+                            .foregroundColor(Color.white)
+                            .font(.largeTitle)
+                }
+                        .disabled(!errorMessage.isEmpty)
             }
-            .padding()
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .background(Color.white)
-            .navigationBarItems(trailing: Button("Context Info") {
-                if self.picovoiceManager == nil {
-                    initPicovoice()
-                }
-                if self.picovoiceManager != nil {
-                    if self.buttonLabel == "START" {
-                        if self.startPicovoice() {
-                            self.contextInfo = self.picovoiceManager.contextInfo
-                            self.showInfo = true
-                            self.picovoiceManager.stop()
+                    .padding()
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .background(Color.white)
+                    .navigationBarItems(trailing: Button("Context Info") {
+                        if self.picovoiceManager == nil {
+                            initPicovoice()
                         }
-                    } else {
-                        self.showInfo = true
-                    }
+                        if self.picovoiceManager != nil {
+                            if self.buttonLabel == "START" {
+                                if self.startPicovoice() {
+                                    self.contextInfo = self.picovoiceManager.contextInfo
+                                    self.showInfo = true
+                                    do {
+                                        try self.picovoiceManager.stop()
+                                    } catch {
+                                        errorMessage = "\(error)"
+                                    }
+                                }
+                            } else {
+                                self.showInfo = true
+                            }
+                        }
+                    })
+        }
+                .sheet(isPresented: self.$showInfo) {
+                    SheetView(contextInfo: self.$contextInfo)
                 }
-            })
-        }
-        .sheet(isPresented: self.$showInfo) {
-            SheetView(contextInfo: self.$contextInfo)
-        }
     }
 }
 

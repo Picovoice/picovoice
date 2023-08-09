@@ -3,6 +3,6 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 
 target 'PicovoiceBackgroundServiceDemo' do
-    pod 'Picovoice-iOS', '2.2.0'
+    pod 'Picovoice-iOS', '~> 2.2.2'
     pod 'SwiftySound'
 end
