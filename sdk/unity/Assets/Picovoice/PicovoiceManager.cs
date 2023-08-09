@@ -201,7 +201,7 @@ namespace Pv.Unity
         public void Stop()
         {
             VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
-            if (VoiceProcessor.Instance.IsRecording)
+            if (VoiceProcessor.Instance.NumFrameListeners == 0)
             {
                 VoiceProcessor.Instance.StopRecording();
             }
