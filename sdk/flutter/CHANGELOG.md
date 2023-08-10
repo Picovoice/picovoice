@@ -34,3 +34,6 @@
 
 ## [2.2.1] - 2023-06-02
 * Expose context info through PicovoiceManager
+
+## [2.2.2] - 2023-08-09
+* Update flutter-voice-processor
