@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -19,7 +19,6 @@ namespace Pv.Unity
 
     public class PicovoiceManager
     {
-        private VoiceProcessor _voiceProcessor;
         private Picovoice _picovoice;
         private Action<PicovoiceException> _processErrorCallback;
 
@@ -134,19 +133,17 @@ namespace Pv.Unity
             _endpointDurationSec = endpointDurationSec;
             _requireEndpoint = requireEndpoint;
             _processErrorCallback = processErrorCallback;
-
-            _voiceProcessor = VoiceProcessor.Instance;
         }
 
         /// <summary>
         /// Action to catch audio frames as voice processor produces them
         /// </summary>
-        /// <param name="pcm">Frame of pcm audio</param>
-        private void OnFrameCaptured(short[] pcm)
+        /// <param name="frame">Frame of audio</param>
+        private void OnFrameCaptured(short[] frame)
         {
             try
             {
-                _picovoice.Process(pcm);
+                _picovoice.Process(frame);
             }
             catch (PicovoiceException ex)
             {
@@ -161,7 +158,7 @@ namespace Pv.Unity
         /// Checks to see whether PicovoiceManager is capturing audio or not
         /// </summary>
         /// <returns>whether PicovoiceManager is capturing audio or not</returns>
-        public bool IsRecording => _voiceProcessor.IsRecording;
+        public bool IsRecording => VoiceProcessor.Instance.IsRecording;
 
         /// <summary>
         /// Checks to see whether there are any audio capture devices available
@@ -169,8 +166,8 @@ namespace Pv.Unity
         /// <returns>whether there are any audio capture devices available</returns>
         public bool IsAudioDeviceAvailable()
         {
-            _voiceProcessor.UpdateDevices();
-            return _voiceProcessor.CurrentDeviceIndex >= 0;
+            VoiceProcessor.Instance.UpdateDevices();
+            return VoiceProcessor.Instance.CurrentDeviceIndex >= 0;
         }
 
         /// <summary>
@@ -194,8 +191,8 @@ namespace Pv.Unity
                 _endpointDurationSec,
                 _requireEndpoint);
 
-            _voiceProcessor.OnFrameCaptured += OnFrameCaptured;
-            _voiceProcessor.StartRecording(_picovoice.SampleRate, _picovoice.FrameLength);
+            VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
+            VoiceProcessor.Instance.StartRecording(_picovoice.FrameLength, _picovoice.SampleRate);
         }
 
         /// <summary>
@@ -203,11 +200,11 @@ namespace Pv.Unity
         /// </summary>
         public void Stop()
         {
-            if (_voiceProcessor.IsRecording)
+            VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
+            if (VoiceProcessor.Instance.NumFrameListeners == 0)
             {
-                _voiceProcessor.StopRecording();
+                VoiceProcessor.Instance.StopRecording();
             }
-            _voiceProcessor.OnFrameCaptured -= OnFrameCaptured;
 
             _picovoice?.Dispose();
             _picovoice = null;
