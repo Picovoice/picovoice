@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -11,19 +11,23 @@
 
 import {
   VoiceProcessor,
-  BufferEmitter,
+  VoiceProcessorError,
+  VoiceProcessorErrorListener,
+  VoiceProcessorFrameListener,
 } from '@picovoice/react-native-voice-processor';
 import { Picovoice, WakeWordCallback, InferenceCallback } from './picovoice';
 
-import { EventSubscription, NativeEventEmitter } from 'react-native';
-import type * as PicovoiceErrors from './picovoice_errors';
+import * as PicovoiceErrors from './picovoice_errors';
 
 export type ProcessErrorCallback = (
   error: PicovoiceErrors.PicovoiceError
 ) => void;
 
 class PicovoiceManager {
-  private _voiceProcessor?: VoiceProcessor;
+  private _voiceProcessor: VoiceProcessor;
+  private readonly _errorListener: VoiceProcessorErrorListener;
+  private readonly _frameListener: VoiceProcessorFrameListener;
+
   private _picovoice?: Picovoice;
 
   private readonly _accessKey: string;
@@ -38,9 +42,6 @@ class PicovoiceManager {
   private readonly _rhinoModelPath?: string;
   private readonly _endpointDurationSec: number = 1.0;
   private readonly _requireEndpoint: boolean = true;
-
-  private _bufferListener?: EventSubscription;
-  private _bufferEmitter?: NativeEventEmitter;
 
   /**
    * @param accessKey AccessKey obtained from Picovoice Console (https://console.picovoice.ai/.
@@ -70,7 +71,7 @@ class PicovoiceManager {
    * to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
    * @returns an instance of the Picovoice end-to-end platform.
    */
-  static create(
+  public static create(
     accessKey: string,
     keywordPath: string,
     wakeWordCallback: WakeWordCallback,
@@ -129,13 +130,39 @@ class PicovoiceManager {
     this._rhinoModelPath = rhinoModelPath;
     this._endpointDurationSec = endpointDurationSec;
     this._requireEndpoint = requireEndpoint;
+    this._voiceProcessor = VoiceProcessor.instance;
+    this._frameListener = async (frame: number[]) => {
+      if (!this._picovoice) {
+        return;
+      }
+
+      try {
+        await this._picovoice.process(frame);
+      } catch (e) {
+        if (this._processErrorCallback) {
+          this._processErrorCallback(e as PicovoiceErrors.PicovoiceError);
+        } else {
+          console.error(e);
+        }
+      }
+    };
+
+    this._errorListener = (error: VoiceProcessorError) => {
+      if (this._processErrorCallback) {
+        this._processErrorCallback(
+          new PicovoiceErrors.PicovoiceError(error.message)
+        );
+      } else {
+        console.error(error);
+      }
+    };
   }
 
   /**
    * Opens audio input stream and sends audio frames to Picovoice
    */
-  async start() {
-    if (this._picovoice !== undefined) {
+  public async start(): Promise<void> {
+    if (this._picovoice) {
       return;
     }
 
@@ -153,49 +180,48 @@ class PicovoiceManager {
       this._requireEndpoint
     );
 
-    if (this._voiceProcessor === undefined) {
-      this._voiceProcessor = VoiceProcessor.getVoiceProcessor(
-        this._picovoice.frameLength,
-        this._picovoice.sampleRate
-      );
-      this._bufferEmitter = new NativeEventEmitter(BufferEmitter);
-    }
-
-    const bufferProcess = async (buffer: number[]) => {
-      if (this._picovoice === undefined) return;
+    if (await this._voiceProcessor.hasRecordAudioPermission()) {
+      this._voiceProcessor.addFrameListener(this._frameListener);
+      this._voiceProcessor.addErrorListener(this._errorListener);
       try {
-        await this._picovoice.process(buffer);
-      } catch (e) {
-        if (
-          this._processErrorCallback !== undefined &&
-          this._processErrorCallback !== null &&
-          typeof this._processErrorCallback === 'function'
-        ) {
-          this._processErrorCallback(e as PicovoiceErrors.PicovoiceError);
-        } else {
-          console.error(e);
-        }
+        await this._voiceProcessor.start(
+          this._picovoice.frameLength,
+          this._picovoice.sampleRate
+        );
+      } catch (e: any) {
+        throw new PicovoiceErrors.PicovoiceRuntimeError(
+          `Failed to start audio recording: ${e.message}`
+        );
       }
-    };
-
-    this._bufferListener = this._bufferEmitter?.addListener(
-      BufferEmitter.BUFFER_EMITTER_KEY,
-      async (buffer: number[]) => {
-        await bufferProcess(buffer);
-      }
-    );
-
-    return this._voiceProcessor.start();
+    } else {
+      throw new PicovoiceErrors.PicovoiceRuntimeError(
+        'User did not give permission to record audio.'
+      );
+    }
   }
 
   /**
    * Closes audio stream
    */
-  async stop() {
-    this._bufferListener?.remove();
-    this._picovoice?.delete();
+  public async stop(): Promise<void> {
+    if (!this._picovoice) {
+      return;
+    }
+
+    await this._picovoice?.delete();
     this._picovoice = undefined;
-    return this._voiceProcessor?.stop();
+
+    this._voiceProcessor.removeErrorListener(this._errorListener);
+    this._voiceProcessor.removeFrameListener(this._frameListener);
+    if (this._voiceProcessor.numFrameListeners === 0) {
+      try {
+        await this._voiceProcessor.stop();
+      } catch (e: any) {
+        throw new PicovoiceErrors.PicovoiceRuntimeError(
+          `Failed to stop audio recording: ${e.message}`
+        );
+      }
+    }
   }
 
   /**

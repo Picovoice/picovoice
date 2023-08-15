@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { PermissionsAndroid, Platform } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import {
   PicovoiceErrors,
   PicovoiceManager,
@@ -110,9 +109,9 @@ export default class App extends Component<Props, State> {
     await this._startProcessing();
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     if (this.state.isListening) {
-      this._stopProcessing();
+      await this._stopProcessing();
     }
   }
 
@@ -218,81 +217,45 @@ export default class App extends Component<Props, State> {
   }
 
   async _startProcessing() {
-    let recordAudioRequest;
-    if (Platform.OS == 'android') {
-      recordAudioRequest = this._requestRecordAudioPermission();
-    } else {
-      recordAudioRequest = new Promise(function (resolve, _) {
-        resolve(true);
-      });
-    }
-
-    recordAudioRequest.then(async (hasPermission) => {
-      if (!hasPermission) {
-        this._errorCallback('Required microphone permission was not granted.');
-        return;
-      }
-
-      try {
-        const didStart = await this._picovoiceManager?.start();
-        if (didStart) {
-          setInterval(this._updateTime.bind(this), 100);
-        }
-      } catch (err) {
-        let errorMessage = '';
-        if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
-          errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
-        } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
-          errorMessage = 'AccessKey activation error';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationLimitError
-        ) {
-          errorMessage = 'AccessKey reached its device limit';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
-        ) {
-          errorMessage = 'AccessKey refused';
-        } else if (
-          err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
-        ) {
-          errorMessage = 'AccessKey has been throttled';
-        } else {
-          errorMessage = err.toString();
-        }
-        this._errorCallback(errorMessage);
-      }
-    });
-  }
-
-  async _requestRecordAudioPermission() {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        {
-          title: 'Microphone Permission',
-          message:
-            'Picovoice wants to access your mic to enable voice commands.',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
+      await this._picovoiceManager?.start();
+      setInterval(this._updateTime.bind(this), 100);
     } catch (err) {
-      console.error(err);
-      return false;
+      let errorMessage: string;
+      if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
+        errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
+      } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
+        errorMessage = 'AccessKey activation error';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationLimitError
+      ) {
+        errorMessage = 'AccessKey reached its device limit';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
+      ) {
+        errorMessage = 'AccessKey refused';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
+      ) {
+        errorMessage = 'AccessKey has been throttled';
+      } else {
+        errorMessage = err.toString();
+      }
+      this._errorCallback(errorMessage);
     }
   }
 
-  _stopProcessing() {
-    this._picovoiceManager?.stop().then((didStop) => {
-      if (didStop) {
-        this.setState({});
-      }
-    });
+  async _stopProcessing() {
+    try {
+      await this._picovoiceManager?.stop();
+      this.setState({});
+    } catch (e: any) {
+      this._errorCallback(e.message);
+    }
   }
 
   _performTimerCommand(slots) {
-    var action = slots['action'];
+    let action = slots['action'];
     if (action == 'start') {
       this.setState({
         isTimerRunning: true,
@@ -465,10 +428,10 @@ export default class App extends Component<Props, State> {
     if (this.state.activeTab == 'clock') {
       return (
         <Moment
-          element={Text}
-          style={styles.clockText}
-          format={'h:mm A'}
-          interval={500}></Moment>
+    element={Text}
+    style={styles.clockText}
+    format={'h:mm A'}
+    interval={500}/>
       );
     } else if (this.state.activeTab == 'timer') {
       return (
@@ -491,10 +454,10 @@ export default class App extends Component<Props, State> {
     if (this.state.activeTab == 'clock') {
       return (
         <Moment
-          element={Text}
-          format={'dddd, MMMM Do'}
-          interval={500}
-          style={styles.dateText}></Moment>
+    element={Text}
+    format={'dddd, MMMM Do'}
+    interval={500}
+    style={styles.dateText}/>
       );
     } else return null;
   }
@@ -503,7 +466,7 @@ export default class App extends Component<Props, State> {
     if (this.state.activeTab == 'clock' && this.state.alarmTime) {
       return (
         <View style={{ position: 'absolute', bottom: 0, alignItems: 'center' }}>
-          <Icon name="alarm" color="#ff005f" size={20}></Icon>
+          <Icon name="alarm" color="#ff005f" size={20}/>
           <Moment
             element={Text}
             format={'ddd, MMM Do h:mma'}

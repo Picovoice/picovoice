@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Modal,
-  PermissionsAndroid,
   Platform,
   ScrollView,
   TouchableOpacity,
@@ -78,9 +77,9 @@ export default class App extends Component<Props, State> {
     );
   }
 
-  componentWillUnmount() {
+  async componentWillUnmount() {
     if (this.state.isListening) {
-      this._stopProcessing();
+      await this._stopProcessing();
     }
   }
 
@@ -137,46 +136,27 @@ export default class App extends Component<Props, State> {
       buttonDisabled: true,
     });
 
-    let recordAudioRequest;
-    if (Platform.OS === 'android') {
-      recordAudioRequest = this._requestRecordAudioPermission();
-    } else {
-      recordAudioRequest = new Promise(function (resolve, _) {
-        resolve(true);
+    try {
+      await this._startPicovoice();
+      this.setState({
+        buttonText: 'Stop',
+        buttonDisabled: false,
+        picovoiceText: `Listening for ${wakeword}...`,
+        isListening: true,
       });
+    } catch (e: any) {
+      this._errorCallback(e.message);
     }
-
-    recordAudioRequest.then(async (hasPermission) => {
-      if (!hasPermission) {
-        this._errorCallback('Required microphone permission was not granted.');
-        this.setState({
-          buttonDisabled: false,
-        });
-        return;
-      }
-      const didStart = await this._startPicovoice();
-      if (didStart) {
-        this.setState({
-          buttonText: 'Stop',
-          buttonDisabled: false,
-          picovoiceText: `Listening for ${wakeword}...`,
-          isListening: true,
-        });
-      }
-    });
   }
 
   async _startPicovoice() {
     try {
-      const didStart = await this._picovoiceManager?.start();
-      if (didStart) {
-        this.setState({
-          contextInfo: this._picovoiceManager?.contextInfo,
-        });
-      }
-      return didStart;
+      await this._picovoiceManager?.start();
+      this.setState({
+        contextInfo: this._picovoiceManager?.contextInfo,
+      });
     } catch (err) {
-      let errorMessage = '';
+      let errorMessage: string;
       if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
       } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
@@ -200,59 +180,40 @@ export default class App extends Component<Props, State> {
     return false;
   }
 
-  _stopProcessing() {
+  async _stopProcessing() {
     this.setState({
       buttonDisabled: true,
     });
 
-    this._picovoiceManager?.stop().then((didStop) => {
-      if (didStop) {
-        if (this._timeoutRef != null) {
-          clearTimeout(this._timeoutRef);
-          this._timeoutRef = null;
-        }
-        this.setState({
-          buttonText: 'Start',
-          picovoiceText: '',
-          buttonDisabled: false,
-          isListening: false,
-        });
+    try {
+      await this._picovoiceManager?.stop();
+      if (this._timeoutRef != null) {
+        clearTimeout(this._timeoutRef);
+        this._timeoutRef = null;
       }
-    });
-  }
-
-  _toggleListening() {
-    if (this.state.isListening) {
-      this._stopProcessing();
-    } else {
-      this._startProcessing();
+      this.setState({
+        buttonText: 'Start',
+        picovoiceText: '',
+        buttonDisabled: false,
+        isListening: false,
+      });
+    } catch (e: any) {
+      this._errorCallback(e.message);
     }
   }
 
-  async _requestRecordAudioPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        {
-          title: 'Microphone Permission',
-          message:
-            'Rhino needs access to your microphone to make intent inferences.',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      return granted === PermissionsAndroid.RESULTS.GRANTED;
-    } catch (err) {
-      this._errorCallback(err);
-      return false;
+  async _toggleListening() {
+    if (this.state.isListening) {
+      await this._stopProcessing();
+    } else {
+      await this._startProcessing();
     }
   }
 
   async showContextInfo() {
     if (!this.state.contextInfo) {
       await this._startPicovoice();
-      this._stopProcessing();
+      await this._stopProcessing();
     }
     if (!this.state.isError) {
       this.setState({ showContextInfo: true });
@@ -304,7 +265,9 @@ export default class App extends Component<Props, State> {
               padding: 30,
               backgroundColor: '#25187E',
             }}>
-            <Text style={styles.picovoiceText}>{this.state.picovoiceText}</Text>
+            <Text style={styles.picovoiceText}>
+              {this.state.isError ? '' : this.state.picovoiceText}
+            </Text>
           </View>
         </View>
         {this.state.isError && (
