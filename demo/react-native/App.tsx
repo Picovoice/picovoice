@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   Modal,
-  PermissionsAndroid,
   Platform,
   ScrollView,
   TouchableOpacity,
@@ -157,7 +156,7 @@ export default class App extends Component<Props, State> {
         contextInfo: this._picovoiceManager?.contextInfo,
       });
     } catch (err) {
-      let errorMessage = '';
+      let errorMessage: string;
       if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
         errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
       } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
@@ -266,7 +265,9 @@ export default class App extends Component<Props, State> {
               padding: 30,
               backgroundColor: '#25187E',
             }}>
-            <Text style={styles.picovoiceText}>{this.state.isError ? '' : this.state.picovoiceText}</Text>
+            <Text style={styles.picovoiceText}>
+              {this.state.isError ? '' : this.state.picovoiceText}
+            </Text>
           </View>
         </View>
         {this.state.isError && (
