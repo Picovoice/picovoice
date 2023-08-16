@@ -113,6 +113,26 @@ public class MainActivity extends AppCompatActivity {
             results.add(result);
         }
 
+        result = new TestResult();
+        result.testName = "Test Exception";
+        try {
+            new Picovoice.Builder()
+                    .setAccessKey("")
+                    .setPorcupineModelPath(porcupineModelFile)
+                    .setRhinoModelPath(rhinoModelFile)
+                    .setKeywordPath(keywordFile)
+                    .setContextPath(contextFile)
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setInferenceCallback(inferenceCallback)
+                    .build(getApplicationContext());
+            result.success = false;
+            result.errorMessage = "Init should have throw an exception";
+        } catch (PicovoiceException e) {
+            result.success = true;
+        } finally {
+            results.add(result);
+        }
+
 
         result = new TestResult();
         result.testName = "Test Process";
