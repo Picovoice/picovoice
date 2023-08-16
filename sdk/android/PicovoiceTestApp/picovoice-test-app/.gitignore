@@ -1,0 +1,7 @@
+/build
+test_resources
+
+*.pv
+*.rhn
+*.ppn
+*.wav
