@@ -8,7 +8,7 @@ RHINO_DIR=${PICOVOICE_RESOURCE_DIR}/rhino
 RHINO_LIB_DIR=${RHINO_DIR}/lib
 RHINO_RESOURCE_DIR=${RHINO_DIR}/resources
 
-ASSET_DIR=./picovoice-activity-demo-app/src/androidTest/assets/test_resources
+ASSET_DIR=./picovoice-test-app/src/androidTest/assets/test_resources
 
 if [ ! -d "${ASSET_DIR}/audio_samples" ]
 then

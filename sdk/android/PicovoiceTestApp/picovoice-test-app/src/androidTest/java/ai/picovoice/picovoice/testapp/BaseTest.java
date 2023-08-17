@@ -1,4 +1,4 @@
-package ai.picovoice.picovoicedemo;
+package ai.picovoice.picovoice.testapp;
 
 import static org.junit.Assert.assertEquals;
 

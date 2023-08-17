@@ -1,0 +1,2 @@
+include ':picovoice-test-app'
+rootProject.name = "PicovoiceTestApp"
