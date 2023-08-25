@@ -13,7 +13,8 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   path_provider: ^2.0.9
-  picovoice_flutter: ^2.2.2
+  picovoice_flutter:
+    path: ../../sdk/flutter
   flutter_ringtone_player: ^3.0.0
   fluttertoast: ^8.0.9
 

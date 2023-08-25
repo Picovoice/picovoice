@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
 
   path_provider: ^2.0.9
-  picovoice_flutter: ^2.2.2
+  picovoice_flutter:
+    path: ../../sdk/flutter
 
 dev_dependencies:
   integration_test:
