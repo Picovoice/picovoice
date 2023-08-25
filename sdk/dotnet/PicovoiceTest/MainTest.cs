@@ -99,12 +99,6 @@ namespace PicovoiceTest
 
         private static string GetKeywordPath(string language, string keyword)
         {
-            Console.WriteLine(Path.Combine(
-                ROOT_DIR,
-                "resources/porcupine/resources",
-                AppendLanguage("keyword_files", language),
-                $"{_env}/{keyword}_{_env}.ppn"
-            ));
             return Path.Combine(
                 ROOT_DIR,
                 "resources/porcupine/resources",
