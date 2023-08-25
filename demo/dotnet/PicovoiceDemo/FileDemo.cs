@@ -24,9 +24,9 @@ namespace PicovoiceDemo
     /// </summary>
     public class FileDemo
     {
-        static void wakeWordCallback() => Console.WriteLine("[wake word]");
+        static void WakeWordCallback() => Console.WriteLine("[wake word]");
 
-        static void inferenceCallback(Inference inference)
+        static void InferenceCallback(Inference inference)
         {
             if (inference.IsUnderstood)
             {
@@ -83,9 +83,9 @@ namespace PicovoiceDemo
             using (Picovoice picovoice = Picovoice.Create(
                 accessKey,
                 keywordPath,
-                wakeWordCallback,
+                WakeWordCallback,
                 contextPath,
-                inferenceCallback,
+                InferenceCallback,
                 porcupineModelPath,
                 porcupineSensitivity,
                 rhinoModelPath,
