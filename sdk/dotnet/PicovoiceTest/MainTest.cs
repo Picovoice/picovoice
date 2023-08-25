@@ -27,7 +27,7 @@ namespace PicovoiceTest
     [TestClass]
     public class MainTest
     {
-        private static readonly string ROOT_DIR = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../../../../../..");
+        private static readonly string ROOT_DIR = Path.Combine(AppContext.BaseDirectory, "../../../../../..");
         private static string _env;
         private static Architecture _arch;
 
@@ -99,6 +99,12 @@ namespace PicovoiceTest
 
         private static string GetKeywordPath(string language, string keyword)
         {
+            Console.WriteLine(Path.Combine(
+                ROOT_DIR,
+                "resources/porcupine/resources",
+                AppendLanguage("keyword_files", language),
+                $"{_env}/{keyword}_{_env}.ppn"
+            ));
             return Path.Combine(
                 ROOT_DIR,
                 "resources/porcupine/resources",

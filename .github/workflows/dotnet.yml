@@ -36,11 +36,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        dotnet-version: [2.0.x, 3.0.x, 3.1.x, 5.0.x, 6.0.x]
+        dotnet-version: [2.1.x, 3.0.x, 3.1.x, 5.0.x, 6.0.x]
         include:
-          - dotnet-version: 2.0.x
+          - dotnet-version: 2.1.x
             binding-framework: netstandard2.0
-            test-framework: netcoreapp2.0
+            test-framework: netcoreapp2.1
           - dotnet-version: 3.0.x
             binding-framework: netcoreapp3.0
             test-framework: netcoreapp3.0
@@ -66,10 +66,10 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Build binding
-      run: dotnet build Picovoice/Picovoice.csproj --framework ${{ matrix.binding-framework }}
+      run: dotnet build Picovoice/Picovoice.csproj --framework ${{ matrix.binding-framework }} -v n
 
     - name: Test
-      run: dotnet test --framework ${{ matrix.test-framework }} -v d
+      run: dotnet test --framework ${{ matrix.test-framework }} -v n
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
@@ -87,7 +87,7 @@ jobs:
         submodules: recursive
 
     - name: Build binding
-      run: dotnet build Picovoice/Picovoice.csproj --framework net6.0
+      run: dotnet build Picovoice/Picovoice.csproj --framework net6.0 -v n
 
     - name: Test
-      run: dotnet test --framework net6.0 -v d
+      run: dotnet test --framework net6.0 -v n

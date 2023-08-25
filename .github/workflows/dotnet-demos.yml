@@ -44,14 +44,11 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: Package restore
-      run: dotnet restore
-
     - name: Dotnet build micdemo
-      run: dotnet build -c MicDemo.Release
+      run: dotnet build -c MicDemo.Release -v n
 
     - name: Dotnet build filedemo
-      run: dotnet build -c FileDemo.Release
+      run: dotnet build -c FileDemo.Release -v n
 
     - name: Run Dotnet filedemo
       run: dotnet run -c FileDemo.Release --
@@ -87,14 +84,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Package restore
-      run: dotnet restore
-
     - name: Dotnet build micdemo
-      run: dotnet build -c MicDemo.Release
+      run: dotnet build -c MicDemo.Release -v n
 
     - name: Dotnet build filedemo
-      run: dotnet build -c FileDemo.Release
+      run: dotnet build -c FileDemo.Release -v n
 
     - name: Run Dotnet filedemo
       run: dotnet run -c FileDemo.Release --

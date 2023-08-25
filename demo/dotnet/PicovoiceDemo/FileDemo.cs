@@ -24,6 +24,25 @@ namespace PicovoiceDemo
     /// </summary>
     public class FileDemo
     {
+        static void wakeWordCallback() => Console.WriteLine("[wake word]");
+
+        static void inferenceCallback(Inference inference)
+        {
+            if (inference.IsUnderstood)
+            {
+                Console.WriteLine("{");
+                Console.WriteLine($"  intent : '{inference.Intent}'");
+                Console.WriteLine("  slots : {");
+                foreach (KeyValuePair<string, string> slot in inference.Slots)
+                    Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
+                Console.WriteLine("  }");
+                Console.WriteLine("}\n");
+            }
+            else
+            {
+                Console.WriteLine("Didn't understand the command\n");
+            }
+        }
 
         /// <summary>
         /// Reads through input audio file and prints to the console when it encounters the specified keyword or makes an
@@ -60,28 +79,8 @@ namespace PicovoiceDemo
             float endpointDurationSec,
             bool requireEndpoint)
         {
-            static void wakeWordCallback() => Console.WriteLine("[wake word]");
-
-            static void inferenceCallback(Inference inference)
-            {
-                if (inference.IsUnderstood)
-                {
-                    Console.WriteLine("{");
-                    Console.WriteLine($"  intent : '{inference.Intent}'");
-                    Console.WriteLine("  slots : {");
-                    foreach (KeyValuePair<string, string> slot in inference.Slots)
-                        Console.WriteLine($"    {slot.Key} : '{slot.Value}'");
-                    Console.WriteLine("  }");
-                    Console.WriteLine("}\n");
-                }
-                else
-                {
-                    Console.WriteLine("Didn't understand the command\n");
-                }
-            }
-
             // init picovoice platform
-            using Picovoice picovoice = Picovoice.Create(
+            using (Picovoice picovoice = Picovoice.Create(
                 accessKey,
                 keywordPath,
                 wakeWordCallback,
@@ -92,29 +91,33 @@ namespace PicovoiceDemo
                 rhinoModelPath,
                 rhinoSensitivity,
                 endpointDurationSec,
-                requireEndpoint);
-
-            // open and validate wav
-            using BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open));
-            ValidateWavFile(reader, picovoice.SampleRate, 16, out short numChannels);
-
-            // read audio and send frames to picovoice
-            short[] picovoiceFrame = new short[picovoice.FrameLength];
-            int frameIndex = 0;
-            while (reader.BaseStream.Position != reader.BaseStream.Length)
+                requireEndpoint))
             {
-                picovoiceFrame[frameIndex++] = reader.ReadInt16();
 
-                if (frameIndex == picovoiceFrame.Length)
+                // open and validate wav
+                using (BinaryReader reader = new BinaryReader(File.Open(inputAudioPath, FileMode.Open)))
                 {
-                    picovoice.Process(picovoiceFrame);
-                    frameIndex = 0;
-                }
+                    ValidateWavFile(reader, picovoice.SampleRate, 16, out short numChannels);
 
-                // skip right channel
-                if (numChannels == 2)
-                {
-                    reader.ReadInt16();
+                    // read audio and send frames to picovoice
+                    short[] picovoiceFrame = new short[picovoice.FrameLength];
+                    int frameIndex = 0;
+                    while (reader.BaseStream.Position != reader.BaseStream.Length)
+                    {
+                        picovoiceFrame[frameIndex++] = reader.ReadInt16();
+
+                        if (frameIndex == picovoiceFrame.Length)
+                        {
+                            picovoice.Process(picovoiceFrame);
+                            frameIndex = 0;
+                        }
+
+                        // skip right channel
+                        if (numChannels == 2)
+                        {
+                            reader.ReadInt16();
+                        }
+                    }
                 }
             }
         }
