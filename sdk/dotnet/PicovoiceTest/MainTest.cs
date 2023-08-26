@@ -27,7 +27,7 @@ namespace PicovoiceTest
     [TestClass]
     public class MainTest
     {
-        private static readonly string ROOT_DIR = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "../../../../../..");
+        private static readonly string ROOT_DIR = Path.Combine(AppContext.BaseDirectory, "../../../../../..");
         private static string _env;
         private static Architecture _arch;
 
