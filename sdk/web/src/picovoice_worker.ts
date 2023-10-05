@@ -17,6 +17,7 @@ import {
   PicovoiceWorkerProcessResponse,
   PicovoiceWorkerReleaseResponse,
   PicovoiceWorkerResetResponse,
+  PvStatus,
 } from './types';
 
 import {
@@ -32,6 +33,7 @@ import {
 } from '@picovoice/rhino-web';
 
 import { loadPicovoiceArgs } from './utils';
+import { mapToPicovoiceError, pvStatusToException } from './picovoice_errors';
 
 export class PicovoiceWorker {
   private readonly _worker: Worker;
@@ -151,7 +153,7 @@ export class PicovoiceWorker {
                     break;
                   case 'failed':
                   case 'error':
-                    const error = new Error(ev.data.message);
+                    const error = pvStatusToException(ev.data.status, ev.data.message);
                     if (processErrorCallback) {
                       processErrorCallback(error);
                     } else {
@@ -162,7 +164,7 @@ export class PicovoiceWorker {
                   default:
                     if (processErrorCallback) {
                       processErrorCallback(
-                        new Error(`Unrecognized command: ${event.data.command}`)
+                        pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`)
                       );
                     } else {
                       // eslint-disable-next-line no-console
