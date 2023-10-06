@@ -209,12 +209,27 @@ public class Picovoice {
     }
 
     /**
+     * Resets the internal state of Picovoice. It should be called before processing a new stream of audio
+     * or when process was stopped while processing a stream of audio.
+     * 
+     * @throws PicovoiceException if reset fails.
+     */
+    public void reset() throws PicovoiceException {
+        try {
+            this.isWakeWordDetected = false;
+            this.rhino.reset();
+        } catch (PorcupineException | RhinoException e) {
+            throw mapToPicovoiceException(e);
+        }
+    }
+
+    /**
      * Getter for version.
      *
      * @return Version.
      */
     public String getVersion() {
-        return "2.2.0";
+        return "3.0.0";
     }
 
     /**
