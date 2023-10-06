@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-node",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Picovoice SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.js",

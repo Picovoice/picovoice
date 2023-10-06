@@ -206,3 +206,30 @@ describe('getter functions', () => {
     handle.release();
   });
 });
+
+describe('reset', () => {
+  test('picovoice should reset state', () => {
+    let res: RhinoInference | null = null;
+
+    function keywordCallback(keyword: number) {
+      handle.reset();
+    }
+
+    function inferenceCallback(inference: RhinoInference) {
+      res = inference;
+    }
+
+    let handle = new Picovoice(
+      ACCESS_KEY,
+      getKeywordPathsByLanguage("en", "picovoice"),
+      keywordCallback,
+      getContextPathsByLanguage("en", "coffee-maker"),
+      inferenceCallback
+    );
+
+    processWaveFile(handle, getAudioFileByLanguage("en", "picovoice-coffee.wav"));
+    expect(res).toEqual(null);
+
+    handle.release();
+  });
+});
