@@ -287,6 +287,13 @@ where
         Ok(())
     }
 
+    pub fn reset(&self) -> Result<(), PicovoiceError>  {
+        self.wake_word_detected = false;
+        self.rhino.reset().map_err(PicovoiceError::from_rhino)?;
+
+        Ok(())
+    }
+
     pub fn frame_length(&self) -> u32 {
         self.frame_length
     }

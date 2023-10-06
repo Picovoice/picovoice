@@ -90,6 +90,32 @@ mod tests {
         )
     }
 
+    fn process_file_helper(picovoice: &Picovoice, audio_file_name: &str) {
+        let soundfile_path = format!(
+            "{}{}{}",
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../resources/audio_samples/",
+            audio_file_name
+        );
+
+        let mut reader = BufReader::new(File::open(&soundfile_path).unwrap());
+        reader.seek_relative(44).unwrap(); // Skip .wav header
+
+        let i16_size = std::mem::size_of::<i16>();
+        let frame_length_bytes = picovoice.frame_length() as usize * i16_size;
+
+        let mut frame_buffer = vec![0u8; frame_length_bytes];
+        while reader.read_exact(&mut frame_buffer).is_ok() {
+            let frame_samples: Vec<i16> = frame_buffer
+                .chunks(i16_size)
+                .map(|i16_slice| {
+                    i16::from_le_bytes(i16_slice.try_into().expect("Incorrect i16 slice size"))
+                })
+                .collect();
+            picovoice.process(&frame_samples).unwrap();
+        }
+    }
+
     fn run_picovoice_test(
         language: &str,
         keyword: &str,
@@ -128,29 +154,7 @@ mod tests {
         .init()
         .expect("Failed to init Picovoice");
 
-        let soundfile_path = format!(
-            "{}{}{}",
-            env!("CARGO_MANIFEST_DIR"),
-            "/../../resources/audio_samples/",
-            audio_file_name
-        );
-
-        let mut reader = BufReader::new(File::open(&soundfile_path).unwrap());
-        reader.seek_relative(44).unwrap(); // Skip .wav header
-
-        let i16_size = std::mem::size_of::<i16>();
-        let frame_length_bytes = picovoice.frame_length() as usize * i16_size;
-
-        let mut frame_buffer = vec![0u8; frame_length_bytes];
-        while reader.read_exact(&mut frame_buffer).is_ok() {
-            let frame_samples: Vec<i16> = frame_buffer
-                .chunks(i16_size)
-                .map(|i16_slice| {
-                    i16::from_le_bytes(i16_slice.try_into().expect("Incorrect i16 slice size"))
-                })
-                .collect();
-            picovoice.process(&frame_samples).unwrap();
-        }
+        process_file_helper(picovoice, audio_file_name);
 
         assert_eq!(
             *is_wake_word_detected.lock().unwrap(),
@@ -175,6 +179,36 @@ mod tests {
             inference.slots, slots,
             "`{language}` slots failed for keyword `{keyword}` context `{context}`"
         );
+    }
+
+    #[test]
+    fn test_reset() {
+        let detected_inference = Arc::new(Mutex::new(None));
+
+        let wake_word_callback = || {
+            if let Ok(mut is_wake_word_detected) = is_wake_word_detected.lock() {
+                picovoice.reset();
+            }
+        };
+
+        let inference_callback = |inference| {
+            if let Ok(mut detected_inference) = detected_inference.lock() {
+                *detected_inference = Some(inference);
+            }
+        };
+
+        let mut picovoice = PicovoiceBuilder::new(
+            access_key,
+            keyword_path_by_language("picovoice", "en"),
+            wake_word_callback,
+            context_path_by_language("coffee_maker", "en"),
+            inference_callback,
+        )
+        .init()
+        .expect("Failed to init Picovoice");
+
+        process_file_helper(picovoice, "picovoice-coffee.wav");
+        assert_eq!(detected_inference, nil);
     }
 
     #[test]
