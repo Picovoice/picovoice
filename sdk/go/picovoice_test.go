@@ -97,6 +97,43 @@ func loadTestData() []TestData {
 	return testParameters
 }
 
+func TestReset(t *testing.T) {
+
+	wakeWordCallback := func() { isWakeWordDetected = true }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+
+	picovoice = NewPicovoice(
+		pvTestAccessKey,
+		getTestKeywordPath("en", "picovoice"),
+		wakeWordCallback,
+		getTestContextPath("en","coffee_maker"),
+		inferenceCallback)
+	initErr := picovoice.Init()
+	if initErr != nil {
+		t.Fatalf("%v", initErr)
+	}
+
+	processFileHelper(t, "picovoice-coffee.wav")
+	if !isWakeWordDetected {
+		t.Fatalf("Did not detect wake word.")
+	}
+
+	if !inference.IsUnderstood {
+		t.Fatalf("Didn't understand.")
+	}
+
+	picovoice.Reset()
+
+	if isWakeWordDetected {
+		t.Fatalf("Failed to reset Picovoice.")
+	}
+
+	delErr := picovoice.Delete()
+	if delErr != nil {
+		t.Fatalf("%v", delErr)
+	}
+}
+
 func TestProcess(t *testing.T) {
 
 	wakeWordCallback := func() { isWakeWordDetected = true }
@@ -142,7 +179,7 @@ func TestProcess(t *testing.T) {
 
 }
 
-func runTestCase(t *testing.T, audioFileName string, expectedIntent string, expectedSlots map[string]string) {
+func processFileHelper(t *testing.T, audioFileName string) {
 	testFile, _ := filepath.Abs(filepath.Join("../../resources/audio_samples", audioFileName))
 	data, err := ioutil.ReadFile(testFile)
 	if err != nil {
@@ -166,6 +203,10 @@ func runTestCase(t *testing.T, audioFileName string, expectedIntent string, expe
 			t.Fatalf("Picovoice process fail: %v", err)
 		}
 	}
+}
+
+func runTestCase(t *testing.T, audioFileName string, expectedIntent string, expectedSlots map[string]string) {
+	processFileHelper(t, audioFileName)
 
 	if !isWakeWordDetected {
 		t.Fatalf("Did not detect wake word.")

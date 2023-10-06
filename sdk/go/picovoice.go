@@ -1,4 +1,4 @@
-// Copyright 2021-2022 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is
 // located in the "LICENSE" file accompanying this source.
@@ -351,5 +351,26 @@ func (picovoice *Picovoice) Process(pcm []int16) error {
 			picovoice.InferenceCallback(inference)
 		}
 	}
+	return nil
+}
+
+// Reset resets the internal state of Picovoice. It should be called before processing a new stream of audio
+// or when process was stopped while processing a stream of audio.
+func (picovoice *Picovoice) Reset() error {
+	if !picovoice.initialized {
+		return &PicovoiceError{
+			StatusCode: INVALID_STATE,
+			Message:    "Picovoice could not reset because it has either not been initialized or has been deleted",
+		}
+	}
+
+	picovoice.wakeWordDetected = false
+	err := picovoice.rhino.Reset()
+	if err != nil {
+		return &PicovoiceError{
+			InnerError: err,
+		}
+	}
+
 	return nil
 }
