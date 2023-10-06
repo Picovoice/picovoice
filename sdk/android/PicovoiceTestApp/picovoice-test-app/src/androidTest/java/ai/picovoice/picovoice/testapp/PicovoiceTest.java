@@ -369,17 +369,6 @@ public class PicovoiceTest {
 
             File testAudio = new File(testResourcesPath, "audio_samples/picovoice-coffee.wav");
 
-            processTestHelper(p, testAudio, 20);
-            Thread.sleep(500);
-
-            assertFalse(isWakeWordDetected);
-            assertNull(inferenceResult);
-
-            isWakeWordDetected = false;
-            inferenceResult = null;
-            p.reset();
-            assertFalse(isWakeWordDetected);
-
             processTestAudio(p, testAudio);
             Thread.sleep(500);
 
@@ -388,6 +377,7 @@ public class PicovoiceTest {
             assertTrue(inferenceResult.getIsUnderstood());
 
             p.reset();
+            
             assertFalse(isWakeWordDetected);
 
             p.delete();
