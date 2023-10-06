@@ -384,4 +384,37 @@ class PicovoiceAppTestUITests: BaseTest {
         XCTAssert(p.contextInfo != "")
         p.delete()
     }
+
+    func testReset() {
+        let bundle = Bundle(for: type(of: self))
+        let keywordPath = bundle.path(
+            forResource: "picovoice_ios",
+            ofType: "ppn",
+            inDirectory: "test_resources/keyword_files/en")!
+        let contextPath = bundle.path(
+            forResource: "coffee_maker_ios",
+            ofType: "rhn",
+            inDirectory: "test_resources/context_files/en")!
+        let p = try Picovoice(
+            accessKey: accessKey,
+            keywordPath: keywordPath,
+            onWakeWordDetection: wakeWordCallback,
+            contextPath: contextPath,
+            onInference: inferenceCallback)
+
+        let fileURL: URL = bundle.url(
+            forResource: "picovoice-coffee",
+            withExtension: "wav",
+            subdirectory: "test_resources/audio_samples")!
+
+        processFile(p, fileURL)
+        XCTAssert(isWakeWordDetected == true)
+        isWakeWordDetected = false
+
+        p.reset()
+        processFile(p, fileURL)
+        XCTAssert(isWakeWordDetected == true)
+
+        p.delete()
+    }
 }

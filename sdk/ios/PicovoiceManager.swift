@@ -15,27 +15,14 @@ import Porcupine
 /// from microphone, processes it in real-time using Picovoice, and notifies the
 /// client upon detection of the wake word or completion of in voice command inference.
 public class PicovoiceManager {
-    private var picovoice: Picovoice?
-
-    private var accessKey: String
-    private var keywordPath: String
-    private var onWakeWordDetection: (() -> Void)
-    private var contextPath: String
-    private var onInference: ((Inference) -> Void)
-
-    private var porcupineModelPath: String?
-    private var porcupineSensitivity: Float32
-    private var rhinoModelPath: String?
-    private var rhinoSensitivity: Float32
-    private var endpointDurationSec: Float32
-    private var requireEndpoint: Bool
+    private var picovoice: Picovoice
 
     private var frameListener: VoiceProcessorFrameListener?
     private var errorListener: VoiceProcessorErrorListener?
 
     public var contextInfo: String {
         get {
-            return (self.picovoice != nil) ? self.picovoice!.contextInfo : ""
+            return self.picovoice.contextInfo
         }
     }
 
@@ -78,18 +65,18 @@ public class PicovoiceManager {
             requireEndpoint: Bool = true,
             processErrorCallback: ((Error) -> Void)? = nil) {
 
-        self.accessKey = accessKey
-        self.keywordPath = keywordPath
-        self.contextPath = contextPath
-        self.onWakeWordDetection = onWakeWordDetection
-        self.onInference = onInference
-
-        self.porcupineModelPath = porcupineModelPath
-        self.porcupineSensitivity = porcupineSensitivity
-        self.rhinoModelPath = rhinoModelPath
-        self.rhinoSensitivity = rhinoSensitivity
-        self.endpointDurationSec = endpointDurationSec
-        self.requireEndpoint = requireEndpoint
+        picovoice = try Picovoice(
+                accessKey: self.accessKey,
+                keywordPath: self.keywordPath,
+                onWakeWordDetection: self.onWakeWordDetection,
+                contextPath: self.contextPath,
+                onInference: self.onInference,
+                porcupineModelPath: self.porcupineModelPath,
+                porcupineSensitivity: self.porcupineSensitivity,
+                rhinoModelPath: self.rhinoModelPath,
+                rhinoSensitivity: self.rhinoSensitivity,
+                endpointDurationSec: self.endpointDurationSec,
+                requireEndpoint: self.requireEndpoint)
 
         self.errorListener = VoiceProcessorErrorListener({ error in
             guard let callback = processErrorCallback else {
@@ -119,32 +106,13 @@ public class PicovoiceManager {
     }
 
     deinit {
-        self.picovoice?.delete()
-        self.picovoice = nil
+        self.picovoice.delete()
     }
 
     ///  Starts recording audio from the microphone and Picovoice processing loop.
     ///
     /// - Throws: PicovoiceError if unable to start recording
     public func start() throws {
-
-        if picovoice != nil {
-            return
-        }
-
-        picovoice = try Picovoice(
-                accessKey: self.accessKey,
-                keywordPath: self.keywordPath,
-                onWakeWordDetection: self.onWakeWordDetection,
-                contextPath: self.contextPath,
-                onInference: self.onInference,
-                porcupineModelPath: self.porcupineModelPath,
-                porcupineSensitivity: self.porcupineSensitivity,
-                rhinoModelPath: self.rhinoModelPath,
-                rhinoSensitivity: self.rhinoSensitivity,
-                endpointDurationSec: self.endpointDurationSec,
-                requireEndpoint: self.requireEndpoint)
-
         VoiceProcessor.instance.addErrorListener(errorListener!)
         VoiceProcessor.instance.addFrameListener(frameListener!)
 
@@ -162,11 +130,6 @@ public class PicovoiceManager {
     ///
     /// - Throws: PicovoiceError if unable to stop recording
     public func stop() throws {
-
-        if picovoice == nil {
-            return
-        }
-
         VoiceProcessor.instance.removeErrorListener(errorListener!)
         VoiceProcessor.instance.removeFrameListener(frameListener!)
 
@@ -178,7 +141,6 @@ public class PicovoiceManager {
             }
         }
 
-        self.picovoice?.delete()
-        self.picovoice = nil
+        self.picovoice.reset()
     }
 }

@@ -141,6 +141,23 @@ public class Picovoice {
         }
     }
 
+    /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio
+    /// or when process was stopped while processing a stream of audio.
+    /// 
+    /// - Throws: PicovoiceError
+    public func reset() throws {
+        if porcupine == nil || rhino == nil {
+            throw PicovoiceInvalidStateError("Cannot reset - resources have been released.")
+        }
+
+        do {
+            isWakeWordDetected = false
+            rhino.reset()
+        } catch {
+            throw mapToPicovoiceError(error)
+        }
+    }
+
     private func mapToPicovoiceError(_ error: Error) -> PicovoiceError {
         switch error {
         case is PorcupineMemoryError, is RhinoMemoryError:
