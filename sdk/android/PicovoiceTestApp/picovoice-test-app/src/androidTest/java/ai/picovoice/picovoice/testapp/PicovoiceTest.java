@@ -353,6 +353,45 @@ public class PicovoiceTest {
 
             p.delete();
         }
+
+        @Test
+        public void testReset() throws PicovoiceException {
+            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
+
+            Picovoice p = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
+                    .setKeywordPath(keywordPath)
+                    .setContextPath(contextPath)
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setInferenceCallback(inferenceCallback)
+                    .build(appContext);
+
+            File testAudio = new File(testResourcesPath, "audio_samples/picovoice-coffee.wav");
+
+            processTestHelper(p, testAudio, 20);
+            Thread.sleep(500);
+
+            assertFalse(isWakeWordDetected);
+            assertNull(inferenceResult);
+
+            isWakeWordDetected = false;
+            inferenceResult = null;
+            p.reset();
+            assertFalse(isWakeWordDetected);
+
+            processTestAudio(p, testAudio);
+            Thread.sleep(500);
+
+            assertTrue(isWakeWordDetected);
+            assertNotNull(inferenceResult);
+            assertTrue(inferenceResult.getIsUnderstood());
+
+            p.reset();
+            assertFalse(isWakeWordDetected);
+
+            p.delete();
+        }
     }
 
     @RunWith(Parameterized.class)

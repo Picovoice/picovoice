@@ -123,7 +123,9 @@ public class BaseTest {
         os.close();
     }
 
-    void processTestAudio(Picovoice p, File testAudio) throws Exception {
+    void processTestHelper(Picovoice p, File testAudio, int maxProcessCount) throws Exception {
+        int processed = 0;
+
         FileInputStream audioInputStream = new FileInputStream(testAudio);
 
         byte[] rawData = new byte[p.getFrameLength() * 2];
@@ -137,8 +139,16 @@ public class BaseTest {
             if (numRead == p.getFrameLength() * 2) {
                 pcmBuff.asShortBuffer().get(pcm);
                 p.process(pcm);
+                if (maxProcessCount != -1 && processed > maxProcessCount) {
+                    break;
+                }
+                processed++;
             }
         }
+    }
+
+    void processTestAudio(Picovoice p, File testAudio) throws Exception {
+        processTestHelper(p, testAudio, -1);
     }
 }
 
