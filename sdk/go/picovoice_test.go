@@ -98,9 +98,10 @@ func loadTestData() []TestData {
 }
 
 func TestReset(t *testing.T) {
+	var res *rhn.RhinoInference = nil
 
-	wakeWordCallback := func() { isWakeWordDetected = true }
-	inferenceCallback := func(inferenceResult rhn.RhinoInference) { inference = inferenceResult }
+	wakeWordCallback := func() { picovoice.Reset() }
+	inferenceCallback := func(inferenceResult rhn.RhinoInference) { res = &inferenceResult }
 
 	picovoice = NewPicovoice(
 		pvTestAccessKey,
@@ -114,18 +115,8 @@ func TestReset(t *testing.T) {
 	}
 
 	processFileHelper(t, "picovoice-coffee.wav")
-	if !isWakeWordDetected {
-		t.Fatalf("Did not detect wake word.")
-	}
-
-	if !inference.IsUnderstood {
-		t.Fatalf("Didn't understand.")
-	}
-
-	picovoice.Reset()
-
-	if isWakeWordDetected {
-		t.Fatalf("Failed to reset Picovoice.")
+	if res != nil {
+		t.Fatalf("Failed to reset picovoice.")
 	}
 
 	delErr := picovoice.Delete()
