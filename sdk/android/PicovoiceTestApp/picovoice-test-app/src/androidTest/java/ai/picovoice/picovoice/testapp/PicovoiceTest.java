@@ -359,27 +359,28 @@ public class PicovoiceTest {
             File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
 
+            PicovoiceWakeWordCallback callback = new PicovoiceWakeWordCallback() {
+                @Override
+                public void invoke() {
+                    p.reset();
+                }
+            };
+
             Picovoice p = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath)
                     .setContextPath(contextPath)
-                    .setWakeWordCallback(wakeWordCallback)
+                    .setWakeWordCallback(callback)
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
             File testAudio = new File(testResourcesPath, "audio_samples/picovoice-coffee.wav");
 
+            inferenceResult = null;
             processTestAudio(p, testAudio);
             Thread.sleep(500);
 
-            assertTrue(isWakeWordDetected);
-            assertNotNull(inferenceResult);
-            assertTrue(inferenceResult.getIsUnderstood());
-
-            p.reset();
-            
-            assertFalse(isWakeWordDetected);
-
+            assertNull(inferenceResult);
             p.delete();
         }
     }
