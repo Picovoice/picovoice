@@ -13,7 +13,7 @@ import coffeeMakerContext from './contexts/coffee_maker_wasm';
 import rhinoParams from './rhino/rhino_params';
 
 import { PvModel } from '@picovoice/web-utils';
-import { PorcupineKeyword } from '@picovoice/porcupine-web';
+import { BuiltInKeyword, PorcupineKeyword } from '@picovoice/porcupine-web';
 import { RhinoContext, RhinoInference } from '@picovoice/rhino-web';
 
 const ACCESS_KEY: string = Cypress.env('ACCESS_KEY');
@@ -255,6 +255,44 @@ describe('Picovoice Binding', function () {
           },
           expectFailure: true,
         });
+      });
+    });
+
+    it(`should be able to reset (${instanceString})`, () => {
+      cy.getFramesFromFile(`audio_samples/picovoice-coffee.wav`).then(async pcm => {
+        let inference: RhinoInference | null = null;
+
+        const runProcess = () =>
+          new Promise<void>(async (resolve, reject) => {
+            const picovoice = await instance.create(
+              ACCESS_KEY,
+              { builtin: BuiltInKeyword.Picovoice },
+              async () => {
+                await picovoice.reset();
+              },
+              { publicPath: '/test/porcupine/porcupine_params.pv', forceWrite: true },
+              { publicPath: '/test/contexts/coffee_maker_wasm.rhn', forceWrite: true },
+              (rhinoInference: RhinoInference) => {
+                inference = rhinoInference;
+              },
+              { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true }
+            );
+
+            for (let i = 0;i < pcm.length - picovoice.frameLength! + 1;i += picovoice.frameLength!) {
+              await picovoice.process(pcm.slice(i, i + picovoice.frameLength!));
+              await delay(32);
+            }
+
+            await delay(1000);
+
+            if (picovoice instanceof PicovoiceWorker) {
+              picovoice.terminate();
+            } else {
+              await picovoice.release();
+            }
+          });
+
+        expect(inference).to.not.eq(null);
       });
     });
 
