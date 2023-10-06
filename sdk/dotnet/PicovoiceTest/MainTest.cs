@@ -183,18 +183,19 @@ namespace PicovoiceTest
         [TestMethod]
         public void TestReset()
         {
+            void callback() => _picovoice.Reset();
+
             _picovoice = Picovoice.Create(
                 _accessKey,
                 GetKeywordPath("en", "picovoice"),
-                _wakeWordCallback,
+                callback,
                 GetContextPath("en", "coffee_maker"),
                 _inferenceCallback);
 
+            _inference = null;
             ProcessFileHelper("picovoice-coffee.wav");
-            Assert.IsTrue(_isWakeWordDetected);
-
-            _picovoice.Reset();
-            Assert.IsFalse(_isWakeWordDetected);
+            
+            Assert.Null(_inference);
         }
 
         [TestMethod]
