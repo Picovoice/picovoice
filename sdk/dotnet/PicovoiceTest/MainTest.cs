@@ -150,7 +150,7 @@ namespace PicovoiceTest
             _picovoice?.Dispose();
         }
 
-        public void RunTestCase(string audioFileName, string expectedIntent, Dictionary<string, string> expectedSlots)
+        public void ProcessFileHelper(string audioFileName)
         {
             string testAudioPath = Path.Combine(ROOT_DIR, "resources/audio_samples/", audioFileName);
 
@@ -166,6 +166,11 @@ namespace PicovoiceTest
 
                 _picovoice.Process(frame.ToArray());
             }
+        }
+
+        public void RunTestCase(string audioFileName, string expectedIntent, Dictionary<string, string> expectedSlots)
+        {
+            ProcessFileHelper(audioFileName);
 
             Assert.IsTrue(_isWakeWordDetected);
             Assert.AreEqual(_inference.Intent, expectedIntent);
@@ -173,6 +178,23 @@ namespace PicovoiceTest
             Assert.IsTrue(_inference.Slots.All((keyValuePair) =>
                                           expectedSlots.ContainsKey(keyValuePair.Key) &&
                                           expectedSlots[keyValuePair.Key] == keyValuePair.Value));
+        }
+
+        [TestMethod]
+        public void TestReset()
+        {
+            _picovoice = Picovoice.Create(
+                _accessKey,
+                GetKeywordPath("en", "picovoice"),
+                _wakeWordCallback,
+                GetContextPath("en", "coffee_maker"),
+                _inferenceCallback);
+
+            ProcessFileHelper("picovoice-coffee.wav");
+            Assert.IsTrue(_isWakeWordDetected);
+
+            _picovoice.Reset();
+            Assert.IsFalse(_isWakeWordDetected);
         }
 
         [TestMethod]
