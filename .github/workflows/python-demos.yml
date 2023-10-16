@@ -64,7 +64,7 @@ jobs:
     - name: pv
       working-directory: sdk/python
       run: |
-        python setup.py sdist bdist_wheel && pip install dist/pvpicovoice-3.0.0-py3-none-any.whl
+        python setup.py sdist bdist_wheel && pip install dist/picovoice-3.0.0-py3-none-any.whl
     # ********************************************************
 
     - name: Install dependencies
@@ -123,7 +123,7 @@ jobs:
     - name: pv
       working-directory: sdk/python
       run: |
-        pip3 uninstall -y pvpicovoice && python3 setup.py sdist bdist_wheel && pip3 install dist/pvpicovoice-3.0.0-py3-none-any.whl
+        pip3 uninstall -y picovoice && python3 setup.py sdist bdist_wheel && pip3 install dist/picovoice-3.0.0-py3-none-any.whl
     # ********************************************************
 
     - name: Install dependencies
