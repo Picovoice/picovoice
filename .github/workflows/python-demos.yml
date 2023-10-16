@@ -26,7 +26,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11']
         include:
         - os: ubuntu-latest
           platform: linux
@@ -47,6 +47,23 @@ jobs:
 
     - name: Pre-build dependencies
       run: python -m pip install --upgrade pip
+
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: ppn
+      working-directory: resources/porcupine/binding/python
+      run: |
+        pip install wheel && python setup.py sdist bdist_wheel && pip install dist/pvporcupine-3.0.0-py3-none-any.whl
+
+    - name: rhn
+      working-directory: resources/rhino/binding/python
+      run: |
+        python setup.py sdist bdist_wheel && pip install dist/pvrhino-3.0.0-py3-none-any.whl
+
+    - name: pv
+      working-directory: sdk/python
+      run: |
+        python setup.py sdist bdist_wheel && pip install dist/pvpicovoice-3.0.0-py3-none-any.whl
+    # ********************************************************
 
     - name: Install dependencies
       run: pip install -r requirements.txt
@@ -84,6 +101,23 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: ppn
+      working-directory: resources/porcupine/binding/python
+      run: |
+        pip3 uninstall -y pvporcupine && python3 setup.py sdist bdist_wheel && pip3 install dist/pvporcupine-3.0.0-py3-none-any.whl
+
+    - name: rhn
+      working-directory: resources/rhino/binding/python
+      run: |
+        pip3 uninstall -y pvrhino && python3 setup.py sdist bdist_wheel && pip3 install dist/pvrhino-3.0.0-py3-none-any.whl
+
+    - name: pv
+      working-directory: sdk/python
+      run: |
+        pip3 uninstall -y pvpicovoice && python3 setup.py sdist bdist_wheel && pip3 install dist/pvpicovoice-3.0.0-py3-none-any.whl
+    # ********************************************************
 
     - name: Install dependencies
       run: pip3 install -r requirements.txt
