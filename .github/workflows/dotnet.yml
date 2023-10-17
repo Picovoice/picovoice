@@ -115,12 +115,6 @@ jobs:
         submodules: recursive
 
     # *********** REMOVE AFTER RELEASE **********************
-    - name: mkdir NuGet directory
-      run: mkdir -p ~/.nuget/NuGet/local-nuget
-
-    - name: Add local NuGet source
-      run: dotnet nuget add source ~/.nuget/NuGet/local-nuget
-
     - name: Pack Porcupine for local ref
       run: dotnet pack -c Release
       working-directory: resources/porcupine/binding/dotnet
