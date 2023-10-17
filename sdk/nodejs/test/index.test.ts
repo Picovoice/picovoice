@@ -199,9 +199,9 @@ describe('getter functions', () => {
       () => {}
     );
 
-    expect(handle.porcupineVersion).toEqual('2.2.0');
-    expect(handle.rhinoVersion).toEqual('2.2.0');
-    expect(handle.version).toEqual('2.2.0');
+    expect(handle.porcupineVersion).toEqual('3.0.0');
+    expect(handle.rhinoVersion).toEqual('3.0.0');
+    expect(handle.version).toEqual('3.0.0');
 
     handle.release();
   });

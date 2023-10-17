@@ -2,28 +2,22 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-2.2.1.tgz#62052b18ae276d3fa9467239221182d1755e4165"
-  integrity sha512-Ml9tFlJGrep4Dqvk07Nu3JCpCWkJSRmE/bKbO2c1meWRltOwqP//W78R/QiC30zv763nWGKGPwXh95Lvm7YYkA==
+"@picovoice/picovoice-node@file:../../sdk/nodejs":
+  version "3.0.0"
   dependencies:
-    "@picovoice/porcupine-node" "=2.2.1"
-    "@picovoice/rhino-node" "=2.2.1"
+    "@picovoice/porcupine-node" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-3.0.0-5840f3c4-e246-4354-b070-bc9a5847b11d-1697586335625/node_modules/resources/porcupine/binding/nodejs"
+    "@picovoice/rhino-node" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-node-3.0.0-5840f3c4-e246-4354-b070-bc9a5847b11d-1697586335625/node_modules/resources/rhino/binding/nodejs"
 
-"@picovoice/porcupine-node@=2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-2.2.1.tgz#5055d87c0b7e3039c8835fceb972dde4ea2c27ae"
-  integrity sha512-+sc3uY2ZdZabUW7kYZ2wDezg2CZYy729Xy387fMuNw8fa2aoHuU9pcpaUR2KfLDRC+s2hbWdAqnxjCuSvt/NYw==
+"@picovoice/porcupine-node@file:../../resources/porcupine/binding/nodejs":
+  version "3.0.0"
 
 "@picovoice/pvrecorder-node@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.2.1.tgz#8e112ecc7a4836aa4fa92d62ac7942d8a2366db8"
   integrity sha512-7TtRMh04PSVn542Oq1v/MGLFuNPdUrrv+f7qbCGOWRc8y6ox+FATigdQqLRbRey4kZWf40dNHQFdVPCk5ZcXnQ==
 
-"@picovoice/rhino-node@=2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-2.2.1.tgz#83c420736d54314c7a842845096873be8c65fb0e"
-  integrity sha512-Alh3FrfWxzu4k2rrkls1YZGZVuKHfXiRtXJXh5IBDosvSgBFKYQ/eCclTw/reSr03Cl7BmZaBmISmGIoU1Hwqg==
+"@picovoice/rhino-node@file:../../resources/rhino/binding/nodejs":
+  version "3.0.0"
 
 commander@^6.1.0:
   version "6.2.1"

@@ -34,7 +34,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node-version: [14.x, 16.x, 18.x, 20.x]
+        node-version: [16.x, 18.x, 20.x]
 
     steps:
     - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
       run: yarn install
 
     - name: Test
-      run: yarn test  --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
+      run: yarn test --access_key=${{secrets.PV_VALID_ACCESS_KEY}}
 
   build-self-hosted:
     runs-on: ${{ matrix.machine }}

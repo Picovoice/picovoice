@@ -213,9 +213,15 @@ export default class Picovoice {
    * or when process was stopped while processing a stream of audio.
    */
   reset(): void {
+    if (this.porcupine === null || this.rhino === null) {
+      throw new PicovoiceErrors.PicovoiceInvalidStateError(
+        'Attempting to reset but resources have been released.'
+      );
+    }
+
     try {
       this.isWakeWordDetected = false;
-      this._rhino.reset();
+      this.rhino.reset();
     } catch (error: any) {
       throw this.mapToPicovoiceError(error);
     }
@@ -235,28 +241,28 @@ export default class Picovoice {
     }
   }
 
-  private mapToPicovoiceError(e: PorcupineErrors.PicovoiceError | RhinoErrors.RhinoError) {
-    if (e instanceof PorcupineErrors.PicovoiceOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
+  private mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
+    if (e instanceof PorcupineErrors.PorcupineOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
       return new PicovoiceErrors.PicovoiceOutOfMemoryError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceIOError || e instanceof RhinoErrors.RhinoIOError) {
+    } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
       return new PicovoiceErrors.PicovoiceIOError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
+    } else if (e instanceof PorcupineErrors.PorcupineInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
       return new PicovoiceErrors.PicovoiceInvalidArgumentError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
+    } else if (e instanceof PorcupineErrors.PorcupineStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
       return new PicovoiceErrors.PicovoiceStopIterationError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceKeyError || e instanceof RhinoErrors.RhinoKeyError) {
+    } else if (e instanceof PorcupineErrors.PorcupineKeyError || e instanceof RhinoErrors.RhinoKeyError) {
       return new PicovoiceErrors.PicovoiceKeyError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
+    } else if (e instanceof PorcupineErrors.PorcupineInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
       return new PicovoiceErrors.PicovoiceInvalidStateError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
+    } else if (e instanceof PorcupineErrors.PorcupineRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
       return new PicovoiceErrors.PicovoiceRuntimeError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceActivationError || e instanceof RhinoErrors.RhinoActivationError) {
+    } else if (e instanceof PorcupineErrors.PorcupineActivationError || e instanceof RhinoErrors.RhinoActivationError) {
       return new PicovoiceErrors.PicovoiceActivationError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceActivationLimitReachedError || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
+    } else if (e instanceof PorcupineErrors.PorcupineActivationLimitReached || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
       return new PicovoiceErrors.PicovoiceActivationLimitReachedError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
+    } else if (e instanceof PorcupineErrors.PorcupineActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
       return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
-    } else if (e instanceof PorcupineErrors.PicovoiceActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
+    } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
       return new PicovoiceErrors.PicovoiceActivationRefusedError(e.message);
     } else {
       return new PicovoiceErrors.PicovoiceError(e.message);
