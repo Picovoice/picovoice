@@ -39,8 +39,9 @@ public class PicovoiceManager {
      * @param picovoice            An instance of the Picovoice engine.
      * @param processErrorCallback A callback that reports errors encountered while processing audio.
      */
-    private PicovoiceManager(final Picovoice picovoice,
-                             final PicovoiceManagerErrorCallback processErrorCallback) {
+    private PicovoiceManager(
+            final Picovoice picovoice,
+            final PicovoiceManagerErrorCallback processErrorCallback) {
         this.picovoice = picovoice;
         this.voiceProcessor = VoiceProcessor.getInstance();
 
