@@ -59,14 +59,14 @@ jobs:
       working-directory: resources/porcupine/binding/dotnet
 
     - name: Copy Porcupine Nuget
-      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ${{ matrix.nuget-path }}
+      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ${{ matrix.nuget-path }}
 
     - name: Pack Rhino for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
 
     - name: Copy Rhino Nuget
-      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ${{ matrix.nuget-path }}
+      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ${{ matrix.nuget-path }}
 
     - name: Pack Picovoice for local ref
       run: dotnet pack ../../../sdk/dotnet/Picovoice/Picovoice.csproj -c Release
