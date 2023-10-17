@@ -36,6 +36,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            nuget-path: ~/.nuget/NuGet/local-nuget
+          - os: macos-latest
+            nuget-path: ~/.nuget/NuGet/local-nuget
+          - os: windows-latest
+            nuget-path: ~/AppData/Roaming/NuGet/local-nuget
         dotnet-version: [2.1.x, 3.0.x, 3.1.x, 5.0.x, 6.0.x]
         include:
           - dotnet-version: 2.1.x
@@ -67,24 +74,24 @@ jobs:
 
     # *********** REMOVE AFTER RELEASE **********************
     - name: mkdir NuGet directory
-      run: mkdir -p ~/.nuget/NuGet/local-nuget
+      run: mkdir -p ${{ matrix.nuget-path }}
 
     - name: Add local NuGet source
-      run: dotnet nuget add source ~/.nuget/NuGet/local-nuget
+      run: dotnet nuget add source local-nuget
 
     - name: Pack Porcupine for local ref
       run: dotnet pack -c Release
       working-directory: resources/porcupine/binding/dotnet
 
     - name: Copy Porcupine Nuget
-      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ${{ matrix.nuget-path }}
 
     - name: Pack Rhino for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
 
     - name: Copy Rhino Nuget
-      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ${{ matrix.nuget-path }}
     # ******************************************************
 
     - name: Build binding

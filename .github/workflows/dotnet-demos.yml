@@ -29,10 +29,13 @@ jobs:
         include:
         - os: ubuntu-latest
           platform: linux
+          nuget-path: ~/.nuget/NuGet/local-nuget
         - os: windows-latest
           platform: windows
+          nuget-path: ~/AppData/Roaming/NuGet/local-nuget
         - os: macos-latest
           platform: mac
+          nuget-path: ~/.nuget/NuGet/local-nuget
 
     steps:
     - uses: actions/checkout@v3
@@ -46,30 +49,30 @@ jobs:
 
     # *********** REMOVE AFTER RELEASE **********************
     - name: mkdir NuGet directory
-      run: mkdir -p ~/.nuget/NuGet/local-nuget
+      run: mkdir -p ${{ matrix.nuget-path }}
 
     - name: Add local NuGet source
-      run: dotnet nuget add source ~/.nuget/NuGet/local-nuget
+      run: dotnet nuget add source local-nuget
 
     - name: Pack Porcupine for local ref
       run: dotnet pack -c Release
       working-directory: resources/porcupine/binding/dotnet
 
     - name: Copy Porcupine Nuget
-      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ${{ matrix.nuget-path }}
 
     - name: Pack Rhino for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
 
     - name: Copy Rhino Nuget
-      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ${{ matrix.nuget-path }}
 
     - name: Pack Picovoice for local ref
       run: dotnet pack ../../../sdk/dotnet/Picovoice/Picovoice.csproj -c Release
 
     - name: Copy Picovoice Nuget
-      run: cp ../../../sdk/dotnet/Picovoice/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../../sdk/dotnet/Picovoice/bin/Release/*.nupkg ${{ matrix.nuget-path }}
     # ******************************************************
 
     - name: Dotnet build micdemo
