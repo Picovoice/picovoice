@@ -51,7 +51,7 @@ public class BaseTest {
         }
     };
 
-    Picovoice p = null;
+    Picovoice picovoice = null;
 
     Context testContext;
     Context appContext;
@@ -63,8 +63,8 @@ public class BaseTest {
     public void TearDown() {
         isWakeWordDetected = false;
         inferenceResult = null;
-        if (p != null) {
-            p.delete();
+        if (picovoice != null) {
+            picovoice.delete();
         }
         reportHelper.label("Stopping App");
     }

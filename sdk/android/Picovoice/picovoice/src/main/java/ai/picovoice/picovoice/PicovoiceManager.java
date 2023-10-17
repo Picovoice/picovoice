@@ -318,18 +318,18 @@ public class PicovoiceManager {
          */
         public PicovoiceManager build(Context appContext) throws PicovoiceException {
             Picovoice picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(porcupineModelPath)
-                .setKeywordPath(keywordPath)
-                .setPorcupineSensitivity(porcupineSensitivity)
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(rhinoModelPath)
-                .setContextPath(contextPath)
-                .setRhinoSensitivity(rhinoSensitivity)
-                .setEndpointDurationSec(endpointDurationSec)
-                .setRequireEndpoint(requireEndpoint)
-                .setInferenceCallback(inferenceCallback)
-                .build(appContext);
+                    .setAccessKey(accessKey)
+                    .setPorcupineModelPath(porcupineModelPath)
+                    .setKeywordPath(keywordPath)
+                    .setPorcupineSensitivity(porcupineSensitivity)
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setRhinoModelPath(rhinoModelPath)
+                    .setContextPath(contextPath)
+                    .setRhinoSensitivity(rhinoSensitivity)
+                    .setEndpointDurationSec(endpointDurationSec)
+                    .setRequireEndpoint(requireEndpoint)
+                    .setInferenceCallback(inferenceCallback)
+                    .build(appContext);
 
             return new PicovoiceManager(
                     picovoice,
