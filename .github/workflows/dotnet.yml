@@ -70,7 +70,7 @@ jobs:
       run: mkdir -p ~/.nuget/NuGet/local-nuget
 
     - name: Add local NuGet source
-      run: dotnet nuget add source local-nuget
+      run: dotnet nuget add source ~/.nuget/NuGet/local-nuget
 
     - name: Pack Porcupine for local ref
       run: dotnet pack -c Release
@@ -113,7 +113,7 @@ jobs:
       run: mkdir -p ~/.nuget/NuGet/local-nuget
 
     - name: Add local NuGet source
-      run: dotnet nuget add source local-nuget
+      run: dotnet nuget add source ~/.nuget/NuGet/local-nuget
 
     - name: Pack Porcupine for local ref
       run: dotnet pack -c Release
