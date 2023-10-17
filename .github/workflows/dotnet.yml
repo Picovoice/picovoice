@@ -77,14 +77,14 @@ jobs:
       working-directory: resources/porcupine/binding/dotnet
 
     - name: Copy Porcupine Nuget
-      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
 
     - name: Pack Rhino for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
 
     - name: Copy Rhino Nuget
-      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
     # ******************************************************
 
     - name: Build binding
@@ -120,14 +120,14 @@ jobs:
       working-directory: resources/porcupine/binding/dotnet
 
     - name: Copy Porcupine Nuget
-      run: cp ../../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
 
     - name: Pack Rhino for local ref
       run: dotnet pack -c Release
       working-directory: resources/rhino/binding/dotnet
 
     - name: Copy Rhino Nuget
-      run: cp ../../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
+      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
     # ******************************************************
 
     - name: Build binding
