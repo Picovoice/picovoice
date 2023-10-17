@@ -239,7 +239,8 @@ namespace Pv
                 throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             }
 
-            try {
+            try
+            {
                 _isWakeWordDetected = false;
                 _rhino.Reset();
             }

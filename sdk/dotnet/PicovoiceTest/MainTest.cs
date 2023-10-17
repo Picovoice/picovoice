@@ -182,7 +182,7 @@ namespace PicovoiceTest
 
         [TestMethod]
         public void TestReset()
-        {            
+        {
             _picovoice = Picovoice.Create(
                 _accessKey,
                 GetKeywordPath("en", "picovoice"),
@@ -192,7 +192,7 @@ namespace PicovoiceTest
 
             _inference = null;
             ProcessFileHelper("picovoice-coffee.wav");
-            
+
             Assert.IsNull(_inference);
         }
 
