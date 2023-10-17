@@ -16,27 +16,7 @@ import pvrhino
 
 
 class PicovoiceError(Exception):
-    def __init__(self, message: str = '', message_stack: Sequence[str] = None):
-        super().__init__(message)
-
-        self._message = message
-        self._message_stack = list() if message_stack is None else message_stack
-
-    def __str__(self):
-        message = self._message
-        if len(self._message_stack) > 0:
-            message += ':'
-            for i in range(len(self._message_stack)):
-                message += '\n  [%d] %s' % (i, self._message_stack[i])
-        return message
-
-    @property
-    def message(self) -> str:
-        return self._message
-
-    @property
-    def message_stack(self) -> Sequence[str]:
-        return self._message_stack
+    pass
 
 
 class PicovoiceMemoryError(PicovoiceError):
@@ -219,7 +199,7 @@ class Picovoice(object):
                 keyword_paths=[keyword_path],
                 sensitivities=[porcupine_sensitivity])
         except pvporcupine.PorcupineError as e:
-            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)](e.message, e.message_stack) from e
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
         self._wake_word_callback = wake_word_callback
 
@@ -235,7 +215,7 @@ class Picovoice(object):
                 endpoint_duration_sec=endpoint_duration_sec,
                 require_endpoint=require_endpoint)
         except pvrhino.RhinoError as e:
-            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)](e.message, e.message_stack) from e
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
         self._inference_callback = inference_callback
 
@@ -270,7 +250,7 @@ class Picovoice(object):
                 if self._is_wake_word_detected:
                     self._wake_word_callback()
             except pvporcupine.PorcupineError as e:
-                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)](e.message, e.message_stack) from e
+                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
         else:
             try:
                 is_finalized = self._rhino.process(pcm)
@@ -279,7 +259,18 @@ class Picovoice(object):
                     inference = self._rhino.get_inference()
                     self._inference_callback(inference)
             except pvrhino.RhinoError as e:
-                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)](e.message, e.message_stack) from e
+                raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
+
+    def reset(self) -> None:
+        """
+        Resets the internal state of Picovoice. It should be called before processing a new stream of audio
+        or when Picovoice was stopped whilst processing a stream of audio.
+        """
+        try:
+            self._is_wake_word_detected = False
+            self._rhino.reset()
+        except pvrhino.RhinoError as e:
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
     @property
     def sample_rate(self) -> int:
@@ -297,7 +288,7 @@ class Picovoice(object):
     def version(self) -> str:
         """Version"""
 
-        return '2.2.0'
+        return '3.0.0'
 
     @property
     def context_info(self) -> str:

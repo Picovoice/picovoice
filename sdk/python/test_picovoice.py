@@ -26,7 +26,7 @@ test_parameters = load_test_data()
 
 class PicovoiceTestData:
     def __init__(self):
-        self.picovoiceInstance = None
+        self.picovoice = None
         self.is_wake_word_detected = False
         self.inference = None
 
@@ -39,6 +39,15 @@ class PicovoiceTestData:
 
     def inference_callback(self, inference):
         self.inference = inference
+
+
+class PicovoiceResetTestData(PicovoiceTestData):
+    def __init__(self):
+        super().__init__()
+
+    def wake_word_callback(self):
+        self.is_wake_word_detected = True
+        self.picovoice.reset()
 
 
 class PicovoiceTestCase(unittest.TestCase):
@@ -66,9 +75,8 @@ class PicovoiceTestCase(unittest.TestCase):
 
         return frames[::channels]
 
-    def run_picovoice(self, language, keyword, context, audio_file_name, intent, slots):
-        test_data = PicovoiceTestData()
-        picovoice = Picovoice(
+    def run_picovoice(self, language, keyword, context, audio_file_name, intent, slots, test_data):
+        test_data.picovoice = Picovoice(
             access_key=sys.argv[1],
             keyword_path=pv_keyword_paths_by_language(language)[keyword],
             context_path=context_path(context, language),
@@ -80,17 +88,20 @@ class PicovoiceTestCase(unittest.TestCase):
         audio = \
             self.__read_file(
                 os.path.join(os.path.dirname(__file__), '../../resources/audio_samples', audio_file_name),
-                picovoice.sample_rate)
+                test_data.picovoice.sample_rate)
 
         for _ in range(2):
             test_data.reset()
-            for i in range(len(audio) // picovoice.frame_length):
-                frame = audio[i * picovoice.frame_length:(i + 1) * picovoice.frame_length]
-                picovoice.process(frame)
+            for i in range(len(audio) // test_data.picovoice.frame_length):
+                frame = audio[i * test_data.picovoice.frame_length:(i + 1) * test_data.picovoice.frame_length]
+                test_data.picovoice.process(frame)
 
             self.assertTrue(test_data.is_wake_word_detected)
-            self.assertEqual(test_data.inference.intent, intent)
-            self.assertEqual(test_data.inference.slots, slots)
+            if intent is None and slots is None:
+                self.assertIsNone(test_data.inference)
+            else:
+                self.assertEqual(test_data.inference.intent, intent)
+                self.assertEqual(test_data.inference.slots, slots)
 
     @parameterized.expand(test_parameters)
     def test_picovoice(self, language, keyword, context, audio_file_name, intent, slots):
@@ -100,7 +111,19 @@ class PicovoiceTestCase(unittest.TestCase):
             context=context,
             audio_file_name=audio_file_name,
             intent=intent,
-            slots=slots)
+            slots=slots,
+            test_data=PicovoiceTestData())
+
+    def test_reset(self):
+        test_param = test_parameters[0]
+        self.run_picovoice(
+            language=test_param[0],
+            keyword=test_param[1],
+            context=test_param[2],
+            audio_file_name=test_param[3],
+            intent=None,
+            slots=None,
+            test_data=PicovoiceResetTestData())
 
 
 if __name__ == '__main__':
