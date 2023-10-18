@@ -104,9 +104,9 @@ public class Picovoice {
                     .setKeywordPath(keywordPath)
                     .build();
 
-            if (!porcupine.getVersion().startsWith("2.2.")) {
+            if (!porcupine.getVersion().startsWith("3.0.")) {
                 final String message = String.format(
-                        "Expected Porcupine library with version '2.2.x' but received %s",
+                        "Expected Porcupine library with version '3.0.x' but received %s",
                         porcupine.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -123,9 +123,9 @@ public class Picovoice {
                     .setRequireEndpoint(requireEndpoint)
                     .build();
 
-            if (!rhino.getVersion().startsWith("2.2.")) {
+            if (!rhino.getVersion().startsWith("3.0.")) {
                 final String message = String.format(
-                        "Expected Rhino library with version '2.2.x' but received %s",
+                        "Expected Rhino library with version '3.0.x' but received %s",
                         rhino.getVersion());
                 throw new PicovoiceException(message);
             }
@@ -211,7 +211,7 @@ public class Picovoice {
     /**
      * Resets the internal state of Picovoice. It should be called before processing a new stream of audio
      * or when process was stopped while processing a stream of audio.
-     * 
+     *
      * @throws PicovoiceException if reset fails.
      */
     public void reset() throws PicovoiceException {

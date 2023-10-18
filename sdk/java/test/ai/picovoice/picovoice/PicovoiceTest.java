@@ -162,7 +162,7 @@ public class PicovoiceTest {
             public void invoke() {
                 try {
                     picovoice.reset();
-                } catch (PicovoiceException e) { }
+                } catch (PicovoiceException ignore) { }
             }
         };
 
@@ -170,7 +170,7 @@ public class PicovoiceTest {
                 .setAccessKey(accessKey)
                 .setKeywordPath(getTestKeywordPath("en", "picovoice"))
                 .setWakeWordCallback(callback)
-                .setContextPath(getTestContextPath("en", "coffee-maker"))
+                .setContextPath(getTestContextPath("en", "coffee_maker"))
                 .setInferenceCallback(inferenceCallback)
                 .build();
 
