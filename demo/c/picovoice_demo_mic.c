@@ -297,7 +297,7 @@ int picovoice_main(int argc, char *argv[]) {
         exit(1);
     }
 
-    void (*pv_get_error_stack_func)(char ***, int32_t *) = load_symbol(picovoice_library, "pv_get_error_stack");
+    pv_status_t (*pv_get_error_stack_func)(char ***, int32_t *) = load_symbol(picovoice_library, "pv_get_error_stack");
     if (!pv_get_error_stack_func) {
         print_dl_error("failed to load 'pv_get_error_stack_func'");
         exit(1);
@@ -311,6 +311,7 @@ int picovoice_main(int argc, char *argv[]) {
 
     char **message_stack = NULL;
     int32_t message_stack_depth = 0;
+    pv_status_t error_status = PV_STATUS_RUNTIME_ERROR;
 
     fprintf(stdout, "%s\n", access_key);
     fprintf(stdout, "%s\n", library_path);
@@ -334,16 +335,19 @@ int picovoice_main(int argc, char *argv[]) {
             &picovoice);
     if (status != PV_STATUS_SUCCESS) {
         fprintf(stderr, "'pv_picovoice_init' failed with '%s'", pv_status_to_string_func(status));
-        pv_get_error_stack_func(&message_stack, &message_stack_depth);
+        error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
+
+        if (error_status != PV_STATUS_SUCCESS) {
+            fprintf(stderr, ".\nUnable to get Rhino error state with '%s'\n", pv_status_to_string_func(error_status));
+            exit(1);
+        }
 
         if (message_stack_depth > 0) {
             fprintf(stderr, ":\n");
             print_error_message(message_stack, message_stack_depth);
-            pv_free_error_stack_func(message_stack);
-        } else {
-            fprintf(stderr, ".\n");
-        }
+        } 
 
+        pv_free_error_stack_func(message_stack);
         exit(1);
     }
 
@@ -386,16 +390,19 @@ int picovoice_main(int argc, char *argv[]) {
         status = pv_picovoice_process_func(picovoice, pcm);
         if (status != PV_STATUS_SUCCESS) {
             fprintf(stderr, "'pv_picovoice_process' failed with '%s'", pv_status_to_string_func(status));
-            pv_get_error_stack_func(&message_stack, &message_stack_depth);
+            error_status = pv_get_error_stack_func(&message_stack, &message_stack_depth);
+
+            if (error_status != PV_STATUS_SUCCESS) {
+                fprintf(stderr, ".\nUnable to get Rhino error state with '%s'\n", pv_status_to_string_func(error_status));
+                exit(1);
+            }
 
             if (message_stack_depth > 0) {
                 fprintf(stderr, ":\n");
                 print_error_message(message_stack, message_stack_depth);
-                pv_free_error_stack_func(message_stack);
-            } else {
-                fprintf(stderr, ".\n");
-            }
+            } 
 
+            pv_free_error_stack_func(message_stack);
             exit(1);
         }
     }
