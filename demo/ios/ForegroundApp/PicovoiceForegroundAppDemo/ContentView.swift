@@ -40,7 +40,7 @@ struct ContentView: View {
     @State var contextInfo: String = ""
     @State var showInfo: Bool = false
 
-    func initPicovoice() {
+    func initPicovoice() -> Bool {
         let keywordPath = Bundle.main.url(
                 forResource: "\(wakeword)_ios",
                 withExtension: "ppn",
@@ -60,8 +60,8 @@ struct ContentView: View {
                         forResource: "rhino_params_\(language)",
                         withExtension: "pv",
                         subdirectory: "models")!.path
-
-        self.picovoiceManager = PicovoiceManager(
+        do {
+            self.picovoiceManager = try PicovoiceManager(
                 accessKey: self.ACCESS_KEY,
                 keywordPath: keywordPath,
                 onWakeWordDetection: {
@@ -93,15 +93,39 @@ struct ContentView: View {
                     }
                 },
                 porcupineModelPath: ppnModelPath,
-                rhinoModelPath: rhnModelPath)
+                rhinoModelPath: rhnModelPath,
+                processErrorCallback: { error in
+                    DispatchQueue.main.async {
+                        errorMessage = "\(error)"
+                    }
+                })
+            self.contextInfo = self.picovoiceManager.contextInfo
+            return true
+        } catch let error as PicovoiceInvalidArgumentError {
+            errorMessage = "\(error.localizedDescription)"
+        } catch is PicovoiceActivationError {
+            errorMessage = "ACCESS_KEY activation error"
+        } catch is PicovoiceActivationRefusedError {
+            errorMessage = "ACCESS_KEY activation refused"
+        } catch is PicovoiceActivationLimitError {
+            errorMessage = "ACCESS_KEY reached its limit"
+        } catch is PicovoiceActivationThrottledError {
+            errorMessage = "ACCESS_KEY is throttled"
+        } catch {
+            errorMessage = "\(error)"
+        }
+        return false
     }
 
     func startListening() {
+        if self.picovoiceManager == nil {
+            guard initPicovoice() else {
+                return
+            }
+        }
+        
         self.textTimer?.invalidate()
         self.result = ""
-        if self.picovoiceManager == nil {
-            self.initPicovoice()
-        }
 
         guard VoiceProcessor.hasRecordAudioPermission else {
             VoiceProcessor.requestRecordAudioPermission { isGranted in
@@ -119,32 +143,13 @@ struct ContentView: View {
             return
         }
 
-        if startPicovoice() {
-            self.buttonLabel = "STOP"
-            self.result = "Listening for '\(wakeword.uppercased())'..."
-            self.contextInfo = self.picovoiceManager.contextInfo
-        }
-    }
-
-    func startPicovoice() -> Bool {
         do {
             try self.picovoiceManager.start()
-            return true
-        } catch let error as PicovoiceInvalidArgumentError {
-            errorMessage =
-                    "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
-        } catch is PicovoiceActivationError {
-            errorMessage = "ACCESS_KEY activation error"
-        } catch is PicovoiceActivationRefusedError {
-            errorMessage = "ACCESS_KEY activation refused"
-        } catch is PicovoiceActivationLimitError {
-            errorMessage = "ACCESS_KEY reached its limit"
-        } catch is PicovoiceActivationThrottledError {
-            errorMessage = "ACCESS_KEY is throttled"
+            self.buttonLabel = "STOP"
+            self.result = "Listening for '\(wakeword.uppercased())'..."
         } catch {
             errorMessage = "\(error)"
         }
-        return false
     }
 
     func stopListening() {
@@ -174,7 +179,7 @@ struct ContentView: View {
                         .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
                         .font(.body)
                         .opacity(errorMessage.isEmpty ? 0 : 1)
-                        .cornerRadius(.infinity)
+                        .cornerRadius(10)
                 Spacer()
 
                 Button {
@@ -197,23 +202,12 @@ struct ContentView: View {
                     .background(Color.white)
                     .navigationBarItems(trailing: Button("Context Info") {
                         if self.picovoiceManager == nil {
-                            initPicovoice()
-                        }
-                        if self.picovoiceManager != nil {
-                            if self.buttonLabel == "START" {
-                                if self.startPicovoice() {
-                                    self.contextInfo = self.picovoiceManager.contextInfo
-                                    self.showInfo = true
-                                    do {
-                                        try self.picovoiceManager.stop()
-                                    } catch {
-                                        errorMessage = "\(error)"
-                                    }
-                                }
-                            } else {
-                                self.showInfo = true
+                            guard initPicovoice() else {
+                                return
                             }
                         }
+
+                        self.showInfo = true
                     })
         }
                 .sheet(isPresented: self.$showInfo) {
