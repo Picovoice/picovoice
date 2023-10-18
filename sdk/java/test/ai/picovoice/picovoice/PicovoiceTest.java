@@ -162,7 +162,9 @@ public class PicovoiceTest {
             public void invoke() {
                 try {
                     picovoice.reset();
-                } catch (PicovoiceException ignore) { }
+                } catch (PicovoiceException e) {
+                    // Failed to reset
+                }
             }
         };
 
