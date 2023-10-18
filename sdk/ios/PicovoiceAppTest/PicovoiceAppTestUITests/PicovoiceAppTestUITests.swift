@@ -385,7 +385,7 @@ class PicovoiceAppTestUITests: BaseTest {
         p.delete()
     }
 
-    func testReset() {
+    func testReset() throws {
         let bundle = Bundle(for: type(of: self))
         let keywordPath = bundle.path(
             forResource: "picovoice_ios",
@@ -407,12 +407,12 @@ class PicovoiceAppTestUITests: BaseTest {
             withExtension: "wav",
             subdirectory: "test_resources/audio_samples")!
 
-        processFile(p, fileURL)
+        try processFile(picovoice: p, testAudioURL: fileURL)
         XCTAssert(isWakeWordDetected == true)
         isWakeWordDetected = false
 
-        p.reset()
-        processFile(p, fileURL)
+        try p.reset()
+        try processFile(picovoice: p, testAudioURL: fileURL)
         XCTAssert(isWakeWordDetected == true)
 
         p.delete()
