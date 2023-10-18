@@ -136,7 +136,7 @@ struct ContentView: View {
                         .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
                         .font(.body)
                         .opacity(viewModel.errorMessage.isEmpty ? 0 : 1)
-                        .cornerRadius(.infinity)
+                        .cornerRadius(10)
                 Text("Listening...")
                         .font(.body)
                         .foregroundColor(activeBlue)

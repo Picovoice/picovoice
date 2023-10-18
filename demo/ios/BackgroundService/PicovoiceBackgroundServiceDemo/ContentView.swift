@@ -1,5 +1,5 @@
 //
-//  Copyright 2021 Picovoice Inc.
+//  Copyright 2021-2023 Picovoice Inc.
 //  You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 //  file accompanying this source.
 //  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
@@ -41,7 +41,7 @@ struct ContentView: View {
         }
 
         do {
-            self.picovoiceManager = PicovoiceManager(
+            self.picovoiceManager = try PicovoiceManager(
                     accessKey: self.ACCESS_KEY,
                     keywordPath: self.keywordPath!,
                     onWakeWordDetection: {
@@ -74,7 +74,7 @@ struct ContentView: View {
             Sound.category = .playAndRecord
             NotificationManager.shared.requestNotificationAuthorization()
         } catch let error as PicovoiceInvalidArgumentError {
-            errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+            errorMessage = "\(error.localizedDescription)"
         } catch is PicovoiceActivationError {
             errorMessage = "ACCESS_KEY activation error"
         } catch is PicovoiceActivationRefusedError {
@@ -107,7 +107,7 @@ struct ContentView: View {
                     .frame(minWidth: 0, maxWidth: UIScreen.main.bounds.width - 50)
                     .font(.body)
                     .opacity(errorMessage.isEmpty ? 0 : 1)
-                    .cornerRadius(.infinity)
+                    .cornerRadius(10)
 
             Spacer()
             Text("""
