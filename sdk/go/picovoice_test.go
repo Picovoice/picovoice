@@ -100,14 +100,19 @@ func loadTestData() []TestData {
 func TestReset(t *testing.T) {
 	var res *rhn.RhinoInference = nil
 
-	wakeWordCallback := func() { picovoice.Reset() }
+	wakeWordCallback := func() {
+		err := picovoice.Reset()
+		if err != nil {
+			t.Fatalf("%v", err)
+		}
+	}
 	inferenceCallback := func(inferenceResult rhn.RhinoInference) { res = &inferenceResult }
 
 	picovoice = NewPicovoice(
 		pvTestAccessKey,
 		getTestKeywordPath("en", "picovoice"),
 		wakeWordCallback,
-		getTestContextPath("en","coffee_maker"),
+		getTestContextPath("en", "coffee_maker"),
 		inferenceCallback)
 	initErr := picovoice.Init()
 	if initErr != nil {
