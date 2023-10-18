@@ -123,7 +123,7 @@ struct ContentView: View {
                 return
             }
         }
-        
+
         self.textTimer?.invalidate()
         self.result = ""
 
