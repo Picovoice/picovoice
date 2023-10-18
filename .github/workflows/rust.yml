@@ -56,11 +56,11 @@ jobs:
         override: true
 
     - name: Local Porcupine dependency
-      run: ./copy.sh
+      run: ./copy.sh && cargo build
       working-directory: resources/porcupine/binding/rust
 
     - name: Local Rhino dependency
-      run: ./copy.sh
+      run: ./copy.sh && cargo build
       working-directory: resources/rhino/binding/rust
 
     - name: Rust build
@@ -88,11 +88,11 @@ jobs:
         override: true
 
     - name: Local Porcupine dependency
-      run: ./copy.sh
+      run: ./copy.sh && cargo build
       working-directory: resources/porcupine/binding/rust
 
     - name: Local Rhino dependency
-      run: ./copy.sh
+      run: ./copy.sh && cargo build
       working-directory: resources/rhino/binding/rust
 
     - name: Rust build

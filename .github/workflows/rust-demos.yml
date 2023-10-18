@@ -53,6 +53,18 @@ jobs:
         toolchain: stable
         override: true
 
+    - name: Local Porcupine dependency
+      run: ./copy.sh && cargo build
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Local Rhino dependency
+      run: ./copy.sh && cargo build
+      working-directory: resources/rhino/binding/rust
+
+    - name: Local dependency
+      run: cargo build
+      working-directory: sdk/rust
+
     - name: Rust build micdemo
       run: cargo build --verbose
       working-directory: demo/rust/micdemo
@@ -97,6 +109,18 @@ jobs:
       with:
         toolchain: nightly
         override: true
+
+    - name: Local Porcupine dependency
+      run: ./copy.sh && cargo build
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Local Rhino dependency
+      run: ./copy.sh && cargo build
+      working-directory: resources/rhino/binding/rust
+
+    - name: Local dependency
+      run: cargo build
+      working-directory: sdk/rust
 
     - name: Rust build micdemo
       run: cargo build --verbose
