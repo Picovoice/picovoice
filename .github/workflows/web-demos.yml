@@ -48,6 +48,9 @@ jobs:
       run: yarn && yarn build
       working-directory: sdk/nodejs
 
+    - name: Pre-build dependencies
+      run: npm install yarn
+
     - name: Install dependencies
       run: yarn install
   
@@ -59,8 +62,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
 
     - name: Set up Node.js lts/*
       uses: actions/setup-node@v3
@@ -78,6 +79,9 @@ jobs:
     - name: Local dependency
       run: yarn && yarn build
       working-directory: sdk/nodejs
+
+    - name: Pre-build dependencies
+      run: npm install yarn
 
     - name: Install dependencies
       run: yarn install

@@ -23,13 +23,12 @@ on:
       - 'resources/rhino'
       - 'resources/.test/**'
 
-defaults:
-  run:
-    working-directory: sdk/web
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sdk/web
 
     strategy:
       matrix:
@@ -52,6 +51,9 @@ jobs:
       - name: Local Rhino dependency
         run: yarn && yarn build
         working-directory: resources/rhino/binding/nodejs
+
+      - name: Pre-build dependencies
+        run: npm install yarn
 
       - name: Install dependencies
         run: yarn install
