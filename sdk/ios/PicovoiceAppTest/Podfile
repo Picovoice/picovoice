@@ -3,10 +3,10 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '11.0'
 
 target 'PicovoiceAppTest' do
-    pod 'Picovoice-iOS', '~> 2.2.2'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec'
 end
 
 target 'PicovoiceAppTestUITests' do
-    pod 'Picovoice-iOS', '~> 2.2.2'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec'
 end
 
