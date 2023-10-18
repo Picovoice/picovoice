@@ -23,12 +23,13 @@ on:
       - 'resources/rhino'
       - 'resources/.test/**'
 
+defaults:
+  run:
+    working-directory: sdk/web
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: sdk/web
 
     strategy:
       matrix:
