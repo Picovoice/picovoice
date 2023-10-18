@@ -15,14 +15,14 @@ import Porcupine
 /// from microphone, processes it in real-time using Picovoice, and notifies the
 /// client upon detection of the wake word or completion of in voice command inference.
 public class PicovoiceManager {
-    private var picovoice: Picovoice
+    private var picovoice: Picovoice?
 
     private var frameListener: VoiceProcessorFrameListener?
     private var errorListener: VoiceProcessorErrorListener?
 
     public var contextInfo: String {
         get {
-            return self.picovoice.contextInfo
+            return (self.picovoice != nil) ? self.picovoice!.contextInfo : ""
         }
     }
 
@@ -51,6 +51,8 @@ public class PicovoiceManager {
     ///   inference regardless. Set to `false` only if operating in an environment with overlapping speech
     ///   (e.g. people talking in the background).
     ///   - processErrorCallback: A callback that is invoked if there is an error while processing audio.
+    ///
+    /// - Throws: PicovoiceError if unable to initialize
     public init(
             accessKey: String,
             keywordPath: String,
@@ -63,7 +65,7 @@ public class PicovoiceManager {
             rhinoSensitivity: Float32 = 0.5,
             endpointDurationSec: Float32 = 1.0,
             requireEndpoint: Bool = true,
-            processErrorCallback: ((Error) -> Void)? = nil) {
+            processErrorCallback: ((Error) -> Void)? = nil) throws {
 
         picovoice = try Picovoice(
                 accessKey: self.accessKey,
@@ -80,11 +82,11 @@ public class PicovoiceManager {
 
         self.errorListener = VoiceProcessorErrorListener({ error in
             guard let callback = processErrorCallback else {
-                print("\(error.errorDescription)")
+                print("\(error.localizedDescription)")
                 return
             }
 
-            callback(PicovoiceError(error.errorDescription))
+            callback(PicovoiceError(error.localizedDescription))
         })
 
         self.frameListener = VoiceProcessorFrameListener({ frame in
@@ -96,7 +98,7 @@ public class PicovoiceManager {
                 try picovoice.process(pcm: frame)
             } catch {
                 guard let callback = processErrorCallback else {
-                    print("\(error)")
+                    print("\(error.localizedDescription)")
                     return
                 }
 
@@ -106,13 +108,23 @@ public class PicovoiceManager {
     }
 
     deinit {
-        self.picovoice.delete()
+        delete()
+    }
+
+    /// Releases native resources that were allocated to PicovoiceManager
+    public func delete() {
+        self.picovoice?.delete()
+        self.picovoice = nil
     }
 
     ///  Starts recording audio from the microphone and Picovoice processing loop.
     ///
     /// - Throws: PicovoiceError if unable to start recording
     public func start() throws {
+        if picovoice == nil {
+            throw PicovoiceInvalidStateError("Cannot start - resources have been released.")
+        }
+
         VoiceProcessor.instance.addErrorListener(errorListener!)
         VoiceProcessor.instance.addFrameListener(frameListener!)
 
@@ -130,6 +142,10 @@ public class PicovoiceManager {
     ///
     /// - Throws: PicovoiceError if unable to stop recording
     public func stop() throws {
+        if picovoice == nil {
+            throw PicovoiceInvalidStateError("Cannot stop - resources have been released.")
+        }
+
         VoiceProcessor.instance.removeErrorListener(errorListener!)
         VoiceProcessor.instance.removeFrameListener(frameListener!)
 

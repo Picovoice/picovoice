@@ -25,7 +25,7 @@ public class Picovoice {
     public static let sampleRate = Porcupine.sampleRate
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
-    public static let picovoiceVersion = "2.2.0"
+    public static let picovoiceVersion = "3.0.0"
     public var contextInfo: String = ""
 
     private var isWakeWordDetected: Bool = false
@@ -142,8 +142,8 @@ public class Picovoice {
     }
 
     /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio
-    /// or when process was stopped while processing a stream of audio.
-    /// 
+    /// or when Picovoice was stopped while processing a stream of audio.
+    ///
     /// - Throws: PicovoiceError
     public func reset() throws {
         if porcupine == nil || rhino == nil {

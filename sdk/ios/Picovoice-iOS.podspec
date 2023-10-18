@@ -18,13 +18,13 @@ Pod::Spec.new do |s|
     DESC
     s.homepage = 'https://github.com/Picovoice/picovoice/tree/master/sdk/ios'
     s.author = { 'Picovoice' => 'hello@picovoice.ai' }
-    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :tag => "Picovoice-iOS-v2.2.2" }
+    s.source = { :git => "https://github.com/Picovoice/picovoice.git", :tag => "Picovoice-iOS-v3.0.0" }
     s.ios.deployment_target = '11.0'
     s.swift_version = '5.0'
     s.source_files = 'sdk/ios/*.{swift}'
     s.exclude_files = 'sdk/ios/PicovoiceAppTest/**'
 
-    s.dependency 'Porcupine-iOS', '~> 2.2.1'
-    s.dependency 'Rhino-iOS', '~> 2.2.2'
+    s.dependency 'Porcupine-iOS', '~> 3.0.0'
+    s.dependency 'Rhino-iOS', '~> 3.0.0'
     s.dependency 'ios-voice-processor', '~> 1.1.0'
   end
