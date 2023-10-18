@@ -218,7 +218,7 @@ public class Picovoice {
         try {
             this.isWakeWordDetected = false;
             this.rhino.reset();
-        } catch (PorcupineException | RhinoException e) {
+        } catch (RhinoException e) {
             throw mapToPicovoiceException(e);
         }
     }

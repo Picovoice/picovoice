@@ -156,11 +156,13 @@ public class PicovoiceTest {
     }
 
     @Test
-    void testReset() throws PicovoiceException {
+    void testReset() throws PicovoiceException, IOException, UnsupportedAudioFileException {
         PicovoiceWakeWordCallback callback = new PicovoiceWakeWordCallback() {
             @Override
             public void invoke() {
-                picovoice.reset()
+                try {
+                    picovoice.reset();
+                } catch (PicovoiceException e) { }
             }
         };
 
@@ -174,10 +176,10 @@ public class PicovoiceTest {
 
         inferenceResult = null;
         processFileHelper("picovoice-coffee.wav");
-        assertTrue(inferenceResult = null);
+        assertTrue(inferenceResult == null);
     }
 
-    void processFileHelper(String audioFileName) {
+    void processFileHelper(String audioFileName) throws PicovoiceException, IOException, UnsupportedAudioFileException {
         int frameLen = picovoice.getFrameLength();
         File testAudioPath = new File(getTestAudioFilePath(audioFileName));
 

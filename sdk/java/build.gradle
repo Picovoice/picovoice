@@ -18,6 +18,12 @@ java {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1265/'
+    }
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1268/'
+    }
 }
 
 sourceSets {
@@ -40,8 +46,8 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:2.2.1'
-    implementation 'ai.picovoice:rhino-java:2.2.1'
+    implementation 'ai.picovoice:porcupine-java:3.0.0'
+    implementation 'ai.picovoice:rhino-java:3.0.0'
     testImplementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
