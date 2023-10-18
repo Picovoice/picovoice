@@ -66,7 +66,7 @@ public class Picovoice {
     }
 
     /**
-     * Releases resources acquired.
+     * Releases resources acquired by Picovoice.
      */
     public void delete() {
         if (porcupine != null) {

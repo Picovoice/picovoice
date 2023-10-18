@@ -77,24 +77,36 @@ public class PicovoiceManager {
     }
 
     /**
-     * Starts recording audio from teh microphone and processes it using ${@link Picovoice}.
+     * Releases resources acquired by Picovoice.
+     */
+    public void delete() {
+        if (picovoice != null) {
+            picovoice.delete();
+            picovoice = null;
+        }
+    }
+
+    /**
+     * Starts recording audio from the microphone and processes it using ${@link Picovoice}.
      *
-     * @throws PicovoiceException if there is an error with initialization of Picovoice.
+     * @throws PicovoiceException if an error is encountered while attempting to start.
      */
     public void start() throws PicovoiceException {
-        if (isListening) {
-            return;
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot start - resources have been released");
         }
 
-        this.voiceProcessor.addFrameListener(vpFrameListener);
-        this.voiceProcessor.addErrorListener(vpErrorListener);
+        if (!isListening) {
+            this.voiceProcessor.addFrameListener(vpFrameListener);
+            this.voiceProcessor.addErrorListener(vpErrorListener);
 
-        try {
-            voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
-        } catch (VoiceProcessorException e) {
-            throw new PicovoiceException(e);
+            try {
+                voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
+            } catch (VoiceProcessorException e) {
+                throw new PicovoiceException(e);
+            }
+            isListening = true;
         }
-        isListening = true;
     }
 
     /**
@@ -103,17 +115,23 @@ public class PicovoiceManager {
      * @throws PicovoiceException if an error is encountered while attempting to stop.
      */
     public void stop() throws PicovoiceException {
-        voiceProcessor.removeErrorListener(vpErrorListener);
-        voiceProcessor.removeFrameListener(vpFrameListener);
-        if (voiceProcessor.getNumFrameListeners() == 0) {
-            try {
-                voiceProcessor.stop();
-            } catch (VoiceProcessorException e) {
-                throw new PicovoiceException(e);
-            }
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot stop - resources have been released");
         }
 
-        isListening = false;
+        if (isListening) {
+            voiceProcessor.removeErrorListener(vpErrorListener);
+            voiceProcessor.removeFrameListener(vpFrameListener);
+            if (voiceProcessor.getNumFrameListeners() == 0) {
+                try {
+                    voiceProcessor.stop();
+                } catch (VoiceProcessorException e) {
+                    throw new PicovoiceException(e);
+                }
+            }
+            isListening = false;
+        }
+
         this.picovoice.reset();
     }
 
@@ -132,7 +150,7 @@ public class PicovoiceManager {
      * @return Version.
      */
     public String getVersion() {
-        return this.picovoice.getVersion();
+        return picovoice != null ? picovoice.getVersion() : "";
     }
 
     /**
