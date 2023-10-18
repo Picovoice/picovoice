@@ -9,9 +9,7 @@
 // specific language governing permissions and limitations under the License.
 //
 
-import { PvError } from "@picovoice/web-utils";
-
-import { PicovoiceErrors } from "@picovoice/porcupine-web";
+import { PorcupineErrors } from "@picovoice/porcupine-web";
 import { RhinoErrors } from "@picovoice/rhino-web";
 
 import { PvStatus } from "./types";
@@ -156,28 +154,28 @@ export function pvStatusToException(
   }
 }
 
-export function mapToPicovoiceError(e: PicovoiceErrors.PicovoiceError | RhinoErrors.RhinoError) {
-  if (e instanceof PicovoiceErrors.PicovoiceOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
+export function mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
+  if (e instanceof PorcupineErrors.PorcupineOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
     return new PicovoiceOutOfMemoryError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceIOError || e instanceof RhinoErrors.RhinoIOError) {
+  } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
     return new PicovoiceIOError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
+  } else if (e instanceof PorcupineErrors.PorcupineInvalidArgumentError || e instanceof RhinoErrors.RhinoInvalidArgumentError) {
     return new PicovoiceInvalidArgumentError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
+  } else if (e instanceof PorcupineErrors.PorcupineStopIterationError || e instanceof RhinoErrors.RhinoStopIterationError) {
     return new PicovoiceStopIterationError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceKeyError || e instanceof RhinoErrors.RhinoKeyError) {
+  } else if (e instanceof PorcupineErrors.PorcupineKeyError || e instanceof RhinoErrors.RhinoKeyError) {
     return new PicovoiceKeyError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
+  } else if (e instanceof PorcupineErrors.PorcupineInvalidStateError || e instanceof RhinoErrors.RhinoInvalidStateError) {
     return new PicovoiceInvalidStateError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
+  } else if (e instanceof PorcupineErrors.PorcupineRuntimeError || e instanceof RhinoErrors.RhinoRuntimeError) {
     return new PicovoiceRuntimeError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceActivationError || e instanceof RhinoErrors.RhinoActivationError) {
+  } else if (e instanceof PorcupineErrors.PorcupineActivationError || e instanceof RhinoErrors.RhinoActivationError) {
     return new PicovoiceActivationError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceActivationLimitReachedError || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
+  } else if (e instanceof PorcupineErrors.PorcupineActivationLimitReachedError || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
     return new PicovoiceActivationLimitReachedError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
+  } else if (e instanceof PorcupineErrors.PorcupineActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
     return new PicovoiceActivationThrottledError(e.message);
-  } else if (e instanceof PicovoiceErrors.PicovoiceActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
+  } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
     return new PicovoiceActivationRefusedError(e.message);
   } else {
     return new PicovoiceError(PvStatus.RUNTIME_ERROR, e.message);

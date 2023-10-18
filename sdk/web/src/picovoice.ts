@@ -17,6 +17,7 @@ import {
   PorcupineDetection,
   PorcupineKeyword,
   PorcupineModel,
+  PorcupineErrors,
 } from '@picovoice/porcupine-web';
 
 import {
@@ -25,6 +26,7 @@ import {
   RhinoContext,
   RhinoInference,
   RhinoModel,
+  RhinoErrors,
 } from '@picovoice/rhino-web';
 
 import { loadPicovoiceArgs } from './utils';
@@ -159,6 +161,10 @@ export class Picovoice {
       }
     };
 
+    const errorCallback = (!processErrorCallback) ? undefined : (error: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) => {
+      processErrorCallback(mapToPicovoiceError(error));
+    }
+
     try {
       picovoice._porcupine = await Porcupine._init(
         accessKey,
@@ -167,7 +173,7 @@ export class Picovoice {
         porcupineCallback,
         new Float32Array([porcupineSensitivity]),
         porcupineModelPath,
-        { processErrorCallback }
+        { processErrorCallback: errorCallback }
       );
   
       picovoice._rhino = await Rhino._init(
@@ -176,10 +182,10 @@ export class Picovoice {
         rhinoSensitivity,
         rhinoCallback,
         rhinoModelPath,
-        { processErrorCallback, endpointDurationSec, requireEndpoint }
+        { processErrorCallback: errorCallback, endpointDurationSec, requireEndpoint }
       );
-    } catch (error) {
-      mapToPicovoiceError(error);
+    } catch (error: any) {
+      throw mapToPicovoiceError(error);
     }
 
     return picovoice;
@@ -207,7 +213,7 @@ export class Picovoice {
       } else {
         await this._rhino.process(pcm);
       }
-    } catch (error) {
+    } catch (error: any) {
       mapToPicovoiceError(error);
     }
   }
@@ -227,7 +233,7 @@ export class Picovoice {
         this._isWakeWordDetected = false;
         await this._rhino.reset();
       }
-    } catch (error) {
+    } catch (error: any) {
       mapToPicovoiceError(error);
     }
   }
