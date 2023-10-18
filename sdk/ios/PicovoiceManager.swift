@@ -20,6 +20,8 @@ public class PicovoiceManager {
     private var frameListener: VoiceProcessorFrameListener?
     private var errorListener: VoiceProcessorErrorListener?
 
+    private var isListening: Bool = false
+
     public var contextInfo: String {
         get {
             return (self.picovoice != nil) ? self.picovoice!.contextInfo : ""
@@ -68,17 +70,17 @@ public class PicovoiceManager {
             processErrorCallback: ((Error) -> Void)? = nil) throws {
 
         picovoice = try Picovoice(
-                accessKey: self.accessKey,
-                keywordPath: self.keywordPath,
-                onWakeWordDetection: self.onWakeWordDetection,
-                contextPath: self.contextPath,
-                onInference: self.onInference,
-                porcupineModelPath: self.porcupineModelPath,
-                porcupineSensitivity: self.porcupineSensitivity,
-                rhinoModelPath: self.rhinoModelPath,
-                rhinoSensitivity: self.rhinoSensitivity,
-                endpointDurationSec: self.endpointDurationSec,
-                requireEndpoint: self.requireEndpoint)
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: onWakeWordDetection,
+                contextPath: contextPath,
+                onInference: onInference,
+                porcupineModelPath: porcupineModelPath,
+                porcupineSensitivity: porcupineSensitivity,
+                rhinoModelPath: rhinoModelPath,
+                rhinoSensitivity: rhinoSensitivity,
+                endpointDurationSec: endpointDurationSec,
+                requireEndpoint: requireEndpoint)
 
         self.errorListener = VoiceProcessorErrorListener({ error in
             guard let callback = processErrorCallback else {
@@ -121,20 +123,23 @@ public class PicovoiceManager {
     ///
     /// - Throws: PicovoiceError if unable to start recording
     public func start() throws {
-        if picovoice == nil {
-            throw PicovoiceInvalidStateError("Cannot start - resources have been released.")
+        guard self.picovoice != nil else {
+            throw PicovoiceInvalidStateError("Unable to start - resources have been released.")
         }
 
-        VoiceProcessor.instance.addErrorListener(errorListener!)
-        VoiceProcessor.instance.addFrameListener(frameListener!)
+        if !isListening {
+            VoiceProcessor.instance.addErrorListener(errorListener!)
+            VoiceProcessor.instance.addFrameListener(frameListener!)
 
-        do {
-            try VoiceProcessor.instance.start(
-                    frameLength: Porcupine.frameLength,
-                    sampleRate: Porcupine.sampleRate
-            )
-        } catch {
-            throw PicovoiceError(error.localizedDescription)
+            do {
+                try VoiceProcessor.instance.start(
+                        frameLength: Porcupine.frameLength,
+                        sampleRate: Porcupine.sampleRate
+                )
+                isListening = true
+            } catch {
+                throw PicovoiceError(error.localizedDescription)
+            }
         }
     }
 
@@ -142,21 +147,24 @@ public class PicovoiceManager {
     ///
     /// - Throws: PicovoiceError if unable to stop recording
     public func stop() throws {
-        if picovoice == nil {
-            throw PicovoiceInvalidStateError("Cannot stop - resources have been released.")
+        guard let picovoice = self.picovoice else {
+            throw PicovoiceInvalidStateError("Unable to stop - resources have been released.")
         }
 
-        VoiceProcessor.instance.removeErrorListener(errorListener!)
-        VoiceProcessor.instance.removeFrameListener(frameListener!)
+        if isListening {
+            VoiceProcessor.instance.removeErrorListener(errorListener!)
+            VoiceProcessor.instance.removeFrameListener(frameListener!)
 
-        if VoiceProcessor.instance.numFrameListeners == 0 {
-            do {
-                try VoiceProcessor.instance.stop()
-            } catch {
-                throw PicovoiceError(error.localizedDescription)
+            if VoiceProcessor.instance.numFrameListeners == 0 {
+                do {
+                    try VoiceProcessor.instance.stop()
+                } catch {
+                    throw PicovoiceError(error.localizedDescription)
+                }
             }
+            isListening = false
         }
 
-        self.picovoice.reset()
+        try picovoice.reset()
     }
 }

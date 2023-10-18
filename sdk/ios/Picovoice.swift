@@ -98,15 +98,11 @@ public class Picovoice {
 
     /// Releases native resources that were allocated to Picovoice
     public func delete() {
-        if porcupine != nil {
-            porcupine!.delete()
-            porcupine = nil
-        }
+        porcupine?.delete()
+        porcupine = nil
 
-        if rhino != nil {
-            rhino!.delete()
-            rhino = nil
-        }
+        rhino?.delete()
+        rhino = nil
     }
 
     /// Process a frame of audio with the platform
@@ -120,19 +116,19 @@ public class Picovoice {
                 "Invalid frame length - expected \(Picovoice.frameLength), received \(pcm.count)")
         }
 
-        if porcupine == nil || rhino == nil {
+        guard let porcupine = self.porcupine, let rhino = self.rhino else {
             throw PicovoiceInvalidStateError("Cannot process frame - resources have been released.")
         }
 
         do {
             if !isWakeWordDetected {
-                isWakeWordDetected = try porcupine!.process(pcm: pcm) == 0
+                isWakeWordDetected = try porcupine.process(pcm: pcm) == 0
                 if isWakeWordDetected {
                     self.onWakeWordDetection()
                 }
             } else {
-                if try rhino!.process(pcm: pcm) {
-                    self.onInference(try rhino!.getInference())
+                if try rhino.process(pcm: pcm) {
+                    self.onInference(try rhino.getInference())
                     isWakeWordDetected = false
                 }
             }
@@ -146,13 +142,13 @@ public class Picovoice {
     ///
     /// - Throws: PicovoiceError
     public func reset() throws {
-        if porcupine == nil || rhino == nil {
+        guard porcupine != nil, let rhino = self.rhino else {
             throw PicovoiceInvalidStateError("Cannot reset - resources have been released.")
         }
 
         do {
             isWakeWordDetected = false
-            rhino.reset()
+            try rhino.reset()
         } catch {
             throw mapToPicovoiceError(error)
         }
