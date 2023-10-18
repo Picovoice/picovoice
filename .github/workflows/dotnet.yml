@@ -116,7 +116,7 @@ jobs:
 
     # *********** REMOVE AFTER RELEASE **********************
     - name: mkdir NuGet directory
-      run: mkdir -p ${{ matrix.nuget-path }}
+      run: mkdir -p ~/.nuget/NuGet/local-nuget
 
     - name: Add local NuGet source
       run: dotnet nuget add source local-nuget
