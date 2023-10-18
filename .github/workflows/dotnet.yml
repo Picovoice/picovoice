@@ -117,6 +117,7 @@ jobs:
     # *********** REMOVE AFTER RELEASE **********************
     - name: mkdir NuGet directory
       run: mkdir -p ~/.nuget/NuGet/local-nuget
+      continue-on-error: true
 
     - name: Add local NuGet source
       run: dotnet nuget add source local-nuget
