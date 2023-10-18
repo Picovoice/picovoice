@@ -1,5 +1,5 @@
 ﻿//
-// Copyright 2021 Picovoice Inc.
+// Copyright 2021-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -39,7 +39,7 @@ namespace Pv.Unity
         /// Gets the version number of the Picovoice platform
         /// </summary>
         /// <returns>Version of Picovoice</returns>
-        public string Version => "2.0.0";
+        public string Version => "3.0.0";
 
         /// <summary>
         /// Get the version of the Porcupine library
@@ -192,23 +192,51 @@ namespace Pv.Unity
                 throw new PicovoiceInvalidStateException("Cannot process frame - resources have been released.");
             }
 
-            if (!_isWakeWordDetected)
+            try
             {
-                int keywordIndex = _porcupine.Process(pcm);
-                if (keywordIndex >= 0)
+                if (!_isWakeWordDetected)
                 {
-                    _isWakeWordDetected = true;
-                    _wakeWordCallback.Invoke();
+                    int keywordIndex = _porcupine.Process(pcm);
+                    if (keywordIndex >= 0)
+                    {
+                        _isWakeWordDetected = true;
+                        _wakeWordCallback.Invoke();
+                    }
+                }
+                else
+                {
+                    bool isFinalized = _rhino.Process(pcm);
+                    if (isFinalized)
+                    {
+                        _isWakeWordDetected = false;
+                        _inferenceCallback.Invoke(_rhino.GetInference());
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                bool isFinalized = _rhino.Process(pcm);
-                if (isFinalized)
-                {
-                    _isWakeWordDetected = false;
-                    _inferenceCallback.Invoke(_rhino.GetInference());
-                }
+                throw MapToPicovoiceException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio 
+        /// or when process was stopped while processing a stream of audio.
+        /// </summary>
+        public void Reset() {
+            if (_porcupine == null || _rhino == null)
+            {
+                throw new PicovoiceInvalidStateException("Cannot reset - resources have been released.");
+            }
+
+            try 
+            {
+                _isWakeWordDetected = false;
+                _rhino.Reset();
+            }
+            catch (Exception ex)
+            {
+                throw MapToPicovoiceException(ex);
             }
         }
 

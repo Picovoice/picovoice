@@ -22,18 +22,6 @@ namespace Pv.Unity
         private Picovoice _picovoice;
         private Action<PicovoiceException> _processErrorCallback;
 
-        private readonly string _accessKey;
-        private readonly string _keywordPath;
-        private readonly Action _wakeWordCallback;
-        private readonly string _contextPath;
-        private readonly Action<Inference> _inferenceCallback;
-        private readonly string _porcupineModelPath;
-        private readonly float _porcupineSensitivity = 0.5f;
-        private readonly string _rhinoModelPath;
-        private readonly float _rhinoSensitivity = 0.5f;
-        private readonly float _endpointDurationSec = 1.0f;
-        private readonly bool _requireEndpoint = true;
-
 
         /// <param name="accessKey">AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).</param>
         /// <param name="keywordPath">Absolute path to Porcupine's keyword model file.</param>
@@ -88,18 +76,21 @@ namespace Pv.Unity
             bool requireEndpoint = false,
             Action<PicovoiceException> processErrorCallback = null)
         {
+            Picovoice picovoice = Picovoice.Create(
+                accessKey,
+                keywordPath,
+                wakeWordCallback,
+                contextPath,
+                inferenceCallback,
+                porcupineModelPath,
+                porcupineSensitivity,
+                rhinoModelPath,
+                rhinoSensitivity,
+                endpointDurationSec,
+                requireEndpoint);
+
             return new PicovoiceManager(
-                accessKey: accessKey,
-                keywordPath: keywordPath,
-                wakeWordCallback: wakeWordCallback,
-                contextPath: contextPath,
-                inferenceCallback: inferenceCallback,
-                porcupineModelPath: porcupineModelPath,
-                porcupineSensitivity: porcupineSensitivity,
-                rhinoModelPath: rhinoModelPath,
-                rhinoSensitivity: rhinoSensitivity,
-                endpointDurationSec: endpointDurationSec,
-                requireEndpoint: requireEndpoint,
+                picovoice: picovoice,
                 processErrorCallback: processErrorCallback);
         }
 
@@ -108,30 +99,10 @@ namespace Pv.Unity
         /// PicovoiceManager constructor
         /// </summary>
         private PicovoiceManager(
-            string accessKey,
-            string keywordPath,
-            Action wakeWordCallback,
-            string contextPath,
-            Action<Inference> inferenceCallback,
-            string porcupineModelPath,
-            float porcupineSensitivity,
-            string rhinoModelPath,
-            float rhinoSensitivity,
-            float endpointDurationSec,
-            bool requireEndpoint,
+            Picovoice picovoice,
             Action<PicovoiceException> processErrorCallback)
         {
-            _accessKey = accessKey;
-            _keywordPath = keywordPath;
-            _wakeWordCallback = wakeWordCallback;
-            _contextPath = contextPath;
-            _inferenceCallback = inferenceCallback;
-            _porcupineModelPath = porcupineModelPath;
-            _porcupineSensitivity = porcupineSensitivity;
-            _rhinoModelPath = rhinoModelPath;
-            _rhinoSensitivity = rhinoSensitivity;
-            _endpointDurationSec = endpointDurationSec;
-            _requireEndpoint = requireEndpoint;
+            _picovoice = picovoice;
             _processErrorCallback = processErrorCallback;
         }
 
@@ -175,21 +146,10 @@ namespace Pv.Unity
         /// </summary>
         public void Start()
         {
-            if (_picovoice != null)
-                return;
-
-            _picovoice = Picovoice.Create(
-                _accessKey,
-                _keywordPath,
-                _wakeWordCallback,
-                _contextPath,
-                _inferenceCallback,
-                _porcupineModelPath,
-                _porcupineSensitivity,
-                _rhinoModelPath,
-                _rhinoSensitivity,
-                _endpointDurationSec,
-                _requireEndpoint);
+            if (_picovoice == null)
+            {
+                throw new PicovoiceInvalidStateException("Cannot start - resources have been released.");
+            }
 
             VoiceProcessor.Instance.AddFrameListener(OnFrameCaptured);
             VoiceProcessor.Instance.StartRecording(_picovoice.FrameLength, _picovoice.SampleRate);
@@ -200,14 +160,41 @@ namespace Pv.Unity
         /// </summary>
         public void Stop()
         {
+            if (_picovoice == null)
+            {
+                throw new PicovoiceInvalidStateException("Cannot stop - resources have been released.");
+            }
+
             VoiceProcessor.Instance.RemoveFrameListener(OnFrameCaptured);
             if (VoiceProcessor.Instance.NumFrameListeners == 0)
             {
                 VoiceProcessor.Instance.StopRecording();
             }
+        }
 
-            _picovoice?.Dispose();
-            _picovoice = null;
+        /// <summary>
+        /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio 
+        /// or when process was stopped while processing a stream of audio.
+        /// </summary>
+        public void Reset() {
+            if (_picovoice == null)
+            {
+                throw new PicovoiceInvalidStateException("Cannot reset - resources have been released.");
+            }
+
+            _picovoice.Reset();
+        }
+
+        /// <summary>
+        /// Frees memory that was allocated for Picovoice
+        /// </summary>
+        public void Dispose()
+        {
+            if (_picovoice != null)
+            {
+                _picovoice.Dispose();
+                _picovoice = null;
+            }
         }
     }
 }

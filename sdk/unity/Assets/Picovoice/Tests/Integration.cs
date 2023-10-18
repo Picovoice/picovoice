@@ -257,5 +257,32 @@ namespace Tests
 
             picovoice.Dispose();
         }
+
+        [Test]
+        public void TestReset()
+        {
+            Inference inference = null;
+
+            void wakeWordCallback()
+            {
+                picovoice.Reset();
+            }
+
+            void inferenceCallback(Inference newInference)
+            {
+                inference = newInference;
+            }
+
+            picovoice = Picovoice.Create(
+                ACCESS_KEY,
+                GetKeywordPath("en", "porcupine"),
+                wakeWordCallback,
+                GetContextPath("en", "coffee_maker"),
+                inferenceCallback,
+            );
+
+            RunAudioFile("picovoice-coffee.wav");
+            Assert.IsTrue(inference == null);
+        }
     }
 }
