@@ -240,7 +240,7 @@ where
         let frame_length = porcupine.frame_length();
 
         let version = format!(
-            "2.1.1 (Porcupine v{}) (Rhino v{})",
+            "3.0.0 (Porcupine v{}) (Rhino v{})",
             porcupine.version(),
             rhino.version()
         );
