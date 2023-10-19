@@ -154,7 +154,7 @@ class PicovoiceManager {
   Future<void> stop() async {
     if (_picovoice == null) {
       throw PicovoiceInvalidStateException(
-          "Unable to start - resources have been released.");
+          "Unable to stop - resources have been released.");
     }
 
     if (_isListening) {
@@ -176,7 +176,18 @@ class PicovoiceManager {
     await _picovoice?.reset();
   }
 
-  /// Releases native resources that were allocated to PicovoiceManager
+  /// Resets the internal state of PicovoiceManager. It can be called to
+  /// return to the wake word detection state before an inference has completed.
+  Future<void> reset() async {
+    if (_picovoice == null) {
+      throw PicovoiceInvalidStateException(
+          "Unable to reset - resources have been released.");
+    }
+
+    await _picovoice?.reset();
+  }
+
+  /// Releases native resources that were allocated to PicovoiceManager.
   Future<void> delete() async {
     await _picovoice?.delete();
     _picovoice = null;
