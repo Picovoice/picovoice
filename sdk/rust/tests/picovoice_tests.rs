@@ -205,7 +205,7 @@ mod tests {
             }
         };
 
-        let inference_callback = || {
+        let inference_callback = |_| {
             if let Ok(mut is_inference) = is_inference.lock() {
                 *is_inference = true;
             }
