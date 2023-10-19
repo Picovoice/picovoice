@@ -37,11 +37,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Local Porcupine dependency
-      run: yarn && yarn build
+      run: yarn && yarn copywasm && yarn copyppn && yarn build
       working-directory: resources/porcupine/binding/web
 
     - name: Local Rhino dependency
-      run: yarn && yarn build
+      run: yarn && yarn copywasm && yarn build
       working-directory: resources/rhino/binding/web
 
     - name: Local dependency
@@ -71,12 +71,12 @@ jobs:
         node-version: lts/*
 
     - name: Local Porcupine dependency
-      run: yarn && yarn build
-      working-directory: resources/porcupine/binding/nodejs
+      run: yarn && yarn copywasm && yarn copyppn && yarn build
+      working-directory: resources/porcupine/binding/web
 
     - name: Local Rhino dependency
-      run: yarn && yarn build
-      working-directory: resources/rhino/binding/nodejs
+      run: yarn && yarn copywasm && yarn build
+      working-directory: resources/rhino/binding/web
 
     - name: Local dependency
       run: yarn && yarn build

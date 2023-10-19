@@ -29,6 +29,14 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: Local Porcupine dependency
+        run: yarn && yarn copywasm && yarn copyppn && yarn build
+        working-directory: resources/porcupine/binding/web
+
+      - name: Local Rhino dependency
+        run: yarn && yarn copywasm && yarn build
+        working-directory: resources/rhino/binding/web
+
       - name: Pre-build dependencies
         run: npm install yarn
 
