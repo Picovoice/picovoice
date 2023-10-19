@@ -38,11 +38,11 @@ jobs:
 
     - name: Local Porcupine dependency
       run: yarn && yarn build
-      working-directory: resources/porcupine/binding/nodejs
+      working-directory: resources/porcupine/binding/web
 
     - name: Local Rhino dependency
       run: yarn && yarn build
-      working-directory: resources/rhino/binding/nodejs
+      working-directory: resources/rhino/binding/web
 
     - name: Local dependency
       run: yarn && yarn build
