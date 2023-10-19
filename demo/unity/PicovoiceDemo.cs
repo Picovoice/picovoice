@@ -48,7 +48,34 @@ public class PicovoiceDemo : MonoBehaviour
         _errorMessage = gameObject.transform.Find("ErrorMessage").GetComponent<Text>();
         _locationStates = gameObject.GetComponentsInChildren<Image>();
 
-        _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, processErrorCallback: ErrorCallback);
+        try
+        {
+            _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, processErrorCallback: ErrorCallback);
+        }
+        catch (PicovoiceInvalidArgumentException ex)
+        {
+            SetError(ex.Message);
+        }
+        catch (PicovoiceActivationException)
+        {
+            SetError("AccessKey activation error");
+        }
+        catch (PicovoiceActivationLimitException)
+        {
+            SetError("AccessKey reached its device limit");
+        }
+        catch (PicovoiceActivationRefusedException)
+        {
+            SetError("AccessKey refused");
+        }
+        catch (PicovoiceActivationThrottledException)
+        {
+            SetError("AccessKey has been throttled");
+        }
+        catch (PicovoiceException ex)
+        {
+            SetError("PicovoiceManager was unable to start: " + ex.Message);
+        }
     }
 
 
@@ -162,39 +189,11 @@ public class PicovoiceDemo : MonoBehaviour
         {
             if (_picovoiceManager.IsAudioDeviceAvailable())
             {
-                try
-                {
-                    _picovoiceManager.Start();
-                }
-                catch (PicovoiceInvalidArgumentException ex)
-                {
-                    SetError($"{ex.Message}\nMake sure your access key '{ACCESS_KEY}' is a valid access key.");
-                }
-                catch (PicovoiceActivationException)
-                {
-                    SetError("AccessKey activation error");
-                }
-                catch (PicovoiceActivationLimitException)
-                {
-                    SetError("AccessKey reached its device limit");
-                }
-                catch (PicovoiceActivationRefusedException)
-                {
-                    SetError("AccessKey refused");
-                }
-                catch (PicovoiceActivationThrottledException)
-                {
-                    SetError("AccessKey has been throttled");
-                }
-                catch (PicovoiceException ex)
-                {
-                    SetError("PicovoiceManager was unable to start: " + ex.Message);
-                }
+                _picovoiceManager.Start();
             }
             else
                 SetError("No audio recording device available!");
         }
-
     }
 
     void OnApplicationQuit()

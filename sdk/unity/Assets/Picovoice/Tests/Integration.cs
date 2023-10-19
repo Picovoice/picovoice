@@ -278,7 +278,7 @@ namespace Tests
                 GetKeywordPath("en", "porcupine"),
                 wakeWordCallback,
                 GetContextPath("en", "coffee_maker"),
-                inferenceCallback,
+                inferenceCallback
             );
 
             RunAudioFile("picovoice-coffee.wav");

@@ -223,13 +223,14 @@ namespace Pv.Unity
         /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio 
         /// or when process was stopped while processing a stream of audio.
         /// </summary>
-        public void Reset() {
+        public void Reset()
+        {
             if (_porcupine == null || _rhino == null)
             {
                 throw new PicovoiceInvalidStateException("Cannot reset - resources have been released.");
             }
 
-            try 
+            try
             {
                 _isWakeWordDetected = false;
                 _rhino.Reset();
