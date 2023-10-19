@@ -112,6 +112,12 @@ namespace Pv.Unity
         /// <param name="frame">Frame of audio</param>
         private void OnFrameCaptured(short[] frame)
         {
+            if (_picovoice == null)
+            {
+                PicovoiceException ex = new PicovoiceInvalidStateException(
+                    "Cannot capture frames - resources have been released.");
+            }
+
             try
             {
                 _picovoice.Process(frame);

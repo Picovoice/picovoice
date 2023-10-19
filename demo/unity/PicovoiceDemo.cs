@@ -50,7 +50,13 @@ public class PicovoiceDemo : MonoBehaviour
 
         try
         {
-            _picovoiceManager = PicovoiceManager.Create(ACCESS_KEY, _keywordPath, OnWakeWordDetected, _contextPath, OnInferenceResult, processErrorCallback: ErrorCallback);
+            _picovoiceManager = PicovoiceManager.Create(
+                ACCESS_KEY,
+                _keywordPath,
+                OnWakeWordDetected,
+                _contextPath,
+                OnInferenceResult,
+                processErrorCallback: ErrorCallback);
         }
         catch (PicovoiceInvalidArgumentException ex)
         {
