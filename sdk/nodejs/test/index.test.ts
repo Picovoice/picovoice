@@ -223,7 +223,7 @@ describe('reset', () => {
       ACCESS_KEY,
       getKeywordPathsByLanguage("en", "picovoice"),
       keywordCallback,
-      getContextPathsByLanguage("en", "coffee-maker"),
+      getContextPathsByLanguage("en", "coffee_maker"),
       inferenceCallback
     );
 
