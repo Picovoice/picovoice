@@ -214,7 +214,7 @@ packages:
       path: "../../resources/porcupine/binding/flutter"
       relative: true
     source: path
-    version: "2.2.2"
+    version: "3.0.0"
   process:
     dependency: transitive
     description:

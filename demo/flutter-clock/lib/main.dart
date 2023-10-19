@@ -126,7 +126,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _inferenceCallback(RhinoInference inference) {
-    print(inference);
     if (inference.isUnderstood!) {
       Map<String, String> slots = inference.slots!;
       if (inference.intent == 'clock') {
@@ -513,9 +512,6 @@ class _MyHomePageState extends State<MyHomePage> {
       buildStopwatch(context)
     ];
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
       body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,13 +1,10 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_ringtone_player (0.0.1):
-    - Flutter
   - flutter_voice_processor (1.1.0):
     - Flutter
     - ios-voice-processor (~> 1.1.0)
-  - fluttertoast (0.0.2):
+  - integration_test (0.0.1):
     - Flutter
-    - Toast
   - ios-voice-processor (1.1.0)
   - path_provider_foundation (0.0.1):
     - Flutter
@@ -26,13 +23,11 @@ PODS:
   - rhino_flutter (3.0.0):
     - Flutter
     - Rhino-iOS (~> 3.0.0)
-  - Toast (4.0.0)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_ringtone_player (from `.symlinks/plugins/flutter_ringtone_player/ios`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
-  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec`)
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
@@ -43,17 +38,14 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - ios-voice-processor
-    - Toast
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_ringtone_player:
-    :path: ".symlinks/plugins/flutter_ringtone_player/ios"
   flutter_voice_processor:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
-  fluttertoast:
-    :path: ".symlinks/plugins/fluttertoast/ios"
+  integration_test:
+    :path: ".symlinks/plugins/integration_test/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
   Picovoice-iOS:
@@ -69,9 +61,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  flutter_ringtone_player: 15eba85187230b87b2512f0e1b92225618bc03e7
   flutter_voice_processor: 53afbf59ad3feb82f4a379fea9ed8dc98495210f
-  fluttertoast: fafc4fa4d01a6a9e4f772ecd190ffa525e9e2d9c
+  integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
   Picovoice-iOS: a1aefe4fbc54bb698dd1663d7dee6a5bef9f1c5c
@@ -79,8 +70,7 @@ SPEC CHECKSUMS:
   porcupine_flutter: f01557d2a5fe6618ffa1707a2b94573bd16a78b6
   Rhino-iOS: b92978104bfad32da25b9eeaa4f0628b86ffcee9
   rhino_flutter: 78d56c9fa0355e4ee94fa59cb3a0d210b5d1e3f9
-  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: 3df7ea60f67f649439964d30dadcf9934ea703a8
+PODFILE CHECKSUM: 851472b6fcbfae998d1b734c9dfb4837924a1691
 
 COCOAPODS: 1.11.3
