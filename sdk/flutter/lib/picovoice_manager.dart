@@ -20,30 +20,19 @@ class PicovoiceManager {
   Picovoice? _picovoice;
   final VoiceProcessor? _voiceProcessor;
 
-  final String _accessKey;
-
   late VoiceProcessorFrameListener _frameListener;
   late VoiceProcessorErrorListener _errorListener;
 
-  final String? _porcupineModelPath;
-  final String _keywordPath;
-  final double _porcupineSensitivity;
-  final WakeWordCallback _wakeWordCallback;
-
-  final String? _rhinoModelPath;
-  final String _contextPath;
-  final double _rhinoSensitivity;
-  final InferenceCallback _inferenceCallback;
-  final double _endpointDurationSec;
-  final bool _requireEndpoint;
   final ProcessErrorCallback? _processErrorCallback;
+
+  bool _isListening = false;
 
   /// Gets the source of the Rhino context in YAML format. Shows the list of intents,
   /// which expressions map to those intents, as well as slots and their possible values.
   /// Only available after a call to `.start()`.
   String? get contextInfo => _picovoice?.contextInfo;
 
-  /// Picovoice constructor
+  /// Picovoice constructor.
   ///
   /// [accessKey] AccessKey obtained from Picovoice Console (https://console.picovoice.ai/).
   ///
@@ -84,7 +73,7 @@ class PicovoiceManager {
   /// the engine is processing audio.
   ///
   /// returns an instance of the Picovoice end-to-end platform.
-  static create(
+  static Future<PicovoiceManager> create(
       String accessKey,
       String keywordPath,
       WakeWordCallback wakeWordCallback,
@@ -96,39 +85,24 @@ class PicovoiceManager {
       String? rhinoModelPath,
       double endpointDurationSec = 1.0,
       bool requireEndpoint = true,
-      ProcessErrorCallback? processErrorCallback}) {
-    return PicovoiceManager._(
-        accessKey,
-        keywordPath,
-        wakeWordCallback,
-        contextPath,
-        inferenceCallback,
-        porcupineSensitivity,
-        rhinoSensitivity,
-        porcupineModelPath,
-        rhinoModelPath,
-        endpointDurationSec,
-        requireEndpoint,
-        processErrorCallback);
+      ProcessErrorCallback? processErrorCallback}) async {
+    Picovoice picovoice = await Picovoice.create(accessKey, keywordPath,
+        wakeWordCallback, contextPath, inferenceCallback,
+        porcupineSensitivity: porcupineSensitivity,
+        rhinoSensitivity: rhinoSensitivity,
+        porcupineModelPath: porcupineModelPath,
+        rhinoModelPath: rhinoModelPath,
+        endpointDurationSec: endpointDurationSec,
+        requireEndpoint: requireEndpoint);
+
+    return PicovoiceManager._(picovoice, processErrorCallback);
   }
 
   // private constructor
-  PicovoiceManager._(
-      this._accessKey,
-      this._keywordPath,
-      this._wakeWordCallback,
-      this._contextPath,
-      this._inferenceCallback,
-      this._porcupineSensitivity,
-      this._rhinoSensitivity,
-      this._porcupineModelPath,
-      this._rhinoModelPath,
-      this._endpointDurationSec,
-      this._requireEndpoint,
-      this._processErrorCallback)
+  PicovoiceManager._(this._picovoice, this._processErrorCallback)
       : _voiceProcessor = VoiceProcessor.instance {
     _frameListener = (List<int> frame) async {
-      if (_picovoice == null) {
+      if (_picovoice == null || !_isListening) {
         return;
       }
 
@@ -149,56 +123,62 @@ class PicovoiceManager {
   }
 
   /// Opens audio input stream and sends audio frames to Picovoice.
-  /// Throws a `PicovoiceException` if an instance of Picovoice could not be created.
+  /// Throws a `PicovoiceException` if unable to start.
   Future<void> start() async {
-    if (_picovoice != null) {
-      return;
+    if (_picovoice == null) {
+      throw PicovoiceInvalidStateException(
+          "Unable to start - resources have been released.");
     }
 
-    _picovoice = await Picovoice.create(_accessKey, _keywordPath,
-        _wakeWordCallback, _contextPath, _inferenceCallback,
-        porcupineSensitivity: _porcupineSensitivity,
-        rhinoSensitivity: _rhinoSensitivity,
-        porcupineModelPath: _porcupineModelPath,
-        rhinoModelPath: _rhinoModelPath,
-        endpointDurationSec: _endpointDurationSec,
-        requireEndpoint: _requireEndpoint);
-
-    if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
-      _voiceProcessor?.addFrameListener(_frameListener);
-      _voiceProcessor?.addErrorListener(_errorListener);
-      try {
-        await _voiceProcessor?.start(
-            _picovoice!.frameLength!, _picovoice!.sampleRate!);
-      } on PlatformException catch (e) {
+    if (!_isListening) {
+      if (await _voiceProcessor?.hasRecordAudioPermission() ?? false) {
+        _voiceProcessor?.addFrameListener(_frameListener);
+        _voiceProcessor?.addErrorListener(_errorListener);
+        try {
+          await _voiceProcessor?.start(
+              _picovoice!.frameLength!, _picovoice!.sampleRate!);
+          _isListening = true;
+        } on PlatformException catch (e) {
+          throw PicovoiceRuntimeException(
+              "Failed to start audio recording: ${e.message}");
+        }
+      } else {
         throw PicovoiceRuntimeException(
-            "Failed to start audio recording: ${e.message}");
+            "User did not give permission to record audio.");
       }
-    } else {
-      throw PicovoiceRuntimeException(
-          "User did not give permission to record audio.");
     }
   }
 
   /// Closes audio stream and stops Picovoice processing.
-  /// Throws a `PorcupineException` if there was a problem stopping audio recording.
+  /// Throws a `PicovoiceException` if there was a problem stopping audio recording.
   Future<void> stop() async {
     if (_picovoice == null) {
-      return;
+      throw PicovoiceInvalidStateException(
+          "Unable to start - resources have been released.");
     }
-    _voiceProcessor?.removeErrorListener(_errorListener);
-    _voiceProcessor?.removeFrameListener(_frameListener);
 
-    if (_voiceProcessor?.numFrameListeners == 0) {
-      try {
-        await _voiceProcessor?.stop();
-      } on PlatformException catch (e) {
-        throw PicovoiceRuntimeException(
-            "Failed to stop audio recording: ${e.message}");
+    if (_isListening) {
+      _voiceProcessor?.removeErrorListener(_errorListener);
+      _voiceProcessor?.removeFrameListener(_frameListener);
+
+      if (_voiceProcessor?.numFrameListeners == 0) {
+        try {
+          await _voiceProcessor?.stop();
+        } on PlatformException catch (e) {
+          throw PicovoiceRuntimeException(
+              "Failed to stop audio recording: ${e.message}");
+        }
       }
+
+      _isListening = false;
     }
 
-    _picovoice?.delete();
+    await _picovoice?.reset();
+  }
+
+  /// Releases native resources that were allocated to PicovoiceManager
+  Future<void> delete() async {
+    await _picovoice?.delete();
     _picovoice = null;
   }
 }

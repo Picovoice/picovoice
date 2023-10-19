@@ -82,7 +82,7 @@ class Picovoice {
   /// to `false` only if operating in an environment with overlapping speech (e.g. people talking in the background).
   ///
   /// returns an instance of the Picovoice end-to-end platform.
-  static create(
+  static Future<Picovoice> create(
       String accessKey,
       String keywordPath,
       WakeWordCallback wakeWordCallback,
@@ -130,14 +130,13 @@ class Picovoice {
   Picovoice._(this._porcupine, this._wakeWordCallback, this._rhino,
       this._inferenceCallback);
 
-  ///
   /// Processes a frame of the incoming audio stream. Upon detection of wake word and completion of follow-on command
   /// inference invokes user-defined callbacks.
   ///
   /// [frame] A frame of audio samples. The number of samples per frame can be attained by calling
   /// `.frameLength`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit linearly-encoded.
   /// Picovoice operates on single-channel audio.
-  void process(List<int> frame) async {
+  Future<void> process(List<int> frame) async {
     if (_porcupine == null || _rhino == null) {
       throw PicovoiceInvalidStateException(
           "Cannot process frame - resources have been released.");
@@ -171,8 +170,9 @@ class Picovoice {
     }
   }
 
-  /// Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
-  void reset() {
+  /// Resets the internal state of Picovoice. It should be called before processing
+  /// a new stream of audio or when Picovoice was stopped while processing a stream of audio.
+  Future<void> reset() async {
     if (_porcupine == null || _rhino == null) {
       throw PicovoiceInvalidStateException(
           "Cannot process frame - resources have been released.");
@@ -180,18 +180,18 @@ class Picovoice {
 
     try {
       _isWakeWordDetected = false;
-      _rhino!.reset();
+      await _rhino!.reset();
     } on RhinoException catch (ex) {
       throw mapToPicovoiceException(ex, ex.message);
     }
   }
 
   /// Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
-  void delete() {
-    _porcupine?.delete();
+  Future<void> delete() async {
+    await _porcupine?.delete();
     _porcupine = null;
 
-    _rhino?.delete();
+    await _rhino?.delete();
     _rhino = null;
   }
 }

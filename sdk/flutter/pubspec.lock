@@ -199,7 +199,7 @@ packages:
       path: "../../resources/rhino/binding/flutter"
       relative: true
     source: path
-    version: "2.2.3"
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
