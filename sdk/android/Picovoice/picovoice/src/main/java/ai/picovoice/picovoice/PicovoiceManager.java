@@ -49,7 +49,7 @@ public class PicovoiceManager {
             @Override
             public void onFrame(short[] frame) {
                 synchronized (voiceProcessor) {
-                    if (picovoice == null) {
+                    if (picovoice == null || !isListening) {
                         return;
                     }
                     try {
@@ -87,6 +87,20 @@ public class PicovoiceManager {
     }
 
     /**
+     * Resets the internal state of PicovoiceManager. It can be called to
+     * return to the wake word detection state before an inference has completed.
+     *
+     * @throws PicovoiceException if an error is encountered while attempting to stop.
+     */
+    public void reset() throws PicovoiceException {
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot reset - resources have been released");
+        }
+
+        picovoice.reset();
+    }
+
+    /**
      * Starts recording audio from the microphone and processes it using ${@link Picovoice}.
      *
      * @throws PicovoiceException if an error is encountered while attempting to start.
@@ -102,10 +116,10 @@ public class PicovoiceManager {
 
             try {
                 voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
+                isListening = true;
             } catch (VoiceProcessorException e) {
                 throw new PicovoiceException(e);
             }
-            isListening = true;
         }
     }
 
