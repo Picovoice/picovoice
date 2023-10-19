@@ -258,7 +258,7 @@ export default class Picovoice {
       return new PicovoiceErrors.PicovoiceRuntimeError(e.message);
     } else if (e instanceof PorcupineErrors.PorcupineActivationError || e instanceof RhinoErrors.RhinoActivationError) {
       return new PicovoiceErrors.PicovoiceActivationError(e.message);
-    } else if (e instanceof PorcupineErrors.PorcupineActivationLimitReached || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
+    } else if (e instanceof PorcupineErrors.PorcupineActivationLimitReachedError || e instanceof RhinoErrors.RhinoActivationLimitReachedError) {
       return new PicovoiceErrors.PicovoiceActivationLimitReachedError(e.message);
     } else if (e instanceof PorcupineErrors.PorcupineActivationThrottledError || e instanceof RhinoErrors.RhinoActivationThrottledError) {
       return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
