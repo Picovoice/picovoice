@@ -260,8 +260,8 @@ describe('Picovoice Binding', function () {
 
     it(`should be able to reset (${instanceString})`, () => {
       const encodedAudioName = createHash('md5')
-      .update('picovoice-coffee')
-      .digest('hex');
+        .update('picovoice-coffee')
+        .digest('hex');
 
       cy.getFramesFromFile(`audio_samples/${encodedAudioName}.wav`).then(async pcm => {
         let inference: RhinoInference | null = null;
@@ -282,14 +282,14 @@ describe('Picovoice Binding', function () {
                 },
                 { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true }
               );
-  
+
               for (let i = 0; i < pcm.length - picovoice.frameLength! + 1; i += picovoice.frameLength!) {
                 await picovoice.process(pcm.slice(i, i + picovoice.frameLength!));
                 await delay(32);
               }
-  
+
               await delay(1000);
-  
+
               if (picovoice instanceof PicovoiceWorker) {
                 picovoice.terminate();
               } else {
