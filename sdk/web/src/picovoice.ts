@@ -39,7 +39,7 @@ export class Picovoice {
   private _rhino: Rhino | null = null;
   private _isWakeWordDetected: boolean = false;
 
-  private readonly _version: string = '2.1.0';
+  private readonly _version: string = '3.0.0';
 
   /**
    * Get Picovoice SDK version.
@@ -161,9 +161,9 @@ export class Picovoice {
       }
     };
 
-    const errorCallback = (!processErrorCallback) ? undefined : (error: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) => {
+    const errorCallback = (!processErrorCallback) ? undefined : (error: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError): void => {
       processErrorCallback(mapToPicovoiceError(error));
-    }
+    };
 
     try {
       picovoice._porcupine = await Porcupine._init(
@@ -175,7 +175,7 @@ export class Picovoice {
         porcupineModelPath,
         { processErrorCallback: errorCallback }
       );
-  
+
       picovoice._rhino = await Rhino._init(
         accessKey,
         contextPath,

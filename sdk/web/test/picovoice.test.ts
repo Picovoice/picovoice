@@ -278,7 +278,7 @@ describe('Picovoice Binding', function () {
               { publicPath: '/test/rhino/rhino_params.pv', forceWrite: true }
             );
 
-            for (let i = 0;i < pcm.length - picovoice.frameLength! + 1;i += picovoice.frameLength!) {
+            for (let i = 0; i < pcm.length - picovoice.frameLength! + 1; i += picovoice.frameLength!) {
               await picovoice.process(pcm.slice(i, i + picovoice.frameLength!));
               await delay(32);
             }

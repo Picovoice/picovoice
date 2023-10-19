@@ -154,7 +154,7 @@ export function pvStatusToException(
   }
 }
 
-export function mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
+export function mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError): PicovoiceError {
   if (e instanceof PorcupineErrors.PorcupineOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
     return new PicovoiceOutOfMemoryError(e.message);
   } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
@@ -177,7 +177,6 @@ export function mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErr
     return new PicovoiceActivationThrottledError(e.message);
   } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
     return new PicovoiceActivationRefusedError(e.message);
-  } else {
-    return new PicovoiceError(PvStatus.RUNTIME_ERROR, e.message);
   }
+  return new PicovoiceError(PvStatus.RUNTIME_ERROR, e.message);
 }

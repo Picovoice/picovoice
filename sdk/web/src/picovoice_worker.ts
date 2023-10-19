@@ -33,7 +33,7 @@ import {
 } from '@picovoice/rhino-web';
 
 import { loadPicovoiceArgs } from './utils';
-import { mapToPicovoiceError, pvStatusToException } from './picovoice_errors';
+import { pvStatusToException } from './picovoice_errors';
 
 export class PicovoiceWorker {
   private readonly _worker: Worker;
@@ -186,11 +186,12 @@ export class PicovoiceWorker {
               break;
             case 'failed':
             case 'error':
-              reject(event.data.message);
+              const error = pvStatusToException(event.data.status, event.data.message);
+              reject(error);
               break;
             default:
               // @ts-ignore
-              reject(`Unrecognized command: ${event.data.command}`);
+              reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
           }
         };
       }
@@ -252,11 +253,12 @@ export class PicovoiceWorker {
             break;
           case 'failed':
           case 'error':
-            reject(event.data.message);
+            const error = pvStatusToException(event.data.status, event.data.message);
+            reject(error);
             break;
           default:
             // @ts-ignore
-            reject(`Unrecognized command: ${event.data.command}`);
+            reject(pvStatusToException(PvStatus.RUNTIME_ERROR, `Unrecognized command: ${event.data.command}`));
         }
       };
     });
