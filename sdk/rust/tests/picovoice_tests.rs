@@ -90,7 +90,11 @@ mod tests {
         )
     }
 
-    fn process_file_helper(picovoice: &Picovoice, audio_file_name: &str) {
+    fn process_file_helper<W: FnMut(), I: FnMut(rhino::RhinoInference)>(
+        picovoice: &mut Picovoice<W, I>,
+        audio_file_name: &str,
+        max_process_count: i32
+    ) {
         let soundfile_path = format!(
             "{}{}{}",
             env!("CARGO_MANIFEST_DIR"),
@@ -105,6 +109,8 @@ mod tests {
         let frame_length_bytes = picovoice.frame_length() as usize * i16_size;
 
         let mut frame_buffer = vec![0u8; frame_length_bytes];
+
+        let mut processed = 0;
         while reader.read_exact(&mut frame_buffer).is_ok() {
             let frame_samples: Vec<i16> = frame_buffer
                 .chunks(i16_size)
@@ -113,6 +119,10 @@ mod tests {
                 })
                 .collect();
             picovoice.process(&frame_samples).unwrap();
+            if max_process_count != -1 && processed >= max_process_count {
+                break;
+            }
+            processed += 1;
         }
     }
 
@@ -154,7 +164,7 @@ mod tests {
         .init()
         .expect("Failed to init Picovoice");
 
-        process_file_helper(picovoice, audio_file_name);
+        process_file_helper(&mut picovoice, audio_file_name, -1);
 
         assert_eq!(
             *is_wake_word_detected.lock().unwrap(),
@@ -183,17 +193,21 @@ mod tests {
 
     #[test]
     fn test_reset() {
-        let detected_inference = Arc::new(Mutex::new(None));
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+
+        let is_wake_word_detected = Arc::new(Mutex::new(false));
+        let is_inference = Arc::new(Mutex::new(false));
 
         let wake_word_callback = || {
             if let Ok(mut is_wake_word_detected) = is_wake_word_detected.lock() {
-                picovoice.reset();
+                *is_wake_word_detected = true;
             }
         };
 
-        let inference_callback = |inference| {
-            if let Ok(mut detected_inference) = detected_inference.lock() {
-                *detected_inference = Some(inference);
+        let inference_callback = || {
+            if let Ok(mut is_inference) = is_inference.lock() {
+                *is_inference = true;
             }
         };
 
@@ -203,12 +217,15 @@ mod tests {
             wake_word_callback,
             context_path_by_language("coffee_maker", "en"),
             inference_callback,
-        )
-        .init()
-        .expect("Failed to init Picovoice");
+        ).init().expect("Failed to init Picovoice");
 
-        process_file_helper(picovoice, "picovoice-coffee.wav");
-        assert_eq!(detected_inference, nil);
+        process_file_helper(&mut picovoice, "picovoice-coffee.wav", 25);
+        assert_eq!(*is_inference.lock().unwrap(), false);
+
+        let _ = picovoice.reset();
+
+        process_file_helper(&mut picovoice, "picovoice-coffee.wav", 25);
+        assert_eq!(*is_inference.lock().unwrap(), false);
     }
 
     #[test]
