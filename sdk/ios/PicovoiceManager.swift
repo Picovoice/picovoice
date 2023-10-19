@@ -119,6 +119,18 @@ public class PicovoiceManager {
         self.picovoice = nil
     }
 
+    /// Resets the internal state of PicovoiceManager. It can be called to
+    /// return to the wake word detection state before an inference has completed.
+    ///
+    /// - Throws: PicovoiceError if unable to reset
+    public func reset() throws {
+        guard self.picovoice != nil else {
+            throw PicovoiceInvalidStateError("Unable to reset - resources have been released.")
+        }
+
+        try picovoice.reset()
+    }
+
     ///  Starts recording audio from the microphone and Picovoice processing loop.
     ///
     /// - Throws: PicovoiceError if unable to start recording
