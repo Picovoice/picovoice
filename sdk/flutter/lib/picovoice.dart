@@ -32,7 +32,7 @@ class Picovoice {
   int? get sampleRate => _porcupine?.sampleRate;
 
   /// Version of Picovoice
-  String get version => "2.2.0";
+  String get version => "3.0.0";
 
   /// Version of Porcupine
   String? get porcupineVersion => _porcupine?.version;
@@ -149,29 +149,49 @@ class Picovoice {
     }
 
     if (!_isWakeWordDetected) {
-      final int keywordIndex = await _porcupine!.process(frame);
-      if (keywordIndex >= 0) {
-        _isWakeWordDetected = true;
-        _wakeWordCallback();
+      try {
+        final int keywordIndex = await _porcupine!.process(frame);
+        if (keywordIndex >= 0) {
+          _isWakeWordDetected = true;
+          _wakeWordCallback();
+        }
+      } on PorcupineException catch (ex) {
+        throw mapToPicovoiceException(ex, ex.message);
       }
     } else {
-      RhinoInference inference = await _rhino!.process(frame);
-      if (inference.isFinalized) {
-        _isWakeWordDetected = false;
-        _inferenceCallback(inference);
+      try {
+        RhinoInference inference = await _rhino!.process(frame);
+        if (inference.isFinalized) {
+          _isWakeWordDetected = false;
+          _inferenceCallback(inference);
+        }
+      } on RhinoException catch (ex) {
+        throw mapToPicovoiceException(ex, ex.message);
       }
     }
   }
 
   /// Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
+  void reset() {
+    if (_porcupine == null || _rhino == null) {
+      throw PicovoiceInvalidStateException(
+          "Cannot process frame - resources have been released.");
+    }
+
+    try {
+      _isWakeWordDetected = false;
+      _rhino!.reset();
+    } on RhinoException catch (ex) {
+      throw mapToPicovoiceException(ex, ex.message);
+    }
+  }
+
+  /// Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
   void delete() {
-    if (_porcupine != null) {
-      _porcupine!.delete();
-      _porcupine = null;
-    }
-    if (_rhino != null) {
-      _rhino!.delete();
-      _rhino = null;
-    }
+    _porcupine?.delete();
+    _porcupine = null;
+
+    _rhino?.delete();
+    _rhino = null;
   }
 }
