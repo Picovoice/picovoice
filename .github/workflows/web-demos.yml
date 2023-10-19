@@ -46,7 +46,7 @@ jobs:
 
     - name: Local dependency
       run: yarn && yarn build
-      working-directory: sdk/nodejs
+      working-directory: sdk/web
 
     - name: Pre-build dependencies
       run: npm install yarn

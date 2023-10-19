@@ -57,7 +57,8 @@ jobs:
         run: npm install yarn
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install
+        working-directory: sdk/web
 
       - name: Build
         run: yarn build
