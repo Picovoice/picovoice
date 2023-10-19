@@ -259,7 +259,11 @@ describe('Picovoice Binding', function () {
     });
 
     it(`should be able to reset (${instanceString})`, () => {
-      cy.getFramesFromFile(`audio_samples/picovoice-coffee.wav`).then(async pcm => {
+      const encodedAudioName = createHash('md5')
+      .update('picovoice-coffee')
+      .digest('hex');
+
+      cy.getFramesFromFile(`audio_samples/${encodedAudioName}.wav`).then(async pcm => {
         let inference: RhinoInference | null = null;
 
         const runProcess = () =>
