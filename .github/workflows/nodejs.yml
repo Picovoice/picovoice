@@ -54,9 +54,6 @@ jobs:
       run: yarn && yarn build
       working-directory: resources/rhino/binding/nodejs
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Install dependencies
       run: yarn install
 
@@ -82,9 +79,6 @@ jobs:
     - name: Local Rhino dependency
       run: yarn && yarn build
       working-directory: resources/rhino/binding/nodejs
-
-    - name: Pre-build dependencies
-      run: npm install --global yarn
 
     - name: Install dependencies
       run: yarn install
