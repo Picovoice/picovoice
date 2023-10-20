@@ -168,8 +168,7 @@ export default class App extends Component<Props, State> {
         picovoiceText: `Listening for ${wakeword}...`,
         isListening: true,
       });
-    }
-    catch (e: any) {
+    } catch (e: any) {
       this._errorCallback(e.message);
     }
   }
