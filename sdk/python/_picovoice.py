@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2022 Picovoice Inc.
+# Copyright 2020-2023 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -261,6 +261,17 @@ class Picovoice(object):
             except pvrhino.RhinoError as e:
                 raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
 
+    def reset(self) -> None:
+        """
+        Resets the internal state of Picovoice. It should be called before processing a new stream of audio
+        or when Picovoice was stopped whilst processing a stream of audio.
+        """
+        try:
+            self._is_wake_word_detected = False
+            self._rhino.reset()
+        except pvrhino.RhinoError as e:
+            raise _PPN_RHN_ERROR_TO_PICOVOICE_ERROR[type(e)] from e
+
     @property
     def sample_rate(self) -> int:
         """Audio sample rate accepted by Picovoice."""
@@ -277,7 +288,7 @@ class Picovoice(object):
     def version(self) -> str:
         """Version"""
 
-        return '2.2.0'
+        return '3.0.0'
 
     @property
     def context_info(self) -> str:
