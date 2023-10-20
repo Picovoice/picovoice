@@ -1512,7 +1512,7 @@
   integrity sha512-zolTEo3qsqeUwY7JRslV/yhiA+oBrkeogOTxjHIEJ//yEsr7YKlI1PcqTbU5/xjmUiukh62gmwTXhosnQYdasQ==
 
 "@picovoice/rhino-react-native@file:../../resources/rhino/binding/react-native":
-  version "2.2.2"
+  version "3.0.0"
 
 "@react-native-community/cli-debugger-ui@^7.0.3":
   version "7.0.3"

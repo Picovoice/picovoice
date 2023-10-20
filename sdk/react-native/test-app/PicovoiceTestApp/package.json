@@ -10,10 +10,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "file:../../",
-    "@picovoice/porcupine-react-native": "=2.2.1",
+    "@picovoice/picovoice-react-native": "file:../..",
+    "@picovoice/porcupine-react-native": "file:../../../../resources/porcupine/binding/react-native",
+    "@picovoice/rhino-react-native": "file:../../../../resources/rhino/binding/react-native",
     "@picovoice/react-native-voice-processor": "^1.2.0",
-    "@picovoice/rhino-react-native": "=2.2.2",
     "base-64": "^1.0.0",
     "react": "18.2.0",
     "react-native": "0.71.0",
