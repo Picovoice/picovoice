@@ -46,9 +46,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Local Porcupine dependency
       run: yarn && yarn build
       working-directory: resources/porcupine/binding/nodejs

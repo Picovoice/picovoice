@@ -46,9 +46,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
-
     - name: Local Porcupine dependency
       run: yarn && yarn build
       working-directory: resources/porcupine/binding/nodejs
@@ -74,9 +71,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-
-    - name: Pre-build dependencies
-      run: npm install --global yarn
 
     - name: Local Porcupine dependency
       run: yarn && yarn build
