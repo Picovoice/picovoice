@@ -210,16 +210,17 @@ describe('getter functions', () => {
 describe('reset', () => {
   test('picovoice should reset state', () => {
     let res: RhinoInference | null = null;
+    let handle: Picovoice | null = null;
 
-    function keywordCallback(keyword: number) {
-      handle.reset();
+    function keywordCallback() {
+      handle?.reset();
     }
 
     function inferenceCallback(inference: RhinoInference) {
       res = inference;
     }
 
-    let handle = new Picovoice(
+    handle = new Picovoice(
       ACCESS_KEY,
       getKeywordPathsByLanguage("en", "picovoice"),
       keywordCallback,

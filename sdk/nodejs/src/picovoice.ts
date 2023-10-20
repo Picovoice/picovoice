@@ -14,7 +14,6 @@ import { Porcupine, PorcupineErrors } from '@picovoice/porcupine-node';
 import { Rhino, RhinoInference, RhinoErrors } from '@picovoice/rhino-node';
 
 import * as PicovoiceErrors from './errors';
-import PvStatus from './pv_status_t';
 
 export type WakeWordCallback = (keyword: number) => void;
 export type InferenceCallback = (inference: RhinoInference) => void;
@@ -106,7 +105,7 @@ export default class Picovoice {
         porcupineModelPath,
         porcupineLibraryPath
       );
-  
+
       this.rhino = new Rhino(
         accessKey,
         contextPath,
@@ -190,14 +189,14 @@ export default class Picovoice {
     try {
       if (!this.isWakeWordDetected) {
         const keywordIndex = this.porcupine.process(frame);
-  
+
         if (keywordIndex !== -1) {
           this.isWakeWordDetected = true;
           this.wakeWordCallback(keywordIndex);
         }
       } else {
         const isFinalized = this.rhino.process(frame);
-  
+
         if (isFinalized) {
           this.isWakeWordDetected = false;
           this.inferenceCallback(this.rhino.getInference());
@@ -241,7 +240,7 @@ export default class Picovoice {
     }
   }
 
-  private mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError) {
+  private mapToPicovoiceError(e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError): PicovoiceErrors.PicovoiceError {
     if (e instanceof PorcupineErrors.PorcupineOutOfMemoryError || e instanceof RhinoErrors.RhinoOutOfMemoryError) {
       return new PicovoiceErrors.PicovoiceOutOfMemoryError(e.message);
     } else if (e instanceof PorcupineErrors.PorcupineIOError || e instanceof RhinoErrors.RhinoIOError) {
@@ -264,8 +263,7 @@ export default class Picovoice {
       return new PicovoiceErrors.PicovoiceActivationThrottledError(e.message);
     } else if (e instanceof PorcupineErrors.PorcupineActivationRefusedError || e instanceof RhinoErrors.RhinoActivationRefusedError) {
       return new PicovoiceErrors.PicovoiceActivationRefusedError(e.message);
-    } else {
-      return new PicovoiceErrors.PicovoiceError(e.message);
     }
+    return new PicovoiceErrors.PicovoiceError(e.message);
   }
 }
