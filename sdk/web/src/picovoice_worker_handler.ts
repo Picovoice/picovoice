@@ -59,6 +59,7 @@ self.onmessage = async function (
         return;
       }
       try {
+        Picovoice.setSdk(event.data.sdk);
         picovoice = await Picovoice._init(
           event.data.accessKey,
           event.data.keywordPath,

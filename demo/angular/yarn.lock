@@ -179,6 +179,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/animations@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-13.3.12.tgz#5fbd2f5b796ed2b801df09d1b0925721d8a75ec3"
+  integrity sha512-dc2JDokKJuuNxzzZa9FvuQU71kYC/e0xCLjGxEgX48sGKwajHRGBuzYFb8EmvLeA24SshYGmrxN0vGG9GhLK6g==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/cli@^15.0.3":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-15.0.4.tgz#c0bf88a668bd6550dc85298cf229032a8d72f142"
@@ -210,6 +217,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/common@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-13.3.12.tgz#6ef3187232415e69995eb590a12ebcd44e457425"
+  integrity sha512-Nk4zNKfda92aFe+cucHRv2keyryR7C1ZnsurwZW9WZSobpY3z2tTT81F+yy35lGoMt5BDBAIpfh1b4j9Ue/vMg==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/compiler-cli@^15.0.3":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-15.0.4.tgz#dfe699846cd5d69f5e0d33164173eb2ecba20b72"
@@ -233,10 +247,24 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/compiler@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-13.3.12.tgz#9fa94d116310060bcdd429c24d593b70f8a082da"
+  integrity sha512-F5vJYrjbNvEWoVz9J/CqiT3Iod6g9bV0dGI5EeURcW4yHXHZ12ioQpfU3+bE7qXcTlnofbdDhK8cGxGx01SzBA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/core@^15.0.3":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-15.0.4.tgz#699105cbd7651dd679b623032100bf55fd616380"
   integrity sha512-Xf8Nuu0iM/VjQHPS4A0jufqTYZCfiGqc0iAD7j9zM3TD6caQ3OP4mxXVYYTpIG+APKel38+Gol8cpQB/8PVbqQ==
+  dependencies:
+    tslib "^2.3.0"
+
+"@angular/core@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-13.3.12.tgz#6817eec14a86a76dd6200dd6d1a89ca520968b09"
+  integrity sha512-jx0YC+NbPMbxGr5bXECkCEQv2RdVxR8AJNnabkPk8ZjwCpDzROrbELwwS1kunrZUhffcD15IhWGBvf1EGHAYDw==
   dependencies:
     tslib "^2.3.0"
 
@@ -247,10 +275,24 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/forms@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-13.3.12.tgz#21a4a3f5d7539d42351b9f2a7cac10463b6b7c00"
+  integrity sha512-auow1TKZx44ha1ia8Jwg2xp2Q7BbpShG5Ft8tewL3T44aTmJY7svWOE/m+DkZ/SXHmTFnbZFobGU5aEfe0+pNw==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/platform-browser-dynamic@^15.0.3":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-15.0.4.tgz#e7fa434df62ea1b64ed98dff79ab6ce3b083f78d"
   integrity sha512-SCUxsfJAHXnAyo2ulmfqs3vGnB/tWNKe+G2KKshrSLyCYIJ3UgpsoPAo1mGih64qo8TWOQk9PJgrlVEB2DoWYg==
+  dependencies:
+    tslib "^2.3.0"
+
+"@angular/platform-browser-dynamic@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-13.3.12.tgz#2c27c8eb135f643e31594752b28e134eb06e52ac"
+  integrity sha512-/hBggov0PxK/KNJqIu3MVc5k8f0iDbygDP8Z1k/J0FcllOSRdO4LsQd1fsCfGfwIUf0YWGyD7KraSGpBBiWlFg==
   dependencies:
     tslib "^2.3.0"
 
@@ -261,10 +303,24 @@
   dependencies:
     tslib "^2.3.0"
 
+"@angular/platform-browser@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-13.3.12.tgz#913e42f5a1cc7f691a81554345a87ae4236ee14d"
+  integrity sha512-sfhQqU4xjTJCjkH62TQeH5/gkay/KzvNDF95J6NHi/Q6p2dbtzZdXuLJKR/sHxtF2kc505z5v9RNm6XMSXM1KA==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/router@^15.0.3":
   version "15.0.4"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-15.0.4.tgz#d5159d8b0ac745ad0f0ffe8029d67c7d52681f8c"
   integrity sha512-6cBUu1kSigORGpWq+Wc3hTLRQcJvtlaZ5OFOIzKGiBEPgezn/AzrWHi/bEccWLZAVFhbUOhcRn9GwudqiqX6+A==
+  dependencies:
+    tslib "^2.3.0"
+
+"@angular/router@~13.3.0":
+  version "13.3.12"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-13.3.12.tgz#5238a910a6af7a20efcd8c3235d60eb5feaa0692"
+  integrity sha512-X+TAxTAlqUd2gPm6drFBGVzQsbQWM5wmZ8S5D5i+86x7Ku0v2CUFICT6AUPSl9+FTPiexlL4FdmvQV2CnGTSUw==
   dependencies:
     tslib "^2.3.0"
 
@@ -1461,36 +1517,20 @@
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
 
-"@picovoice/picovoice-angular@~2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-angular/-/picovoice-angular-2.2.1.tgz#021c91d9c5fd263a55b0cd2afc16854c6305be24"
-  integrity sha512-mGYJxlF34J1FNKnJra3B7F6sHnd6vcdZuaW9/MhFpdTXv7bwfgXapmR03kg+LUdQyjMrXs6tIKr1ryMGZU6l4g==
+"@picovoice/picovoice-angular@../../sdk/angular":
+  version "0.0.0"
   dependencies:
-    "@picovoice/picovoice-web" "=2.2.1"
+    "@angular/animations" "~13.3.0"
+    "@angular/common" "~13.3.0"
+    "@angular/compiler" "~13.3.0"
+    "@angular/core" "~13.3.0"
+    "@angular/forms" "~13.3.0"
+    "@angular/platform-browser" "~13.3.0"
+    "@angular/platform-browser-dynamic" "~13.3.0"
+    "@angular/router" "~13.3.0"
+    rxjs "~7.5.0"
     tslib "^2.3.0"
-
-"@picovoice/picovoice-web@=2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.2.1.tgz#55f7f43ce7cd524616d3ceb2049576d2bcabd17e"
-  integrity sha512-Wl5ikiwzUXAilEbXVKz3Up9xmuEgRplYbIob3NgdzixyJMB/6Vm2CsjC9kh8KqHvrk5HKb/RBRI2x4Hh/PpF9Q==
-  dependencies:
-    "@picovoice/porcupine-web" "=2.2.1"
-    "@picovoice/rhino-web" "=2.2.1"
-    "@picovoice/web-utils" "=1.3.1"
-
-"@picovoice/porcupine-web@=2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.1.tgz#d1302405309b8222105c216dc3dfc1ef346015f0"
-  integrity sha512-EX40nkUwWusQrbUaQjn2ZP4lYBfjztcXrnFmXQPUL7NuknTVbDAG2t5pEzSTjyb6n/91nXcEOC1EGi5u3xRSzA==
-  dependencies:
-    "@picovoice/web-utils" "=1.3.1"
-
-"@picovoice/rhino-web@=2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.2.1.tgz#68ece011d99ecd638e8935147c8e443c294becf5"
-  integrity sha512-kwNNvuUt+6x/kfLplLeCV1J2RbTZEkKwe5WoyY6yZbtJB1Tb/+HcWlNaeSU1kLTegxZ6UL+ETT/gay4psDKLmQ==
-  dependencies:
-    "@picovoice/web-utils" "=1.3.1"
+    zone.js "~0.11.4"
 
 "@picovoice/web-utils@=1.3.1":
   version "1.3.1"

@@ -40,6 +40,7 @@ export class Picovoice {
   private _isWakeWordDetected: boolean = false;
 
   private readonly _version: string = '3.0.0';
+  private static _sdk: string = 'web';
 
   /**
    * Get Picovoice SDK version.
@@ -67,6 +68,10 @@ export class Picovoice {
    */
   get contextInfo(): string | undefined {
     return this._rhino?.contextInfo;
+  }
+
+  public static setSdk(sdk: string): void {
+    Picovoice._sdk = sdk;
   }
 
   /**
@@ -166,6 +171,7 @@ export class Picovoice {
     };
 
     try {
+      Porcupine.setSdk(this._sdk);
       picovoice._porcupine = await Porcupine._init(
         accessKey,
         [keywordPath],
@@ -176,6 +182,7 @@ export class Picovoice {
         { processErrorCallback: errorCallback }
       );
 
+      Rhino.setSdk(this._sdk);
       picovoice._rhino = await Rhino._init(
         accessKey,
         contextPath,
