@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String ACCESS_KEY = "${YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
     private String wakeWordName = "";
     private String contextName = "";
+    private String contextInformation = "";
 
     private PicovoiceManager picovoiceManager;
     private TextView intentTextView;
@@ -183,23 +184,33 @@ public class MainActivity extends AppCompatActivity {
             rhinoModel = "rhino_params_" + BuildConfig.FLAVOR + ".pv";
         }
 
-        picovoiceManager = new PicovoiceManager.Builder()
-                .setAccessKey(ACCESS_KEY)
-                .setKeywordPath("wakewords/" + wakeWordName.replace(" ", "_") + ".ppn")
-                .setPorcupineSensitivity(0.75f)
-                .setPorcupineModelPath("models/" + porcupineModel)
-                .setWakeWordCallback(picovoiceWakeWordCallback)
-                .setContextPath("contexts/" + contextName + ".rhn")
-                .setRhinoSensitivity(0.25f)
-                .setRhinoModelPath("models/" + rhinoModel)
-                .setInferenceCallback(picovoiceInferenceCallback)
-                .setProcessErrorCallback(picovoiceManagerErrorCallback)
-                .build(getApplicationContext());
-
         try {
-            Log.i("PicovoiceManager", picovoiceManager.getContextInformation());
+            picovoiceManager = new PicovoiceManager.Builder()
+                    .setAccessKey(ACCESS_KEY)
+                    .setKeywordPath("wakewords/" + wakeWordName.replace(" ", "_") + ".ppn")
+                    .setPorcupineSensitivity(0.75f)
+                    .setPorcupineModelPath("models/" + porcupineModel)
+                    .setWakeWordCallback(picovoiceWakeWordCallback)
+                    .setContextPath("contexts/" + contextName + ".rhn")
+                    .setRhinoSensitivity(0.25f)
+                    .setRhinoModelPath("models/" + rhinoModel)
+                    .setInferenceCallback(picovoiceInferenceCallback)
+                    .setProcessErrorCallback(picovoiceManagerErrorCallback)
+                    .build(getApplicationContext());
+            contextInformation = picovoiceManager.getContextInformation();
+            Log.i("PicovoiceManager", contextInformation);
+        } catch (PicovoiceInvalidArgumentException e) {
+            onPicovoiceError(e.getMessage());
+        } catch (PicovoiceActivationException e) {
+            onPicovoiceError("AccessKey activation error");
+        } catch (PicovoiceActivationLimitException e) {
+            onPicovoiceError("AccessKey reached its device limit");
+        } catch (PicovoiceActivationRefusedException e) {
+            onPicovoiceError("AccessKey refused");
+        } catch (PicovoiceActivationThrottledException e) {
+            onPicovoiceError("AccessKey has been throttled");
         } catch (PicovoiceException e) {
-            Log.e("PicovoiceManager", "Failed to get context info: \n" + e);
+            onPicovoiceError("Failed to initialize Picovoice " + e.getMessage());
         }
     }
 
@@ -219,49 +230,12 @@ public class MainActivity extends AppCompatActivity {
                 picovoiceManager.stop();
                 intentTextView.setText("");
             }
-        } catch (PicovoiceInvalidArgumentException e) {
-            onPicovoiceError(
-                    String.format(
-                            "%s\nEnsure your AccessKey '%s' is a valid access key.",
-                            e.getLocalizedMessage(),
-                            ACCESS_KEY));
-        } catch (PicovoiceActivationException e) {
-            onPicovoiceError("AccessKey activation error");
-        } catch (PicovoiceActivationLimitException e) {
-            onPicovoiceError("AccessKey reached its device limit");
-        } catch (PicovoiceActivationRefusedException e) {
-            onPicovoiceError("AccessKey refused");
-        } catch (PicovoiceActivationThrottledException e) {
-            onPicovoiceError("AccessKey has been throttled");
         } catch (PicovoiceException e) {
-            onPicovoiceError("Failed to initialize Picovoice " + e.getMessage());
+            Log.e("PicovoiceManager", e.getMessage());
         }
     }
 
     public void showContextCheatSheet(View view) {
-        String contextInformation;
-        try {
-            contextInformation = picovoiceManager.getContextInformation();
-        } catch (PicovoiceException e) {
-            Log.e("PicovoiceManager", "Failed to get context info: \n" + e);
-            return;
-        }
-
-        if (contextInformation.equals("")) {
-            if (!hasRecordPermission()) {
-                requestRecordPermission(1);
-                return;
-            }
-            try {
-                picovoiceManager.start();
-                contextInformation = picovoiceManager.getContextInformation();
-                picovoiceManager.stop();
-            } catch (PicovoiceException e) {
-                onPicovoiceError(e.getMessage());
-                return;
-            }
-        }
-
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         ViewGroup viewGroup = findViewById(R.id.content);
         View dialogView = LayoutInflater.from(view.getContext())

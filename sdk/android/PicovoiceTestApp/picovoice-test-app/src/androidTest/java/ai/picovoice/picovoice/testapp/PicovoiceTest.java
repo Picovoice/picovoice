@@ -2,6 +2,7 @@ package ai.picovoice.picovoice.testapp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import com.google.gson.JsonArray;
@@ -35,7 +36,7 @@ public class PicovoiceTest {
         public void testInitSuccessSimple() throws PicovoiceException {
             File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
@@ -43,12 +44,10 @@ public class PicovoiceTest {
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
-            assertTrue(p.getVersion() != null && !p.getVersion().equals(""));
-            assertTrue(p.getFrameLength() > 0);
-            assertTrue(p.getSampleRate() > 0);
-            assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
-
-            p.delete();
+            assertTrue(picovoice.getVersion() != null && !picovoice.getVersion().equals(""));
+            assertTrue(picovoice.getFrameLength() > 0);
+            assertTrue(picovoice.getSampleRate() > 0);
+            assertTrue(picovoice.getContextInformation() != null && !picovoice.getContextInformation().equals(""));
         }
 
         @Test
@@ -57,7 +56,7 @@ public class PicovoiceTest {
             File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
             File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params.pv");
             File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params.pv");
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
@@ -67,16 +66,14 @@ public class PicovoiceTest {
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
-            assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
-
-            p.delete();
+            assertTrue(picovoice.getContextInformation() != null && !picovoice.getContextInformation().equals(""));
         }
 
         @Test
         public void testInitSuccessCustomSensitivities() throws PicovoiceException {
             File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
@@ -86,16 +83,14 @@ public class PicovoiceTest {
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
-            assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
-
-            p.delete();
+            assertTrue(picovoice.getContextInformation() != null && !picovoice.getContextInformation().equals(""));
         }
 
         @Test
         public void testInitSuccessCustomEndpointSettings() throws PicovoiceException {
             File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
             File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
@@ -105,9 +100,7 @@ public class PicovoiceTest {
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
-            assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
-
-            p.delete();
+            assertTrue(picovoice.getContextInformation() != null && !picovoice.getContextInformation().equals(""));
         }
 
         @Test
@@ -339,7 +332,7 @@ public class PicovoiceTest {
             File contextPath = new File(testResourcesPath, "context_files/es/iluminación_inteligente_android.rhn");
             File porcupineModelPath = new File(testResourcesPath, "porcupine_model_files/porcupine_params_es.pv");
             File rhinoModelPath = new File(testResourcesPath, "rhino_model_files/rhino_params_es.pv");
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setKeywordPath(keywordPath.getAbsolutePath())
                     .setContextPath(contextPath.getAbsolutePath())
@@ -349,9 +342,37 @@ public class PicovoiceTest {
                     .setInferenceCallback(inferenceCallback)
                     .build(appContext);
 
-            assertTrue(p.getContextInformation() != null && !p.getContextInformation().equals(""));
+            assertTrue(picovoice.getContextInformation() != null && !picovoice.getContextInformation().equals(""));
+        }
 
-            p.delete();
+        @Test
+        public void testReset() throws Exception {
+            File keywordPath = new File(testResourcesPath, "keyword_files/en/picovoice_android.ppn");
+            File contextPath = new File(testResourcesPath, "context_files/en/coffee_maker_android.rhn");
+
+            picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
+                    .setKeywordPath(keywordPath.getAbsolutePath())
+                    .setContextPath(contextPath.getAbsolutePath())
+                    .setWakeWordCallback(() -> {
+                        try {
+                            isWakeWordDetected = true;
+                            picovoice.reset();
+                        } catch (PicovoiceException e) {
+                            assertNull(e);
+                        }
+                    })
+                    .setInferenceCallback(inferenceCallback)
+                    .build(appContext);
+
+            File testAudio = new File(testResourcesPath, "audio_samples/picovoice-coffee.wav");
+
+            inferenceResult = null;
+            processTestAudio(picovoice, testAudio);
+            Thread.sleep(500);
+
+            assertTrue(isWakeWordDetected);
+            assertNull(inferenceResult);
         }
     }
 
@@ -434,7 +455,7 @@ public class PicovoiceTest {
             String keywordPath = new File(testResourcesPath, keywordFile).getAbsolutePath();
             String contextPath = new File(testResourcesPath, contextFile).getAbsolutePath();
 
-            Picovoice p = new Picovoice.Builder()
+            picovoice = new Picovoice.Builder()
                     .setAccessKey(accessKey)
                     .setPorcupineModelPath(porcupineModelPath)
                     .setRhinoModelPath(rhinoModelPath)
@@ -446,7 +467,7 @@ public class PicovoiceTest {
 
             File testAudio = new File(testResourcesPath, testAudioFile);
 
-            processTestAudio(p, testAudio);
+            processTestAudio(picovoice, testAudio);
             Thread.sleep(500);
 
             assertTrue(isWakeWordDetected);
@@ -459,7 +480,7 @@ public class PicovoiceTest {
             inferenceResult = null;
 
             // test again
-            processTestAudio(p, testAudio);
+            processTestAudio(picovoice, testAudio);
             Thread.sleep(500);
 
             assertTrue(isWakeWordDetected);
@@ -467,8 +488,6 @@ public class PicovoiceTest {
             assertTrue(inferenceResult.getIsUnderstood());
             assertEquals(expectedIntent, inferenceResult.getIntent());
             assertEquals(expectedSlots, inferenceResult.getSlots());
-
-            p.delete();
         }
     }
 }

@@ -106,11 +106,7 @@ public class PicovoiceService extends Service {
             picovoiceManager.start();
             started = true;
         } catch (PicovoiceInvalidArgumentException e) {
-            onPicovoiceError(
-                    String.format(
-                            "%s\nEnsure your AccessKey '%s' is a valid access key.",
-                            e.getLocalizedMessage(),
-                            ACCESS_KEY));
+            onPicovoiceError(e.getMessage());
         } catch (PicovoiceActivationException e) {
             onPicovoiceError("AccessKey activation error");
         } catch (PicovoiceActivationLimitException e) {
@@ -120,7 +116,7 @@ public class PicovoiceService extends Service {
         } catch (PicovoiceActivationThrottledException e) {
             onPicovoiceError("AccessKey has been throttled");
         } catch (PicovoiceException e) {
-            onPicovoiceError("Failed to initialize Picovoice " + e.getMessage());
+            onPicovoiceError("Failed to initialize Picovoice: " + e.getMessage());
         }
 
         Notification notification = started ?
