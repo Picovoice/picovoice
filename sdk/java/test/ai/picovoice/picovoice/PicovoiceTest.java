@@ -42,6 +42,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PicovoiceTest {
@@ -163,7 +164,7 @@ public class PicovoiceTest {
                 try {
                     picovoice.reset();
                 } catch (PicovoiceException e) {
-                    // Failed to reset
+                   assertNull(e);
                 }
             }
         };

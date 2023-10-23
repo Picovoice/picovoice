@@ -210,7 +210,7 @@ public class Picovoice {
 
     /**
      * Resets the internal state of Picovoice. It should be called before processing a new stream of audio
-     * or when process was stopped while processing a stream of audio.
+     * or when Picovoice was stopped while processing a stream of audio.
      *
      * @throws PicovoiceException if reset fails.
      */
