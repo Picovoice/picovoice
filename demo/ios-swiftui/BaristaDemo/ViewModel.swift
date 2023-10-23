@@ -46,7 +46,7 @@ class ViewModel: ObservableObject {
 
     init() {
         do {
-            picovoiceManager = PicovoiceManager(
+            picovoiceManager = try PicovoiceManager(
                     accessKey: ACCESS_KEY,
                     keywordPath: keywordPath!,
                     onWakeWordDetection: {
@@ -89,7 +89,7 @@ class ViewModel: ObservableObject {
 
             try picovoiceManager.start()
         } catch let error as PicovoiceInvalidArgumentError {
-            errorMessage = "\(error.localizedDescription)\nEnsure your AccessKey '\(ACCESS_KEY)' is valid"
+            errorMessage = "\(error.localizedDescription)"
         } catch is PicovoiceActivationError {
             errorMessage = "ACCESS_KEY activation error"
         } catch is PicovoiceActivationRefusedError {
