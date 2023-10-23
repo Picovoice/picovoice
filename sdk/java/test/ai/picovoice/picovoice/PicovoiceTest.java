@@ -164,7 +164,7 @@ public class PicovoiceTest {
                 try {
                     picovoice.reset();
                 } catch (PicovoiceException e) {
-                   assertNull(e);
+                    assertNull(e);
                 }
             }
         };
