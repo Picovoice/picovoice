@@ -10,8 +10,24 @@
 */
 
 import { PorcupineDetection } from '@picovoice/porcupine-web';
-
 import { RhinoInference } from '@picovoice/rhino-web';
+
+import { PicovoiceError } from './picovoice_errors';
+
+export enum PvStatus {
+  SUCCESS = 10000,
+  OUT_OF_MEMORY,
+  IO_ERROR,
+  INVALID_ARGUMENT,
+  STOP_ITERATION,
+  KEY_ERROR,
+  INVALID_STATE,
+  RUNTIME_ERROR,
+  ACTIVATION_ERROR,
+  ACTIVATION_LIMIT_REACHED,
+  ACTIVATION_THROTTLED,
+  ACTIVATION_REFUSED,
+}
 
 export type PicovoiceArgs = {
   keywordPath: string;
@@ -24,7 +40,7 @@ export type PicovoiceArgs = {
 };
 
 export type PicovoiceOptions = {
-  processErrorCallback?: (error: Error) => void;
+  processErrorCallback?: (error: PicovoiceError) => void;
   /** @defaultValue '1.0' */
   endpointDurationSec?: number;
   /** @defaultValue 'false' */
@@ -66,6 +82,7 @@ export type PicovoiceWorkerRequest =
 export type PicovoiceWorkerFailureResponse = {
   command: 'failed' | 'error';
   message: string;
+  status: PvStatus
 };
 
 export type PicovoiceWorkerInitResponse =
