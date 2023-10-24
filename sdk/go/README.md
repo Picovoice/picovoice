@@ -18,6 +18,8 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 - Go 1.16+
 - Runs on Linux (x86_64), macOS (x86_64, arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano) and BeagleBone
+- **Windows**: The Go binding requires `cgo`, which means that you need to install a gcc compiler like [Mingw](http://mingw-w64.org/) to build
+  - Go versions less than `1.20` requires `gcc` version `11` or lower
 
 ## AccessKey
 

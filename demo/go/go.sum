@@ -1,11 +1,17 @@
 github.com/Picovoice/picovoice/sdk/go/v2 v2.2.1 h1:ToJVlvJJ60BqgLdpBtedTMsc//KD/bNLkpbWUr6ZA+c=
 github.com/Picovoice/picovoice/sdk/go/v2 v2.2.1/go.mod h1:LBbnZnCnQXrEihxs+O9wg3T75wQmnX/Vxly8g/uAnIE=
+github.com/Picovoice/picovoice/sdk/go/v3 v3.0.0-20231018001703-f4ea6c2792df h1:vlXrLjZOdHdQYo/Z0KyIvE0KGhsu4OaIGmEfaJk8L2s=
+github.com/Picovoice/picovoice/sdk/go/v3 v3.0.0-20231018001703-f4ea6c2792df/go.mod h1:fU4R7L/2UxvQ5E70T2NeOnI0acv417DA+paV33P9ji4=
 github.com/Picovoice/porcupine/binding/go/v2 v2.2.1 h1:sAXWRAt5If2Evfrs2BT+N1HSVMD2X8NF/3hyiMyrOKw=
 github.com/Picovoice/porcupine/binding/go/v2 v2.2.1/go.mod h1:09YbXv1wD+hAav5oygCk/Q3teUeu0vho4BXERzpeGWM=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231018000915-ec6d90b619d0 h1:cjVhAi9yty8px/FdO7mF/XsOticZKIuu9fu7pHEFaNs=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231018000915-ec6d90b619d0/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
 github.com/Picovoice/pvrecorder/binding/go v1.2.1 h1:p99fkYMFbTS4g4WwbhSPkT9PHvlEoVYGaNoqxCITiEo=
 github.com/Picovoice/pvrecorder/binding/go v1.2.1/go.mod h1:gQdvBAjoKmRxMFh8W9cVKWcqHsWvu+d13sCPVFm7dhg=
 github.com/Picovoice/rhino/binding/go/v2 v2.2.1 h1:l98KDYu0JmzVTkU+4h1r8m4LYfwPp5TVNkUGNp6l4TM=
 github.com/Picovoice/rhino/binding/go/v2 v2.2.1/go.mod h1:/DNCpNLIENfz9A85bHUUDTW8YSHFcmPDDDA/XZPQgbI=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231018001136-8c4970978a76 h1:mQzBR4mEstBfxdPimYNvLkKwXVzsw7NRD2h+8wIqfMI=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231018001136-8c4970978a76/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
 github.com/go-audio/audio v1.0.0 h1:zS9vebldgbQqktK4H0lUqWrG8P0NxCJVqcj7ZpNnwd4=
 github.com/go-audio/audio v1.0.0/go.mod h1:6uAu0+H2lHkwdGsAY+j2wHPNPpPoeg5AaEFh9FlA+Zs=
 github.com/go-audio/riff v1.0.0 h1:d8iCGbDvox9BfLagY94fBynxSPHO80LmZCaOsmKxokA=
