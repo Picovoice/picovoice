@@ -100,9 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
           _wakeWordCallback, contextAsset, _inferenceCallback,
           processErrorCallback: _errorCallback);
       await _picovoiceManager?.start();
-    } on PicovoiceInvalidArgumentException catch (ex) {
-      _errorCallback(PicovoiceInvalidArgumentException(
-          "${ex.message}\nEnsure your accessKey '$accessKey' is a valid access key."));
     } on PicovoiceActivationException {
       _errorCallback(
           PicovoiceActivationException("AccessKey activation error."));

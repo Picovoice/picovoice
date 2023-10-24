@@ -97,8 +97,6 @@ class _MyAppState extends State<MyApp> {
         isButtonDisabled = false;
         contextInfo = _picovoiceManager!.contextInfo;
       });
-    } on PicovoiceInvalidArgumentException catch (ex) {
-      errorCallback(PicovoiceInvalidArgumentException(ex.message));
     } on PicovoiceActivationException {
       errorCallback(
           PicovoiceActivationException("AccessKey activation error."));
