@@ -42,11 +42,11 @@ jobs:
         override: true
 
     - name: Local Porcupine dependency
-      run: ./copy.sh
+      run: bash copy.sh && cargo build
       working-directory: resources/porcupine/binding/rust
 
     - name: Local Rhino dependency
-      run: ./copy.sh
+      run: bash copy.sh && cargo build
       working-directory: resources/rhino/binding/rust
 
     - name: Run clippy
@@ -71,6 +71,18 @@ jobs:
         toolchain: stable
         override: true
 
+    - name: Local Porcupine dependency
+      run: bash copy.sh && cargo build
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Local Rhino dependency
+      run: bash copy.sh && cargo build
+      working-directory: resources/rhino/binding/rust
+
+    - name: Local dependency
+      run: cargo build
+      working-directory: sdk/rust
+
     - name: Run clippy
       run: cargo clippy -- -D warnings
       working-directory: demo/rust/filedemo
@@ -92,6 +104,22 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
+
+    - name: Local Porcupine dependency
+      run: bash copy.sh && cargo build
+      working-directory: resources/porcupine/binding/rust
+
+    - name: Local Rhino dependency
+      run: bash copy.sh && cargo build
+      working-directory: resources/rhino/binding/rust
+
+    - name: Local dependency
+      run: cargo build
+      working-directory: sdk/rust
+
+    - name: Local dependency
+      run: cargo build
+      working-directory: sdk/rust
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
