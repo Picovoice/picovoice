@@ -4,6 +4,15 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1265/'
+    }
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1268/'
+    }
+    maven {
+        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1270/'
+    }
 }
 
 sourceSets {
@@ -18,13 +27,13 @@ sourceSets {
 jar {
     manifest {
         attributes 'Main-Class': 'Main',
-                "Class-Path": "picovoice-2.2.1.jar;commons-cli-1.4.jar"
+                "Class-Path": "picovoice-3.0.0.jar;commons-cli-1.4.jar"
     }
     from {configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 
 dependencies {
-    implementation 'ai.picovoice:picovoice-java:2.2.1'
+    implementation 'ai.picovoice:picovoice-java:3.0.0'
     implementation 'commons-cli:commons-cli:1.4'
 }

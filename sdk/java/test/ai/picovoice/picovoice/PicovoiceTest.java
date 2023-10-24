@@ -42,6 +42,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PicovoiceTest {
@@ -155,14 +156,33 @@ public class PicovoiceTest {
         assertTrue(picovoice.getSampleRate() > 0);
     }
 
-    void runTestCase(
-            String audioFileName,
-            String expectedIntent,
-            Map<String, String> expectedSlots)
-            throws PicovoiceException, IOException, UnsupportedAudioFileException {
-        isWakeWordDetected = false;
-        inferenceResult = null;
+    @Test
+    void testReset() throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        PicovoiceWakeWordCallback callback = new PicovoiceWakeWordCallback() {
+            @Override
+            public void invoke() {
+                try {
+                    picovoice.reset();
+                } catch (PicovoiceException e) {
+                    assertNull(e);
+                }
+            }
+        };
 
+        picovoice = new Picovoice.Builder()
+                .setAccessKey(accessKey)
+                .setKeywordPath(getTestKeywordPath("en", "picovoice"))
+                .setWakeWordCallback(callback)
+                .setContextPath(getTestContextPath("en", "coffee_maker"))
+                .setInferenceCallback(inferenceCallback)
+                .build();
+
+        inferenceResult = null;
+        processFileHelper("picovoice-coffee.wav");
+        assertTrue(inferenceResult == null);
+    }
+
+    void processFileHelper(String audioFileName) throws PicovoiceException, IOException, UnsupportedAudioFileException {
         int frameLen = picovoice.getFrameLength();
         File testAudioPath = new File(getTestAudioFilePath(audioFileName));
 
@@ -174,12 +194,22 @@ public class PicovoiceTest {
         short[] picovoiceFrame = new short[frameLen];
         int numBytesRead;
         while ((numBytesRead = audioInputStream.read(pcm)) != -1) {
-
             if (numBytesRead / byteDepth == frameLen) {
                 ByteBuffer.wrap(pcm).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(picovoiceFrame);
                 picovoice.process(picovoiceFrame);
             }
         }
+    }
+
+    void runTestCase(
+            String audioFileName,
+            String expectedIntent,
+            Map<String, String> expectedSlots)
+            throws PicovoiceException, IOException, UnsupportedAudioFileException {
+        isWakeWordDetected = false;
+        inferenceResult = null;
+
+        processFileHelper(audioFileName);
 
         assertTrue(isWakeWordDetected);
         assertEquals(inferenceResult.getIntent(), expectedIntent);
