@@ -60,21 +60,45 @@ export default class App extends Component<Props, State> {
     if (language !== 'en') {
       rhnModelPath = `models/rhino_params_${language}.pv`;
     }
-
-    this._picovoiceManager = PicovoiceManager.create(
-      this._accessKey,
-      wakeWordPath,
-      this._wakeWordCallback.bind(this),
-      contextPath,
-      this._inferenceCallback.bind(this),
-      (error: PicovoiceErrors.PicovoiceError) => {
-        this._errorCallback(error.message);
-      },
-      0.5,
-      0.5,
-      ppnModelPath,
-      rhnModelPath,
-    );
+    try {
+      this._picovoiceManager = await PicovoiceManager.create(
+        this._accessKey,
+        wakeWordPath,
+        this._wakeWordCallback.bind(this),
+        contextPath,
+        this._inferenceCallback.bind(this),
+        (error: PicovoiceErrors.PicovoiceError) => {
+          this._errorCallback(error.message);
+        },
+        0.5,
+        0.5,
+        ppnModelPath,
+        rhnModelPath,
+      );
+      this.setState({
+        contextInfo: this._picovoiceManager?.contextInfo,
+      });
+    } catch (err) {
+      let errorMessage: string;
+      if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
+        errorMessage = err.message;
+      } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
+        errorMessage = 'AccessKey activation error';
+      } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
+        errorMessage = 'AccessKey reached its device limit';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
+      ) {
+        errorMessage = 'AccessKey refused';
+      } else if (
+        err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
+      ) {
+        errorMessage = 'AccessKey has been throttled';
+      } else {
+        errorMessage = err.toString();
+      }
+      this._errorCallback(errorMessage);
+    }
   }
 
   async componentWillUnmount() {
@@ -137,7 +161,7 @@ export default class App extends Component<Props, State> {
     });
 
     try {
-      await this._startPicovoice();
+      await this._picovoiceManager?.start();
       this.setState({
         buttonText: 'Stop',
         buttonDisabled: false,
@@ -147,37 +171,6 @@ export default class App extends Component<Props, State> {
     } catch (e: any) {
       this._errorCallback(e.message);
     }
-  }
-
-  async _startPicovoice() {
-    try {
-      await this._picovoiceManager?.start();
-      this.setState({
-        contextInfo: this._picovoiceManager?.contextInfo,
-      });
-    } catch (err) {
-      let errorMessage: string;
-      if (err instanceof PicovoiceErrors.PicovoiceInvalidArgumentError) {
-        errorMessage = `${err.message}\nPlease make sure your accessKey '${this._accessKey}'' is a valid access key.`;
-      } else if (err instanceof PicovoiceErrors.PicovoiceActivationError) {
-        errorMessage = 'AccessKey activation error';
-      } else if (err instanceof PicovoiceErrors.PicovoiceActivationLimitError) {
-        errorMessage = 'AccessKey reached its device limit';
-      } else if (
-        err instanceof PicovoiceErrors.PicovoiceActivationRefusedError
-      ) {
-        errorMessage = 'AccessKey refused';
-      } else if (
-        err instanceof PicovoiceErrors.PicovoiceActivationThrottledError
-      ) {
-        errorMessage = 'AccessKey has been throttled';
-      } else {
-        errorMessage = err.toString();
-      }
-      this._errorCallback(errorMessage);
-    }
-
-    return false;
   }
 
   async _stopProcessing() {
@@ -211,10 +204,6 @@ export default class App extends Component<Props, State> {
   }
 
   async showContextInfo() {
-    if (!this.state.contextInfo) {
-      await this._startPicovoice();
-      await this._stopProcessing();
-    }
     if (!this.state.isError) {
       this.setState({ showContextInfo: true });
     }
