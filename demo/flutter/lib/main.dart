@@ -69,7 +69,6 @@ class _MyAppState extends State<MyApp> {
     } catch (_) {
       errorCallback(PicovoiceException(
           "Could not find `params.json`. Ensure 'prepare_demo.dart' script was run before launching the demo."));
-      return;
     }
 
     String platform = Platform.isAndroid
@@ -87,14 +86,33 @@ class _MyAppState extends State<MyApp> {
         language != "en" ? "assets/models/porcupine_params_$language.pv" : null;
     String? rhinoModelPath =
         language != "en" ? "assets/models/rhino_params_$language.pv" : null;
-    _picovoiceManager = PicovoiceManager.create(accessKey, wakeWordPath,
-        wakeWordCallback, contextPath, inferenceCallback,
-        porcupineModelPath: porcupineModelPath,
-        rhinoModelPath: rhinoModelPath,
-        processErrorCallback: errorCallback);
-    setState(() {
-      isButtonDisabled = false;
-    });
+
+    try {
+      _picovoiceManager = await PicovoiceManager.create(accessKey, wakeWordPath,
+          wakeWordCallback, contextPath, inferenceCallback,
+          porcupineModelPath: porcupineModelPath,
+          rhinoModelPath: rhinoModelPath,
+          processErrorCallback: errorCallback);
+      setState(() {
+        isButtonDisabled = false;
+        contextInfo = _picovoiceManager!.contextInfo;
+      });
+    } on PicovoiceInvalidArgumentException catch (ex) {
+      errorCallback(PicovoiceInvalidArgumentException(ex.message));
+    } on PicovoiceActivationException {
+      errorCallback(
+          PicovoiceActivationException("AccessKey activation error."));
+    } on PicovoiceActivationLimitException {
+      errorCallback(PicovoiceActivationLimitException(
+          "AccessKey reached its device limit."));
+    } on PicovoiceActivationRefusedException {
+      errorCallback(PicovoiceActivationRefusedException("AccessKey refused."));
+    } on PicovoiceActivationThrottledException {
+      errorCallback(PicovoiceActivationThrottledException(
+          "AccessKey has been throttled."));
+    } on PicovoiceException catch (ex) {
+      errorCallback(ex);
+    }
   }
 
   void wakeWordCallback() {
@@ -155,38 +173,6 @@ class _MyAppState extends State<MyApp> {
     return printText;
   }
 
-  Future<bool> _startPicovoice() async {
-    if (_picovoiceManager == null) {
-      throw PicovoiceInvalidStateException(
-          "_picovoiceManager not initialized.");
-    }
-
-    try {
-      await _picovoiceManager!.start();
-      setState(() {
-        contextInfo = _picovoiceManager!.contextInfo;
-      });
-      return true;
-    } on PicovoiceInvalidArgumentException catch (ex) {
-      errorCallback(PicovoiceInvalidArgumentException(
-          "${ex.message}\nEnsure your accessKey '$accessKey' is valid."));
-    } on PicovoiceActivationException {
-      errorCallback(
-          PicovoiceActivationException("AccessKey activation error."));
-    } on PicovoiceActivationLimitException {
-      errorCallback(PicovoiceActivationLimitException(
-          "AccessKey reached its device limit."));
-    } on PicovoiceActivationRefusedException {
-      errorCallback(PicovoiceActivationRefusedException("AccessKey refused."));
-    } on PicovoiceActivationThrottledException {
-      errorCallback(PicovoiceActivationThrottledException(
-          "AccessKey has been throttled."));
-    } on PicovoiceException catch (ex) {
-      errorCallback(ex);
-    }
-    return false;
-  }
-
   Future<void> _startProcessing() async {
     if (isProcessing) {
       return;
@@ -196,12 +182,20 @@ class _MyAppState extends State<MyApp> {
       isButtonDisabled = true;
     });
 
-    if (await _startPicovoice()) {
+    if (_picovoiceManager == null) {
+      throw PicovoiceInvalidStateException(
+          "_picovoiceManager not initialized.");
+    }
+
+    try {
+      await _picovoiceManager!.start();
       setState(() {
         isProcessing = true;
         rhinoText = "Listening for '$wakeWordName'...";
         isButtonDisabled = false;
       });
+    } on PicovoiceException catch (ex) {
+      errorCallback(ex);
     }
   }
 
@@ -227,17 +221,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   _showContextInfo(context) async {
-    if (contextInfo == null) {
-      setState(() {
-        isProcessing = true;
-        isButtonDisabled = true;
-      });
-      if (await _startPicovoice()) {
-        await _stopProcessing();
-      } else {
-        return;
-      }
-    }
     showDialog(
         context: context,
         builder: (BuildContext context) {

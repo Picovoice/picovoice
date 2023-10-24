@@ -190,10 +190,10 @@ packages:
   picovoice_flutter:
     dependency: "direct main"
     description:
-      name: picovoice_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.3"
+      path: "../../sdk/flutter"
+      relative: true
+    source: path
+    version: "3.0.0"
   platform:
     dependency: transitive
     description:
@@ -211,10 +211,10 @@ packages:
   porcupine_flutter:
     dependency: transitive
     description:
-      name: porcupine_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.2"
+      path: "../../resources/porcupine/binding/flutter"
+      relative: true
+    source: path
+    version: "3.0.0"
   process:
     dependency: transitive
     description:
@@ -225,10 +225,10 @@ packages:
   rhino_flutter:
     dependency: transitive
     description:
-      name: rhino_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.3"
+      path: "../../resources/rhino/binding/flutter"
+      relative: true
+    source: path
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
