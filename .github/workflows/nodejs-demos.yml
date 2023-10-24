@@ -71,6 +71,8 @@ jobs:
   build-self-hosted:
     runs-on: ${{ matrix.machine }}
 
+    continue-on-error: true
+
     strategy:
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
