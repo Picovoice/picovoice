@@ -96,6 +96,7 @@ export function usePicovoice(): {
                 "Use the 'error' state to monitor for errors in the React SDK."
             );
           }
+          PicovoiceWorker.setSdk('react');
           picovoiceRef.current = await PicovoiceWorker.create(
             accessKey,
             keyword,

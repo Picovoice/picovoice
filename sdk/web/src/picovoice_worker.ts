@@ -41,6 +41,7 @@ export class PicovoiceWorker {
   private readonly _frameLength: number;
   private readonly _sampleRate: number;
   private readonly _contextInfo: string;
+  private static _sdk: string = 'web';
 
   private constructor(
     worker: Worker,
@@ -90,6 +91,11 @@ export class PicovoiceWorker {
   get worker(): Worker {
     return this._worker;
   }
+
+  public static setSdk(sdk: string): void {
+    PicovoiceWorker._sdk = sdk;
+  }
+
   /**
    * Creates an instance of PicovoiceWorker.
    *
@@ -207,6 +213,7 @@ export class PicovoiceWorker {
     worker.postMessage({
       command: 'init',
       accessKey: accessKey,
+      sdk: this._sdk,
       options: rest,
       ...picovoiceArgs,
     });

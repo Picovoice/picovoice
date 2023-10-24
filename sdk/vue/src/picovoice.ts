@@ -129,6 +129,7 @@ export function usePicovoice(): PicovoiceVue {
             "Use the 'error' state to monitor for errors in the Vue SDK."
           );
         }
+        PicovoiceWorker.setSdk('vue');
         picovoiceRef.value = await PicovoiceWorker.create(
           accessKey,
           keyword,

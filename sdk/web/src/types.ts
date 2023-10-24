@@ -57,6 +57,7 @@ export type PicovoiceWorkerInitRequest = {
   contextPath: string;
   rhinoSensitivity: number;
   rhinoModelPath: string;
+  sdk: string;
   options: PicovoiceOptions;
 };
 

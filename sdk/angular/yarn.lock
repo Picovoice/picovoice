@@ -1665,26 +1665,20 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/picovoice-web@~2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-2.2.0.tgz#12fcbbbf4e10d5b907993eb9b4d5208fea0077af"
-  integrity sha512-QXOCoDZsYd0TPGdFb4sPaLJpPNeRobmXHhMYH3wOTS/ZsFmYAnS6ipsuSaa+MSLM8nK5aAZF6R+7kfIEWm1qLg==
+"@picovoice/picovoice-web@file:../web":
+  version "3.0.0"
   dependencies:
-    "@picovoice/porcupine-web" "=2.2.0"
-    "@picovoice/rhino-web" "=2.2.0"
+    "@picovoice/porcupine-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-web-3.0.0-3d12372c-fea2-4263-a32f-3d2650839a15-1697762569627/node_modules/resources/porcupine/binding/web"
+    "@picovoice/rhino-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-web-3.0.0-3d12372c-fea2-4263-a32f-3d2650839a15-1697762569627/node_modules/resources/rhino/binding/web"
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/porcupine-web@=2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-2.2.0.tgz#d02fe8dc3ef7fd4baa8516dd45703f40c09adc8a"
-  integrity sha512-Sd6dK0fkNbZ/+XTm05vLN5E6LHHPY4vvHLSzdTF5nKDD52JBtd6g9WKpBjuHmfoF3YxqdyxqjeBFNdLtMFjZsQ==
+"@picovoice/porcupine-web@file:../../resources/porcupine/binding/web":
+  version "3.0.0"
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/rhino-web@=2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-2.2.0.tgz#fb221654e3c0977b8b1b417f42bf0eb510cf6750"
-  integrity sha512-2ckCNq9ayVQ6GKEZ0OFXy7NIdEIOiyXsGQPjDfHRDKhMf7EATnR4AgVIEXLwKCSg8WfFCZkXOw33E3V47QEUAA==
+"@picovoice/rhino-web@file:../../resources/rhino/binding/web":
+  version "3.0.0"
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
@@ -3027,9 +3021,9 @@ commander@^8.0.0:
   integrity sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==
 
 commander@^9.2.0:
-  version "9.4.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.1.tgz#d1dd8f2ce6faf93147295c0df13c7c21141cfbdd"
-  integrity sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==
+  version "9.5.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
+  integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
 
 common-tags@^1.8.0:
   version "1.8.2"

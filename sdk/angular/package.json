@@ -36,7 +36,7 @@
     "@angular-eslint/template-parser": "~13.5.0",
     "@angular/cli": "~13.3.9",
     "@angular/compiler-cli": "~13.3.0",
-    "@picovoice/picovoice-web": "~2.2.0",
+    "@picovoice/picovoice-web": "file:../web",
     "@picovoice/web-voice-processor": "~4.0.8",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
