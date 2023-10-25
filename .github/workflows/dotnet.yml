@@ -71,28 +71,6 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
 
-    # *********** REMOVE AFTER RELEASE **********************
-    - name: mkdir NuGet directory
-      run: mkdir -p ${{ matrix.nuget-path }}
-
-    - name: Add local NuGet source
-      run: dotnet nuget add source local-nuget
-
-    - name: Pack Porcupine for local ref
-      run: dotnet pack -c Release
-      working-directory: resources/porcupine/binding/dotnet
-
-    - name: Copy Porcupine Nuget
-      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ${{ matrix.nuget-path }}
-
-    - name: Pack Rhino for local ref
-      run: dotnet pack -c Release
-      working-directory: resources/rhino/binding/dotnet
-
-    - name: Copy Rhino Nuget
-      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ${{ matrix.nuget-path }}
-    # ******************************************************
-
     - name: Build binding
       run: dotnet build Picovoice/Picovoice.csproj --framework ${{ matrix.binding-framework }} -v n
 
@@ -113,30 +91,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         submodules: recursive
-
-    # *********** REMOVE AFTER RELEASE **********************
-    - name: mkdir NuGet directory
-      run: rm -rf ~/.nuget/NuGet/local-nuget && mkdir -p ~/.nuget/NuGet/local-nuget
-      continue-on-error: true
-
-    - name: Add local NuGet source
-      run: dotnet nuget add source local-nuget
-      continue-on-error: true
-
-    - name: Pack Porcupine for local ref
-      run: dotnet pack -c Release
-      working-directory: resources/porcupine/binding/dotnet
-
-    - name: Copy Porcupine Nuget
-      run: cp ../../resources/porcupine/binding/dotnet/Porcupine/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
-
-    - name: Pack Rhino for local ref
-      run: dotnet pack -c Release
-      working-directory: resources/rhino/binding/dotnet
-
-    - name: Copy Rhino Nuget
-      run: cp ../../resources/rhino/binding/dotnet/Rhino/bin/Release/*.nupkg ~/.nuget/NuGet/local-nuget
-    # ******************************************************
 
     - name: Build binding
       run: dotnet build Picovoice/Picovoice.csproj --framework net6.0 -v n
