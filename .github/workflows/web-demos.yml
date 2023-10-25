@@ -36,18 +36,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Local Porcupine dependency
-      run: yarn && yarn copywasm && yarn copyppn && yarn build
-      working-directory: resources/porcupine/binding/web
-
-    - name: Local Rhino dependency
-      run: yarn && yarn copywasm && yarn build
-      working-directory: resources/rhino/binding/web
-
-    - name: Local dependency
-      run: yarn && yarn build
-      working-directory: sdk/web
-
     - name: Pre-build dependencies
       run: npm install yarn
 
@@ -69,18 +57,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: lts/*
-
-    - name: Local Porcupine dependency
-      run: yarn && yarn copywasm && yarn copyppn && yarn build
-      working-directory: resources/porcupine/binding/web
-
-    - name: Local Rhino dependency
-      run: yarn && yarn copywasm && yarn build
-      working-directory: resources/rhino/binding/web
-
-    - name: Local dependency
-      run: yarn && yarn build
-      working-directory: sdk/nodejs
 
     - name: Pre-build dependencies
       run: npm install yarn
