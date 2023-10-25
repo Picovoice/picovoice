@@ -11,7 +11,7 @@ PODS:
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec`)
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
   - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v3.0/binding/ios/Rhino-iOS.podspec`)
   - SwiftySound
@@ -23,7 +23,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec
+    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec
   Porcupine-iOS:
     :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec
   Rhino-iOS:
