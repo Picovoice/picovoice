@@ -9,10 +9,6 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - Picovoice-iOS (3.0.0):
-    - ios-voice-processor (~> 1.1.0)
-    - Porcupine-iOS (~> 3.0.0)
-    - Rhino-iOS (~> 3.0.0)
   - Porcupine-iOS (3.0.0):
     - ios-voice-processor (~> 1.1.0)
   - porcupine_flutter (3.0.0):
@@ -29,15 +25,14 @@ DEPENDENCIES:
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec`)
-  - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
   - porcupine_flutter (from `.symlinks/plugins/porcupine_flutter/ios`)
-  - Rhino-iOS (from `https://raw.githubusercontent.com/Picovoice/rhino/v3.0/binding/ios/Rhino-iOS.podspec`)
   - rhino_flutter (from `.symlinks/plugins/rhino_flutter/ios`)
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Porcupine-iOS
+    - Rhino-iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -48,14 +43,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/ios"
-  Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec
-  Porcupine-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec
   porcupine_flutter:
     :path: ".symlinks/plugins/porcupine_flutter/ios"
-  Rhino-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/rhino/v3.0/binding/ios/Rhino-iOS.podspec
   rhino_flutter:
     :path: ".symlinks/plugins/rhino_flutter/ios"
 
@@ -65,12 +54,11 @@ SPEC CHECKSUMS:
   integration_test: a1e7d09bd98eca2fc37aefd79d4f41ad37bdbbe5
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
   path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
-  Picovoice-iOS: a1aefe4fbc54bb698dd1663d7dee6a5bef9f1c5c
   Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
   porcupine_flutter: f01557d2a5fe6618ffa1707a2b94573bd16a78b6
   Rhino-iOS: b92978104bfad32da25b9eeaa4f0628b86ffcee9
   rhino_flutter: 78d56c9fa0355e4ee94fa59cb3a0d210b5d1e3f9
 
-PODFILE CHECKSUM: 851472b6fcbfae998d1b734c9dfb4837924a1691
+PODFILE CHECKSUM: b95e0c370474df3a1db278b722738a6230f01f51
 
 COCOAPODS: 1.11.3

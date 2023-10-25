@@ -13,10 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_voice_processor: ^1.1.0
-  porcupine_flutter:
-    path: ../../resources/porcupine/binding/flutter
-  rhino_flutter:
-    path: ../../resources/rhino/binding/flutter
+  porcupine_flutter: ^3.0.0
+  rhino_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:
