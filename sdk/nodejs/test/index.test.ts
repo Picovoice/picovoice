@@ -199,9 +199,37 @@ describe('getter functions', () => {
       () => {}
     );
 
-    expect(handle.porcupineVersion).toEqual('2.2.0');
-    expect(handle.rhinoVersion).toEqual('2.2.0');
-    expect(handle.version).toEqual('2.2.0');
+    expect(handle.porcupineVersion).toEqual('3.0.0');
+    expect(handle.rhinoVersion).toEqual('3.0.0');
+    expect(handle.version).toEqual('3.0.0');
+
+    handle.release();
+  });
+});
+
+describe('reset', () => {
+  test('picovoice should reset state', () => {
+    let res: RhinoInference | null = null;
+    let handle: Picovoice | null = null;
+
+    function keywordCallback() {
+      handle?.reset();
+    }
+
+    function inferenceCallback(inference: RhinoInference) {
+      res = inference;
+    }
+
+    handle = new Picovoice(
+      ACCESS_KEY,
+      getKeywordPathsByLanguage("en", "picovoice"),
+      keywordCallback,
+      getContextPathsByLanguage("en", "coffee_maker"),
+      inferenceCallback
+    );
+
+    processWaveFile(handle, getAudioFileByLanguage("en", "picovoice-coffee.wav"));
+    expect(res).toEqual(null);
 
     handle.release();
   });

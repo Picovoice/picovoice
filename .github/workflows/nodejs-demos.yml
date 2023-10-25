@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [14.x, 16.x, 18.x, 20.x]
+        node-version: [16.x, 18.x, 20.x]
         include:
         - os: ubuntu-latest
           platform: linux
@@ -46,8 +46,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Pre-build dependencies
-      run: npm install yarn
+    - name: Local Porcupine dependency
+      run: yarn && yarn build
+      working-directory: resources/porcupine/binding/nodejs
+
+    - name: Local Rhino dependency
+      run: yarn && yarn build
+      working-directory: resources/rhino/binding/nodejs
+
+    - name: Local dependency
+      run: yarn && yarn build
+      working-directory: sdk/nodejs
 
     - name: Install dependencies
       run: yarn install
@@ -63,6 +72,7 @@ jobs:
     runs-on: ${{ matrix.machine }}
 
     strategy:
+      fail-fast: false
       matrix:
         machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
         include:
@@ -88,6 +98,18 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install --global yarn
+
+    - name: Local Porcupine dependency
+      run: yarn && yarn build && rm -rf node_modules
+      working-directory: resources/porcupine/binding/nodejs
+
+    - name: Local Rhino dependency
+      run: yarn && yarn build && rm -rf node_modules
+      working-directory: resources/rhino/binding/nodejs
+
+    - name: Local dependency
+      run: yarn && yarn build && rm -rf node_modules
+      working-directory: sdk/nodejs
 
     - name: Install dependencies
       run: yarn install
