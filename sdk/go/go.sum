@@ -1,12 +1,4 @@
-github.com/Picovoice/porcupine/binding/go/v2 v2.2.1 h1:sAXWRAt5If2Evfrs2BT+N1HSVMD2X8NF/3hyiMyrOKw=
-github.com/Picovoice/porcupine/binding/go/v2 v2.2.1/go.mod h1:09YbXv1wD+hAav5oygCk/Q3teUeu0vho4BXERzpeGWM=
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231016184257-1a3cc3580184 h1:z+JSvOtpeMYrzvYGCFDlqg95siqOakrF5Kmbyt15e7E=
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231016184257-1a3cc3580184/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231018000915-ec6d90b619d0 h1:cjVhAi9yty8px/FdO7mF/XsOticZKIuu9fu7pHEFaNs=
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0-20231018000915-ec6d90b619d0/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
-github.com/Picovoice/rhino/binding/go/v2 v2.2.1 h1:l98KDYu0JmzVTkU+4h1r8m4LYfwPp5TVNkUGNp6l4TM=
-github.com/Picovoice/rhino/binding/go/v2 v2.2.1/go.mod h1:/DNCpNLIENfz9A85bHUUDTW8YSHFcmPDDDA/XZPQgbI=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231017225539-a3e14757d47d h1:7cEC4aUrIOEIBG/F1He1n1ZOSll+h9kdhoInn59RtgM=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231017225539-a3e14757d47d/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231018001136-8c4970978a76 h1:mQzBR4mEstBfxdPimYNvLkKwXVzsw7NRD2h+8wIqfMI=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0-20231018001136-8c4970978a76/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.0 h1:2tse/DiV2G7B15qxHkphtHjqq0MyR7983RZ6QiTHfAI=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.0/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.0 h1:DnAMuXip/fM+BrKoYu0oovisAQ+QSGYTPh+2AY7qF7E=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.0/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
