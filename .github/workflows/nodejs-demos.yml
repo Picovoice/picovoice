@@ -46,18 +46,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Local Porcupine dependency
-      run: yarn && yarn build
-      working-directory: resources/porcupine/binding/nodejs
-
-    - name: Local Rhino dependency
-      run: yarn && yarn build
-      working-directory: resources/rhino/binding/nodejs
-
-    - name: Local dependency
-      run: yarn && yarn build
-      working-directory: sdk/nodejs
-
     - name: Install dependencies
       run: yarn install
 
@@ -98,18 +86,6 @@ jobs:
 
     - name: Pre-build dependencies
       run: npm install --global yarn
-
-    - name: Local Porcupine dependency
-      run: yarn && yarn build && rm -rf node_modules
-      working-directory: resources/porcupine/binding/nodejs
-
-    - name: Local Rhino dependency
-      run: yarn && yarn build && rm -rf node_modules
-      working-directory: resources/rhino/binding/nodejs
-
-    - name: Local dependency
-      run: yarn && yarn build && rm -rf node_modules
-      working-directory: sdk/nodejs
 
     - name: Install dependencies
       run: yarn install

@@ -46,14 +46,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Local Porcupine dependency
-      run: yarn && yarn build
-      working-directory: resources/porcupine/binding/nodejs
-
-    - name: Local Rhino dependency
-      run: yarn && yarn build
-      working-directory: resources/rhino/binding/nodejs
-
     - name: Install dependencies
       run: yarn install
 
@@ -72,14 +64,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-
-    - name: Local Porcupine dependency
-      run: yarn && yarn build && rm -rf node_modules
-      working-directory: resources/porcupine/binding/nodejs
-
-    - name: Local Rhino dependency
-      run: yarn && yarn build && rm -rf node_modules
-      working-directory: resources/rhino/binding/nodejs
 
     - name: Install dependencies
       run: yarn install
