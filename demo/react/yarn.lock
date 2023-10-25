@@ -1545,25 +1545,33 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@picovoice/picovoice-react@file:../../sdk/react":
+"@picovoice/picovoice-react@~3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-react/-/picovoice-react-3.0.0.tgz#0bcc6f595ef6b7ac3b61c65b9aca1858880988ce"
+  integrity sha512-vv+gWCe+yCKWgHIaz2GcgsLx1YMgUy+VOTLMIyrc4YKNMFhf2jspDWwPauW2ImTL+M70FKX07N08FXTIJUNiog==
   dependencies:
-    "@picovoice/picovoice-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-react-3.0.0-cb02a37c-77ca-4033-b39a-0c58389f5afc-1697762915403/node_modules/@picovoice/web"
+    "@picovoice/picovoice-web" "=3.0.0"
 
-"@picovoice/picovoice-web@file:../../sdk/web":
+"@picovoice/picovoice-web@=3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-3.0.0.tgz#e7e8dccbb90634db6db7b04ce31dcb830076f9ac"
+  integrity sha512-A0QY7FO0BomX1g/FMtMUtuSJQnvD5lvSLBaJe1B3iIZxGvdnR45fkLyLXDUEkQD+7wbctdhKWjfhnnOZMbBaGA==
   dependencies:
-    "@picovoice/porcupine-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-web-3.0.0-05e563af-015f-4b82-98e1-fd3477d5e9f4-1697762915406/node_modules/resources/porcupine/binding/web"
-    "@picovoice/rhino-web" "file:../../../../../.cache/yarn/v6/npm-@picovoice-picovoice-web-3.0.0-05e563af-015f-4b82-98e1-fd3477d5e9f4-1697762915406/node_modules/resources/rhino/binding/web"
+    "@picovoice/porcupine-web" "=3.0.0"
+    "@picovoice/rhino-web" "=3.0.0"
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/porcupine-web@file:../../resources/porcupine/binding/web":
+"@picovoice/porcupine-web@=3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.0.tgz#e97e5e90b37af2b4938637efcaaf3cedc9fad6a3"
+  integrity sha512-zwhdh2YHy867wwp6G9YQU0q94VCveOQAAjeeDNFK/poJVtCaVc56kFH7wW0odkJ6s49ob8rQwOBdg7iPpZD0Fw==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/rhino-web@file:../../resources/rhino/binding/web":
+"@picovoice/rhino-web@=3.0.0":
   version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-3.0.0.tgz#d3cf3a4d4062726e2f7be5926122e8833e8857a7"
+  integrity sha512-P0sA19lpuh1szkzXgfRxR1bhldoLqkfQP0Ok9uViZYYfX6jcknEziYhNIiAqGdVOexuPbXupAmNsTAru7FfuqQ==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
