@@ -4,15 +4,6 @@ plugins {
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1265/'
-    }
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1268/'
-    }
-    maven {
-        url 'https://s01.oss.sonatype.org/content/repositories/aipicovoice-1270/'
-    }
 }
 
 sourceSets {
