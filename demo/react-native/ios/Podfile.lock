@@ -309,7 +309,7 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec`)
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -361,7 +361,7 @@ EXTERNAL SOURCES:
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec
+    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec
   Porcupine-iOS:
     :podspec: https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec
   porcupine-react-native:

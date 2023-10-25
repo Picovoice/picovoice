@@ -435,7 +435,7 @@ DEPENDENCIES:
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
   - OpenSSL-Universal (= 1.1.1100)
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec`)
   - "picovoice-react-native (from `../node_modules/@picovoice/picovoice-react-native`)"
   - Porcupine-iOS (from `https://raw.githubusercontent.com/Picovoice/porcupine/v3.0/binding/ios/Porcupine-iOS.podspec`)
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
@@ -507,7 +507,7 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
   Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0-ios/sdk/ios/Picovoice-iOS.podspec
+    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/v3.0/sdk/ios/Picovoice-iOS.podspec
   picovoice-react-native:
     :path: "../node_modules/@picovoice/picovoice-react-native"
   Porcupine-iOS:
