@@ -55,14 +55,6 @@ jobs:
         toolchain: stable
         override: true
 
-    - name: Local Porcupine dependency
-      run: bash copy.sh && cargo build
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Local Rhino dependency
-      run: bash copy.sh && cargo build
-      working-directory: resources/rhino/binding/rust
-
     - name: Rust build
       run: cargo build --verbose
 
@@ -86,14 +78,6 @@ jobs:
       with:
         toolchain: stable
         override: true
-
-    - name: Local Porcupine dependency
-      run: bash copy.sh && cargo build
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Local Rhino dependency
-      run: bash copy.sh && cargo build
-      working-directory: resources/rhino/binding/rust
 
     - name: Rust build
       run: cargo build --verbose

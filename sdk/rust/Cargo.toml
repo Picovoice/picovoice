@@ -25,8 +25,8 @@ path = "src/lib.rs"
 crate_type = ["lib"]
 
 [dependencies]
-pv_porcupine = { path = "../../resources/porcupine/binding/rust" }
-pv_rhino = { path = "../../resources/rhino/binding/rust" }
+pv_porcupine = "=3.0.0"
+pv_rhino = "=3.0.0"
 
 [dev-dependencies]
 itertools = "0.10.1"
