@@ -50,23 +50,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install wheel
 
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: ppn
-      working-directory: resources/porcupine/binding/python
-      run: |
-        python setup.py sdist bdist_wheel && pip install dist/pvporcupine-3.0.0-py3-none-any.whl
-
-    - name: rhn
-      working-directory: resources/rhino/binding/python
-      run: |
-        python setup.py sdist bdist_wheel && pip install dist/pvrhino-3.0.0-py3-none-any.whl
-
-    - name: pv
-      working-directory: sdk/python
-      run: |
-        python setup.py sdist bdist_wheel && pip install dist/picovoice-3.0.0-py3-none-any.whl
-    # ********************************************************
-
     - name: Install dependencies
       run: pip install -r requirements.txt
 
@@ -108,23 +91,6 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         pip3 install wheel
-
-    # ************** REMOVE AFTER RELEASE ********************
-    - name: ppn
-      working-directory: resources/porcupine/binding/python
-      run: |
-        pip3 uninstall -y pvporcupine && python3 setup.py sdist bdist_wheel && pip3 install dist/pvporcupine-3.0.0-py3-none-any.whl
-
-    - name: rhn
-      working-directory: resources/rhino/binding/python
-      run: |
-        pip3 uninstall -y pvrhino && python3 setup.py sdist bdist_wheel && pip3 install dist/pvrhino-3.0.0-py3-none-any.whl
-
-    - name: pv
-      working-directory: sdk/python
-      run: |
-        pip3 uninstall -y picovoice && python3 setup.py sdist bdist_wheel && pip3 install dist/picovoice-3.0.0-py3-none-any.whl
-    # ********************************************************
 
     - name: Install dependencies
       run: pip3 install -r requirements.txt
