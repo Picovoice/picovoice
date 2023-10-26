@@ -257,7 +257,8 @@ class Picovoice {
   }
 
   /**
-   * Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
+   * Resets the internal state of Picovoice. It should be called before processing a new stream of audio 
+   * or when Picovoice was stopped whilst processing a stream of audio.
    */
   public async reset(): Promise<void> {
     if (this._porcupine === null || this._rhino === null) {
