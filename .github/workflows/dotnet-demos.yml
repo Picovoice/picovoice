@@ -29,10 +29,13 @@ jobs:
         include:
         - os: ubuntu-latest
           platform: linux
+          nuget-path: ~/.nuget/NuGet/local-nuget
         - os: windows-latest
           platform: windows
+          nuget-path: ~/AppData/Roaming/NuGet/local-nuget
         - os: macos-latest
           platform: mac
+          nuget-path: ~/.nuget/NuGet/local-nuget
 
     steps:
     - uses: actions/checkout@v3

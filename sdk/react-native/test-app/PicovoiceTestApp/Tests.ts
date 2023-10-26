@@ -186,7 +186,68 @@ async function parametersTest(testcases: any): Promise<Result[]> {
   return results;
 }
 
+async function resetTest(testcase: any): Promise<Result> {
+  const result: Result = {testName: 'Reset test', success: false};
+  let picovoice = null;
+  try {
+    const keywordPath = getPath(
+      `keyword_files/${testcase.language}/${testcase.keywordName}_${platform}.ppn`,
+    );
+    const contextPath = getPath(
+      `context_files/${testcase.language}/${testcase.contextName}_${platform}.rhn`,
+    );
+    const audioFilePath = getPath(`audio_samples/${testcase.audioFile}`);
+    const porcupineModelPath = getPath('model_files/porcupine_params.pv');
+    const rhinoModelPath = getPath('model_files/rhino_params.pv');
+
+    let wakewordDetected = false;
+    let inference = null;
+
+    const wakeWordCallback = async () => {
+      wakewordDetected = true;
+      await picovoice.reset();
+    };
+
+    const inferenceCallback = (newInference: any) => {
+      if (newInference.isFinalized) {
+        inference = newInference;
+      }
+    };
+
+    picovoice = await Picovoice.create(
+      accessKey,
+      keywordPath,
+      wakeWordCallback,
+      contextPath,
+      inferenceCallback,
+      0.5,
+      0.5,
+      porcupineModelPath,
+      rhinoModelPath,
+    );
+    await processAudio(picovoice, audioFilePath);
+
+    if (!wakewordDetected) {
+      result.success = false;
+      result.errorString = 'Wakeword was not detected';
+    } else if (inference) {
+      result.success = false;
+      result.errorString = 'Inference should have been null after reset.';
+    } else {
+      result.success = true;
+    }
+    await picovoice.delete();
+  } catch (error) {
+    result.success = false;
+    result.errorString = `${error}`;
+  }
+  return result;
+}
+
 export async function runPicovoiceTests(): Promise<Result[]> {
   const parameterResults = await parametersTest(testData.tests.parameters);
-  return [...parameterResults];
+  const resetResult = await resetTest(
+    testData.tests.parameters.find(t => t.language === 'en'),
+  );
+  return [...parameterResults, resetResult];
 }

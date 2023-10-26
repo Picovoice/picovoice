@@ -90,6 +90,42 @@ mod tests {
         )
     }
 
+    fn process_file_helper<W: FnMut(), I: FnMut(rhino::RhinoInference)>(
+        picovoice: &mut Picovoice<W, I>,
+        audio_file_name: &str,
+        max_process_count: i32
+    ) {
+        let soundfile_path = format!(
+            "{}{}{}",
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../resources/audio_samples/",
+            audio_file_name
+        );
+
+        let mut reader = BufReader::new(File::open(&soundfile_path).unwrap());
+        reader.seek_relative(44).unwrap(); // Skip .wav header
+
+        let i16_size = std::mem::size_of::<i16>();
+        let frame_length_bytes = picovoice.frame_length() as usize * i16_size;
+
+        let mut frame_buffer = vec![0u8; frame_length_bytes];
+
+        let mut processed = 0;
+        while reader.read_exact(&mut frame_buffer).is_ok() {
+            let frame_samples: Vec<i16> = frame_buffer
+                .chunks(i16_size)
+                .map(|i16_slice| {
+                    i16::from_le_bytes(i16_slice.try_into().expect("Incorrect i16 slice size"))
+                })
+                .collect();
+            picovoice.process(&frame_samples).unwrap();
+            if max_process_count != -1 && processed >= max_process_count {
+                break;
+            }
+            processed += 1;
+        }
+    }
+
     fn run_picovoice_test(
         language: &str,
         keyword: &str,
@@ -128,29 +164,7 @@ mod tests {
         .init()
         .expect("Failed to init Picovoice");
 
-        let soundfile_path = format!(
-            "{}{}{}",
-            env!("CARGO_MANIFEST_DIR"),
-            "/../../resources/audio_samples/",
-            audio_file_name
-        );
-
-        let mut reader = BufReader::new(File::open(&soundfile_path).unwrap());
-        reader.seek_relative(44).unwrap(); // Skip .wav header
-
-        let i16_size = std::mem::size_of::<i16>();
-        let frame_length_bytes = picovoice.frame_length() as usize * i16_size;
-
-        let mut frame_buffer = vec![0u8; frame_length_bytes];
-        while reader.read_exact(&mut frame_buffer).is_ok() {
-            let frame_samples: Vec<i16> = frame_buffer
-                .chunks(i16_size)
-                .map(|i16_slice| {
-                    i16::from_le_bytes(i16_slice.try_into().expect("Incorrect i16 slice size"))
-                })
-                .collect();
-            picovoice.process(&frame_samples).unwrap();
-        }
+        process_file_helper(&mut picovoice, audio_file_name, -1);
 
         assert_eq!(
             *is_wake_word_detected.lock().unwrap(),
@@ -175,6 +189,43 @@ mod tests {
             inference.slots, slots,
             "`{language}` slots failed for keyword `{keyword}` context `{context}`"
         );
+    }
+
+    #[test]
+    fn test_reset() {
+        let access_key = env::var("PV_ACCESS_KEY")
+            .expect("Pass the AccessKey in using the PV_ACCESS_KEY env variable");
+
+        let is_wake_word_detected = Arc::new(Mutex::new(false));
+        let is_inference = Arc::new(Mutex::new(false));
+
+        let wake_word_callback = || {
+            if let Ok(mut is_wake_word_detected) = is_wake_word_detected.lock() {
+                *is_wake_word_detected = true;
+            }
+        };
+
+        let inference_callback = |_| {
+            if let Ok(mut is_inference) = is_inference.lock() {
+                *is_inference = true;
+            }
+        };
+
+        let mut picovoice = PicovoiceBuilder::new(
+            access_key,
+            keyword_path_by_language("picovoice", "en"),
+            wake_word_callback,
+            context_path_by_language("coffee_maker", "en"),
+            inference_callback,
+        ).init().expect("Failed to init Picovoice");
+
+        process_file_helper(&mut picovoice, "picovoice-coffee.wav", 25);
+        assert_eq!(*is_inference.lock().unwrap(), false);
+
+        let _ = picovoice.reset();
+
+        process_file_helper(&mut picovoice, "picovoice-coffee.wav", 25);
+        assert_eq!(*is_inference.lock().unwrap(), false);
     }
 
     #[test]

@@ -33,6 +33,8 @@ import {
   PicovoiceWorkerResponse,
 } from './types';
 
+import * as PicovoiceErrors from './picovoice_errors';
+
 export {
   BuiltInKeyword,
   DetectionCallback,
@@ -53,6 +55,7 @@ export {
   PicovoiceWorkerReleaseResponse,
   PicovoiceWorkerRequest,
   PicovoiceWorkerResponse,
+  PicovoiceErrors,
   PorcupineDetection,
   PorcupineKeyword,
   PorcupineModel,

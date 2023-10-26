@@ -55,14 +55,6 @@ jobs:
         toolchain: stable
         override: true
 
-    - name: Local Porcupine dependency
-      run: ./copy.sh
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Local Rhino dependency
-      run: ./copy.sh
-      working-directory: resources/rhino/binding/rust
-
     - name: Rust build
       run: cargo build --verbose
 
@@ -84,16 +76,8 @@ jobs:
     - name: Install stable toolchain
       uses: actions-rs/toolchain@v1
       with:
-        toolchain: nightly
+        toolchain: stable
         override: true
-
-    - name: Local Porcupine dependency
-      run: ./copy.sh
-      working-directory: resources/porcupine/binding/rust
-
-    - name: Local Rhino dependency
-      run: ./copy.sh
-      working-directory: resources/rhino/binding/rust
 
     - name: Rust build
       run: cargo build --verbose

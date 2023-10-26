@@ -147,7 +147,7 @@ def main():
             require_endpoint=require_endpoint)
     except PicovoiceInvalidArgumentError as e:
         print("One or more arguments provided to Picovoice is invalid: ", args)
-        print("If all other arguments seem valid, ensure that '%s' is a valid AccessKey" % args.access_key)
+        print(e)
         raise e
     except PicovoiceActivationError as e:
         print("AccessKey activation error")

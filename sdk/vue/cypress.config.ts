@@ -9,6 +9,7 @@ export default defineConfig({
     supportFile: "cypress/support/index.ts",
     specPattern: "test/*.test.{js,jsx,ts,tsx}",
     video: false,
-    screenshotOnRunFailure: false
+    screenshotOnRunFailure: false,
+    defaultCommandTimeout: 10000,
   },
 });

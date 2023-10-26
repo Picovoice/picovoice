@@ -26,19 +26,6 @@ import ai.picovoice.android.voiceprocessor.VoiceProcessorFrameListener;
  * of the wake word or completion of in voice command inference.
  */
 public class PicovoiceManager {
-    private final Context appContext;
-    private final String accessKey;
-    private final String porcupineModelPath;
-    private final String keywordPath;
-    private final float porcupineSensitivity;
-    private final PicovoiceWakeWordCallback wakeWordCallback;
-    private final String rhinoModelPath;
-    private final String contextPath;
-    private final float rhinoSensitivity;
-    private final float endpointDurationSec;
-    private final boolean requireEndpoint;
-    private final PicovoiceInferenceCallback inferenceCallback;
-
     private final VoiceProcessor voiceProcessor;
     private final VoiceProcessorFrameListener vpFrameListener;
     private final VoiceProcessorErrorListener vpErrorListener;
@@ -49,67 +36,20 @@ public class PicovoiceManager {
     /**
      * Private constructor.
      *
-     * @param appContext           Android app context
-     * @param accessKey            AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
-     * @param porcupineModelPath   Absolute path to the file containing Porcupine's model parameters.
-     * @param keywordPath          Absolute path to Porcupine's keyword model file.
-     * @param porcupineSensitivity Wake word detection sensitivity. It should be a number within
-     *                             [0, 1]. A higher sensitivity results in fewer misses at the cost
-     *                             of increasing the false alarm rate.
-     * @param wakeWordCallback     User-defined callback invoked upon detection of the wake phrase.
-     *                             ${@link PicovoiceWakeWordCallback} defines the interface of the
-     *                             callback.
-     * @param rhinoModelPath       Absolute path to the file containing Rhino's model parameters.
-     * @param contextPath          Absolute path to file containing context parameters. A context
-     *                             represents the set of expressions (spoken commands), intents, and
-     *                             intent arguments (slots) within a domain of interest.
-     * @param rhinoSensitivity     Inference sensitivity. It should be a number within [0, 1]. A
-     *                             higher sensitivity value results in fewer misses at the cost of
-     *                             (potentially) increasing the erroneous inference rate.
-     * @param endpointDurationSec  Endpoint duration in seconds. An endpoint is a chunk of silence at the end of an
-     *                             utterance that marks the end of spoken command. It should be a positive number
-     *                             within [0.5, 5]. A lower endpoint duration reduces delay and improves
-     *                             responsiveness. A higher endpoint duration assures Rhino doesn't return inference
-     *                             pre-emptively in case the user pauses before finishing the request.
-     * @param requireEndpoint      Boolean variable to indicate if Rhino should wait for a chunk of
-     *                             silence before finishing inference.
-     * @param inferenceCallback    User-defined callback invoked upon completion of intent inference.
-     *                             #{@link PicovoiceInferenceCallback} defines the interface of the
-     *                             callback.
+     * @param picovoice            An instance of the Picovoice engine.
      * @param processErrorCallback A callback that reports errors encountered while processing audio.
      */
-    private PicovoiceManager(Context appContext,
-                             String accessKey,
-                             String porcupineModelPath,
-                             String keywordPath,
-                             float porcupineSensitivity,
-                             PicovoiceWakeWordCallback wakeWordCallback,
-                             String rhinoModelPath,
-                             String contextPath,
-                             float rhinoSensitivity,
-                             float endpointDurationSec,
-                             boolean requireEndpoint,
-                             PicovoiceInferenceCallback inferenceCallback,
-                             final PicovoiceManagerErrorCallback processErrorCallback) {
-        this.appContext = appContext;
-        this.accessKey = accessKey;
-        this.porcupineModelPath = porcupineModelPath;
-        this.keywordPath = keywordPath;
-        this.porcupineSensitivity = porcupineSensitivity;
-        this.wakeWordCallback = wakeWordCallback;
-        this.rhinoModelPath = rhinoModelPath;
-        this.contextPath = contextPath;
-        this.rhinoSensitivity = rhinoSensitivity;
-        this.endpointDurationSec = endpointDurationSec;
-        this.requireEndpoint = requireEndpoint;
-        this.inferenceCallback = inferenceCallback;
-
+    private PicovoiceManager(
+            final Picovoice picovoice,
+            final PicovoiceManagerErrorCallback processErrorCallback) {
+        this.picovoice = picovoice;
         this.voiceProcessor = VoiceProcessor.getInstance();
+
         this.vpFrameListener = new VoiceProcessorFrameListener() {
             @Override
             public void onFrame(short[] frame) {
                 synchronized (voiceProcessor) {
-                    if (picovoice == null) {
+                    if (picovoice == null || !isListening) {
                         return;
                     }
                     try {
@@ -137,37 +77,50 @@ public class PicovoiceManager {
     }
 
     /**
-     * Starts recording audio from teh microphone and processes it using ${@link Picovoice}.
+     * Releases resources acquired by Picovoice.
+     */
+    public void delete() {
+        if (picovoice != null) {
+            picovoice.delete();
+            picovoice = null;
+        }
+    }
+
+    /**
+     * Resets the internal state of PicovoiceManager. It can be called to
+     * return to the wake word detection state before an inference has completed.
      *
-     * @throws PicovoiceException if there is an error with initialization of Picovoice.
+     * @throws PicovoiceException if an error is encountered while attempting to stop.
+     */
+    public void reset() throws PicovoiceException {
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot reset - resources have been released");
+        }
+
+        picovoice.reset();
+    }
+
+    /**
+     * Starts recording audio from the microphone and processes it using ${@link Picovoice}.
+     *
+     * @throws PicovoiceException if an error is encountered while attempting to start.
      */
     public void start() throws PicovoiceException {
-        if (isListening) {
-            return;
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot start - resources have been released");
         }
 
-        picovoice = new Picovoice.Builder()
-                .setAccessKey(accessKey)
-                .setPorcupineModelPath(porcupineModelPath)
-                .setKeywordPath(keywordPath)
-                .setPorcupineSensitivity(porcupineSensitivity)
-                .setWakeWordCallback(wakeWordCallback)
-                .setRhinoModelPath(rhinoModelPath)
-                .setContextPath(contextPath)
-                .setRhinoSensitivity(rhinoSensitivity)
-                .setEndpointDurationSec(endpointDurationSec)
-                .setRequireEndpoint(requireEndpoint)
-                .setInferenceCallback(inferenceCallback)
-                .build(appContext);
-        this.voiceProcessor.addFrameListener(vpFrameListener);
-        this.voiceProcessor.addErrorListener(vpErrorListener);
+        if (!isListening) {
+            this.voiceProcessor.addFrameListener(vpFrameListener);
+            this.voiceProcessor.addErrorListener(vpErrorListener);
 
-        try {
-            voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
-        } catch (VoiceProcessorException e) {
-            throw new PicovoiceException(e);
+            try {
+                voiceProcessor.start(picovoice.getFrameLength(), picovoice.getSampleRate());
+                isListening = true;
+            } catch (VoiceProcessorException e) {
+                throw new PicovoiceException(e);
+            }
         }
-        isListening = true;
     }
 
     /**
@@ -176,21 +129,24 @@ public class PicovoiceManager {
      * @throws PicovoiceException if an error is encountered while attempting to stop.
      */
     public void stop() throws PicovoiceException {
-        voiceProcessor.removeErrorListener(vpErrorListener);
-        voiceProcessor.removeFrameListener(vpFrameListener);
-        if (voiceProcessor.getNumFrameListeners() == 0) {
-            try {
-                voiceProcessor.stop();
-            } catch (VoiceProcessorException e) {
-                throw new PicovoiceException(e);
-            }
+        if (picovoice == null) {
+            throw new PicovoiceInvalidStateException("Cannot stop - resources have been released");
         }
 
-        synchronized (voiceProcessor) {
-            picovoice.delete();
-            picovoice = null;
+        if (isListening) {
+            voiceProcessor.removeErrorListener(vpErrorListener);
+            voiceProcessor.removeFrameListener(vpFrameListener);
+            if (voiceProcessor.getNumFrameListeners() == 0) {
+                try {
+                    voiceProcessor.stop();
+                } catch (VoiceProcessorException e) {
+                    throw new PicovoiceException(e);
+                }
+            }
+            isListening = false;
         }
-        isListening = false;
+
+        this.picovoice.reset();
     }
 
     /**
@@ -208,7 +164,7 @@ public class PicovoiceManager {
      * @return Version.
      */
     public String getVersion() {
-        return "2.2.0";
+        return picovoice != null ? picovoice.getVersion() : "";
     }
 
     /**
@@ -392,20 +348,23 @@ public class PicovoiceManager {
          * @param appContext Android app context (for extracting Picovoice resources)
          * @return An instance of PicovoiceManager
          */
-        public PicovoiceManager build(Context appContext) {
+        public PicovoiceManager build(Context appContext) throws PicovoiceException {
+            Picovoice picovoice = new Picovoice.Builder()
+                    .setAccessKey(accessKey)
+                    .setPorcupineModelPath(porcupineModelPath)
+                    .setKeywordPath(keywordPath)
+                    .setPorcupineSensitivity(porcupineSensitivity)
+                    .setWakeWordCallback(wakeWordCallback)
+                    .setRhinoModelPath(rhinoModelPath)
+                    .setContextPath(contextPath)
+                    .setRhinoSensitivity(rhinoSensitivity)
+                    .setEndpointDurationSec(endpointDurationSec)
+                    .setRequireEndpoint(requireEndpoint)
+                    .setInferenceCallback(inferenceCallback)
+                    .build(appContext);
+
             return new PicovoiceManager(
-                    appContext,
-                    accessKey,
-                    porcupineModelPath,
-                    keywordPath,
-                    porcupineSensitivity,
-                    wakeWordCallback,
-                    rhinoModelPath,
-                    contextPath,
-                    rhinoSensitivity,
-                    endpointDurationSec,
-                    requireEndpoint,
-                    inferenceCallback,
+                    picovoice,
                     processErrorCallback);
         }
     }

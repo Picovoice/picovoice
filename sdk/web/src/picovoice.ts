@@ -1,5 +1,5 @@
 /*
-  Copyright 2022 Picovoice Inc.
+  Copyright 2022-2023 Picovoice Inc.
 
   You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
   file accompanying this source.
@@ -17,6 +17,7 @@ import {
   PorcupineDetection,
   PorcupineKeyword,
   PorcupineModel,
+  PorcupineErrors,
 } from '@picovoice/porcupine-web';
 
 import {
@@ -25,16 +26,21 @@ import {
   RhinoContext,
   RhinoInference,
   RhinoModel,
+  RhinoErrors,
 } from '@picovoice/rhino-web';
 
 import { loadPicovoiceArgs } from './utils';
+
+import * as PicovoiceErrors from './picovoice_errors';
+import { mapToPicovoiceError } from './picovoice_errors';
 
 export class Picovoice {
   private _porcupine: Porcupine | null = null;
   private _rhino: Rhino | null = null;
   private _isWakeWordDetected: boolean = false;
 
-  private readonly _version: string = '2.1.0';
+  private readonly _version: string = '3.0.0';
+  private static _sdk: string = 'web';
 
   /**
    * Get Picovoice SDK version.
@@ -62,6 +68,10 @@ export class Picovoice {
    */
   get contextInfo(): string | undefined {
     return this._rhino?.contextInfo;
+  }
+
+  public static setSdk(sdk: string): void {
+    Picovoice._sdk = sdk;
   }
 
   /**
@@ -148,15 +158,6 @@ export class Picovoice {
       picovoice._isWakeWordDetected = true;
       wakeWordCallback(detection);
     };
-    picovoice._porcupine = await Porcupine._init(
-      accessKey,
-      [keywordPath],
-      [keywordLabel],
-      porcupineCallback,
-      new Float32Array([porcupineSensitivity]),
-      porcupineModelPath,
-      { processErrorCallback }
-    );
 
     const rhinoCallback = (inference: RhinoInference): void => {
       if (inference.isFinalized) {
@@ -164,14 +165,35 @@ export class Picovoice {
         inferenceCallback(inference);
       }
     };
-    picovoice._rhino = await Rhino._init(
-      accessKey,
-      contextPath,
-      rhinoSensitivity,
-      rhinoCallback,
-      rhinoModelPath,
-      { processErrorCallback, endpointDurationSec, requireEndpoint }
-    );
+
+    const errorCallback = (!processErrorCallback) ? undefined : (error: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError): void => {
+      processErrorCallback(mapToPicovoiceError(error));
+    };
+
+    try {
+      Porcupine.setSdk(this._sdk);
+      picovoice._porcupine = await Porcupine._init(
+        accessKey,
+        [keywordPath],
+        [keywordLabel],
+        porcupineCallback,
+        new Float32Array([porcupineSensitivity]),
+        porcupineModelPath,
+        { processErrorCallback: errorCallback }
+      );
+
+      Rhino.setSdk(this._sdk);
+      picovoice._rhino = await Rhino._init(
+        accessKey,
+        contextPath,
+        rhinoSensitivity,
+        rhinoCallback,
+        rhinoModelPath,
+        { processErrorCallback: errorCallback, endpointDurationSec, requireEndpoint }
+      );
+    } catch (error: any) {
+      throw mapToPicovoiceError(error);
+    }
 
     return picovoice;
   }
@@ -187,15 +209,19 @@ export class Picovoice {
    */
   public async process(pcm: Int16Array): Promise<void> {
     if (this._porcupine === null || this._rhino === null) {
-      throw Error(
+      throw new PicovoiceErrors.PicovoiceInvalidStateError(
         'Picovoice has been released. You cannot call process after release.'
       );
     }
 
-    if (!this._isWakeWordDetected) {
-      await this._porcupine.process(pcm);
-    } else {
-      await this._rhino.process(pcm);
+    try {
+      if (!this._isWakeWordDetected) {
+        await this._porcupine.process(pcm);
+      } else {
+        await this._rhino.process(pcm);
+      }
+    } catch (error: any) {
+      mapToPicovoiceError(error);
     }
   }
 
@@ -204,14 +230,18 @@ export class Picovoice {
    */
   public async reset(): Promise<void> {
     if (this._porcupine === null || this._rhino === null) {
-      throw Error(
+      throw new PicovoiceErrors.PicovoiceInvalidStateError(
         'Picovoice has been released. You cannot call reset after release.'
       );
     }
 
-    if (this._isWakeWordDetected) {
-      this._isWakeWordDetected = false;
-      await this._rhino.reset();
+    try {
+      if (this._isWakeWordDetected) {
+        this._isWakeWordDetected = false;
+        await this._rhino.reset();
+      }
+    } catch (error: any) {
+      mapToPicovoiceError(error);
     }
   }
 

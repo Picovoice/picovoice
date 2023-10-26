@@ -1,6 +1,6 @@
 name: picovoice_flutter
 description: A Flutter package for Picovoice's end-to-end voice platform.
-version: 2.2.3
+version: 3.0.0
 homepage: https://picovoice.ai/
 repository: https://github.com/Picovoice/picovoice/
 documentation: https://picovoice.ai/docs/picovoice/
@@ -13,8 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_voice_processor: ^1.1.0
-  porcupine_flutter: ^2.2.2
-  rhino_flutter: ^2.2.3
+  porcupine_flutter: ^3.0.0
+  rhino_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:

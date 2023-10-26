@@ -1,5 +1,5 @@
 //
-// Copyright 2020-2022 Picovoice Inc.
+// Copyright 2020-2023 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -72,15 +72,22 @@ class Picovoice {
     rhinoModelPath?: string,
     endpointDurationSec: number = 1.0,
     requireEndpoint: boolean = true
-  ) {
+  ): Promise<Picovoice> {
+    let porcupine: Porcupine;
     try {
-      let porcupine: Porcupine = await Porcupine.fromKeywordPaths(
+      porcupine = await Porcupine.fromKeywordPaths(
         accessKey,
         [keywordPath],
         porcupineModelPath,
         [porcupineSensitivity]
       );
-      let rhino: Rhino = await Rhino.create(
+    } catch (e) {
+      throw this.mapToPicovoiceError(e as PorcupineErrors.PorcupineError);
+    }
+
+    let rhino: Rhino;
+    try {
+      rhino = await Rhino.create(
         accessKey,
         contextPath,
         rhinoModelPath,
@@ -88,48 +95,43 @@ class Picovoice {
         endpointDurationSec,
         requireEndpoint
       );
-
-      if (
-        wakeWordCallback === undefined ||
-        wakeWordCallback === null ||
-        typeof wakeWordCallback !== 'function'
-      ) {
-        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          "'wakeWordCallback' must be set."
-        );
-      }
-
-      if (
-        inferenceCallback === undefined ||
-        inferenceCallback === null ||
-        typeof inferenceCallback !== 'function'
-      ) {
-        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          "'inferenceCallback' must be set."
-        );
-      }
-
-      if (porcupine.frameLength !== rhino.frameLength) {
-        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          `Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.`
-        );
-      }
-
-      if (porcupine.sampleRate !== rhino.sampleRate) {
-        throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
-          `Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.`
-        );
-      }
-
-      return new Picovoice(
-        porcupine,
-        wakeWordCallback,
-        rhino,
-        inferenceCallback
-      );
     } catch (e) {
-      throw this.mapToPicovoiceError(e as Error);
+      throw this.mapToPicovoiceError(e as RhinoErrors.RhinoError);
     }
+
+    if (
+      wakeWordCallback === undefined ||
+      wakeWordCallback === null ||
+      typeof wakeWordCallback !== 'function'
+    ) {
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+        "'wakeWordCallback' must be set."
+      );
+    }
+
+    if (
+      inferenceCallback === undefined ||
+      inferenceCallback === null ||
+      typeof inferenceCallback !== 'function'
+    ) {
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+        "'inferenceCallback' must be set."
+      );
+    }
+
+    if (porcupine.frameLength !== rhino.frameLength) {
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+        `Porcupine frame length ${porcupine.frameLength} and Rhino frame length ${rhino.frameLength} are different.`
+      );
+    }
+
+    if (porcupine.sampleRate !== rhino.sampleRate) {
+      throw new PicovoiceErrors.PicovoiceInvalidArgumentError(
+        `Porcupine sample rate ${porcupine.sampleRate} and Rhino sample rate ${rhino.sampleRate} are different.`
+      );
+    }
+
+    return new Picovoice(porcupine, wakeWordCallback, rhino, inferenceCallback);
   }
 
   private constructor(
@@ -144,7 +146,7 @@ class Picovoice {
     this._inferenceCallback = inferenceCallback;
     this._frameLength = porcupine.frameLength;
     this._sampleRate = porcupine.sampleRate;
-    this._version = '2.1.0';
+    this._version = '3.0.0';
   }
 
   /**
@@ -155,7 +157,7 @@ class Picovoice {
    * `.frameLength`. The incoming audio needs to have a sample rate equal to `.sample_rate` and be 16-bit linearly-encoded.
    * Picovoice operates on single-channel audio.
    */
-  async process(frame: number[]) {
+  public async process(frame: number[]): Promise<void> {
     if (this._porcupine === null || this._rhino === null) {
       throw new PicovoiceErrors.PicovoiceInvalidStateError(
         'Cannot process frame - resources have been released.'
@@ -175,18 +177,27 @@ class Picovoice {
     }
 
     if (!this._isWakeWordDetected) {
-      const keywordIndex = await this._porcupine.process(frame);
+      try {
+        const keywordIndex = await this._porcupine.process(frame);
 
-      if (keywordIndex >= 0) {
-        this._isWakeWordDetected = true;
-        this._wakeWordCallback();
+        if (keywordIndex >= 0) {
+          this._isWakeWordDetected = true;
+          this._wakeWordCallback();
+        }
+      } catch (e) {
+        throw Picovoice.mapToPicovoiceError(
+          e as PorcupineErrors.PorcupineError
+        );
       }
     } else {
-      const result = await this._rhino.process(frame);
-      if (result.isFinalized) {
-        this._isWakeWordDetected = false;
-
-        this._inferenceCallback(result);
+      try {
+        const result = await this._rhino.process(frame);
+        if (result.isFinalized) {
+          this._isWakeWordDetected = false;
+          this._inferenceCallback(result);
+        }
+      } catch (e) {
+        throw Picovoice.mapToPicovoiceError(e as RhinoErrors.RhinoError);
       }
     }
   }
@@ -195,62 +206,77 @@ class Picovoice {
    * @returns number of audio samples per frame (i.e. the length of the array provided to the process function)
    * @see {@link process}
    */
-  get frameLength() {
+  public get frameLength(): number {
     return this._frameLength;
   }
 
   /**
    * @returns the audio sampling rate accepted by Picovoice
    */
-  get sampleRate() {
+  public get sampleRate(): number {
     return this._sampleRate;
   }
 
   /**
    * @returns the version of the Picovoice SDK
    */
-  get version() {
+  public get version(): string {
     return this._version;
   }
 
   /**
    * @returns the version of the Porcupine SDK
    */
-  get porcupineVersion() {
+  public get porcupineVersion(): string | undefined {
     return this._porcupine?.version;
   }
 
   /**
    * @returns the version of the Rhino SDK
    */
-  get rhinoVersion() {
+  public get rhinoVersion(): string | undefined {
     return this._rhino?.version;
   }
 
   /**
    * @returns the Rhino context source YAML
    */
-  get contextInfo() {
+  public get contextInfo(): string | undefined {
     return this._rhino?.contextInfo;
   }
 
   /**
    * Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
    */
-  async delete() {
-    if (this._porcupine !== null) {
-      await this._porcupine.delete();
-      this._porcupine = null;
+  public async delete(): Promise<void> {
+    await this._porcupine?.delete();
+    this._porcupine = null;
+
+    await this._rhino?.delete();
+    this._rhino = null;
+  }
+
+  /**
+   * Release the resources acquired by Picovoice (via Porcupine and Rhino engines).
+   */
+  public async reset(): Promise<void> {
+    if (this._porcupine === null || this._rhino === null) {
+      throw new PicovoiceErrors.PicovoiceInvalidStateError(
+        'Cannot process frame - resources have been released.'
+      );
     }
-    if (this._rhino !== null) {
-      await this._rhino.delete();
-      this._rhino = null;
+
+    try {
+      this._isWakeWordDetected = false;
+      this._rhino?.reset();
+    } catch (e) {
+      throw Picovoice.mapToPicovoiceError(e as RhinoErrors.RhinoError);
     }
   }
 
   /**
    * Gets the exception type given a code.
-   * @param e Error to covert to picovoice exception
+   * @param e Error to covert to Picovoice Error
    */
   private static mapToPicovoiceError(
     e: PorcupineErrors.PorcupineError | RhinoErrors.RhinoError
@@ -310,13 +336,8 @@ class Picovoice {
       e instanceof RhinoErrors.RhinoStopIterationError
     ) {
       return new PicovoiceErrors.PicovoiceStopIterationError(e.message);
-    } else if (
-      e instanceof PorcupineErrors.PorcupineError ||
-      e instanceof RhinoErrors.RhinoError
-    ) {
-      return new PicovoiceErrors.PicovoiceError(e.message);
     } else {
-      return new PicovoiceErrors.PicovoiceError(e);
+      return new PicovoiceErrors.PicovoiceError(e.message);
     }
   }
 }

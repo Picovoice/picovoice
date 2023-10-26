@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-node",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "Picovoice SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
@@ -39,8 +39,8 @@
     "lint": "eslint . --ext .js,.ts"
   },
   "dependencies": {
-    "@picovoice/porcupine-node": "=2.2.1",
-    "@picovoice/rhino-node": "=2.2.1"
+    "@picovoice/porcupine-node": "=3.0.0",
+    "@picovoice/rhino-node": "=3.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
@@ -50,8 +50,6 @@
     "eslint": "^8.13.0",
     "eslint-plugin-jest": "^27.1.6",
     "jest": "^27.5.1",
-    "mkdirp": "^1.0.4",
-    "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
     "ts-jest": "^27.1.3",
@@ -59,7 +57,7 @@
     "wavefile": "^11.0.0"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.0.0"
   },
   "cpu": [
     "!ia32",

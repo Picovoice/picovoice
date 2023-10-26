@@ -17,21 +17,10 @@ import Porcupine
 public class PicovoiceManager {
     private var picovoice: Picovoice?
 
-    private var accessKey: String
-    private var keywordPath: String
-    private var onWakeWordDetection: (() -> Void)
-    private var contextPath: String
-    private var onInference: ((Inference) -> Void)
-
-    private var porcupineModelPath: String?
-    private var porcupineSensitivity: Float32
-    private var rhinoModelPath: String?
-    private var rhinoSensitivity: Float32
-    private var endpointDurationSec: Float32
-    private var requireEndpoint: Bool
-
     private var frameListener: VoiceProcessorFrameListener?
     private var errorListener: VoiceProcessorErrorListener?
+
+    private var isListening: Bool = false
 
     public var contextInfo: String {
         get {
@@ -64,6 +53,8 @@ public class PicovoiceManager {
     ///   inference regardless. Set to `false` only if operating in an environment with overlapping speech
     ///   (e.g. people talking in the background).
     ///   - processErrorCallback: A callback that is invoked if there is an error while processing audio.
+    ///
+    /// - Throws: PicovoiceError if unable to initialize
     public init(
             accessKey: String,
             keywordPath: String,
@@ -76,28 +67,28 @@ public class PicovoiceManager {
             rhinoSensitivity: Float32 = 0.5,
             endpointDurationSec: Float32 = 1.0,
             requireEndpoint: Bool = true,
-            processErrorCallback: ((Error) -> Void)? = nil) {
+            processErrorCallback: ((Error) -> Void)? = nil) throws {
 
-        self.accessKey = accessKey
-        self.keywordPath = keywordPath
-        self.contextPath = contextPath
-        self.onWakeWordDetection = onWakeWordDetection
-        self.onInference = onInference
-
-        self.porcupineModelPath = porcupineModelPath
-        self.porcupineSensitivity = porcupineSensitivity
-        self.rhinoModelPath = rhinoModelPath
-        self.rhinoSensitivity = rhinoSensitivity
-        self.endpointDurationSec = endpointDurationSec
-        self.requireEndpoint = requireEndpoint
+        picovoice = try Picovoice(
+                accessKey: accessKey,
+                keywordPath: keywordPath,
+                onWakeWordDetection: onWakeWordDetection,
+                contextPath: contextPath,
+                onInference: onInference,
+                porcupineModelPath: porcupineModelPath,
+                porcupineSensitivity: porcupineSensitivity,
+                rhinoModelPath: rhinoModelPath,
+                rhinoSensitivity: rhinoSensitivity,
+                endpointDurationSec: endpointDurationSec,
+                requireEndpoint: requireEndpoint)
 
         self.errorListener = VoiceProcessorErrorListener({ error in
             guard let callback = processErrorCallback else {
-                print("\(error.errorDescription)")
+                print("\(error.localizedDescription)")
                 return
             }
 
-            callback(PicovoiceError(error.errorDescription))
+            callback(PicovoiceError(error.localizedDescription))
         })
 
         self.frameListener = VoiceProcessorFrameListener({ frame in
@@ -109,7 +100,7 @@ public class PicovoiceManager {
                 try picovoice.process(pcm: frame)
             } catch {
                 guard let callback = processErrorCallback else {
-                    print("\(error)")
+                    print("\(error.localizedDescription)")
                     return
                 }
 
@@ -119,42 +110,48 @@ public class PicovoiceManager {
     }
 
     deinit {
+        delete()
+    }
+
+    /// Releases native resources that were allocated to PicovoiceManager
+    public func delete() {
         self.picovoice?.delete()
         self.picovoice = nil
+    }
+
+    /// Resets the internal state of PicovoiceManager. It can be called to
+    /// return to the wake word detection state before an inference has completed.
+    ///
+    /// - Throws: PicovoiceError if unable to reset
+    public func reset() throws {
+        guard let picovoice = self.picovoice else {
+            throw PicovoiceInvalidStateError("Unable to reset - resources have been released.")
+        }
+
+        try picovoice.reset()
     }
 
     ///  Starts recording audio from the microphone and Picovoice processing loop.
     ///
     /// - Throws: PicovoiceError if unable to start recording
     public func start() throws {
-
-        if picovoice != nil {
-            return
+        guard self.picovoice != nil else {
+            throw PicovoiceInvalidStateError("Unable to start - resources have been released.")
         }
 
-        picovoice = try Picovoice(
-                accessKey: self.accessKey,
-                keywordPath: self.keywordPath,
-                onWakeWordDetection: self.onWakeWordDetection,
-                contextPath: self.contextPath,
-                onInference: self.onInference,
-                porcupineModelPath: self.porcupineModelPath,
-                porcupineSensitivity: self.porcupineSensitivity,
-                rhinoModelPath: self.rhinoModelPath,
-                rhinoSensitivity: self.rhinoSensitivity,
-                endpointDurationSec: self.endpointDurationSec,
-                requireEndpoint: self.requireEndpoint)
+        if !isListening {
+            VoiceProcessor.instance.addErrorListener(errorListener!)
+            VoiceProcessor.instance.addFrameListener(frameListener!)
 
-        VoiceProcessor.instance.addErrorListener(errorListener!)
-        VoiceProcessor.instance.addFrameListener(frameListener!)
-
-        do {
-            try VoiceProcessor.instance.start(
-                    frameLength: Porcupine.frameLength,
-                    sampleRate: Porcupine.sampleRate
-            )
-        } catch {
-            throw PicovoiceError(error.localizedDescription)
+            do {
+                try VoiceProcessor.instance.start(
+                        frameLength: Porcupine.frameLength,
+                        sampleRate: Porcupine.sampleRate
+                )
+                isListening = true
+            } catch {
+                throw PicovoiceError(error.localizedDescription)
+            }
         }
     }
 
@@ -162,23 +159,24 @@ public class PicovoiceManager {
     ///
     /// - Throws: PicovoiceError if unable to stop recording
     public func stop() throws {
-
-        if picovoice == nil {
-            return
+        guard let picovoice = self.picovoice else {
+            throw PicovoiceInvalidStateError("Unable to stop - resources have been released.")
         }
 
-        VoiceProcessor.instance.removeErrorListener(errorListener!)
-        VoiceProcessor.instance.removeFrameListener(frameListener!)
+        if isListening {
+            VoiceProcessor.instance.removeErrorListener(errorListener!)
+            VoiceProcessor.instance.removeFrameListener(frameListener!)
 
-        if VoiceProcessor.instance.numFrameListeners == 0 {
-            do {
-                try VoiceProcessor.instance.stop()
-            } catch {
-                throw PicovoiceError(error.localizedDescription)
+            if VoiceProcessor.instance.numFrameListeners == 0 {
+                do {
+                    try VoiceProcessor.instance.stop()
+                } catch {
+                    throw PicovoiceError(error.localizedDescription)
+                }
             }
+            isListening = false
         }
 
-        self.picovoice?.delete()
-        self.picovoice = nil
+        try picovoice.reset()
     }
 }

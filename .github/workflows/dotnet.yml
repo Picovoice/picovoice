@@ -53,6 +53,12 @@ jobs:
           - dotnet-version: 6.0.x
             binding-framework: net6.0
             test-framework: net6.0
+          - os: ubuntu-latest
+            nuget-path: ~/.nuget/NuGet/local-nuget
+          - os: macos-latest
+            nuget-path: ~/.nuget/NuGet/local-nuget
+          - os: windows-latest
+            nuget-path: ~/AppData/Roaming/NuGet/local-nuget
 
     steps:
     - name: Checkout repository and submodules

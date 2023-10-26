@@ -1,4 +1,4 @@
 parameterized
-pvporcupine==2.2.1
-pvrhino==2.2.1
+pvporcupine==3.0.0
+pvrhino==3.0.0
 setuptools

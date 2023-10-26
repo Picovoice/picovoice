@@ -37,5 +37,6 @@ export default defineConfig({
     specPattern: "test/*.test.ts",
     video: false,
     screenshotOnRunFailure: false,
+    defaultCommandTimeout: 10000,
   },
 });

@@ -40,3 +40,8 @@
 
 ## [2.2.3] - 2023-08-25
 * Update native packages
+
+## [3.0.0] - 2023-10-25
+* Engine improvements
+* Improved error reporting
+* Added reset function

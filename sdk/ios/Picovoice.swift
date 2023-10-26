@@ -25,7 +25,7 @@ public class Picovoice {
     public static let sampleRate = Porcupine.sampleRate
     public static let porcupineVersion = Porcupine.version
     public static let rhinoVersion = Rhino.version
-    public static let picovoiceVersion = "2.2.0"
+    public static let picovoiceVersion = "3.0.0"
     public var contextInfo: String = ""
 
     private var isWakeWordDetected: Bool = false
@@ -98,15 +98,11 @@ public class Picovoice {
 
     /// Releases native resources that were allocated to Picovoice
     public func delete() {
-        if porcupine != nil {
-            porcupine!.delete()
-            porcupine = nil
-        }
+        porcupine?.delete()
+        porcupine = nil
 
-        if rhino != nil {
-            rhino!.delete()
-            rhino = nil
-        }
+        rhino?.delete()
+        rhino = nil
     }
 
     /// Process a frame of audio with the platform
@@ -120,22 +116,39 @@ public class Picovoice {
                 "Invalid frame length - expected \(Picovoice.frameLength), received \(pcm.count)")
         }
 
-        if porcupine == nil || rhino == nil {
+        guard let porcupine = self.porcupine, let rhino = self.rhino else {
             throw PicovoiceInvalidStateError("Cannot process frame - resources have been released.")
         }
 
         do {
             if !isWakeWordDetected {
-                isWakeWordDetected = try porcupine!.process(pcm: pcm) == 0
+                isWakeWordDetected = try porcupine.process(pcm: pcm) == 0
                 if isWakeWordDetected {
                     self.onWakeWordDetection()
                 }
             } else {
-                if try rhino!.process(pcm: pcm) {
-                    self.onInference(try rhino!.getInference())
+                if try rhino.process(pcm: pcm) {
+                    self.onInference(try rhino.getInference())
                     isWakeWordDetected = false
                 }
             }
+        } catch {
+            throw mapToPicovoiceError(error)
+        }
+    }
+
+    /// Resets the internal state of Picovoice. It should be called before processing a new stream of audio
+    /// or when Picovoice was stopped while processing a stream of audio.
+    ///
+    /// - Throws: PicovoiceError
+    public func reset() throws {
+        guard porcupine != nil, let rhino = self.rhino else {
+            throw PicovoiceInvalidStateError("Cannot reset - resources have been released.")
+        }
+
+        do {
+            isWakeWordDetected = false
+            try rhino.reset()
         } catch {
             throw mapToPicovoiceError(error)
         }

@@ -55,6 +55,7 @@ export class PicovoiceService implements OnDestroy {
     }
     try {
       if (!this.picovoice) {
+        PicovoiceWorker.setSdk('angular');
         this.picovoice = await PicovoiceWorker.create(
           accessKey,
           keyword,
