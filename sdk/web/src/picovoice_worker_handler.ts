@@ -80,12 +80,20 @@ self.onmessage = async function (
           sampleRate: picovoice.sampleRate,
           contextInfo: picovoice.contextInfo,
         });
-      } catch (e: any) {
-        self.postMessage({
-          command: 'error',
-          message: e.message,
-          status: e.status,
-        });
+      } catch (e: any) {        
+        if (e instanceof PicovoiceError) {
+          self.postMessage({
+            command: 'error',
+            status: e.status,
+            message: e.message
+          });
+        } else {
+          self.postMessage({
+            command: 'error',
+            status: PvStatus.RUNTIME_ERROR,
+            shortMessage: e.message
+          });
+        }
       }
       break;
     case 'process':
