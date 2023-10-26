@@ -1960,6 +1960,18 @@ pv_picovoice_delete(handle);
 
 ## Releases
 
+### v3.0.0 - October 26th, 2023
+
+- Improvements to error reporting
+- Upgrades to authorization and authentication system
+- Added `reset()` function to API
+- `PicovoiceManager` classes can now access context information without a call to `start()`
+- Added Farsi support for microcontrollers
+- Various bug fixes and improvements
+- Node min support bumped to 16
+- Unity editor min support bumped to 2021
+- Patches to .NET support
+
 ### v2.2.0 - April 12th, 2023
 
 - Added language support for Arabic, Dutch, Hindi, Mandarin, Polish, Russian, Swedish and Vietnamese
@@ -1973,25 +1985,25 @@ pv_picovoice_delete(handle);
 - Various bug fixes and improvements
 
 ### v2.0.0 - November 25th, 2021
-- Improved accuracy.
-- Added Rust SDK.
-- macOS arm64 support.
-- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone.
-- Added .NET support for NVIDIA Jetson Nano and BeagleBone.
-- Runtime optimization.
+- Improved accuracy
+- Added Rust SDK
+- macOS arm64 support
+- Added NodeJS support for Windows, NVIDIA Jetson Nano, and BeagleBone
+- Added .NET support for NVIDIA Jetson Nano and BeagleBone
+- Runtime optimization
 
 ### v1.1.0 - December 2nd, 2020
 
-- Improved accuracy.
-- Runtime optimizations.
-- .NET SDK.
-- Java SDK.
-- React Native SDK.
-- C SDK.
+- Improved accuracy
+- Runtime optimizations
+- .NET SDK
+- Java SDK
+- React Native SDK
+- C SDK
 
 ### v1.0.0 - October 22, 2020
 
-- Initial release.
+- Initial release
 
 ## FAQ
 
