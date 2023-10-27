@@ -162,7 +162,7 @@ For `process` to work correctly, the audio data must be in the audio format requ
 Once you're done with an instance of Picovoice you can force it to release its native resources rather than waiting for the garbage collector:
 
 ```swift
-picovoice.delete();
+picovoice.delete()
 ```
 
 ## Custom Model Integration
