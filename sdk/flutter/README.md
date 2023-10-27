@@ -79,12 +79,14 @@ import 'package:picovoice/picovoice_error.dart';
 
 final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-_picovoiceManager = PicovoiceManager.create(
-    accessKey,
-    "/path/to/keyword/file.ppn",
-    _wakeWordCallback,
-    "/path/to/context/file.rhn",
-    _inferenceCallback);
+try {
+    _picovoiceManager = await PicovoiceManager.create(
+        accessKey,
+        "/path/to/keyword/file.ppn",
+        _wakeWordCallback,
+        "/path/to/context/file.rhn",
+        _inferenceCallback);
+} on PicovoiceException catch(ex) { }
 ```
 
 The `wakeWordCallback` and `inferenceCallback` parameters are functions that you want to execute when a wake word is detected and when an inference is made.
@@ -95,12 +97,12 @@ The `inferenceCallback` callback function takes a parameter of `RhinoInference` 
 - slots - **null** if `isUnderstood` is not true, otherwise the dictionary of slot keys and values that were inferred
 
 ```dart
-void _wakeWordCallback(){
+void _wakeWordCallback() {
     // wake word detected
 }
 
 void _inferenceCallback(RhinoInference inference) {
-    if(inference.isUnderstood!) {
+    if (inference.isUnderstood!) {
         String intent = inference.intent!;
         Map<String, String> slots = inference.slots!;
         // add code to take action based on inferred intent and slot values
@@ -123,22 +125,22 @@ Picovoice accepts the following optional parameters:
 ```dart
 final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
-void createPicovoiceManager() {
-    double porcupineSensitivity = 0.7;
-    double rhinoSensitivity = 0.6;
-    _picovoiceManager = PicovoiceManager.create(
-        accessKey,
-        "/path/to/keyword/file.ppn",
-        wakeWordCallback,
-        "/path/to/context/file.rhn",
-        inferenceCallback,
-        porcupineSensitivity: porcupineSensitivity,
-        rhinoSensitivity: rhinoSensitivity,
-        porcupineModelPath: "/path/to/porcupine/model.pv",
-        rhinoModelPath: "/path/to/rhino/model.pv",
-        endpointDurationSec: 1.5,
-        requireEndpoint: false,
-        errorCallback: _errorCallback);
+void createPicovoiceManager() async {
+    try {
+        _picovoiceManager = await PicovoiceManager.create(
+            accessKey,
+            "/path/to/keyword/file.ppn",
+            wakeWordCallback,
+            "/path/to/context/file.rhn",
+            inferenceCallback,
+            porcupineSensitivity: 0.7,
+            rhinoSensitivity: 0.6,
+            porcupineModelPath: "/path/to/porcupine/model.pv",
+            rhinoModelPath: "/path/to/rhino/model.pv",
+            endpointDurationSec: 1.5,
+            requireEndpoint: false,
+            errorCallback: _errorCallback);
+    } on PicovoiceException catch(ex) { }
 }
 
 void _errorCallback(PicovoiceException error) {
@@ -151,15 +153,21 @@ Once you have instantiated a PicovoiceManager, you can start audio capture and p
 ```dart
 try {
     await _picovoiceManager.start();
-} on PicovoiceException catch(ex) {
-    // deal with Picovoice init error
-}
+} on PicovoiceException catch(ex) { }
 ```
 
 And then stop it by calling:
 
 ```dart
-await _picovoiceManager.stop();
+try {
+    await _picovoiceManager.stop();
+} on PicovoiceException catch(ex) { }
+```
+
+Finally, once you no longer need the `PicovoiceManager`, be sure to explicitly release the resources allocated to it:
+
+```dart
+await _picovoiceManager.delete();
 ```
 
 PicovoiceManager uses our
@@ -180,27 +188,20 @@ import 'package:picovoice/picovoice_error.dart';
 final String accessKey = "{ACCESS_KEY}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 
 void createPicovoice() async {
-    double porcupineSensitivity = 0.7;
-    double rhinoSensitivity = 0.6;
-    double endpointDurationSec = 1.5;
-    bool requireEndpoint = false;
-
-    try{
+    try {
         _picovoice = await Picovoice.create(
             accessKey,
             "/path/to/keyword/file.ppn",
             wakeWordCallback,
             "/path/to/context/file.rhn",
             inferenceCallback,
-            porcupineSensitivity,
-            rhinoSensitivity,
+            porcupineSensitivity: 0.7,
+            rhinoSensitivity: 0.6,
             "/path/to/porcupine/model.pv",
             "/path/to/rhino/model.pv",
-            endpointDurationSec
-            requireEndpoint);
-    } on PicovoiceException catch (err) {
-        // handle picovoice init error
-    }
+            endpointDurationSec: 1.5,
+            requireEndpoint: false);
+    } on PicovoiceException catch (ex) { }
 }
 
 void wakeWordCallback() {
@@ -226,9 +227,7 @@ List<int> buffer = getAudioFrame();
 
 try {
     _picovoice.process(buffer);
-} on PicovoiceException catch (error) {
-    // handle error
-}
+} on PicovoiceException catch (ex) { }
 ```
 
 For process to work correctly, the audio data must be in the audio format required by Picovoice.
@@ -264,9 +263,7 @@ try {
         wakeWordCallback,
         contextAsset,
         inferenceCallback);
-} on PicovoiceException catch (err) {
-    // handle picovoice init error
-}
+} on PicovoiceException catch (ex) { }
 ```
 
 Alternatively, if the custom models are deployed to the device with a different method, the absolute paths to the files on device can be used.

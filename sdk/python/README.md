@@ -37,7 +37,7 @@ Create a new instance of Picovoice runtime engine
 from picovoice import Picovoice
 
 access_key = "${ACCESS_KEY}" # AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
- 
+
 keyword_path = ...
 
 def wake_word_callback():
@@ -52,7 +52,7 @@ def inference_callback(inference):
     # (3) `slots`
     pass
 
-handle = Picovoice(
+picovoice = Picovoice(
         access_key=access_key,
         keyword_path=keyword_path,
         wake_word_callback=wake_word_callback,
@@ -60,7 +60,7 @@ handle = Picovoice(
         inference_callback=inference_callback)
 ```
 
-`handle` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
+`picovoice` is an instance of Picovoice runtime engine that detects utterances of wake phrase defined in the file located at
 `keyword_path`. Upon detection of wake word it starts inferring user's intent from the follow-on voice command within
 the context defined by the file located at `context_path`. `keyword_path` is the absolute path to
 [Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
@@ -68,21 +68,21 @@ the context defined by the file located at `context_path`. `keyword_path` is the
 (with `.rhn` suffix). `wake_word_callback` is invoked upon the detection of wake phrase and `inference_callback` is
 invoked upon completion of follow-on voice command inference.
 
-When instantiated, valid sample rate can be obtained via `handle.sample_rate`. Expected number of audio samples per
-frame is `handle.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
+When instantiated, valid sample rate can be obtained via `.sample_rate`. Expected number of audio samples per
+frame is `.frame_length`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
 
 ```python
 def get_next_audio_frame():
     pass
 
 while True:
-    handle.process(get_next_audio_frame())
+    picovoice.process(get_next_audio_frame())
 ```
 
 When done resources have to be released explicitly
 
 ```python
-handle.delete()
+picovoice.delete()
 ```
 
 ## Non-English Models

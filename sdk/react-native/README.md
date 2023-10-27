@@ -68,41 +68,6 @@ On Android, open your AndroidManifest.xml and add the following line:
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-
-Finally, in your app JS code, be sure to check for user permission consent before proceeding with audio capture:
-```javascript
-let recordAudioRequest;
-if (Platform.OS == 'android') {
-    // For Android, we need to explicitly ask
-    recordAudioRequest = this._requestRecordAudioPermission();
-} else {
-    // iOS automatically asks for permission
-    recordAudioRequest = new Promise(function (resolve, _) {
-    resolve(true);
-    });
-}
-
-recordAudioRequest.then((hasPermission) => {
-    if(hasPermission){
-        // Code that uses Picovoice
-    }
-});
-
-async _requestRecordAudioPermission() {
-    const granted = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-    {
-        title: 'Microphone Permission',
-        message: '[Permission explanation]',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-    }
-    );
-    return (granted === PermissionsAndroid.RESULTS.GRANTED)
-  }
-```
-
 ## Usage
 
 The module provides you with two levels of API to choose from depending on your needs.
@@ -116,12 +81,14 @@ The static constructor `PicovoiceManager.create` will create an instance of a Pi
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-this._picovoiceManager = PicovoiceManager.create(
-    accessKey
-    '/path/to/keyword.ppn',
-    wakeWordCallback,
-    '/path/to/context.rhn',
-    inferenceCallback);
+try {
+    _picovoiceManager = await PicovoiceManager.create(
+        accessKey
+        '/path/to/keyword.ppn',
+        wakeWordCallback,
+        '/path/to/context.rhn',
+        inferenceCallback);
+} catch (e) { }
 ```
 
 To use wake word (`.ppn`) and context (`.rhn`) files in your React Native application you'll need to add the files to your platform projects. Android models must be added to `./android/app/src/main/assets/`, while iOS models can be added anywhere under `./ios`, but must be included as a bundled resource in your iOS (i.e. add via XCode) project. The paths used as initialization arguments are relative to these device-specific directories.
@@ -156,34 +123,45 @@ Picovoice accepts the following optional parameters:
 ```javascript
 const accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-this._picovoiceManager = PicovoiceManager.create(
-            accessKey,
-            '/path/to/keyword.ppn',
-            wakeWordCallback,
-            '/path/to/context.rhn',
-            inferenceCallback,
-            processErrorCallback,
-            porcupineSensitivity,
-            rhinoSensitivity,
-            "/path/to/porcupine_model.pv",
-            "/path/to/rhino_model.pv",
-            endpointDurationSec,
-            requireEndpoint);
+try {
+    _picovoiceManager = PicovoiceManager.create(
+                accessKey,
+                '/path/to/keyword.ppn',
+                wakeWordCallback,
+                '/path/to/context.rhn',
+                inferenceCallback,
+                processErrorCallback,
+                porcupineSensitivity,
+                rhinoSensitivity,
+                "/path/to/porcupine_model.pv",
+                "/path/to/rhino_model.pv",
+                endpointDurationSec,
+                requireEndpoint);
+} catch (e) { }
 ```
 
-Once you have instantiated a PicovoiceManager, you can start audio capture and processing by calling:
+Once you have instantiated a `PicovoiceManager`, you can start audio capture and processing by calling:
 
 ```javascript
 try {
-    let didStart = await this._picovoiceManager.start();
+    await _picovoiceManager.start();
 } catch (e) { }
 ```
 
 And then stop it by calling:
 
 ```javascript
-let didStop = await this._picovoiceManager.stop();
+try {
+    await _picovoiceManager.stop();
+} catch (e) { }
 ```
+
+Finally, once you no longer need the `PicovoiceManager`, be sure to explicitly release the resources allocated to it:
+
+```javascript
+await _picovoiceManager.delete();
+```
+
 
 With `PicovoiceManager`, the
 [@picovoice/react-native-voice-processor](https://github.com/Picovoice/react-native-voice-processor/)
@@ -205,8 +183,8 @@ async createPicovoice() {
     let endpointDurationSec = 1.5
     let requireEndpoint = false
 
-    try{
-        this._picovoice = await Picovoice.create(
+    try {
+        _picovoice = await Picovoice.create(
             accessKey,
             '/path/to/keyword/file.ppn',
             wakeWordCallback,
@@ -218,9 +196,7 @@ async createPicovoice() {
             "/path/to/rhino/model.pv",
           endpointDurationSec,
             false)
-    } catch (err) {
-        // handle error
-    }
+    } catch (e) { }
 }
 
 wakeWordCallback() {
@@ -242,10 +218,8 @@ To use Picovoice, just pass frames of audio to the `process` function. The callb
 let buffer = getAudioFrame();
 
 try {
-    await this._picovoice.process(buffer);
-} catch (e) {
-    // handle error
-}
+    await _picovoice.process(buffer);
+} catch (e) { }
 ```
 
 For `process` to work correctly, the audio data must be in the audio format required by Picovoice.
@@ -254,7 +228,7 @@ The required audio format is found by calling `.sampleRate` to get the required 
 Finally, once you no longer need the Picovoice, be sure to explicitly release the resources allocated to it:
 
 ```javascript
-this._picovoice.delete();
+await _picovoice.delete();
 ```
 
 ## Custom Wake Word & Context Integration

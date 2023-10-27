@@ -53,16 +53,18 @@ import Picovoice
 
 let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-let manager = PicovoiceManager(
-    accessKey: accessKey,
-    keywordPath: "/path/to/keyword.ppn",
-    onWakeWordDetection: {
-        // logic to execute upon detection of wake word
-    },
-    contextPath: "/path/to/context.rhn",
-    onInference: { inference in
-        // logic to execute upon completion of intent inference
-    })
+do {
+    let picovoiceManager = try PicovoiceManager(
+        accessKey: accessKey,
+        keywordPath: "/path/to/keyword.ppn",
+        onWakeWordDetection: {
+            // logic to execute upon detection of wake word
+        },
+        contextPath: "/path/to/context.rhn",
+        onInference: { inference in
+            // logic to execute upon completion of intent inference
+        })
+} catch { }
 ```
 
 The constructor also allows you to override the default model files and/or the sensitivities of Porcupine and Rhino:
@@ -70,18 +72,20 @@ The constructor also allows you to override the default model files and/or the s
 ```swift
 let accessKey = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
 
-let manager = PicovoiceManager(
-    accessKey: accessKey,
-    keywordPath: "/path/to/keyword.ppn",
-    porcupineSensitivity: 0.4,
-    porcupineModelPath: "/path/to/porcupine/model.pv",
-    onWakeWordDetection: wakeWordCallback,
-    contextPath: "/path/to/context.rhn",
-    rhinoSensitivity: 0.7,
-    rhinoModelPath: "/path/to/rhino/model.pv",
-    onInference: inferenceCallback,
-    endpointDurationSec: 1.5,
-    requireEndpoint: false)
+do {
+    let picovoiceManager = try PicovoiceManager(
+        accessKey: accessKey,
+        keywordPath: "/path/to/keyword.ppn",
+        porcupineSensitivity: 0.4,
+        porcupineModelPath: "/path/to/porcupine/model.pv",
+        onWakeWordDetection: wakeWordCallback,
+        contextPath: "/path/to/context.rhn",
+        rhinoSensitivity: 0.7,
+        rhinoModelPath: "/path/to/rhino/model.pv",
+        onInference: inferenceCallback,
+        endpointDurationSec: 1.5,
+        requireEndpoint: false)
+} catch { }
 ```
 
 Sensitivity is the parameter that enables trading miss rate for the false alarm rate. It is a floating-point number within [0, 1]. A higher sensitivity reduces the miss rate at the cost of increased false alarm rate.
@@ -92,14 +96,14 @@ Once you have instantiated a PicovoiceManager, you can start audio capture and v
 
 ```swift
 do {
-    try manager.start()
+    try picovoiceManager.start()
 } catch { }
 ```
 
 Stop the manager with:
 ```swift
 do {
-    manager.stop();
+    try picovoiceManager.stop()
 } catch { }
 ```
 
@@ -143,12 +147,12 @@ Once initialized, `picovoice` can be used to process incoming audio. The underly
 ```swift
 func getNextAudioFrame() -> [Int16] {
     // .. get audioFrame
-    return audioFrame;
+    return audioFrame
 }
 
 while (true) {
     do {
-        try picovoice.process(getNextAudioFrame());
+        try picovoice.process(getNextAudioFrame())
     } catch { }
 }
 ```
