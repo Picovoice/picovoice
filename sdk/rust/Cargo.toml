@@ -1,6 +1,6 @@
 [package]
 name = "picovoice"
-version = "3.0.0"
+version = "3.0.1"
 edition = "2018"
 description = "Rust SDK for Picovoice's voice recognition platform"
 license = "Apache-2.0"

@@ -149,6 +149,8 @@ impl std::fmt::Display for PicovoiceError {
     }
 }
 
+impl std::error::Error for PicovoiceError {}
+
 #[derive(Clone)]
 pub struct Picovoice<W, I>
 where
