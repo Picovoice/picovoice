@@ -1665,26 +1665,26 @@
     node-addon-api "^3.2.1"
     node-gyp-build "^4.3.0"
 
-"@picovoice/picovoice-web@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-3.0.1.tgz#84ede2a98e0735b993f749fd8d87fd8ee851649c"
-  integrity sha512-+K14POostqBJ27+TcOT1KDWK9DvlXViyajiMvFakAnj1e15DEEK1lRUoK7k9UdLA5jPTgksGyOA52amev5pxKw==
+"@picovoice/picovoice-web@=3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-web/-/picovoice-web-3.0.2.tgz#1d8e15ff5defb5302db3814fd15b89ad1120bfd0"
+  integrity sha512-tTPUhXf7UmhSV6XoarEJ19hiNhjVGR24EhdlktAk2t5q/aEPJsZKZx4UZCWvr6no+GXBeEPZ29aU78L4Ag1jng==
   dependencies:
-    "@picovoice/porcupine-web" "=3.0.1"
-    "@picovoice/rhino-web" "=3.0.1"
+    "@picovoice/porcupine-web" "=3.0.2"
+    "@picovoice/rhino-web" "=3.0.2"
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/porcupine-web@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.1.tgz#2c37779d4670cb60c4f1c59fe2f719e8be0668ae"
-  integrity sha512-Fv0besxrygjfk2H6TOPfFAD5fFebSy/kIDtjrNFGJdYlgGz9/IXgoYp+baFwIOAjMNOyQwebwy13fjb7Ba3EzQ==
+"@picovoice/porcupine-web@=3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-web/-/porcupine-web-3.0.2.tgz#ad023df0fdd9f09b1b87b68e2bfa4ebd7b69974f"
+  integrity sha512-AlcrQD4pF1OgYKyUSNf/RREwH+UZJhjHCGam6F+Vd7w8625oM2/uGDaM605/0rEQz5yG9DcrVMxBSX5MwFpjEQ==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
-"@picovoice/rhino-web@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-3.0.1.tgz#cf205dddfd435cdefd5c18d19ea736cf2df10e6a"
-  integrity sha512-zXu+HM8A7s3pWwHndLk1S1lcfcOzxdVYP9Zap12NvwCU4dBF1kcFCtBUO1b0hrd7GK2Zvxh3pYID5G2w921tAQ==
+"@picovoice/rhino-web@=3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-web/-/rhino-web-3.0.2.tgz#961c794d271cfde6e9cd1b272200d6ed54ba9ab1"
+  integrity sha512-OTtguG5BDycimOYz8u9Wr/emwEDCYGPm39H3PlGaR5iA5jyavUnOVaWQ3JI0QMGhn0mdY1uxfoMw9uifvnSaDg==
   dependencies:
     "@picovoice/web-utils" "=1.3.1"
 
