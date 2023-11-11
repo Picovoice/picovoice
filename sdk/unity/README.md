@@ -18,15 +18,15 @@ Picovoice is:
 
 ## Compatibility
 
-[Picovoice unity package](./picovoice-2.2.2.unitypackage) is for running Picovoice on **Unity 2017.4+** on the following platforms:
+[Picovoice unity package](./picovoice-3.0.0.unitypackage) is for running Picovoice on **Unity 2017.4+** on the following platforms:
 
 - Android 5.0+ (API 21+) (ARM only)
-- iOS 11.0+
+- iOS 13.0+
 - Windows (x86_64)
 - macOS (x86_64)
 - Linux (x86_64)
 
- For running Picovoice on **macOS m1 (arm64)**, use the [Apple silicon](./picovoice-2.2.2-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
+ For running Picovoice on **macOS m1 (arm64)**, use the [Apple silicon](./picovoice-3.0.0-Apple-silicon.unitypackage) version on **Unity 2021.2+**.
 
 ## Installation
 
