@@ -2,28 +2,28 @@
 # yarn lockfile v1
 
 
-"@picovoice/picovoice-node@~3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-3.0.0.tgz#6c17d5c7b4ea1885f1f2ca0d11ad46d6e3eaaf3c"
-  integrity sha512-qeWmLg5e9rbLc5a/mRR3h3EjuILemMXHzRxNGwtMTU7StVvVAbHbapJ0pVV+y8dKqEuo6PdU8NpnN7WwJ3KOfg==
+"@picovoice/picovoice-node@~3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/picovoice-node/-/picovoice-node-3.0.1.tgz#ab346a3c022938200e8da73c4d7d12aa93c18777"
+  integrity sha512-DG99e+qpQES4QC3D9hHQcQYORgur0UHpOeLQ5D4IHTECSOw9NB5uyO9i0Iu6j8ahl5Mt7YjyguZ248eMFpiyng==
   dependencies:
-    "@picovoice/porcupine-node" "=3.0.0"
-    "@picovoice/rhino-node" "=3.0.1"
+    "@picovoice/porcupine-node" "=3.0.1"
+    "@picovoice/rhino-node" "=3.0.2"
 
-"@picovoice/porcupine-node@=3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-3.0.0.tgz#576fcfdc8a6b98430022e3650b590b5c274b1468"
-  integrity sha512-wkX5+2qmnR7ea9N1/vJZOGdx0W4cBfAABisX78yTAI6XXZivL8UCT3UJcrAMHoXeFN252flyDrRbqA1oH2uHzQ==
+"@picovoice/porcupine-node@=3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-node/-/porcupine-node-3.0.1.tgz#331a55b7f5c45f5f3e62c88f3ce2604feebd82ff"
+  integrity sha512-Vzg1fGAXwSJ6tio6uz5AOqWKODbb4+TpTYNNGdNatSpSkdn01nQNoDlWZB3Ut3oT5cccKWWfMlZcXRXrVpZzkQ==
 
 "@picovoice/pvrecorder-node@~1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@picovoice/pvrecorder-node/-/pvrecorder-node-1.2.1.tgz#8e112ecc7a4836aa4fa92d62ac7942d8a2366db8"
   integrity sha512-7TtRMh04PSVn542Oq1v/MGLFuNPdUrrv+f7qbCGOWRc8y6ox+FATigdQqLRbRey4kZWf40dNHQFdVPCk5ZcXnQ==
 
-"@picovoice/rhino-node@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-3.0.1.tgz#56e2a736f12dd67ccce08b6f6fdb012899df5e7b"
-  integrity sha512-grsgERwVqaptIp3oHHgcBeUKWmqlXKBimu+Fuzh4ToNmJ13Q6PChtAQsH9kGDqGJyS6BjcdCDcLPP7pX2YoJeQ==
+"@picovoice/rhino-node@=3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-node/-/rhino-node-3.0.2.tgz#9e0b34d97a4eb3550270914f4b564eebe331347d"
+  integrity sha512-0pFxkFkMHKhFsZ/iIo7fW6zTpQgvLPUn+soGucfzU6Gd3GrAw/7MjqQwpps2c/rW62WFcPBghB7m+fcAe22bmQ==
 
 commander@^6.1.0:
   version "6.2.1"
