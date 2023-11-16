@@ -1,18 +1,16 @@
 PODS:
   - ios-voice-processor (1.1.0)
-  - Picovoice-iOS (3.0.0):
+  - Picovoice-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-    - Porcupine-iOS (~> 3.0.0)
-    - Rhino-iOS (~> 3.0.0)
-  - Porcupine-iOS (3.0.0):
+    - Porcupine-iOS (~> 3.0.1)
+    - Rhino-iOS (~> 3.0.1)
+  - Porcupine-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-  - Rhino-iOS (3.0.0):
+  - Rhino-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS (~> 3.0.0)
-  - Porcupine-iOS (~> 3.0.0)
-  - Rhino-iOS (~> 3.0.0)
+  - Picovoice-iOS (~> 3.0.1)
 
 SPEC REPOS:
   trunk:
@@ -23,10 +21,10 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
-  Picovoice-iOS: a1aefe4fbc54bb698dd1663d7dee6a5bef9f1c5c
-  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
-  Rhino-iOS: b92978104bfad32da25b9eeaa4f0628b86ffcee9
+  Picovoice-iOS: 86591b96a80769e9793ff83bdee530387ab9b78d
+  Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
+  Rhino-iOS: 4eeb02b38696907b28dd6f5dfa3a8f25355554ca
 
-PODFILE CHECKSUM: bd7806bdeaa177985fd19ac8489709478ff37512
+PODFILE CHECKSUM: 715a078c46efc7e2ce46528b97a96dbb9777aa47
 
 COCOAPODS: 1.11.3
