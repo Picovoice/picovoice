@@ -1,4 +1,4 @@
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0 h1:2tse/DiV2G7B15qxHkphtHjqq0MyR7983RZ6QiTHfAI=
-github.com/Picovoice/porcupine/binding/go/v3 v3.0.0/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0 h1:DnAMuXip/fM+BrKoYu0oovisAQ+QSGYTPh+2AY7qF7E=
-github.com/Picovoice/rhino/binding/go/v3 v3.0.0/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.1 h1:QGLeCljdU5ZAvbYuTD4QPk6E65TRTsS+4ixfZguUVxc=
+github.com/Picovoice/porcupine/binding/go/v3 v3.0.1/go.mod h1:6Pg/746wMh0GDNEWqi56GuTsTk7WLeVgTB0ZhyERs8U=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.1 h1:QHoEsIXxJOHFtboUKvLa2DVgsyLsUeO7knZGFgh6Dbo=
+github.com/Picovoice/rhino/binding/go/v3 v3.0.1/go.mod h1:CKikI/Tv7hIyj0aOnAKaBIGPzWfx/0SUayYFDnPCmmI=
