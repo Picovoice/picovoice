@@ -257,7 +257,7 @@ class Picovoice {
   }
 
   /**
-   * Resets the internal state of Picovoice. It should be called before processing a new stream of audio 
+   * Resets the internal state of Picovoice. It should be called before processing a new stream of audio
    * or when Picovoice was stopped whilst processing a stream of audio.
    */
   public async reset(): Promise<void> {
