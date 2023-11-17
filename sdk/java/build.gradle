@@ -7,7 +7,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'ai.picovoice'
-    PUBLISH_VERSION = '3.0.0'
+    PUBLISH_VERSION = '3.0.1'
     PUBLISH_ARTIFACT_ID = 'picovoice-java'
 }
 
@@ -40,8 +40,8 @@ if (file("${rootDir}/publish-mavencentral.gradle").exists()) {
 }
 
 dependencies {
-    implementation 'ai.picovoice:porcupine-java:3.0.0'
-    implementation 'ai.picovoice:rhino-java:3.0.0'
+    implementation 'ai.picovoice:porcupine-java:3.0.1'
+    implementation 'ai.picovoice:rhino-java:3.0.1'
     testImplementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
