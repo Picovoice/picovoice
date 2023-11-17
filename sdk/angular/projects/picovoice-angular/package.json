@@ -1,7 +1,7 @@
 {
   "name": "@picovoice/picovoice-angular",
   "description": "Angular service for Picovoice Web SDK",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "peerDependencies": {
     "@angular/common": ">=13.0.0",
     "@angular/core": ">=13.0.0",
@@ -25,7 +25,7 @@
   "author": "Picovoice Inc",
   "license": "Apache-2.0",
   "dependencies": {
-    "@picovoice/picovoice-web": "=3.0.2",
+    "@picovoice/picovoice-web": "=3.0.3",
     "tslib": "^2.3.0"
   }
 }

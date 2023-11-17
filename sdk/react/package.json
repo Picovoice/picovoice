@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-react",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "React component for Picovoice SDK for Web",
   "entry": "src/index.ts",
   "module": "dist/esm/index.js",
@@ -40,7 +40,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "@picovoice/picovoice-web": "=3.0.2"
+    "@picovoice/picovoice-web": "=3.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
