@@ -37,14 +37,6 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Install Porcupine dependencies
-      run: yarn install && yarn pkg
-      working-directory: resources/porcupine/binding/react-native
-
-    - name: Install Rhino dependencies
-      run: yarn install && yarn pkg
-      working-directory: resources/rhino/binding/react-native
-
     - name: Pre-build dependencies
       run: |
         yarn install
@@ -67,14 +59,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
-
-    - name: Install Porcupine dependencies
-      run: yarn install && yarn pkg
-      working-directory: resources/porcupine/binding/react-native
-
-    - name: Install Rhino dependencies
-      run: yarn install && yarn pkg
-      working-directory: resources/rhino/binding/react-native
 
     - name: Pre-build dependencies
       run: |

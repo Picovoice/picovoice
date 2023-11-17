@@ -12,10 +12,10 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - ios-voice-processor (1.1.0)
-  - Porcupine-iOS (3.0.0):
+  - Porcupine-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (3.0.0):
-    - Porcupine-iOS (~> 3.0.0)
+  - porcupine-react-native (3.0.1):
+    - Porcupine-iOS (~> 3.0.1)
     - React
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -294,11 +294,11 @@ PODS:
     - React-jsi (= 0.68.7)
     - React-logger (= 0.68.7)
     - React-perflogger (= 0.68.7)
-  - Rhino-iOS (3.0.0):
+  - Rhino-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
-  - rhino-react-native (3.0.0):
+  - rhino-react-native (3.0.1):
     - React
-    - Rhino-iOS (~> 3.0.0)
+    - Rhino-iOS (~> 3.0.1)
   - RNVectorIcons (8.1.0):
     - React-Core
   - Yoga (1.14.0)
@@ -432,8 +432,8 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
-  Porcupine-iOS: 517158e02ac294dda15b713a3c6f74a9e877090c
-  porcupine-react-native: e74ff3c50f8a1ec956b8aa7a8797821b0f9e8b85
+  Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
+  porcupine-react-native: f6650a418ba767c210eeb416d4e0bdbb93a209ca
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 530916cd48c5f7cf1fc16966ad5ea01638ca4799
   RCTTypeSafety: 5fb4cb3080efd582e5563c3e9a0e459fc51396c5
@@ -461,11 +461,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: 2a4bf853281d4981ab471509102300d3c9e6c693
   React-runtimeexecutor: 18932e685b4893be88d1efc18f5f8ca1c9cd39d8
   ReactCommon: 29bb6fad3242e30e9d049bc9d592736fa3da9e50
-  Rhino-iOS: b92978104bfad32da25b9eeaa4f0628b86ffcee9
-  rhino-react-native: 3954bad7e47e21256a0874999cbb0d2acf599186
+  Rhino-iOS: 4eeb02b38696907b28dd6f5dfa3a8f25355554ca
+  rhino-react-native: 8ef93ffeb956ad0c4843dfe0391df92cb9d290a6
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: 0bc4b37c3b8a345336ff601e2cf7d9704bab7e93
 
-PODFILE CHECKSUM: f1735c3d5e715cf7947e3ba5b5a427084f14548f
+PODFILE CHECKSUM: 38ff5eee24e2332e8e18ccdd6bfb080f77f9e113
 
 COCOAPODS: 1.11.3
