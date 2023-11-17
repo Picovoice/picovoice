@@ -45,3 +45,6 @@
 * Engine improvements
 * Improved error reporting
 * Added reset function
+
+## [3.0.1] - 2023-11-17
+* Update native packages
