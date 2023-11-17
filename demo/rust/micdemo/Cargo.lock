@@ -258,9 +258,9 @@ checksum = "4d5d9eb14b174ee9aa2ef96dc2b94637a2d4b6e7cb873c7e171f0c20c6cf3eac"
 
 [[package]]
 name = "picovoice"
-version = "3.0.0"
+version = "3.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fabe4e2d38af0b0a775821d253c6b1a1814942763d32201134442f84ba483180"
+checksum = "25db5eb8e4cc04217079327453cb408db940154bb68a7aca2724e354dd49828e"
 dependencies = [
  "pv_porcupine",
  "pv_rhino",
@@ -290,9 +290,9 @@ dependencies = [
 
 [[package]]
 name = "pv_porcupine"
-version = "3.0.0"
+version = "3.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71969a68dc466d64844f720251591e7ac6a31233fcd7fb24cdb9a219a7db63bc"
+checksum = "92d53e53572c96150545da9c23aca8ad76550f7117e6bbb0ab16ae6a4e914946"
 dependencies = [
  "libc",
  "libloading 0.8.0",
@@ -310,9 +310,9 @@ dependencies = [
 
 [[package]]
 name = "pv_rhino"
-version = "3.0.0"
+version = "3.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ee06963a203357e9b7471c7106c0a2542028f686e6a6267c1410a71a849d2e26"
+checksum = "b6aeaa03376a22f0f90ce579e27f3e306bfa18761f089c524d52086e7929555a"
 dependencies = [
  "libc",
  "libloading 0.7.4",
