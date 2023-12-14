@@ -12,12 +12,12 @@ This package contains a demo project for the STM32F407 Discovery kit using Picov
 ## Installation
 
 For this demo, you need to:
-
+<!-- markdown-link-check-disable -->
 1. Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html), which is an
    all-in-one multi-OS development tool for STM32 microcontrollers.
 2. Download [STM32Cube MCU Package for STM32F4 series](https://www.st.com/en/embedded-software/stm32cubef4.html) and
    extract it somewhere on your computer.
-
+<!-- markdown-link-check-enable -->
 ## AccessKey
 
 Picovoice requires a valid Picovoice `AccessKey` at initialization. `AccessKey` acts as your credentials when using
@@ -44,12 +44,12 @@ Then, to compile and run the demo project on a STM32F407 discovery board, perfor
 4. Replace `ACCESS_KEY` in `main.c` with your AccessKey obtained from [Picovoice Console](https://console.picovoice.ai/)
 5. Click `Project` > `Build Project`
 6. Connect the board to the computer and press `Run` > `Debug`.
-
+<!-- markdown-link-check-disable -->
 > :warning: `printf()` uses the SWO connector and the trace port 0. For more information, refer
 >
 to [STM32 microcontroller debug toolbox](https://www.st.com/resource/en/application_note/dm00354244-stm32-microcontroller-debug-toolbox-stmicroelectronics.pdf)
 > , Chapter 7.
-
+<!-- markdown-link-check-enable -->
 In this demo, you can determine the default wake word and context models for each language by checking the [pv_params.h](./stm32f407g-disc1/Inc/pv_params.h). Find the language section surrounded by:
 
 ```c
