@@ -17,9 +17,9 @@ Picovoice is:
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
 
 ## Installation
-
+<!-- markdown-link-check-disable -->
 The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile:
-
+<!-- markdown-link-check-enable -->
 ```ruby
 pod 'Picovoice-iOS'
 ```
