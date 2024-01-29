@@ -4,10 +4,24 @@ This package contains a demo project for the STM32F407 Discovery kit using Picov
 
 ## Supported Languages
 
-1. English
-2. French
-3. German
-4. Spanish
+1. Arabic
+2. Dutch
+3. English
+4. French
+5. German
+6. Hindi
+7. Italian
+8. Japanese
+9. Korean
+10. Mandarin
+11. Polish
+12. Portuguese
+13. Russian
+14. Spanish
+15. Swedish
+16. Vietnamese
+
+- Support for additional languages is available for commercial customers on a case-by-case basis.
 
 ## Installation
 
