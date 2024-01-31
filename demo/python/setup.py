@@ -1,5 +1,5 @@
 #
-# Copyright 2020-2023 Picovoice Inc.
+# Copyright 2020-2024 Picovoice Inc.
 #
 # You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 # file accompanying this source.
@@ -39,7 +39,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), 'r') as f:
 
 setuptools.setup(
     name="picovoicedemo",
-    version="3.0.1",
+    version="3.0.2",
     author="Picovoice Inc.",
     author_email="hello@picovoice.ai",
     description="Picovoice demos.",
@@ -47,7 +47,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Picovoice/picovoice",
     packages=["picovoicedemo"],
-    install_requires=["picovoice==3.0.1", "pvrecorder==1.2.1"],
+    install_requires=["picovoice==3.0.2", "pvrecorder==1.2.2"],
     include_package_data=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -63,6 +63,6 @@ setuptools.setup(
             'picovoice_demo_mic=picovoicedemo.picovoice_demo_mic:main',
         ],
     ),
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
