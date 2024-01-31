@@ -51,6 +51,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Topic :: Multimedia :: Sound/Audio :: Speech"
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.7',
     keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
