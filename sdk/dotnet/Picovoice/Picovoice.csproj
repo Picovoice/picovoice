@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net6.0;netcoreapp3.0;netstandard2.0</TargetFrameworks>
-        <Version>3.0.1</Version>
+        <Version>3.0.2</Version>
         <Authors>Picovoice</Authors>
         <Company />
         <Product>Picovoice End-to-End Platform</Product>
@@ -11,7 +11,7 @@
         <RepositoryType>git</RepositoryType>
         <PackageTags>porcupine, wake word, trigger word, hotword, nlu, intent, inference, speech recognition, voice commands, offline, private, voice ai, voice assistant</PackageTags>
         <PackageReleaseNotes>See https://github.com/Picovoice/picovoice</PackageReleaseNotes>
-        <Copyright>Picovoice 2020-2023</Copyright>
+        <Copyright>Picovoice 2020-2024</Copyright>
         <Description>
             Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences similar to Alexa and Google. But it entirely runs 100% on-device.
 
@@ -35,10 +35,10 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Porcupine" Version="3.0.1">
+        <PackageReference Include="Porcupine" Version="3.0.2">
             <PrivateAssets>analyzers</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Rhino" Version="3.0.1">
+        <PackageReference Include="Rhino" Version="3.0.2">
             <PrivateAssets>analyzers</PrivateAssets>
         </PackageReference>
     </ItemGroup>
