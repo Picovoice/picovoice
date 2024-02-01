@@ -92,14 +92,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install dependencies
-      run: yarn install
-
     # ************** REMOVE AFTER RELEASE ********************
     - name: Build Node.js SDK
       run: yarn && yarn build
       working-directory: sdk/nodejs
     # ********************************************************
+
+    - name: Install dependencies
+      run: yarn install
 
     - name: Test
       run: yarn file
