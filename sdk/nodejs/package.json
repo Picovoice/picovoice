@@ -1,6 +1,6 @@
 {
   "name": "@picovoice/picovoice-node",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Picovoice SDK for NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
@@ -39,8 +39,8 @@
     "lint": "eslint . --ext .js,.ts"
   },
   "dependencies": {
-    "@picovoice/porcupine-node": "=3.0.1",
-    "@picovoice/rhino-node": "=3.0.2"
+    "@picovoice/porcupine-node": "=3.0.2",
+    "@picovoice/rhino-node": "=3.0.3"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",

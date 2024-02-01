@@ -17,12 +17,12 @@ Picovoice is an end-to-end platform for building voice products on your terms. I
 
 ## Compatibility
 
-These demos run Rhino on **NodeJS 12+** on the following platforms:
+These demos run Rhino on **NodeJS 16+** on the following platforms:
 
 - Windows (x86_64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Raspberry Pi (2,3,4)
+- Raspberry Pi (2, 3, 4, 5)
 - NVIDIA Jetson (Nano)
 - BeagleBone
 
@@ -54,7 +54,7 @@ npm install -g @picovoice/picovoice-node-demo
 
 Here is an example which will understand commands from the "Smart Lighting" demo from the [Rhino GitHub repository](https://github.com/Picovoice/rhino/blob/master/resources/contexts/) (note that context files are platform-dependent; choose the appropriate one for the platform you are using; this demo uses the "mac" version)
 
-Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo. 
+Using the 'global' install methods above should add `pv-mic-demo` to your system path, which we can use to run the mic demo.
 
 Use `pv-mic-demo` to run the mic demo. First select an input audio device to start recording audio and provide your Picovoice AccessKey with `--access_key`.
 
@@ -70,7 +70,7 @@ index: 1, device name: MacBook Air Microphone
 ```
 
 Specify the input audio device with `--audio_device_index` (this may be empty if you
-wish to use system default microphone). In this example we will use USB Audio Device.  
+wish to use system default microphone). In this example we will use USB Audio Device.
 
 Specify the Wake Word (.ppn) with `--keyword_file_path` and the Speech-to-Intent context (.rhn file) with `--context_file_path`.
 

@@ -46,6 +46,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Node.js SDK
+      run: yarn && yarn build
+      working-directory: sdk/nodejs
+    # ********************************************************
+
     - name: Install dependencies
       run: yarn install
 
@@ -62,7 +68,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson, beaglebone]
         include:
         - machine: rpi2
           platform: raspberry-pi
@@ -74,6 +80,8 @@ jobs:
           platform: raspberry-pi
         - machine: rpi4-64
           platform: raspberry-pi
+        - machine: rpi5-64
+          platform: raspberry-pi
         - machine: jetson
           platform: jetson
         - machine: beaglebone
@@ -84,11 +92,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Pre-build dependencies
-      run: npm install --global yarn
-
     - name: Install dependencies
       run: yarn install
+
+    # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Node.js SDK
+      run: yarn && yarn build
+      working-directory: sdk/nodejs
+    # ********************************************************
 
     - name: Test
       run: yarn file

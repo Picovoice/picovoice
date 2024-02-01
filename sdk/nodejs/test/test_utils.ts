@@ -1,5 +1,5 @@
 //
-// Copyright 2022-2023 Picovoice Inc.
+// Copyright 2022-2024 Picovoice Inc.
 //
 // You may not use this file except in compliance with the license. A copy of the license is located in the "LICENSE"
 // file accompanying this source.
@@ -9,7 +9,7 @@
 // specific language governing permissions and limitations under the License.
 //
 import * as path from 'path';
-import { getPlatform } from '../src/platforms';
+import { getPlatform } from './platforms';
 
 const ROOT_DIR = path.join(__dirname, '../../..');
 const TEST_DATA_JSON = require(path.join(
