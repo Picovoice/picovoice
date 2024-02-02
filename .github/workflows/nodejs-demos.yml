@@ -62,7 +62,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, jetson, beaglebone]
+        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson, beaglebone]
         include:
         - machine: rpi2
           platform: raspberry-pi
@@ -74,6 +74,8 @@ jobs:
           platform: raspberry-pi
         - machine: rpi4-64
           platform: raspberry-pi
+        - machine: rpi5-64
+          platform: raspberry-pi
         - machine: jetson
           platform: jetson
         - machine: beaglebone
@@ -83,9 +85,6 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
-
-    - name: Pre-build dependencies
-      run: npm install --global yarn
 
     - name: Install dependencies
       run: yarn install
