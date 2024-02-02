@@ -20,17 +20,16 @@ defaults:
     working-directory: demo/go
 
 jobs:
-  build-micdemo:
-    runs-on: ubuntu-latest
+  build-github-hosted:
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
         go: [ '1.16', '1.17', '1.18', '1.19', '1.20', 'stable' ]
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
 
     - name: Set up Mingw
       uses: egor-tensin/setup-mingw@v2
@@ -38,38 +37,29 @@ jobs:
       with:
         version: 11.2.0
 
-    - name: Setup go
+    - name: Set up go
       uses: actions/setup-go@v4
       with:
         go-version: ${{ matrix.go }}
 
     - name: Build micdemo
-      run: go build
-      working-directory: demo/go/micdemo
+      run: go build micdemo/picovoice_mic_demo.go
 
-  build-filedemo:
-    runs-on: ubuntu-latest
+    - name: Build filedemo
+      run: go build filedemo/picovoice_file_demo.go
+
+  build-self-hosted:
+    runs-on: ${{ matrix.machine }}
 
     strategy:
       matrix:
-        go: [ '1.16', '1.17', '1.18', '1.19', '1.20', 'stable' ]
+        machine: [ rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson ]
 
     steps:
     - uses: actions/checkout@v3
-      with:
-        submodules: recursive
 
-    - name: Set up Mingw
-      uses: egor-tensin/setup-mingw@v2
-      if: ${{ (matrix.os == 'windows-latest') && (matrix.go != 'stable') && (matrix.go < 1.20) }}
-      with:
-        version: 11.2.0
-
-    - name: Setup go
-      uses: actions/setup-go@v4
-      with:
-        go-version: ${{ matrix.go }}
+    - name: Build micdemo
+      run: go build micdemo/picovoice_mic_demo.go
 
     - name: Build filedemo
-      run: go build
-      working-directory: demo/go/filedemo
+      run: go build filedemo/picovoice_file_demo.go
