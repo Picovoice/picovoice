@@ -302,7 +302,7 @@ func getLinuxDetails() string {
 	}
 
 	switch cpuPart {
-	case "0xb76", "0xc07", "0xd03", "0xd08":
+	case "0xb76", "0xc07", "0xd03", "0xd08", "0xd0b":
 		return "raspberry-pi"
 	case "0xd07":
 		return "jetson"
