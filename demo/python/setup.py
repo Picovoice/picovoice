@@ -63,6 +63,6 @@ setuptools.setup(
             'picovoice_demo_mic=picovoicedemo.picovoice_demo_mic:main',
         ],
     ),
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     keywords="wake word, voice control, speech recognition, voice recognition, natural language understanding",
 )
