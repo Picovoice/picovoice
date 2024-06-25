@@ -141,7 +141,11 @@ class _MyHomePageState extends State<MyHomePage> {
         _performStopwatchCommand(slots);
       } else if (inference.intent! == 'availableCommands') {
         Fluttertoast.showToast(
-            msg: "Try saying: \n" " - 'set timer for 5 minutes'\n" " - 'set alarm for tomorrow at 10:30am'\n" " - 'start stopwatch'\n" " - 'show me the time'",
+            msg: "Try saying: \n"
+                " - 'set timer for 5 minutes'\n"
+                " - 'set alarm for tomorrow at 10:30am'\n"
+                " - 'start stopwatch'\n"
+                " - 'show me the time'",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.TOP,
             timeInSecForIosWeb: 5,
@@ -151,7 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     } else {
       Fluttertoast.showToast(
-          msg: "Didn't understand command!\n" "Say 'PicoClock, what can I say?' to see a list of example commands",
+          msg: "Didn't understand command!\n"
+              "Say 'PicoClock, what can I say?' to see a list of example commands",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 2,
