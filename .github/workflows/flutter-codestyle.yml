@@ -26,10 +26,10 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install Flutter 2.10.0
+    - name: Install Flutter 3.22.2
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: 2.10.0
+        flutter-version: 3.22.2
 
     - name: Run Binding Analyzer
       run: flutter analyze --no-fatal-infos --no-fatal-warnings
