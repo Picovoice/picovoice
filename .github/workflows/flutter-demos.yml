@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: ['2.10.0', '3.0.4', '3.22.2']
+        flutter-version: ['3.0.4', '3.22.2']
 
     steps:
     - uses: actions/checkout@v3
@@ -58,7 +58,7 @@ jobs:
 
   build-ios:
     name: Build iOS demo
-    runs-on: macos-11
+    runs-on: macos-12
     strategy:
       matrix:
         flutter-version: ['2.10.0', '3.0.4', '3.22.2']
