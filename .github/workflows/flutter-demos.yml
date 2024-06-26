@@ -122,7 +122,7 @@ jobs:
       run: flutter build apk
 
   build-clock-ios:
-    runs-on: macos-11
+    runs-on: macos-latest
     defaults:
       run:
         working-directory: demo/flutter-clock
