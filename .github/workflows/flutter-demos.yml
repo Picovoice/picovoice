@@ -16,6 +16,8 @@ on:
       - '.github/workflows/flutter.yml'
       - 'demo/flutter/**'
       - '!demo/flutter/README.md'
+      - 'demo/flutter-clock/**'
+      - '!demo/flutter-clock/README.md'
 
 defaults:
   run:
