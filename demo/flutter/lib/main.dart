@@ -260,7 +260,7 @@ class _MyAppState extends State<MyApp> {
 
   buildContextHeader(BuildContext context) {
     final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-        primary: picoBlue, textStyle: TextStyle(color: Colors.white));
+        backgroundColor: picoBlue, textStyle: TextStyle(color: Colors.white));
 
     return Expanded(
         flex: 1,
@@ -299,7 +299,7 @@ class _MyAppState extends State<MyApp> {
 
   buildStartButton(BuildContext context) {
     final ButtonStyle buttonStyle = ElevatedButton.styleFrom(
-        primary: picoBlue,
+        backgroundColor: picoBlue,
         shape: CircleBorder(),
         textStyle: TextStyle(color: Colors.white));
 
