@@ -8,12 +8,16 @@ on:
       - '.github/workflows/flutter.yml'
       - 'demo/flutter/**'
       - '!demo/flutter/README.md'
+      - 'demo/flutter-clock/**'
+      - '!demo/flutter-clock/README.md'
   pull_request:
     branches: [ master, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/flutter.yml'
       - 'demo/flutter/**'
       - '!demo/flutter/README.md'
+      - 'demo/flutter-clock/**'
+      - '!demo/flutter-clock/README.md'
 
 defaults:
   run:
@@ -25,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: ['2.8.1', '3.0.4']
+        flutter-version: ['3.3.0', '3.22.2']
 
     steps:
     - uses: actions/checkout@v3
@@ -54,10 +58,10 @@ jobs:
 
   build-ios:
     name: Build iOS demo
-    runs-on: macos-11
+    runs-on: macos-12
     strategy:
       matrix:
-        flutter-version: ['2.8.1', '3.0.4']
+        flutter-version: ['3.3.0', '3.22.2']
 
     steps:
     - uses: actions/checkout@v3
@@ -90,7 +94,7 @@ jobs:
 
     strategy:
       matrix:
-        flutter-version: ['2.8.1', '3.0.4']
+        flutter-version: ['2.10.0', '3.3.0', '3.22.2']
 
     steps:
     - uses: actions/checkout@v3
@@ -118,14 +122,14 @@ jobs:
       run: flutter build apk
 
   build-clock-ios:
-    runs-on: macos-11
+    runs-on: macos-12
     defaults:
       run:
         working-directory: demo/flutter-clock
 
     strategy:
       matrix:
-        flutter-version: ['2.8.1', '3.0.4']
+        flutter-version: ['2.10.0', '3.3.0', '3.22.2']
 
     steps:
     - uses: actions/checkout@v3
