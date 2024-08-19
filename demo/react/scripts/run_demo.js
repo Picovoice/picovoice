@@ -141,6 +141,7 @@ const rhinoModel = {
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.fork("react-scripts", commands, {
+child_process.spawn("react-scripts", commands, {
   execPath: command,
+  shell: true
 });
