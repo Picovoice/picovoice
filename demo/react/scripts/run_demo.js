@@ -5,7 +5,7 @@ const testData = require("../../../resources/.test/test_data.json");
 
 const availableLanguages = testData["tests"]["parameters"].map((x) => x["language"]);
 
-const commands = process.argv.slice(2, -1);
+const args = process.argv.slice(2, -1);
 const language = process.argv.slice(-1)[0];
 
 if (!availableLanguages.includes(language)) {
@@ -141,7 +141,7 @@ const rhinoModel = {
 
 const command = (process.platform === "win32") ? "npx.cmd" : "npx";
 
-child_process.spawn("react-scripts", commands, {
-  execPath: command,
-  shell: true
+child_process.execSync(`${command} react-scripts ${args}`, {
+  shell: true,
+  stdio: 'inherit'
 });
