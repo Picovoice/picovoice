@@ -46,6 +46,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Node.js SDK
+      run: yarn && yarn build
+      working-directory: sdk/nodejs
+      # ********************************************************
+
     - name: Install dependencies
       run: yarn install
 
@@ -79,6 +85,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Build Node.js SDK
+      run: yarn && yarn build
+      working-directory: sdk/nodejs
+      # ********************************************************
 
     - name: Install dependencies
       run: yarn install

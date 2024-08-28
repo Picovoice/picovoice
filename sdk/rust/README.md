@@ -16,7 +16,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 - Rust 1.54+
-- Runs on Linux (x86_64), macOS (x86_64 and arm64), Windows (x86_64), Raspberry Pi, NVIDIA Jetson (Nano), and BeagleBone
+- Runs on Linux (x86_64), macOS (x86_64, arm64), Windows (x86_64), Raspberry Pi
 
 ## Installation
 First you will need [Rust and Cargo](https://rustup.rs/) installed on your system.

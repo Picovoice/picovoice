@@ -25,9 +25,7 @@ Picovoice is:
 - Linux (x86_64)
 - macOS (x86_64, arm64)
 - Windows (x86_64)
-- BeagleBone
-- NVIDIA Jetson Nano
-- Raspberry Pi (Zero, 2, 3, 4)
+- Raspberry Pi (Zero, 3, 4, 5)
 
 
 ## AccessKey

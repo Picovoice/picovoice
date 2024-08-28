@@ -47,6 +47,16 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Pack .NET SDK
+      run: dotnet pack -c Release
+      working-directory: sdk/dotnet
+
+    - name: Add local NuGet package file
+      continue-on-error: true
+      run: dotnet add package -s ../../../sdk/dotnet/Picovoice/bin/Release Picovoice
+      # ********************************************************
+
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release -v n
 
@@ -82,6 +92,16 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Pack .NET SDK
+      run: dotnet pack -c Release
+      working-directory: sdk/dotnet
+
+    - name: Add local NuGet package file
+      continue-on-error: true
+      run: dotnet add package -s ../../../sdk/dotnet/Picovoice/bin/Release Picovoice
+      # ********************************************************
 
     - name: Dotnet build micdemo
       run: dotnet build -c MicDemo.Release -v n

@@ -1,10 +1,11 @@
 [package]
 name = "picovoice_filedemo"
-version = "3.0.3"
+version = "3.0.4"
 edition = "2018"
 
 [dependencies]
 clap = "3.2.3"
 hound = "3.4.0"
 itertools = "0.10.3"
-picovoice =  "=3.0.3"
+# picovoice =  "=3.0.4"
+picovoice = { path = "../../../sdk/rust" }
