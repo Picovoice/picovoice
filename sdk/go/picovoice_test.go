@@ -302,12 +302,8 @@ func getLinuxDetails() string {
 	}
 
 	switch cpuPart {
-	case "0xb76", "0xc07", "0xd03", "0xd08", "0xd0b":
+	case "0xb76", "0xd03", "0xd08", "0xd0b":
 		return "raspberry-pi"
-	case "0xd07":
-		return "jetson"
-	case "0xc08":
-		return "beaglebone"
 	default:
 		log.Fatalf(`This device (CPU part = %s) is not supported by Picovoice.`, cpuPart)
 	}
