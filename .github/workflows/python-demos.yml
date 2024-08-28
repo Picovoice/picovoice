@@ -54,7 +54,7 @@ jobs:
     - name: Build dependencies
       run: |
         python -m pip install -U pip setuptools
-        pip install wheel && cd ../../sdk/python && python3 setup.py sdist bdist_wheel && pip install dist/pvpicovoice-3.0.3-py3-none-any.whl
+        pip install wheel && cd ../../sdk/python && python3 setup.py sdist bdist_wheel && pip install dist/picovoice-3.0.3-py3-none-any.whl
 
     - name: Install dependencies
       run: pip install -r requirements.txt

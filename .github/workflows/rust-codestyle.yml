@@ -41,12 +41,6 @@ jobs:
         toolchain: stable
         override: true
 
-      # ************** REMOVE AFTER RELEASE ********************
-    - name: Build Rust SDK
-      run: ./copy.sh
-      working-directory: sdk/rust
-      # ********************************************************
-
     - name: Run clippy
       run: cargo clippy -- -D warnings
       working-directory: sdk/rust
@@ -68,12 +62,6 @@ jobs:
         profile: minimal
         toolchain: stable
         override: true
-
-      # ************** REMOVE AFTER RELEASE ********************
-    - name: Build Rust SDK
-      run: ./copy.sh
-      working-directory: sdk/rust
-      # ********************************************************
 
     - name: Run clippy
       run: cargo clippy -- -D warnings
@@ -100,12 +88,6 @@ jobs:
     - name: Local dependency
       run: cargo build
       working-directory: sdk/rust
-
-      # ************** REMOVE AFTER RELEASE ********************
-    - name: Build Rust SDK
-      run: ./copy.sh
-      working-directory: sdk/rust
-      # ********************************************************
 
     - name: Run clippy
       run: cargo clippy -- -D warnings

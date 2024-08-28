@@ -41,6 +41,11 @@ jobs:
       with:
         go-version: 1.18
 
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Install Go SDK from branch
+      run: go get github.com/Picovoice/picovoice/sdk/go/v3/@98eed548c1219c0bf9619550434dd5f457b6a090
+      # ********************************************************
+
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3
       with:
@@ -56,6 +61,11 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: 1.18
+
+      # ************** REMOVE AFTER RELEASE ********************
+    - name: Install Go SDK from branch
+      run: go get github.com/Picovoice/picovoice/sdk/go/v3/@98eed548c1219c0bf9619550434dd5f457b6a090
+      # ********************************************************
 
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3
