@@ -191,12 +191,12 @@ async function resetTest(testcase: any): Promise<Result> {
   let picovoice = null;
   try {
     const keywordPath = getPath(
-      `keyword_files/${testcase.language}/${testcase.keywordName}_${platform}.ppn`,
+      `keyword_files/${testcase.language}/${testcase.wakeword}_${platform}.ppn`,
     );
     const contextPath = getPath(
-      `context_files/${testcase.language}/${testcase.contextName}_${platform}.rhn`,
+      `context_files/${testcase.language}/${testcase.context_name}_${platform}.rhn`,
     );
-    const audioFilePath = getPath(`audio_samples/${testcase.audioFile}`);
+    const audioFilePath = getPath(`audio_samples/${testcase.audio_file}`);
     const porcupineModelPath = getPath('model_files/porcupine_params.pv');
     const rhinoModelPath = getPath('model_files/rhino_params.pv');
 
