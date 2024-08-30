@@ -51,18 +51,23 @@ target 'PicovoiceTestApp' do
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
-      end
-      
-      if target.name == 'Flipper'
-      file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
-      contents = File.read(file_path)
-      unless contents.include?('#include <functional>')
-        File.open(file_path, 'w') do |file|
-          file.puts('#include <functional>')
-          file.puts(contents)
+        
+        if target.to_s === 'React-Codegen'
+          config.build_settings['SWIFT_VERSION'] = '5.0'
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
         end
       end
-    end
+
+      if target.name == 'Flipper'
+        file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
+        contents = File.read(file_path)
+        unless contents.include?('#include <functional>')
+          File.open(file_path, 'w') do |file|
+            file.puts('#include <functional>')
+            file.puts(contents)
+          end
+        end
+      end
     end
   end
 end
