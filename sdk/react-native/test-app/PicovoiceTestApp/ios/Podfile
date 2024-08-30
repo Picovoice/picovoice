@@ -52,6 +52,17 @@ target 'PicovoiceTestApp' do
       target.build_configurations.each do |config|
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
       end
+      
+      if target.name == 'Flipper'
+      file_path = 'Pods/Flipper/xplat/Flipper/FlipperTransportTypes.h'
+      contents = File.read(file_path)
+      unless contents.include?('#include <functional>')
+        File.open(file_path, 'w') do |file|
+          file.puts('#include <functional>')
+          file.puts(contents)
+        end
+      end
+    end
     end
   end
 end
