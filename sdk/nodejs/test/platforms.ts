@@ -22,8 +22,6 @@ const SYSTEM_WINDOWS = 'win32';
 const X86_64 = 'x64';
 const ARM_64 = 'arm64';
 
-const PLATFORM_BEAGLEBONE = 'beaglebone';
-const PLATFORM_JETSON = 'jetson';
 const PLATFORM_LINUX = 'linux';
 const PLATFORM_MAC = 'mac';
 const PLATFORM_RASPBERRY_PI = 'raspberry-pi';
@@ -44,15 +42,10 @@ function getCpuPart(): string {
 function getLinuxPlatform(): string {
   const cpuPart = getCpuPart();
   switch (cpuPart) {
-    case '0xc07':
     case '0xd03':
     case '0xd08':
     case '0xd0b':
       return PLATFORM_RASPBERRY_PI;
-    case '0xd07':
-      return PLATFORM_JETSON;
-    case '0xc08':
-      return PLATFORM_BEAGLEBONE;
     default:
       throw new PicovoiceRuntimeError(`Unsupported CPU: '${cpuPart}'`);
   }
