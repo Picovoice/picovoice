@@ -136,6 +136,8 @@ checksum = "9b7820b9daea5457c9f21c69448905d723fbd21136ccf521748f23fd49e723ee"
 [[package]]
 name = "picovoice"
 version = "3.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8cc2c9dbb0553c8a6601e83e2e508a306bf0da3f76226ee3eb709cce646f4296"
 dependencies = [
  "pv_porcupine",
  "pv_rhino",
