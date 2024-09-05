@@ -54,7 +54,7 @@ jobs:
         go-version: ${{ matrix.go }}
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build
@@ -67,7 +67,7 @@ jobs:
 
     strategy:
       matrix:
-        machine: [rpi2, rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64, jetson, beaglebone]
+        machine: [rpi3-32, rpi3-64, rpi4-32, rpi4-64, rpi5-64]
 
     steps:
     - uses: actions/checkout@v3
@@ -80,7 +80,7 @@ jobs:
         go-version: ${{ matrix.go }}
 
     - name: Install dependencies
-      run: go get
+      run: go install
 
     - name: Build
       run: go build

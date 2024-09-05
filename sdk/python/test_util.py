@@ -42,18 +42,12 @@ def _pv_linux_machine(machine):
 
     if '0xb76' == cpu_part:
         return 'arm11' + arch_info
-    elif '0xc07' == cpu_part:
-        return 'cortex-a7' + arch_info
     elif '0xd03' == cpu_part:
         return 'cortex-a53' + arch_info
-    elif '0xd07' == cpu_part:
-        return 'cortex-a57' + arch_info
     elif '0xd08' == cpu_part:
         return 'cortex-a72' + arch_info
     elif "0xd0b" == cpu_part:
         return "cortex-a76" + arch_info
-    elif '0xc08' == cpu_part:
-        return 'beaglebone' + arch_info
     elif machine == 'armv7l':
         log.warning(
             'WARNING: Please be advised that this device (CPU part = %s) is not officially supported by Picovoice. '
@@ -80,14 +74,12 @@ _PV_SYSTEM, _PV_MACHINE = _pv_platform()
 
 _RASPBERRY_PI_MACHINES = {
     "arm11",
-    "cortex-a7",
     "cortex-a53",
     "cortex-a72",
     "cortex-a76",
     "cortex-a53-aarch64",
     "cortex-a72-aarch64",
     "cortex-a76-aarch64"}
-_JETSON_MACHINES = {'cortex-a57-aarch64'}
 
 
 def pv_model_path(relative):
@@ -100,12 +92,8 @@ def pv_keyword_files_subdir():
     elif _PV_SYSTEM == 'Linux':
         if _PV_MACHINE == 'x86_64':
             return 'linux'
-        elif _PV_MACHINE in _JETSON_MACHINES:
-            return 'jetson'
         elif _PV_MACHINE in _RASPBERRY_PI_MACHINES:
             return 'raspberry-pi'
-        elif _PV_MACHINE == 'beaglebone':
-            return 'beaglebone'
     elif _PV_SYSTEM == 'Windows':
         return 'windows'
 
@@ -141,15 +129,9 @@ def context_path(context, language):
                 raise RuntimeError(
                     "Failed to identify the CPU with '%s'\nCPU info: %s" % (error, cpu_info))
 
-            if cpu_part in ('0xb76', '0xc07', '0xd03', '0xd08', '0xd0b'):
+            if cpu_part in ('0xb76', '0xd03', '0xd08', '0xd0b'):
                 return os.path.join(os.path.dirname(__file__),
                                     contexts_root, 'raspberry-pi', '%s_raspberry-pi.rhn' % context)
-            elif '0xd07' == cpu_part:
-                return os.path.join(os.path.dirname(__file__),
-                                    contexts_root, 'jetson', '%s_jetson.rhn' % context)
-            elif '0xc08' == cpu_part:
-                return os.path.join(os.path.dirname(__file__),
-                                    contexts_root, 'beaglebone', '%s_beaglebone.rhn' % context)
             else:
                 raise NotImplementedError("Unsupported CPU: '%s'." % cpu_part)
     elif system == 'Windows':

@@ -20,9 +20,7 @@ This binding is for running Picovoice on **NodeJS 16+** on the following platfor
 - Windows (x86_64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Raspberry Pi (2, 3, 4, 5)
-- NVIDIA Jetson (Nano)
-- BeagleBone
+- Raspberry Pi (3, 4, 5)
 
 ### Web Browsers
 

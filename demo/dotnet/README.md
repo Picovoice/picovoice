@@ -24,15 +24,12 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 ## Compatibility
 
 - Linux (x86_64)
-- macOS (x86_64)
+- macOS (x86_64, arm64)
 - Windows (x86_64)
 - Raspberry Pi:
-  - 2
   - 3 (32 and 64 bit)
   - 4 (32 and 64 bit)
   - 5 (32 and 64 bit)
-- NVIDIA Jetson Nano
-- BeagleBone
 
 ## Installation
 

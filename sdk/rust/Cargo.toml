@@ -1,6 +1,6 @@
 [package]
 name = "picovoice"
-version = "3.0.3"
+version = "3.0.4"
 edition = "2018"
 description = "Rust SDK for Picovoice's voice recognition platform"
 license = "Apache-2.0"
@@ -25,8 +25,8 @@ path = "src/lib.rs"
 crate_type = ["lib"]
 
 [dependencies]
-pv_porcupine = "=3.0.2"
-pv_rhino = "=3.0.2"
+pv_porcupine = "=3.0.3"
+pv_rhino = "=3.0.3"
 
 [dev-dependencies]
 itertools = "0.10.1"

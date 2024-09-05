@@ -26,6 +26,7 @@ on:
 defaults:
   run:
     working-directory: sdk/unity
+    shell: bash
 
 jobs:
   playtest-linux:

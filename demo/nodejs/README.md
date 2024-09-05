@@ -22,9 +22,7 @@ These demos run Rhino on **NodeJS 16+** on the following platforms:
 - Windows (x86_64)
 - Linux (x86_64)
 - macOS (x86_64, arm64)
-- Raspberry Pi (2, 3, 4, 5)
-- NVIDIA Jetson (Nano)
-- BeagleBone
+- Raspberry Pi (3, 4, 5)
 
 ### Web Browsers
 
@@ -234,7 +232,7 @@ Files generated with the Picovoice Console carry restrictions including (but not
 
 If desired, you may override the Porcupine and Rhino model and dynamic libraries by specifying their absolute paths with `--porcupine_model_file_path` and `--porcupine_library_file_path`, respectively and the Rhino model and dynamic libraries with `--rhino_model_file_path` and `--rhino_library_file_path`. As with keyword and context files, the dynamic libraries are specific to the platform.
 
-e.g. for macOS (x86_64):
+e.g. for macOS (x86_64, arm64):
 
 ```console
 pv-mic-demo \

@@ -124,7 +124,7 @@ async function micDemo() {
     (!keywordPathsDefined && !builtinKeywordsDefined)
   ) {
     console.error(
-      "One of --keyword_file_paths or --keywords is required: Specify a built-in --keyword (e.g. 'GRASSHOPPER'), or a --keyword_file_path to a .ppn file"
+      "One of --keyword_file_path or --keywords is required: Specify a built-in --keyword (e.g. 'GRASSHOPPER'), or a --keyword_file_path to a .ppn file"
     );
     return;
   }

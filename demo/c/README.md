@@ -32,7 +32,7 @@ cmake -S demo/c/. -B demo/c/build -G "MinGW Makefiles" && cmake --build demo/c/b
 
 Running the executable without any commandline arguments prints the usage info to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone, Jetson
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/picovoice_demo_mic
@@ -58,7 +58,7 @@ usage : .\\demo\\c\\build\\picovoice_demo_mic.exe -l LIBRARY_PATH -a ACCESS_KEY 
 
 The following commands shows the available audio input devices to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/picovoice_demo_mic --show_audio_devices
@@ -116,19 +116,6 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 -i {AUDIO_DEVICE_INDEX}
 ```
 
-#### BeagleBone
-
-```console
-./demo/c/build/picovoice_demo_mic \
--a ${ACCESS_KEY}
--l sdk/c/lib/beaglebone/libpicovoice.so \
--p resources/porcupine/lib/common/porcupine_params.pv \
--k resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
--r resources/rhino/lib/common/rhino_params.pv \
--c resources/rhino/resources/contexts/beaglebone/smart_lighting_beaglebone.rhn \
--i {AUDIO_DEVICE_INDEX}
-```
-
 #### Windows
 
 ```console
@@ -169,7 +156,7 @@ cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target picovoi
 
 Running the executable without any commandline arguments prints the usage info to the console.
 
-#### Linux, macOS, Raspberry Pi, BeagleBone
+#### Linux, macOS, Raspberry Pi
 
 ```console
 ./demo/c/build/picovoice_demo_file
@@ -234,19 +221,6 @@ Replace `${PROCESSOR}` with one of the Raspberry Pi processors defined [here](..
 -k resources/porcupine/resources/keyword_files/raspberry-pi/picovoice_raspberry-pi.ppn \
 -r resources/rhino/lib/common/rhino_params.pv \
 -c resources/rhino/resources/contexts/raspberry-pi/coffee_maker_raspberry-pi.rhn \
--w resources/audio_samples/picovoice-coffee.wav
-```
-
-#### BeagleBone
-
-```console
-./demo/c/build/picovoice_demo_file \
--a ${ACCESS_KEY}
--l sdk/c/lib/beaglebone/libpicovoice.so \
--p resources/porcupine/lib/common/porcupine_params.pv \
--k resources/porcupine/resources/keyword_files/beaglebone/picovoice_beaglebone.ppn \
--r resources/rhino/lib/common/rhino_params.pv \
--c resources/rhino/resources/contexts/beaglebone/coffee_maker_beaglebone.rhn \
 -w resources/audio_samples/picovoice-coffee.wav
 ```
 

@@ -284,15 +284,10 @@ public class PicovoiceTest {
             if (arch.equals("arm") || arch.equals("aarch64")) {
                 String cpuPart = getCpuPart();
                 switch (cpuPart) {
-                    case "0xc07":
                     case "0xd03":
                     case "0xd08":
                     case "0xd0b":
                         return "raspberry-pi";
-                    case "0xd07":
-                        return "jetson";
-                    case "0xc08":
-                        return "beaglebone";
                     default:
                         throw new RuntimeException(String.format("Execution environment not supported. " +
                                 "Picovoice Java does not support CPU Part (%s).", cpuPart));

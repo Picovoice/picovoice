@@ -51,7 +51,7 @@ spoken command:
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
   - Arm Cortex-M, STM32, Arduino, and i.MX RT
-  - Raspberry Pi, NVIDIA Jetson Nano, and BeagleBone
+  - Raspberry Pi (Zero, 3, 4, 5)
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
   - Linux (x86_64), macOS (x86_64, arm64), and Windows (x86_64)
@@ -199,7 +199,7 @@ picovoice_demo_mic \
 --context_path resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn
 ```
 
-Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `raspberry-pi`, `beaglebone`, `linux`, `mac`,
+Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `raspberry-pi`, `linux`, `mac`,
 or `windows`). The microphone demo opens an audio stream from the microphone, detects utterances of a given wake
 phrase, and infers intent from the follow-on spoken command. Once the demo initializes, it prints `[Listening ...]`
 to the console. Then say:
@@ -586,7 +586,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target picovoice_demo_mic
 ```
 
-#### Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone
+#### Linux (x86_64), macOS (x86_64, arm64), Raspberry Pi
 
 List input audio devices with:
 
@@ -608,7 +608,7 @@ Run the demo using:
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [/sdk/c/lib](sdk/c/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`), and `${AUDIO_DEVICE_INDEX}` with
+name of the platform you are running on (`linux`, `raspberry-pi`, or `mac`), and `${AUDIO_DEVICE_INDEX}` with
 the index of your audio device.
 
 #### Windows
@@ -640,7 +640,7 @@ At the root of the repository, build with:
 cmake -S demo/c/. -B demo/c/build && cmake --build demo/c/build --target picovoice_demo_file
 ```
 
-#### Linux (x86_64), macOS (x86_64), Raspberry Pi, and BeagleBone
+#### Linux (x86_64), macOS (x86_64, arm64), Raspberry Pi
 
 Run the demo using:
 
@@ -656,7 +656,7 @@ Run the demo using:
 ```
 
 Replace `${LIBRARY_PATH}` with path to appropriate library available under [sdk/c/lib](sdk/c/lib), `${PLATFORM}` with the
-name of the platform you are running on (`linux`, `raspberry-pi`, `mac`, or `beaglebone`).
+name of the platform you are running on (`linux`, `raspberry-pi`, or `mac`).
 
 #### Windows
 
