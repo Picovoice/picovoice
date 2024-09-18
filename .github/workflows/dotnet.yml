@@ -36,7 +36,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13, windows-latest]
-        dotnet-version: [2.1.x, 3.0.x, 3.1.x, 5.0.x, 6.0.x]
+        dotnet-version: [2.1.x, 3.0.x, 3.1.x, 5.0.x, 6.0.x, 8.0.x]
         include:
           - dotnet-version: 2.1.x
             binding-framework: netstandard2.0
@@ -53,6 +53,9 @@ jobs:
           - dotnet-version: 6.0.x
             binding-framework: net6.0
             test-framework: net6.0
+          - dotnet-version: 8.0.x
+            binding-framework: net8.0
+            test-framework: net8.0
           - os: ubuntu-latest
             nuget-path: ~/.nuget/NuGet/local-nuget
           - os: macos-latest
@@ -68,8 +71,10 @@ jobs:
             dotnet-version: 3.1.x
           - os: macos-latest
             dotnet-version: 5.0.x
-          - os: macos-13
+          - os: macos-latest
             dotnet-version: 6.0.x
+          - os: macos-13
+            dotnet-version: 8.0.x
 
     steps:
     - name: Checkout repository and submodules
@@ -104,7 +109,7 @@ jobs:
         submodules: recursive
 
     - name: Build binding
-      run: dotnet build Picovoice/Picovoice.csproj --framework net6.0 -v n
+      run: dotnet build Picovoice/Picovoice.csproj --framework net8.0 -v n
 
     - name: Test
-      run: dotnet test --framework net6.0 -v n
+      run: dotnet test --framework net8.0 -v n

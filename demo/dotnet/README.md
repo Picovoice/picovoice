@@ -19,7 +19,7 @@ similar to Alexa and Google. But it entirely runs 100% on-device. Picovoice is
 
 ## Requirements
 
-- .NET 6.0
+- .NET 8.0
 
 ## Compatibility
 

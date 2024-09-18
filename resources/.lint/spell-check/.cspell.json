@@ -69,6 +69,7 @@
     "**/*.keystore",
     "**/BUCK",
     "**/build_defs.bzl",
+    "**/sdk/go/go.sum",
     "**/sdk/react-native/test-app/**/*.xml",
     "**/sdk/react-native/test-app/**/*.mm",
     "**/Cargo.toml",
