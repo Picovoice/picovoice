@@ -5,6 +5,5 @@
     <string name="context_label">Context:</string>
     <string name="context_name">Smart Lighting</string>
     <string name="phrase_label">Example Phrase:</string>
-    <string name="phrase_text">\"Hey Porcupine, make the living room lights purple.\"</string>
-    <string name="button_text">Show Context</string>
+    <string name="phrase_text">\"Porcupine, turn off the living room lights.\"</string>
 </resources>
