@@ -7,12 +7,7 @@ import android.content.res.AssetManager;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.microsoft.appcenter.espresso.Factory;
-import com.microsoft.appcenter.espresso.ReportHelper;
-
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -32,9 +27,6 @@ import ai.picovoice.picovoice.PicovoiceWakeWordCallback;
 import ai.picovoice.rhino.RhinoInference;
 
 public class BaseTest {
-
-    @Rule
-    public ReportHelper reportHelper = Factory.getReportHelper();
 
     boolean isWakeWordDetected = false;
     PicovoiceWakeWordCallback wakeWordCallback = new PicovoiceWakeWordCallback() {
@@ -58,16 +50,6 @@ public class BaseTest {
     AssetManager assetManager;
     String testResourcesPath;
     String accessKey;
-
-    @After
-    public void TearDown() {
-        isWakeWordDetected = false;
-        inferenceResult = null;
-        if (picovoice != null) {
-            picovoice.delete();
-        }
-        reportHelper.label("Stopping App");
-    }
 
     @Before
     public void Setup() throws IOException {

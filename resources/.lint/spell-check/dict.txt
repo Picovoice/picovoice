@@ -304,6 +304,7 @@ webvp
 weiß
 Wohnzimmer
 xcframework
+xcuitest
 xcworkspace
 xcodeproj
 xcshareddata
