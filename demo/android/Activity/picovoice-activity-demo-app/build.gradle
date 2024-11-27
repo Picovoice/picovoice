@@ -121,11 +121,5 @@ afterEvaluate {
 
             tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}WakewordContextName"
             tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}WakewordContextName"
-
-            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyAudio"
-            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyContext"
-            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyRhinoParams"
-            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyPorcupineParams"
-            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyWakeword"
     }
 }
