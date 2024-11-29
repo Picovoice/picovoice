@@ -24,7 +24,7 @@ if (rootProject.file("local.properties").exists()) {
 }
 
 android {
-    compileSdkVersion defaultTargetSdkVersion
+    compileSdk defaultTargetSdkVersion
 
     defaultConfig {
         applicationId "ai.picovoice.picovoice.testapp"
@@ -130,12 +130,14 @@ android {
             }
         }
     }
+    namespace 'ai.picovoice.picovoice.testapp'
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.errorprone:error_prone_annotations:2.36.0'
     implementation 'ai.picovoice:picovoice-android:3.0.1'
 
     // Espresso UI Testing
@@ -143,7 +145,6 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestImplementation('com.microsoft.appcenter:espresso-test-extension:1.4')
     androidTestImplementation('androidx.test.espresso:espresso-intents:3.5.1')
 }
 
@@ -165,5 +166,17 @@ afterEvaluate {
 
             tasks."merge${flavor.name.capitalize()}DebugAssets".dependsOn "${flavor.name}CopyAudio"
             tasks."merge${flavor.name.capitalize()}ReleaseAssets".dependsOn "${flavor.name}CopyAudio"
+
+            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyAudio"
+            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyContext"
+            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyRhinoParams"
+            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyPorcupineParams"
+            tasks."generate${flavor.name.capitalize()}ReleaseLintVitalReportModel".dependsOn "${flavor.name}CopyWakeword"
+
+            tasks."lintVitalAnalyze${flavor.name.capitalize()}Release".dependsOn "${flavor.name}CopyAudio"
+            tasks."lintVitalAnalyze${flavor.name.capitalize()}Release".dependsOn "${flavor.name}CopyContext"
+            tasks."lintVitalAnalyze${flavor.name.capitalize()}Release".dependsOn "${flavor.name}CopyRhinoParams"
+            tasks."lintVitalAnalyze${flavor.name.capitalize()}Release".dependsOn "${flavor.name}CopyPorcupineParams"
+            tasks."lintVitalAnalyze${flavor.name.capitalize()}Release".dependsOn "${flavor.name}CopyWakeword"
     }
 }
