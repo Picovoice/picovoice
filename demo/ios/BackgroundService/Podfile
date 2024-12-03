@@ -3,6 +3,6 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '13.0'
 
 target 'PicovoiceBackgroundServiceDemo' do
-    pod 'Picovoice-iOS', '~> 3.0.1'
+    pod 'Picovoice-iOS', :podspec => 'https://raw.githubusercontent.com/Picovoice/picovoice/ios-bitcode-spm/sdk/ios/Picovoice-iOS.podspec' # '~> 3.0.2'
     pod 'SwiftySound'
 end
