@@ -18,8 +18,15 @@ Picovoice is:
 
 ## Installation
 <!-- markdown-link-check-disable -->
-The Picovoice iOS SDK is available via [Cocoapods](https://cocoapods.org). To import it into your iOS project install Cocoapods and add the following line to your Podfile:
+The Picovoice iOS binding is available via [Swift Package Manager](https://www.swift.org/documentation/package-manager/) or [CocoaPods](https://cocoapods.org/pods/Picovoice-iOS).
 <!-- markdown-link-check-enable -->
+
+To import the package using SPM, open up your project's Package Dependencies in XCode and add:
+```
+https://github.com/Picovoice/picovoice.git
+```
+
+To import it into your iOS project using CocoaPods, add the following line to your Podfile:
 ```ruby
 pod 'Picovoice-iOS'
 ```
@@ -183,7 +190,7 @@ In order to detect wake words and run inference in other languages you need to u
 
 ## Running Unit Tests
 
-Copy your `AccessKey` into the `accessKey` variable in [`PicovoiceAppTestUITests.swift`](PicovoiceAppTest/PicovoiceAppTestUITests/PicovoiceAppTestUITests.swift). Open `PicovoiceAppTest.xcworkspace` with XCode and run the tests with `Product > Test`.
+Copy your `AccessKey` into the `accessKey` variable in [`PicovoiceAppTestUITests.swift`](PicovoiceAppTest/PicovoiceAppTestUITests/PicovoiceAppTestUITests.swift). Open [`PicovoiceAppTest.xcodeproj`](PicovoiceAppTest/PicovoiceAppTest.xcodeproj) with XCode and run the tests with `Product > Test`.
 
 ## Demo Apps
 

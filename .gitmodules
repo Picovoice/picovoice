@@ -1,15 +1,15 @@
 [submodule "resources/porcupine"]
 	path = resources/porcupine
-	url = ../porcupine.git
+	url = https://github.com/Picovoice/porcupine.git
 [submodule "resources/rhino"]
 	path = resources/rhino
-	url = ../rhino.git
+	url = https://github.com/Picovoice/rhino.git
 [submodule "sdk/unity/VoiceProcessor"]
 	path = sdk/unity/VoiceProcessor
-	url = ../unity-voice-processor.git
+	url = https://github.com/Picovoice/unity-voice-processor.git
 [submodule "demo/c/pvrecorder"]
 	path = demo/c/pvrecorder
-	url = ../pvrecorder.git
+	url = https://github.com/Picovoice/pvrecorder.git
 [submodule "demo/c/dr_libs"]
 	path = demo/c/dr_libs
-	url = ../../mackron/dr_libs.git
+	url = https://github.com/mackron/dr_libs.git
