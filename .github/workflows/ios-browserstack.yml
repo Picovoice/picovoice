@@ -12,7 +12,7 @@ on:
       - 'resources/rhino'
       - 'resources/.test/**'
   pull_request:
-    branches: [ master, 'v[0-9]+.[0-9]+' ]
+    branches: [ ios-bitcode-spm, 'v[0-9]+.[0-9]+' ]
     paths:
       - '.github/workflows/ios-browserstack.yml'
       - 'sdk/ios/PicovoiceAppTest/**'
@@ -44,7 +44,7 @@ jobs:
           pip3 install requests
 
       - name: Make build dir
-        run: mkdir ddp
+        run: mkdir .ddp
 
       - name: Copy test_resources
         run: ./copy_test_resources.sh
@@ -59,18 +59,18 @@ jobs:
           -project PicovoiceAppTest.xcodeproj
           -sdk iphoneos
           -scheme PicovoiceAppTest
-          -derivedDataPath ddp
+          -derivedDataPath .ddp
           CODE_SIGNING_ALLOWED=NO
 
       - name: Generating ipa
-        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+        run: cd .ddp/Build/Products/Debug-iphoneos/ &&
           mkdir Payload &&
           cp -r PicovoiceAppTest.app Payload &&
           zip --symlinks -r PicovoiceAppTest.ipa Payload &&
           rm -r Payload
 
       - name: Zipping Tests
-        run: cd ddp/Build/Products/Debug-iphoneos/ &&
+        run: cd .ddp/Build/Products/Debug-iphoneos/ &&
           zip --symlinks -r PicovoiceAppTestUITests.zip PicovoiceAppTestUITests-Runner.app
 
       - name: Run tests on BrowserStack
@@ -80,5 +80,5 @@ jobs:
           --access_key "${{secrets.BROWSERSTACK_ACCESS_KEY}}"
           --project_name "Picovoice-iOS"
           --devices "ios-min-max"
-          --app_path "ddp/Build/Products/Debug-iphoneos/PicovoiceAppTest.ipa"
-          --test_path "ddp/Build/Products/Debug-iphoneos/PicovoiceAppTestUITests.zip"
+          --app_path ".ddp/Build/Products/Debug-iphoneos/PicovoiceAppTest.ipa"
+          --test_path ".ddp/Build/Products/Debug-iphoneos/PicovoiceAppTestUITests.zip"
