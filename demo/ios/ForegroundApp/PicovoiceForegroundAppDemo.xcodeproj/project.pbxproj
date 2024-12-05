@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		E1C9DAEE2CFF8A340077E36C /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAED2CFF8A340077E36C /* Porcupine */; };
 		E1C9DAF12CFF8A3D0077E36C /* Rhino in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAF02CFF8A3D0077E36C /* Rhino */; };
 		E1C9DAF32CFF8A670077E36C /* Picovoice in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAF22CFF8A670077E36C /* Picovoice */; };
+		E1ECAF5A2D02278A004B6460 /* Picovoice in Frameworks */ = {isa = PBXBuildFile; productRef = E1ECAF592D02278A004B6460 /* Picovoice */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,7 @@
 				E1C9DAEE2CFF8A340077E36C /* Porcupine in Frameworks */,
 				E1C9DAF32CFF8A670077E36C /* Picovoice in Frameworks */,
 				E1C9DAEB2CFF8A2B0077E36C /* ios_voice_processor in Frameworks */,
+				E1ECAF5A2D02278A004B6460 /* Picovoice in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,10 +150,10 @@
 			);
 			mainGroup = 1760DF20253A175000395344;
 			packageReferences = (
-				E13A8A102CFE9A0B00906008 /* XCLocalSwiftPackageReference "../../../../picovoice" */,
 				E1C9DAE92CFF8A2B0077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */,
 				E1C9DAEC2CFF8A340077E36C /* XCRemoteSwiftPackageReference "porcupine" */,
 				E1C9DAEF2CFF8A3D0077E36C /* XCRemoteSwiftPackageReference "rhino" */,
+				E1ECAF582D02278A004B6460 /* XCRemoteSwiftPackageReference "picovoice" */,
 			);
 			productRefGroup = 1760DF2A253A175000395344 /* Products */;
 			projectDirPath = "";
@@ -378,13 +380,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		E13A8A102CFE9A0B00906008 /* XCLocalSwiftPackageReference "../../../../picovoice" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../picovoice;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		E1C9DAE92CFF8A2B0077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -410,6 +405,14 @@
 				version = 3.0.2;
 			};
 		};
+		E1ECAF582D02278A004B6460 /* XCRemoteSwiftPackageReference "picovoice" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/picovoice";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -430,6 +433,11 @@
 		};
 		E1C9DAF22CFF8A670077E36C /* Picovoice */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Picovoice;
+		};
+		E1ECAF592D02278A004B6460 /* Picovoice */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1ECAF582D02278A004B6460 /* XCRemoteSwiftPackageReference "picovoice" */;
 			productName = Picovoice;
 		};
 /* End XCSwiftPackageProductDependency section */
