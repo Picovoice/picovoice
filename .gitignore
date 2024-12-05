@@ -9,3 +9,7 @@ demo/c/cmake-build-debug
 *.ppn
 *.rhn
 *.pv
+
+.build
+Package.resolved
+.swiftpm

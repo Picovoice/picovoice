@@ -13,11 +13,17 @@
 		1E0063DB27CED543006FF6E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E0063DA27CED543006FF6E9 /* Assets.xcassets */; };
 		1E0063DE27CED543006FF6E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E0063DC27CED543006FF6E9 /* LaunchScreen.storyboard */; };
 		1E0063F327CED543006FF6E9 /* PicovoiceAppTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */; };
-		90483B2471CE0C3DFCABCC2A /* libPods-PicovoiceAppTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */; };
 		A52A72DA960D9C08EE6BB076 /* BaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */; };
 		A52A7AD7390D2A6893C91843 /* PicovoiceLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52A7E806E562D39BF3F887A /* PicovoiceLanguageTests.swift */; };
-		B9815E42B7CA64629D3D9590 /* libPods-PicovoiceAppTestUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */; };
-		C7B7F1A52984579F0091B8A6 /* test_resources in Resources */ = {isa = PBXBuildFile; fileRef = C7B7F1A42984579F0091B8A6 /* test_resources */; };
+		E1C9DAD62CFF83FE0077E36C /* Picovoice in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAD52CFF83FE0077E36C /* Picovoice */; };
+		E1C9DAD82CFF83FE0077E36C /* Rhino in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAD72CFF83FE0077E36C /* Rhino */; };
+		E1C9DADA2CFF83FE0077E36C /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAD92CFF83FE0077E36C /* Porcupine */; };
+		E1C9DADC2CFF83FE0077E36C /* ios_voice_processor in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DADB2CFF83FE0077E36C /* ios_voice_processor */; };
+		E1C9DADE2CFF84060077E36C /* Picovoice in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DADD2CFF84060077E36C /* Picovoice */; };
+		E1C9DAE02CFF84060077E36C /* Rhino in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DADF2CFF84060077E36C /* Rhino */; };
+		E1C9DAE22CFF84060077E36C /* Porcupine in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAE12CFF84060077E36C /* Porcupine */; };
+		E1C9DAE42CFF84060077E36C /* ios_voice_processor in Frameworks */ = {isa = PBXBuildFile; productRef = E1C9DAE32CFF84060077E36C /* ios_voice_processor */; };
+		E1C9DAE62CFF85210077E36C /* test_resources in Resources */ = {isa = PBXBuildFile; fileRef = E1C9DAE52CFF85210077E36C /* test_resources */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,15 +47,11 @@
 		1E0063EE27CED543006FF6E9 /* PicovoiceAppTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicovoiceAppTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicovoiceAppTestUITests.swift; sourceTree = "<group>"; };
 		1E00640127CED575006FF6E9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTestUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PicovoiceAppTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		96D81685E3AD5BACC589E154 /* Pods-PicovoiceAppTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTest.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest.debug.xcconfig"; sourceTree = "<group>"; };
 		A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTest.swift; sourceTree = "<group>"; };
 		A52A7E806E562D39BF3F887A /* PicovoiceLanguageTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PicovoiceLanguageTests.swift; sourceTree = "<group>"; };
-		BEE8FA14F087E3C98E4F8982 /* Pods-PicovoiceAppTestUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTestUITests.debug.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		C7B7F1A42984579F0091B8A6 /* test_resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = test_resources; sourceTree = "<group>"; };
-		DB38CCA7597CFB4AC719C40E /* Pods-PicovoiceAppTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTest.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest.release.xcconfig"; sourceTree = "<group>"; };
-		E2EA3945EBF30344E7A0AC7B /* Pods-PicovoiceAppTestUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicovoiceAppTestUITests.release.xcconfig"; path = "Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E13A8A0E2CFE915F00906008 /* picovoice */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = picovoice; path = ../../..; sourceTree = "<group>"; };
+		E1C9DAE52CFF85210077E36C /* test_resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = test_resources; path = PicovoiceAppTestUITests/test_resources; sourceTree = "<group>"; };
+		E1C9DAE72CFF85E10077E36C /* test_resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = test_resources; path = PicovoiceAppTestUITests/test_resources; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +59,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90483B2471CE0C3DFCABCC2A /* libPods-PicovoiceAppTest.a in Frameworks */,
+				E1C9DAE22CFF84060077E36C /* Porcupine in Frameworks */,
+				E1C9DADE2CFF84060077E36C /* Picovoice in Frameworks */,
+				E1C9DAE42CFF84060077E36C /* ios_voice_processor in Frameworks */,
+				E1C9DAE02CFF84060077E36C /* Rhino in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +70,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9815E42B7CA64629D3D9590 /* libPods-PicovoiceAppTestUITests.a in Frameworks */,
+				E1C9DADA2CFF83FE0077E36C /* Porcupine in Frameworks */,
+				E1C9DAD62CFF83FE0077E36C /* Picovoice in Frameworks */,
+				E1C9DADC2CFF83FE0077E36C /* ios_voice_processor in Frameworks */,
+				E1C9DAD82CFF83FE0077E36C /* Rhino in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,11 +83,12 @@
 		1E0063C527CED542006FF6E9 = {
 			isa = PBXGroup;
 			children = (
+				E1C9DAE52CFF85210077E36C /* test_resources */,
+				E1C9DAE72CFF85E10077E36C /* test_resources */,
 				1E0063D027CED542006FF6E9 /* PicovoiceAppTest */,
 				1E0063F127CED543006FF6E9 /* PicovoiceAppTestUITests */,
+				E10B23742CFE826A009CDD3D /* Frameworks */,
 				1E0063CF27CED542006FF6E9 /* Products */,
-				30E33429868E030522DA1012 /* Pods */,
-				25C7CD288284E5280D1E193F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,7 +117,6 @@
 		1E0063F127CED543006FF6E9 /* PicovoiceAppTestUITests */ = {
 			isa = PBXGroup;
 			children = (
-				C7B7F1A42984579F0091B8A6 /* test_resources */,
 				1E0063F227CED543006FF6E9 /* PicovoiceAppTestUITests.swift */,
 				1E00640127CED575006FF6E9 /* Info.plist */,
 				A52A77FCE9CF5ADF0C8EAD36 /* BaseTest.swift */,
@@ -117,24 +125,12 @@
 			path = PicovoiceAppTestUITests;
 			sourceTree = "<group>";
 		};
-		25C7CD288284E5280D1E193F /* Frameworks */ = {
+		E10B23742CFE826A009CDD3D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4CF8C9BADB88D621491D6034 /* libPods-PicovoiceAppTest.a */,
-				2A604D2115E04FF3D076525B /* libPods-PicovoiceAppTestUITests.a */,
+				E13A8A0E2CFE915F00906008 /* picovoice */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		30E33429868E030522DA1012 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				96D81685E3AD5BACC589E154 /* Pods-PicovoiceAppTest.debug.xcconfig */,
-				DB38CCA7597CFB4AC719C40E /* Pods-PicovoiceAppTest.release.xcconfig */,
-				BEE8FA14F087E3C98E4F8982 /* Pods-PicovoiceAppTestUITests.debug.xcconfig */,
-				E2EA3945EBF30344E7A0AC7B /* Pods-PicovoiceAppTestUITests.release.xcconfig */,
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,12 +140,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1E0063F827CED543006FF6E9 /* Build configuration list for PBXNativeTarget "PicovoiceAppTest" */;
 			buildPhases = (
-				D1C3203AF88D4100D2A3BC78 /* [CP] Check Pods Manifest.lock */,
 				1E0063CA27CED542006FF6E9 /* Sources */,
 				1E0063CB27CED542006FF6E9 /* Frameworks */,
 				1E0063CC27CED542006FF6E9 /* Resources */,
-				00A4D656B6C5EC0E25146600 /* [CP] Embed Pods Frameworks */,
-				CC60664B046F37CB42CEEBD4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -164,12 +157,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1E0063FE27CED543006FF6E9 /* Build configuration list for PBXNativeTarget "PicovoiceAppTestUITests" */;
 			buildPhases = (
-				CCA7F8B86F21728D3EAD0166 /* [CP] Check Pods Manifest.lock */,
 				1E0063EA27CED543006FF6E9 /* Sources */,
 				1E0063EB27CED543006FF6E9 /* Frameworks */,
 				1E0063EC27CED543006FF6E9 /* Resources */,
-				9140ABDE8D44934C3A991CC7 /* [CP] Embed Pods Frameworks */,
-				33F6BB3D0CA6FE73399EAD0B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -209,6 +199,12 @@
 				Base,
 			);
 			mainGroup = 1E0063C527CED542006FF6E9;
+			packageReferences = (
+				E1C9DAD12CFF838F0077E36C /* XCRemoteSwiftPackageReference "rhino" */,
+				E1C9DAD22CFF83A30077E36C /* XCRemoteSwiftPackageReference "porcupine" */,
+				E1C9DAD32CFF83B90077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */,
+				E1ECAF572D02253B004B6460 /* XCRemoteSwiftPackageReference "picovoice" */,
+			);
 			productRefGroup = 1E0063CF27CED542006FF6E9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -234,126 +230,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7B7F1A52984579F0091B8A6 /* test_resources in Resources */,
+				E1C9DAE62CFF85210077E36C /* test_resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		00A4D656B6C5EC0E25146600 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		33F6BB3D0CA6FE73399EAD0B /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9140ABDE8D44934C3A991CC7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTestUITests/Pods-PicovoiceAppTestUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CC60664B046F37CB42CEEBD4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PicovoiceAppTest/Pods-PicovoiceAppTest-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CCA7F8B86F21728D3EAD0166 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PicovoiceAppTestUITests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D1C3203AF88D4100D2A3BC78 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PicovoiceAppTest-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1E0063CA27CED542006FF6E9 /* Sources */ = {
@@ -521,7 +402,6 @@
 		};
 		1E0063F927CED543006FF6E9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 96D81685E3AD5BACC589E154 /* Pods-PicovoiceAppTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -551,7 +431,6 @@
 		};
 		1E0063FA27CED543006FF6E9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DB38CCA7597CFB4AC719C40E /* Pods-PicovoiceAppTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -581,7 +460,6 @@
 		};
 		1E0063FF27CED543006FF6E9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEE8FA14F087E3C98E4F8982 /* Pods-PicovoiceAppTestUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -604,7 +482,6 @@
 		};
 		1E00640027CED543006FF6E9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E2EA3945EBF30344E7A0AC7B /* Pods-PicovoiceAppTestUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -656,6 +533,82 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E1C9DAD12CFF838F0077E36C /* XCRemoteSwiftPackageReference "rhino" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/rhino";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.2;
+			};
+		};
+		E1C9DAD22CFF83A30077E36C /* XCRemoteSwiftPackageReference "porcupine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/porcupine/";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.4;
+			};
+		};
+		E1C9DAD32CFF83B90077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/ios-voice-processor";
+			requirement = {
+				kind = exactVersion;
+				version = 1.2.0;
+			};
+		};
+		E1ECAF572D02253B004B6460 /* XCRemoteSwiftPackageReference "picovoice" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Picovoice/picovoice";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E1C9DAD52CFF83FE0077E36C /* Picovoice */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Picovoice;
+		};
+		E1C9DAD72CFF83FE0077E36C /* Rhino */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD12CFF838F0077E36C /* XCRemoteSwiftPackageReference "rhino" */;
+			productName = Rhino;
+		};
+		E1C9DAD92CFF83FE0077E36C /* Porcupine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD22CFF83A30077E36C /* XCRemoteSwiftPackageReference "porcupine" */;
+			productName = Porcupine;
+		};
+		E1C9DADB2CFF83FE0077E36C /* ios_voice_processor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD32CFF83B90077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */;
+			productName = ios_voice_processor;
+		};
+		E1C9DADD2CFF84060077E36C /* Picovoice */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Picovoice;
+		};
+		E1C9DADF2CFF84060077E36C /* Rhino */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD12CFF838F0077E36C /* XCRemoteSwiftPackageReference "rhino" */;
+			productName = Rhino;
+		};
+		E1C9DAE12CFF84060077E36C /* Porcupine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD22CFF83A30077E36C /* XCRemoteSwiftPackageReference "porcupine" */;
+			productName = Porcupine;
+		};
+		E1C9DAE32CFF84060077E36C /* ios_voice_processor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E1C9DAD32CFF83B90077E36C /* XCRemoteSwiftPackageReference "ios-voice-processor" */;
+			productName = ios_voice_processor;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1E0063C627CED542006FF6E9 /* Project object */;
 }
