@@ -58,7 +58,7 @@ jobs:
 
   build-ios:
     name: Build iOS demo
-    runs-on: macos-12
+    runs-on: macos-latest
     strategy:
       matrix:
         flutter-version: ['3.3.0', '3.22.2']
@@ -122,7 +122,7 @@ jobs:
       run: flutter build apk
 
   build-clock-ios:
-    runs-on: macos-12
+    runs-on: macos-latest
     defaults:
       run:
         working-directory: demo/flutter-clock

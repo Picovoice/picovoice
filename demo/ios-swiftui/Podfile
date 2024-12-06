@@ -3,5 +3,5 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '13.0'
 
 target 'BaristaDemo' do
-    pod 'Picovoice-iOS', '~> 3.0.1'
+    pod 'Picovoice-iOS', '~> 3.0.2'
 end

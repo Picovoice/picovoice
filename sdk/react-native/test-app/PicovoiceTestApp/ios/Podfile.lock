@@ -76,15 +76,15 @@ PODS:
   - hermes-engine (0.71.0):
     - hermes-engine/Pre-built (= 0.71.0)
   - hermes-engine/Pre-built (0.71.0)
-  - ios-voice-processor (1.1.0)
+  - ios-voice-processor (1.2.0)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
-  - picovoice-react-native (3.0.2):
+  - picovoice-react-native (3.0.3):
     - React
-  - Porcupine-iOS (3.0.1):
-    - ios-voice-processor (~> 1.1.0)
-  - porcupine-react-native (3.0.1):
-    - Porcupine-iOS (~> 3.0.1)
+  - Porcupine-iOS (3.0.4):
+    - ios-voice-processor (~> 1.2.0)
+  - porcupine-react-native (3.0.3):
+    - Porcupine-iOS (~> 3.0.4)
     - React
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -305,8 +305,8 @@ PODS:
   - React-jsinspector (0.71.0)
   - React-logger (0.71.0):
     - glog
-  - react-native-voice-processor (1.2.0):
-    - ios-voice-processor (~> 1.1.0)
+  - react-native-voice-processor (1.2.3):
+    - ios-voice-processor (~> 1.2.0)
     - React-Core
   - React-perflogger (0.71.0)
   - React-RCTActionSheet (0.71.0):
@@ -389,11 +389,11 @@ PODS:
     - React-jsi (= 0.71.0)
     - React-logger (= 0.71.0)
     - React-perflogger (= 0.71.0)
-  - Rhino-iOS (3.0.1):
-    - ios-voice-processor (~> 1.1.0)
-  - rhino-react-native (3.0.1):
+  - Rhino-iOS (3.0.2):
+    - ios-voice-processor (~> 1.2.0)
+  - rhino-react-native (3.0.3):
     - React
-    - Rhino-iOS (~> 3.0.1)
+    - Rhino-iOS (~> 3.0.2)
   - RNFS (2.20.0):
     - React-Core
   - SocketRocket (0.6.1)
@@ -586,12 +586,12 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
   hermes-engine: f6e715aa6c8bd38de6c13bc85e07b0a337edaa89
-  ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
+  ios-voice-processor: 6b5ca08962f39e434fe39dca0f483d923a3b1b97
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  picovoice-react-native: 735fbd80de86110d40caeb7d7aaa023c0b19b1da
-  Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
-  porcupine-react-native: f6650a418ba767c210eeb416d4e0bdbb93a209ca
+  picovoice-react-native: 5fb2940cca287c14d48ae3418082a0d5f6da6db2
+  Porcupine-iOS: da103a8848ce6b36acd4a5e42bb811d4532dd515
+  porcupine-react-native: 2d1932ab12e4eb8130c821e8d439c23c8b5318f5
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: dea3e4163184ea57c50288c15c32c1529265c58f
   RCTTypeSafety: a0834ab89159a346731e8aae55ad6e2cce61c327
@@ -606,7 +606,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 060dd495f1e2af3d87216f7ca8a94c55ec885b4f
   React-jsinspector: 5061fcbec93fd672183dfb39cc2f65e55a0835db
   React-logger: a6c0b3a807a8e81f6d7fea2e72660766f55daa50
-  react-native-voice-processor: aefb0845641c7d67dd47e69606ba7ebb38aab5cd
+  react-native-voice-processor: 47d7906332e258dcd1f2ee089bdb9bf0f6809ccf
   React-perflogger: e5fc4149e9bbb972b8520277f3b23141faa47a36
   React-RCTActionSheet: 991de88216bf03ab9bb1d213d73c62ecbe64ade7
   React-RCTAnimation: b74e3d1bf5280891a573e447b487fa1db0713b5b
@@ -620,8 +620,8 @@ SPEC CHECKSUMS:
   React-RCTVibration: 55c91eccdbd435d7634efbe847086944389475b0
   React-runtimeexecutor: ac80782d9d76ba2b0f709f4de0c427fe33c352dc
   ReactCommon: 20e38a9be5fe1341b5e422220877cc94034776ba
-  Rhino-iOS: 4eeb02b38696907b28dd6f5dfa3a8f25355554ca
-  rhino-react-native: 8ef93ffeb956ad0c4843dfe0391df92cb9d290a6
+  Rhino-iOS: 19392b6663594385dad5c375a99484b383351e59
+  rhino-react-native: 477d1ef7beece13b87b59a61c1059201a1f11e81
   RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: c618b544ff8bd8865cdca602f00cbcdb92fd6d31
@@ -629,4 +629,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2f383a3a91124a9be0b3f48e3bcbec883523ab08
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

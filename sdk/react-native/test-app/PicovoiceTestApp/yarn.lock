@@ -1512,22 +1512,22 @@
     fastq "^1.6.0"
 
 "@picovoice/picovoice-react-native@file:../..":
-  version "3.0.2"
+  version "3.0.3"
 
-"@picovoice/porcupine-react-native@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-3.0.1.tgz#2c71a61b074f34fece517a884fb0ec2f6eacc7cc"
-  integrity sha512-TGP7l1SVNOMuqyocvRqyf7X08VYkr3gc4eucw8M81QLzWzJ8Mpz64BQb2iifNUR6Oaia0XQ1tHP3ffrdIHY2rg==
+"@picovoice/porcupine-react-native@=3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/porcupine-react-native/-/porcupine-react-native-3.0.3.tgz#3e82fcdbd335a7c3b7019562c369ee53754837a3"
+  integrity sha512-3RM+bErlHy3kjZ/i4d4BL++pwidHiNBdyN0T9ePNBxbW/SilsigYfXedg2jZG9rPbtJgiPsN/uYgVkNz+lDPLg==
 
-"@picovoice/react-native-voice-processor@=1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.0.tgz#82a98b41d9236ababe330dae873062ee0e1b24c3"
-  integrity sha512-zolTEo3qsqeUwY7JRslV/yhiA+oBrkeogOTxjHIEJ//yEsr7YKlI1PcqTbU5/xjmUiukh62gmwTXhosnQYdasQ==
+"@picovoice/react-native-voice-processor@=1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/react-native-voice-processor/-/react-native-voice-processor-1.2.3.tgz#f07a2b526922bba1c2b542bbcd842897aab4c241"
+  integrity sha512-GFnuKXWIOrDTPumcFkwfGaGUt2X1Vq31cU0sM4CZ9o/SomZQxJml12nr8d4uxjG03Z/eouWGN/0AcxZPdqihlw==
 
-"@picovoice/rhino-react-native@=3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-3.0.1.tgz#7945213afa752ec3ddba79c7b1afb6125d22141f"
-  integrity sha512-6uKDRbub3deEJLoV5v7m2q3Lm95aDn62XlTCGf38ItAAs+zTx9QjRUxB6OUSJQ0tj6NUhMHjveQa0dg/d1s9qA==
+"@picovoice/rhino-react-native@=3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@picovoice/rhino-react-native/-/rhino-react-native-3.0.3.tgz#71a89a20a8b9e5b77c021a818bb80bac74403443"
+  integrity sha512-tSo8hCnLHIyEIOTOGcqlouH/IVE2NrYGvHUCC/+PKrLvJBztiksiIoKTxvJ67MQStRZnFle6yvgefau2/JWuIw==
 
 "@react-native-community/cli-clean@^10.0.0":
   version "10.1.1"

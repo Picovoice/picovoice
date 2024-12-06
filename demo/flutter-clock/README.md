@@ -18,3 +18,8 @@ Once you obtain your `AccessKey`, replace it in [lib/main.dart](lib/main.dart) f
 ```dart
 final String accessKey = "{YOUR_ACCESS_KEY_HERE}"; // AccessKey obtained from Picovoice Console (https://console.picovoice.ai/)
 ```
+
+Run the following command from [demo/flutter-clock](.) to build and deploy the demo to your device:
+```console
+flutter run
+```

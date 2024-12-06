@@ -54,3 +54,6 @@
 
 ## [3.0.3] - 2024-02-08
 * Additional gradle plugin build support
+
+## [3.0.4] - 2024-12-06
+* Update native packages
