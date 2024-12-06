@@ -11,19 +11,16 @@ PODS:
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
-  - Picovoice-iOS (from `https://raw.githubusercontent.com/Picovoice/picovoice/ios-bitcode-spm/sdk/ios/Picovoice-iOS.podspec`)
+  - Picovoice-iOS (~> 3.0.2)
   - SwiftySound
 
 SPEC REPOS:
   trunk:
     - ios-voice-processor
+    - Picovoice-iOS
     - Porcupine-iOS
     - Rhino-iOS
     - SwiftySound
-
-EXTERNAL SOURCES:
-  Picovoice-iOS:
-    :podspec: https://raw.githubusercontent.com/Picovoice/picovoice/ios-bitcode-spm/sdk/ios/Picovoice-iOS.podspec
 
 SPEC CHECKSUMS:
   ios-voice-processor: 6b5ca08962f39e434fe39dca0f483d923a3b1b97
@@ -32,6 +29,6 @@ SPEC CHECKSUMS:
   Rhino-iOS: 19392b6663594385dad5c375a99484b383351e59
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: bb488f5bae99d65e61fcf4187fe6158a1e83b401
+PODFILE CHECKSUM: 60aaf0b4e933dae8c0b371344fc68e5044b184de
 
 COCOAPODS: 1.16.2
