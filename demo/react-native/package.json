@@ -1,6 +1,6 @@
 {
   "name": "picovoice-react-native-demo",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -14,10 +14,10 @@
     "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "^3.0.2",
-    "@picovoice/porcupine-react-native": "^3.0.2",
-    "@picovoice/react-native-voice-processor": "^1.2.2",
-    "@picovoice/rhino-react-native": "^3.0.2",
+    "@picovoice/picovoice-react-native": "../../sdk/react-native/pkg/picovoice-picovoice-react-native-3.0.3.tgz",
+    "@picovoice/porcupine-react-native": "3.0.3",
+    "@picovoice/react-native-voice-processor": "1.2.3",
+    "@picovoice/rhino-react-native": "3.0.3",
     "react": "^17.0.2",
     "react-native": "^0.68.7"
   },
