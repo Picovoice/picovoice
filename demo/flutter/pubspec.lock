@@ -221,9 +221,10 @@ packages:
   picovoice_flutter:
     dependency: "direct main"
     description:
-      path: "../../sdk/flutter"
-      relative: true
-    source: path
+      name: picovoice_flutter
+      sha256: "1a4f242fe63ffdf37b14a2700c8ae006da5866b4904e2ea61b3bd7e45e975380"
+      url: "https://pub.dev"
+    source: hosted
     version: "3.0.4"
   platform:
     dependency: transitive

@@ -14,7 +14,7 @@
     "ios-bundle": "node scripts/run_demo.js bundle --dev false --platform ios --entry-file index.js --bundle-output ios/app.jsbundle"
   },
   "dependencies": {
-    "@picovoice/picovoice-react-native": "../../sdk/react-native/pkg/picovoice-picovoice-react-native-3.0.3.tgz",
+    "@picovoice/picovoice-react-native": "3.0.3",
     "@picovoice/porcupine-react-native": "3.0.3",
     "@picovoice/react-native-voice-processor": "1.2.3",
     "@picovoice/rhino-react-native": "3.0.3",

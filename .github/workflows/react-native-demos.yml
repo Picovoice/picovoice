@@ -41,15 +41,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-# REMOVE
-    - name: Build binding
-      run: yarn && yarn pkg
-      working-directory: sdk/react-native
-
-    - name: Build binding
-      run: yarn add ../../sdk/react-native/pkg/picovoice-picovoice-react-native-3.0.3.tgz
-# REMOVE
-
     - name: Install dependencies
       run: yarn android-install
 
@@ -76,15 +67,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-# REMOVE
-    - name: Build binding
-      run: yarn && yarn pkg
-      working-directory: sdk/react-native
-
-    - name: Build binding
-      run: yarn add ../../sdk/react-native/pkg/picovoice-picovoice-react-native-3.0.3.tgz
-# REMOVE
 
     - name: Install dependencies
       run: yarn ios-install
@@ -121,15 +103,6 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
-# REMOVE
-    - name: Build binding
-      run: yarn && yarn pkg
-      working-directory: sdk/react-native
-
-    - name: Build binding
-      run: yarn add ../../sdk/react-native/pkg/picovoice-picovoice-react-native-3.0.3.tgz
-# REMOVE
 
     - name: Install dependencies
       run: yarn android-install
