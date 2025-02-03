@@ -11,7 +11,6 @@
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react-native)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android?label=maven%20central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-java/)
-[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-angular?label=npm%20%5Bangular%5D)](https://www.npmjs.com/package/@picovoice/picovoice-angular)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
@@ -116,7 +115,6 @@ platform.
     - [iOS](#ios-demos)
     - [Web](#web-demos)
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
-      - [Angular](#angular-demos)
       - [React](#react-demos)
       - [Vue](#vue-demos)
     - [Rust](#rust-demos)
@@ -134,7 +132,6 @@ platform.
     - [Android](#android)
     - [iOS](#ios)
     - [Web](#web)
-      - [Angular](#angular)
       - [React](#react)
       - [Vue](#vue)
     - [Rust](#rust)
@@ -478,26 +475,6 @@ npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:5000` in your browser to try the demo.
-
-#### Angular Demos
-
-From [demo/angular](demo/angular) use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
-to start a local web server hosting the demo in the language of your choice (e.g. `pl` -> Polish, `ko` -> Korean).
-To see a list of available languages, run `start` without a language code.
-
-```console
-yarn
-yarn start ${LANGUAGE}
-```
-
-(or)
-
-```console
-npm install
-npm run start ${LANGUAGE}
-```
-
-Open `http://localhost:4200` in your browser to try the demo.
 
 #### React Demos
 
@@ -1536,88 +1513,6 @@ for (; ;) {
 Replace `${ACCESS_KEY}` with yours obtained from [Picovoice Console](https://console.picovoice.ai/).
 
 When done, release the resources allocated to Picovoice using `picovoice.release()`.
-
-#### Angular
-
-```console
-yarn add @picovoice/picovoice-angular @picovoice/web-voice-processor
-```
-
-(or)
-
-```console
-npm install @picovoice/picovoice-angular @picovoice/web-voice-processor
-```
-
-```typescript
-import { Subscription } from "rxjs"
-import { PicovoiceService } from "@picovoice/picovoice-angular"
-
-...
-
-constructor(private picovoiceService: PicovoiceService) {
-  this.wakeWordDetectionSubscription = picovoiceService.wakeWordDetection$.subscribe(
-          (wakeWordDetection: PorcupineDetection) => {
-            this.inference = null;
-            this.wakeWordDetection = wakeWordDetection;
-          }
-  );
-
-  this.inferenceSubscription = picovoiceService.inference$.subscribe(
-          (inference: RhinoInference) => {
-            this.wakeWordDetection = null;
-            this.inference = inference;
-          }
-  );
-
-  this.contextInfoSubscription = picovoiceService.contextInfo$.subscribe(
-          (contextInfo: string | null) => {
-            this.contextInfo = contextInfo;
-          }
-  );
-
-  this.isLoadedSubscription = picovoiceService.isLoaded$.subscribe(
-          (isLoaded: boolean) => {
-            this.isLoaded = isLoaded;
-          }
-  );
-  this.isListeningSubscription = picovoiceService.isListening$.subscribe(
-          (isListening: boolean) => {
-            this.isListening = isListening;
-          }
-  );
-  this.errorSubscription = picovoiceService.error$.subscribe(
-          (error: string | null) => {
-            this.error = error;
-          }
-  );
-}
-
-async ngOnInit() {
-    try {
-      await this.picovoiceService.init(
-              accessKey,
-              porcupineKeyword,
-              porcupineModel,
-              rhinoContext,
-              rhinoModel
-      );
-    }
-    catch (error) {
-      console.error(error)
-    }
-}
-
-ngOnDestroy() {
-  this.wakeWordDetectionSubscription.unsubscribe();
-  this.inferenceSubscription.unsubscribe();
-  this.contextInfoSubscription.unsubscribe();
-  this.isLoadedSubscription.unsubscribe();
-  this.isListeningSubscription.unsubscribe();
-  this.errorSubscription.unsubscribe();
-  this.picovoiceService.release();
-}
-```
 
 #### React
 

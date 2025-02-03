@@ -26,7 +26,7 @@ These demos run Rhino on **NodeJS 16+** on the following platforms:
 
 ### Web Browsers
 
-These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-vue).
+These demos and the bindings upon which they are built are for NodeJS and **do not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web), and dedicated packages for [React](https://www.npmjs.com/package/@picovoice/picovoice-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-vue).
 
 ## AccessKey
 

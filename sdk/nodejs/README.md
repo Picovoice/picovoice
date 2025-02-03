@@ -24,7 +24,7 @@ This binding is for running Picovoice on **NodeJS 16+** on the following platfor
 
 ### Web Browsers
 
-This binding is for NodeJS and **does not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web), and dedicated packages for [Angular](https://www.npmjs.com/package/@picovoice/picovoice-angular), [React](https://www.npmjs.com/package/@picovoice/picovoice-react), and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-vue).
+This binding is for NodeJS and **does not work in a browser**. Looking to run Picovoice in-browser? There are npm packages available for [Web](https://www.npmjs.com/package/@picovoice/picovoice-web), and dedicated packages for and [Vue](https://www.npmjs.com/package/@picovoice/picovoice-vue).
 
 ## AccessKey
 
