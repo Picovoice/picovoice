@@ -2,7 +2,6 @@ demo/** linguist-detectable=false
 resources/** linguist-detectable=false
 
 sdk/android/** linguist-detectable=false
-sdk/angular/** linguist-detectable=false
 sdk/dotnet/PicovoiceTest/** linguist-detectable=false
 sdk/flutter/android/** linguist-detectable=false
 sdk/flutter/ios/** linguist-detectable=false
@@ -15,7 +14,6 @@ sdk/react/** linguist-detectable=false
 sdk/react-native/** linguist-detectable=false
 sdk/rust/tests/** linguist-detectable=false
 sdk/unity/** linguist-detectable=false
-sdk/vue/** linguist-detectable=false
 sdk/web/** linguist-detectable=false
 
 *.py linguist-detectable=true
