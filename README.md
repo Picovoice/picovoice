@@ -12,7 +12,6 @@
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android?label=maven%20central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-java?label=maven%20central%20%5Bjava%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-java/)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react?label=npm%20%5Breact%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react)
-[![npm](https://img.shields.io/npm/v/@picovoice/picovoice-vue?label=npm%20%5Bvue%5D)](https://www.npmjs.com/package/@picovoice/picovoice-vue)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-node?label=npm%20%5Bnode%5D)](https://www.npmjs.com/package/@picovoice/picovoice-node)
 <!-- markdown-link-check-disable -->
 [![Crates.io](https://img.shields.io/crates/v/picovoice)](https://crates.io/crates/picovoice)
@@ -116,7 +115,6 @@ platform.
     - [Web](#web-demos)
       - [Vanilla JavaScript and HTML](#vanilla-javascript-and-html)
       - [React](#react-demos)
-      - [Vue](#vue-demos)
     - [Rust](#rust-demos)
     - [C](#c-demos)
     - [Microcontroller](#microcontroller-demos)
@@ -133,7 +131,6 @@ platform.
     - [iOS](#ios)
     - [Web](#web)
       - [React](#react)
-      - [Vue](#vue)
     - [Rust](#rust)
     - [C](#c)
     - [Microcontroller](#microcontroller)
@@ -495,26 +492,6 @@ npm run start ${LANGUAGE}
 ```
 
 Open `http://localhost:3000` in your browser to try the demo.
-
-#### Vue Demos
-
-From [demo/vue](demo/vue) use `yarn` or `npm` to install the dependencies, and the `start` script with a language code
-to start a local web server hosting the demo in the language of your choice (e.g. `pl` -> Polish, `ko` -> Korean).
-To see a list of available languages, run `start` without a language code.
-
-```console
-yarn
-yarn start ${LANGUAGE}
-```
-
-(or)
-
-```console
-npm install
-npm run start ${LANGUAGE}
-```
-
-The command-line output will provide you with a localhost link and port to open in your browser.
 
 ### Rust Demos
 
@@ -1569,83 +1546,6 @@ function App(props) {
     }
   }, [inference])
 }
-```
-
-#### Vue
-
-```console
-yarn add @picovoice/picovoice-vue @picovoice/web-voice-processor
-```
-
-(or)
-
-```console
-npm install @picovoice/picovoice-vue @picovoice/web-voice-processor
-```
-
-```vue
-<script lang='ts'>
-import { usePicovoice } from '@picovoice/picovoice-vue';
-
-export default {
-  data() {
-    const {
-      state,
-      init,
-      start,
-      stop,
-      release
-    } = usePicovoice();
-
-    init(
-      ${ACCESS_KEY},
-      {
-        label: "Picovoice",
-        publicPath: "picovoice_wasm.ppn",
-      },
-      { publicPath: "porcupine_params.pv" },
-      { publicPath: "clock_wasm.rhn" },
-      { publicPath: "rhino_params.pv" },
-    );
-
-    return {
-      state,
-      start,
-      stop,
-      release
-    }
-  },
-  watch: {
-    "state.wakeWordDetection": function(wakeWord) {
-      if (wakeWord !== null) {
-        console.log(wakeWord)
-      }
-    },
-    "state.inference": function(inference) {
-      if (inference !== null) {
-        console.log(inference)
-      }
-    },
-    "state.contextInfo": function(contextInfo) {
-      if (contextInfo !== null) {
-        console.log(contextInfo)
-      }
-    },
-    "state.isLoaded": function(isLoaded) {
-      console.log(isLoaded)
-    },
-    "state.isListening": function(isListening) {
-      console.log(isListening)
-    },
-    "state.error": function(error) {
-      console.error(error)
-    },
-  },
-  onBeforeDestroy() {
-    this.release();
-  },
-};
-</script>
 ```
 
 ### Rust
