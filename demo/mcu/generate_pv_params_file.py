@@ -141,10 +141,7 @@ if __name__ == "__main__":
         "zh": {"wake_word": "你好电脑", "context": "simple_context_zh"},
     }
     include_folders = [
-        "imxrt1050/imxrt1050-evkb/inc",
-        "stm32f407/stm32f407g-disc1/Inc/",
         "stm32f411/stm32f411e-disco/Inc/",
-        "stm32f769/stm32f769i-disco/Inc/",
     ]
 
     generate_pv_params(models, include_folders)

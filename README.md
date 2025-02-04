@@ -6,7 +6,6 @@
 
 [![PyPI](https://img.shields.io/pypi/v/picovoice)](https://pypi.org/project/picovoice/)
 [![Nuget](https://img.shields.io/nuget/v/picovoice)](https://www.nuget.org/packages/Picovoice/)
-[![Go Reference](https://pkg.go.dev/badge/github.com/Picovoice/picovoice/sdk/go/v2.svg)](https://pkg.go.dev/github.com/Picovoice/picovoice/sdk/go/v2)
 [![Pub Version](https://img.shields.io/pub/v/picovoice_flutter)](https://pub.dev/packages/picovoice_flutter)
 [![npm](https://img.shields.io/npm/v/@picovoice/picovoice-react-native?label=npm%20%5Breact-native%5D)](https://www.npmjs.com/package/@picovoice/picovoice-react-native)
 [![Maven Central](https://img.shields.io/maven-central/v/ai.picovoice/picovoice-android?label=maven%20central%20%5Bandroid%5D)](https://repo1.maven.org/maven2/ai/picovoice/picovoice-android/)
@@ -48,7 +47,7 @@ spoken command:
 - **Private & Secure:** Everything is processed offline. Intrinsically private; HIPAA and GDPR-compliant.
 - **Accurate:** Resilient to noise and reverberation. Outperforms cloud-based alternatives by wide margins.
 - **Cross-Platform:** Design once, deploy anywhere. Build using familiar languages and frameworks.
-  - Arm Cortex-M, STM32, Arduino, and i.MX RT
+  - Arm Cortex-M, STM32, and Arduino
   - Raspberry Pi (Zero, 3, 4, 5)
   - Android and iOS
   - Chrome, Safari, Firefox, and Edge
@@ -106,7 +105,6 @@ platform.
     - [NodeJS](#nodejs-demos)
     - [.NET](#net-demos)
     - [Java](#java-demos)
-    - [Go](#go-demos)
     - [Unity](#unity-demos)
     - [Flutter](#flutter-demos)
     - [React Native](#react-native-demos)
@@ -123,7 +121,6 @@ platform.
     - [NodeJS](#nodejs)
     - [.NET](#net)
     - [Java](#java)
-    - [Go](#go)
     - [Unity](#unity)
     - [Flutter](#flutter)
     - [React Native](#react-native)
@@ -321,39 +318,6 @@ Upon success the following it printed into the terminal:
 ```
 
 For more information about the Java demos go to [demo/java](demo/java/README.md).
-
-### Go Demos
-
-The demos require `cgo`, which means that a gcc compiler like [Mingw](https://www.mingw-w64.org/) is required.
-
-From [demo/go](demo/go) run the following command from the terminal to build and run the mic demo:
-```console
-go run micdemo/picovoice_mic_demo.go \
--access_key ${ACCESS_KEY} \
--keyword_path "../../resources/porcupine/resources/keyword_files/${PLATFORM}/porcupine_${PLATFORM}.ppn" \
--context_path "../../resources/rhino/resources/contexts/${PLATFORM}/smart_lighting_${PLATFORM}.rhn"
-```
-
-Replace `${PLATFORM}` with the platform you are running the demo on (e.g. `linux`, `mac`, or `windows`). The microphone
-demo opens an audio stream from the microphone, detects utterances of a given wake phrase, and infers intent from the
-follow-on spoken command. Once the demo initializes, it prints `Listening ...` to the console. Then say:
-
-> Porcupine, set the lights in the kitchen to orange.
-
-Upon success the following it printed into the terminal:
-
-```text
-[wake word]
-{
-  intent : 'changeColor'
-  slots : {
-    location : 'kitchen'
-    color : 'orange'
-  }
-}
-```
-
-For more information about the Go demos go to [demo/go](demo/go/README.md).
 
 ### Unity Demos
 
@@ -876,76 +840,6 @@ Once you're done with Picovoice, ensure you release its resources explicitly:
 
 ```java
 handle.delete();
-```
-
-### Go
-
-To install the Picovoice Go module to your project, use the command:
-```console
-go get github.com/Picovoice/picovoice/sdk/go
-```
-
-To create an instance of the engine with default parameters, use the `NewPicovoice` function. You must provide a Porcupine keyword file, a wake word detection callback function, a Rhino context file and an inference callback function. You must then make a call to `Init()`.
-
-```go
-. "github.com/Picovoice/picovoice/sdk/go/v2"
-rhn "github.com/Picovoice/rhino/binding/go/v2"
-
-const accessKey string = "${ACCESS_KEY}" // obtained from Picovoice Console (https://console.picovoice.ai/)
-
-keywordPath := "/path/to/keyword/file.ppn"
-wakeWordCallback := func() {
-    // let user know wake word detected
-}
-
-contextPath := "/path/to/keyword/file.rhn"
-inferenceCallback := func(inference rhn.RhinoInference) {
-    if inference.IsUnderstood {
-            intent := inference.Intent
-            slots := inference.Slots
-        // add code to take action based on inferred intent and slot values
-    } else {
-        // add code to handle unsupported commands
-    }
-}
-
-picovoice := NewPicovoice(
-    accessKey,
-    keywordPath,
-    wakeWordCallback,
-    contextPath,
-    inferenceCallback)
-
-err := picovoice.Init()
-if err != nil {
-    // handle error
-}
-```
-
-Upon detection of wake word defined by `keywordPath` it starts inferring user's intent from the follow-on voice command within
-the context defined by the file located at `contextPath`. `accessKey` is your Picovoice `AccessKey`. `keywordPath` is the absolute path to
-[Porcupine wake word engine](https://github.com/Picovoice/porcupine) keyword file (with `.ppn` suffix).
-`contextPath` is the absolute path to [Rhino Speech-to-Intent engine](https://github.com/Picovoice/rhino) context file
-(with `.rhn` suffix). `wakeWordCallback` is invoked upon the detection of wake phrase and `inferenceCallback` is
-invoked upon completion of follow-on voice command inference.
-
-When instantiated, valid sample rate can be obtained via `SampleRate`. Expected number of audio samples per
-frame is `FrameLength`. The engine accepts 16-bit linearly-encoded PCM and operates on single-channel audio.
-
-```go
-func getNextFrameAudio() []int16 {
-    // get audio frame
-}
-
-for {
-    err := picovoice.Process(getNextFrameAudio())
-}
-```
-
-When done resources have to be released explicitly
-
-```go
-picovoice.Delete()
 ```
 
 ### Unity
