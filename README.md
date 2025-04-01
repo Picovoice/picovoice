@@ -321,6 +321,8 @@ For more information about the Java demos go to [demo/java](demo/java/README.md)
 
 ### Unity Demos
 
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Picovoice Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 To run the Picovoice Unity demo, import the latest [Picovoice Unity package](sdk/unity) into your project, open the PicovoiceDemo scene and hit play. To run on other platforms or in the player, go to _File > Build Settings_, choose your platform and hit the `Build and Run` button.
 
 To browse the demo source go to [demo/unity](demo/unity).
@@ -458,6 +460,8 @@ npm run start ${LANGUAGE}
 Open `http://localhost:3000` in your browser to try the demo.
 
 ### Rust Demos
+
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Picovoice Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 From [demo/rust/micdemo](demo/rust/micdemo) run the following command from the terminal to build and run the mic demo:
 ```console
@@ -843,6 +847,8 @@ handle.delete();
 ```
 
 ### Unity
+
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Picovoice Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 Import the latest [Picovoice Unity Package](sdk/unity) into your Unity project.
 
@@ -1443,6 +1449,8 @@ function App(props) {
 ```
 
 ### Rust
+
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Picovoice Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
 
 To add the picovoice library into your app, add `picovoice` to your app's `Cargo.toml` manifest:
 ```toml

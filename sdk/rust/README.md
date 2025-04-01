@@ -1,6 +1,9 @@
 # Picovoice SDK for Rust
 
+> Rust SDKs will no longer be maintained after **July 15, 2025**. If you plan to use the Picovoice Rust SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 ## Picovoice
+
 Made in Vancouver, Canada by [Picovoice](https://picovoice.ai)
 
 Picovoice is an end-to-end platform for building voice products on your terms. It enables creating voice experiences
