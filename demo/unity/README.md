@@ -1,5 +1,7 @@
 # Picovoice Unity Demo
 
+> Unity SDKs will no longer be maintained after **December 15, 2025**. If you plan to use the Picovoice Unity SDK for commercial purposes, please [contact us](https://picovoice.ai/contact/).
+
 The Picovoice demo for Unity is a multi-platform demo that runs on:
 
 - Desktop Standalone (Windows, macOS and Linux x86_64)
