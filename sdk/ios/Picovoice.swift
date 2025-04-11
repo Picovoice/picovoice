@@ -12,9 +12,7 @@ import Foundation
 import Porcupine
 import Rhino
 
-/// Low-level iOS binding for Picovoice end-to-end platform.
-/// Client passes in audio data and is notified upon detection of the
-/// wake word or completion of in voice command inference.
+// This package is deprecated and will no longer be maintained
 public class Picovoice {
     private var porcupine: Porcupine?
     private var rhino: Rhino?

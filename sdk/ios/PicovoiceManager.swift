@@ -12,9 +12,7 @@ import ios_voice_processor
 import Rhino
 import Porcupine
 
-/// High-level iOS binding for Picovoice end-to-end platform. It handles recording audio
-/// from microphone, processes it in real-time using Picovoice, and notifies the
-/// client upon detection of the wake word or completion of in voice command inference.
+// This package is deprecated and will no longer be maintained
 public class PicovoiceManager {
     private var picovoice: Picovoice?
 

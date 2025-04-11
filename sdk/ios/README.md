@@ -1,3 +1,5 @@
+# ⚠️ This package is deprecated and will no longer be maintained
+
 # Picovoice SDK for iOS
 
 ## Picovoice

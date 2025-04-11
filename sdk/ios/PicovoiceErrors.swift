@@ -9,6 +9,7 @@
 
 import Foundation
 
+// This package is deprecated and will no longer be maintained
 public class PicovoiceError: LocalizedError {
     private let message: String
 
