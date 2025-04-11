@@ -13,6 +13,7 @@ import Rhino
 import Porcupine
 
 // This package is deprecated and will no longer be maintained
+@available(*, deprecated, message: "This package is deprecated and will no longer be maintained")
 public class PicovoiceManager {
     private var picovoice: Picovoice?
 

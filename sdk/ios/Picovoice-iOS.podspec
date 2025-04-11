@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
     s.name = 'Picovoice-iOS'
     s.module_name = 'Picovoice'
-    s.version = '3.0.3-deprecated'
+    s.version = '3.0.3'
     s.license = {:type => 'Apache 2.0'}
     s.summary = '⚠️ This package is deprecated and will no longer be maintained'
     s.description = '⚠️ This package is deprecated and will no longer be maintained'
